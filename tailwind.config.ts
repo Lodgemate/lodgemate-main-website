@@ -15,7 +15,8 @@ const config: Config = {
       },
       colors: {
         primary: "#30A2FF",
-        lblack: "333333",
+        lblue: "#0064B6",
+        lblack: "#333333",
         dgray: "#555555",
         lgray: "#666666",
         atag: "#0064B6",

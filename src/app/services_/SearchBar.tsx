@@ -1,13 +1,14 @@
 import Image from 'next/image';
+import Link from 'next/link';
 import React from 'react'
 
 function SearchBar() {
   return (
-    <div className="flex justify-center w-full items-center mt-[20px]">
+    <div className="flex flex-col justify-center w-full items-center mt-[20px]">
       <div className="border-2 pl-[24px] p-1 flex justify-between border-stroke rounded-full w-full sm:w-[510px] text-[16px] h-[63px] shadow-lg">
         <input
           type="text"
-          placeholder="Enter name of lodge, city or school"
+          placeholder="Enter a service e.g. electrician..."
           className="rounded-full sm:w-[300px] w-[250px]  bg-white outline-none"
         />
 
@@ -20,6 +21,22 @@ function SearchBar() {
           />
           Search
         </button>
+      </div>
+
+      <div className="flex mt-6 sm:gap-2 ">
+        <p className='text-[14px]'>
+          Your location is set to "Owerri".{" "}
+          <span>
+            {" "}
+            <Link
+              href="/"
+              className="font-bold text-lblue border-b border-lblue"
+            >
+              {" "}
+              Change location
+            </Link>
+          </span>{" "}
+        </p>{" "}
       </div>
     </div>
   );

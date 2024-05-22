@@ -1,10 +1,5 @@
 import React from "react";
-import {
-  FaHeart,
-  FaHouseUser,
-  FaCheckCircle,
-  FaMapMarkerAlt,
-} from "react-icons/fa";
+
 
 interface ProductCardProps {
   imageUrl: string;

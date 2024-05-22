@@ -5,7 +5,7 @@ import products from "../../data/data"; // Importing the products data
 function BrowseLodges() {
   return (
     <div className="px-4 sm:px-[100px] mt-[50px]">
-      <h1 className="text-[24px] text-lgray mb-[24px]">
+      <h1 className="text-[18px] sm:text-[24px] text-lgray mb-[24px]">
         Showing lodges based on your location
       </h1>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -18,7 +18,7 @@ function BrowseLodges() {
               name={product.name}
               location={product.address}
               nearbyUniversity={product.university}
-              price={product.price}
+              price={product.price || "N/A"}
             />
           ))}
       </div>

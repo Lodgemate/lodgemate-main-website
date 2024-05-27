@@ -20,15 +20,15 @@ const ProductCard: React.FC<ProductCardProps> = ({
     <div className="max-w-sm rounded overflow-hidden  ">
       <div className="relative">
         <img
-          className="w-full h-[299px] object-cover rounded-[12px]"
+          className="w-full h-[144px] sm:h-[299px] object-cover rounded-[12px]"
           src={imageUrl}
           alt={name}
         />
-        <img
+        {/* <img
           src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1716223206/utilities/LodgeMate_File/Lodge_icon_xw9bll.svg"
           alt="lodgemate"
           className="absolute top-2 left-2 text-xl"
-        />
+        /> */}
         <img
           src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1716223206/utilities/LodgeMate_File/ph_heart-fill_ia430a.svg"
           alt=""
@@ -41,7 +41,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
         />
       </div>
       <div className=" py-[15px]">
-        <div className="font-bold text-[16px] flex items-center">
+        <div className="font-bold text-[16px] flex items-start">
           {name}{" "}
           <img
             src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1716223406/utilities/LodgeMate_File/Vector_aflwdv.png"

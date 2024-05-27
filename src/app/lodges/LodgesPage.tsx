@@ -11,6 +11,10 @@ function LodgesPage() {
         <SearchBar />
       </div>
       <BrowseLodges />
+
+      <div>
+        
+      </div>
     </div>
   );
 }

@@ -6,7 +6,7 @@ function BrowseRoomates() {
   return (
     <div className="px-4 sm:px-[100px] mt-[50px]">
       <h1 className="text-[18px] sm:text-[24px] text-lgray mb-[24px]">
-        Showing lodges based on your location
+        Showing available roommates around “search term”{" "}
       </h1>
       <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {products

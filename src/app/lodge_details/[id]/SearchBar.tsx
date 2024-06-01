@@ -7,7 +7,7 @@ function SearchBar() {
       <div className="border-2 pl-[24px] p-1 flex justify-between border-stroke rounded-full w-full sm:w-[510px] text-[16px] h-[63px] shadow-lg">
         <input
           type="text"
-          placeholder="Where do you want to live...?"
+          placeholder="Enter name of lodge, city or school"
           className="rounded-full sm:w-[300px] w-[250px]  bg-white outline-none"
         />
 

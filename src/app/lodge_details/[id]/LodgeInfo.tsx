@@ -1,15 +1,102 @@
-import React from "react";
-import SearchBar from "./SearchBar";
+"use client";
+
+
 import Link from "next/link";
+import React, { useRef } from "react";
+import data from "../../../data/data";
 
-function LodgeDetailPage() {
+interface LodgeInfoProps {
+  id: number;
+}
+
+interface Feature {
+  name: string;
+  icon: string;
+}
+
+interface Review {
+  userAvatar: string;
+  userName: string;
+  date: string;
+  text: string;
+  rating: number;
+}
+
+const features: Feature[] = [
+  {
+    name: "Water",
+    icon: "https://res.cloudinary.com/dcb4ilgmr/image/upload/v1717201088/utilities/LodgeMate_File/Vector_1_njk9ml.svg",
+  },
+  {
+    name: "Water heater",
+    icon: "https://res.cloudinary.com/dcb4ilgmr/image/upload/v1717201087/utilities/LodgeMate_File/Vector_2_iqvt3t.svg",
+  },
+  {
+    name: "WiFi",
+    icon: "https://res.cloudinary.com/dcb4ilgmr/image/upload/v1717201086/utilities/LodgeMate_File/Vector_6_vamzbw.svg",
+  },
+  {
+    name: "Proximity to school",
+    icon: "https://res.cloudinary.com/dcb4ilgmr/image/upload/v1717201232/utilities/LodgeMate_File/pro_iztpun.svg",
+  },
+  {
+    name: "Electricity",
+    icon: "https://res.cloudinary.com/dcb4ilgmr/image/upload/v1717201521/utilities/LodgeMate_File/Vector_8_tz6xyw.svg",
+  },
+  {
+    name: "Security",
+    icon: "https://res.cloudinary.com/dcb4ilgmr/image/upload/v1717201086/utilities/LodgeMate_File/Vector_7_rcxtti.svg",
+  },
+  {
+    name: "Parking space",
+    icon: "https://res.cloudinary.com/dcb4ilgmr/image/upload/v1717201086/utilities/LodgeMate_File/Vector_5_ppfwpx.svg",
+  },
+  {
+    name: "Recreation center",
+    icon: "https://res.cloudinary.com/dcb4ilgmr/image/upload/v1717201087/utilities/LodgeMate_File/Vector_4_kjhg0c.svg",
+  },
+  {
+    name: "Provision shop",
+    icon: "https://res.cloudinary.com/dcb4ilgmr/image/upload/v1717201086/utilities/LodgeMate_File/Vector_3_uyvtoc.svg",
+  },
+];
+
+function LodgeInfo({ id }: LodgeInfoProps) {
+  const LodgeData = data.find((item) => item.id === id);
+
+  if (!LodgeData) {
+    return <div>Product not found</div>;
+  }
+
+  // Ensure LodgeData.features is defined and of correct type
+  const lodgeFeatures = LodgeData.features || [];
+
+  // Function to get icon URL based on feature name
+  const getFeatureIcon = (featureName: string) => {
+    const feature = features.find(
+      (f) => f.name.toLowerCase() === featureName.toLowerCase()
+    );
+    return feature ? feature.icon : "";
+  };
+
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+
+  const scroll = (scrollOffset: number) => {
+    if (scrollContainerRef.current) {
+      scrollContainerRef.current.scrollBy({
+        left: scrollOffset,
+        behavior: "smooth",
+      });
+    }
+  };
+
   return (
-    <div className="mt-[120px] text-[16px]">
-      <SearchBar />
-
+    <div>
       <div className="px-[100px] mt-[51px]">
         {/* the Name of the Product */}
-        <h1 className="text-[24px] font-semibold text-dgray">Name of Logde</h1>
+        <h1 className="text-[24px] font-semibold text-dgray">
+          {LodgeData.name}
+        </h1>
 
         <div className="flex justify-between">
           <div className="flex gap-[24px] items-center">
@@ -23,7 +110,7 @@ function LodgeDetailPage() {
                 </div>
 
                 {/* the address should be in this paragraph */}
-                <p>14 cross avenue, Owerri, Imo state.</p>
+                <p>{LodgeData.address}</p>
               </div>
 
               <div className="flex gap-2 items-center">
@@ -35,7 +122,9 @@ function LodgeDetailPage() {
                 </div>
 
                 {/* the avrage review and the number of reviews is suppused to be displayed in this paragraph */}
-                <p>4.5 • 29 reviews</p>
+                <p>
+                  {LodgeData.averageReview} • {LodgeData.reviewCount} reviews
+                </p>
               </div>
             </div>
 
@@ -51,12 +140,14 @@ function LodgeDetailPage() {
 
               {/* the p tag displays the price of each product  */}
               <p className="text-[22px] text-dgray border-b pb-2 ">
-                ₦170,000 /yr
+                ₦{LodgeData.price} /yr
               </p>
-              <div className="bg-lskyblue px-2 mt-2 font-bold text-lblue rounded-lg text-[15px]">
-                {/* this only displayeds when the product is Negotiable */}
-                <p>Negotiable</p>
-              </div>
+              {LodgeData.negotiable && (
+                <div className="bg-lskyblue px-2 mt-2 font-bold text-lblue rounded-lg text-[15px]">
+                  {/* this only displays when the product is Negotiable */}
+                  <p>Negotiable</p>
+                </div>
+              )}
             </div>
           </div>
 
@@ -76,13 +167,21 @@ function LodgeDetailPage() {
         <div className="w-full absolute bottom-[40%]">
           <div className="flex justify-between px-[20px]">
             {/* scroll forward and backward buttons */}
-            <button className="p-4 border-lgray border-2 border-opacity-[10%] rounded-full bg-white shadow-lg ">
+            <button
+              className="absolute left- top-1/2 transform -translate-y-1/2 p-4 border-lgray border-2 border-opacity-[10%] rounded-full bg-white shadow-lg"
+              onClick={() => scroll(-500)}
+            >
+              {" "}
               <img
                 src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1716822310/utilities/LodgeMate_File/Polygon_1_1_qouf70.svg"
                 alt="back"
               />
             </button>
-            <button className="p-4 border-lgray border-2 border-opacity-[10%] rounded-full bg-white shadow-lg ">
+            <button
+              className="absolute right-20 top-1/2 transform -translate-y-1/2 p-4 border-lgray border-2 border-opacity-[10%] rounded-full bg-white shadow-lg"
+              onClick={() => scroll(500)}
+            >
+              {" "}
               <img
                 src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1716822310/utilities/LodgeMate_File/Polygon_1_tmzlwn.svg"
                 alt="next"
@@ -92,19 +191,23 @@ function LodgeDetailPage() {
         </div>
 
         {/* horizontal scroll div for displayiing the images horizolaly on one line the  */}
-        <div className="flex h-[400px] gap-1 rounded-[20px] overflow-hidden ml-[100px]">
+        <div className="flex h-[400px] gap-1 rounded-l-[20px] overflow-hidden ml-[100px]">
           {/* maping can be used to dispay the images */}
-          <div>
-            <img
-              src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1716821887/utilities/LodgeMate_File/adsas_hbwgl2.png"
-              alt="image 1"
-            />
-          </div>
-          <div>
-            <img
-              src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1716821887/utilities/LodgeMate_File/adsas_hbwgl2.png"
-              alt="image 1"
-            />
+          <div
+            className="flex gap-4 overflow-x-scroll scroll-smooth no-scrollbar"
+            style={{ scrollBehavior: "smooth" }}
+            ref={scrollContainerRef}
+          >
+            {" "}
+            {LodgeData.images.map((image, index) => (
+              <div key={index} className="flex-none">
+                <img
+                  src={image}
+                  alt={`image ${index + 1}`}
+                  className="h-[400px] w-[500px]"
+                />
+              </div>
+            ))}
           </div>
         </div>
       </div>
@@ -116,13 +219,7 @@ function LodgeDetailPage() {
               <h2 className="pb-[28-px] text-[24px] mb-[28px]">Description</h2>
 
               {/* this p tag should display the description of the product */}
-              <p>
-                Lörem ipsum radiotopi triplastisk att radioitet medelvalens,
-                polimeter. Neometer konitet, cynosmos termometer entotal.
-                Heterotropi androtes. Dessocial primatos postcism. Operafaktisk
-                perform tritet. Hypertyp fotoform terrafili. Cynosmos bitiv fast
-                biokrati primamatisk.{" "}
-              </p>
+              <p>{LodgeData.description}</p>
             </div>
 
             <div className="pb-[40px] mb-[40px] border-lgray border-b-2 border-opacity-[10%]">
@@ -133,12 +230,22 @@ function LodgeDetailPage() {
               {/* this div should use mapping to display all the Accommodation features  of the product */}
               <div className="flex flex-wrap gap-4">
                 {" "}
-                <div className="flex gap-2 items-center px-4 py-2 border-lgray border-2 border-opacity-[10%] rounded-lg">
-                  <img src="hg" alt="" /> <p>Water</p>
-                </div>
-                <div className="flex gap-2 items-center px-4 py-2 border-lgray border-2 border-opacity-[10%] rounded-lg">
-                  <img src="hg" alt="" /> <p>Water heater</p>
-                </div>
+                {lodgeFeatures.map((feature, index) => (
+                  <div
+                    key={index}
+                    className="flex gap-2 items-center px-4 py-2 border-lgray border-2 border-opacity-[10%] rounded-lg"
+                  >
+                    <img
+                      src={getFeatureIcon(
+                        typeof feature === "string" ? feature : feature.name
+                      )}
+                      alt={typeof feature === "string" ? feature : feature.name}
+                    />
+                    <p>
+                      {typeof feature === "string" ? feature : feature.name}
+                    </p>
+                  </div>
+                ))}
               </div>
             </div>
 
@@ -155,7 +262,9 @@ function LodgeDetailPage() {
                           src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1716924895/utilities/LodgeMate_File/House_ovdfkw.svg"
                           alt=""
                         />
-                        <p className="pt-[8px]">Single room</p>
+                        <p className="pt-[8px]">
+                          {LodgeData.accommodationType}
+                        </p>
                       </div>{" "}
                     </div>
                   </div>
@@ -171,7 +280,9 @@ function LodgeDetailPage() {
                           src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1716924895/utilities/LodgeMate_File/House_ovdfkw.svg"
                           alt=""
                         />
-                        <p className="pt-[8px]">3 bedroom, 1 parlor</p>
+                        <p className="pt-[8px]">
+                          {LodgeData.numberOfRooms} bedroom
+                        </p>
                       </div>{" "}
                     </div>
                   </div>
@@ -190,7 +301,10 @@ function LodgeDetailPage() {
                         src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1716926291/utilities/LodgeMate_File/home_pin_v3bj7d.svg"
                         alt=""
                       />
-                      <p>4.5 • 29 reviews</p>
+                      <p>
+                        {LodgeData.averageReview} • {LodgeData.reviewCount}{" "}
+                        reviews
+                      </p>
                     </div>
                   </div>
 
@@ -205,49 +319,54 @@ function LodgeDetailPage() {
                   </div>
                 </div>
               </div>
+
               <div>
                 <div className="grid gap-10 grid-cols-2">
                   {/* use maping here too for the reviwes */}
-                  <div className=" col-span-1">
-                    <div className="flex justify-between">
-                      <div className="flex justify-start gap-4">
-                        <img
-                          src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1716929513/utilities/LodgeMate_File/Ellipse_15_blt6rt.svg"
-                          alt=""
-                        />
-                        <div className="">
-                          <p className="font-semibold">McGreggor</p>
-                          <p className="text-[14px]">05/05/23</p>
-                          <div className="flex items-center gap-2">
-                            <p>3.5</p>
-                            <div className="h-[4px] w-[4px] rounded-full bg-[#555555]"></div>
+                  {(LodgeData.reviews || []).map((review, index) => (
+                    <div>
+                      <div className="flex justify-between items-start">
+                        <div
+                          key={index}
+                          className="flex items-start gap-4 px-[24px] mb-[24px]"
+                        >
+                          <div>
                             <img
-                              src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1716929511/utilities/LodgeMate_File/Stars_pp6r2d.svg"
-                              alt=""
+                              src={review.userAvatar}
+                              alt={review.userName}
+                              className="w-10 h-10 rounded-full"
                             />
                           </div>
+                          <div>
+                            <p className="font-bold">{review.userName}</p>
+                            <p className="text-sm text-gray-600">
+                              {review.date}
+                            </p>
+                            <div className="flex items-center gap-1 mt-">
+                              <p>{review.rating}.0</p> •
+                              {[...Array(review.rating)].map((_, starIndex) => (
+                                <img
+                                  key={starIndex}
+                                  src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1717204625/utilities/LodgeMate_File/Star_1_mygzqr.svg"
+                                  alt="rating"
+                                />
+                              ))}
+                            </div>
+                          </div>
+                        </div>
+
+                        <div>
+                          <button>
+                            <img
+                              src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1716929511/utilities/LodgeMate_File/ri_more-fill_isbcab.svg"
+                              alt=""
+                            />
+                          </button>
                         </div>
                       </div>
-                      <div>
-                        <button>
-                          <img
-                            src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1716929511/utilities/LodgeMate_File/ri_more-fill_isbcab.svg"
-                            alt=""
-                          />
-                        </button>
-                      </div>
-                    </div>
-                    <div>
-                      <p>
-                        Lörem ipsum radiotopi triplastisk att radioitet mede,
-                        polimeter. Neometer konitet, cynosmos termometer
-                        entotal. Heterotropi androtes. Dessocial primatos
-                        postcism. Operafaktisk perform tritet. Hypertyp fotoform
-                        terrafili. Cynosmos bitiv fast biokrati pr...
-                      </p>
-                    </div>
+                      <p>{review.text}</p>
 
-                    <div className="flex text-dgray font-bold items-center gap-2">
+                     <div className="flex text-dgray font-bold items-center mt-[24px] gap-2">
                       <p className="text-[15px] underline">Read more</p>
                       <div className="h-[16px] w-[1px] bg-black"></div>
                       <p className="text-[15px] underline">
@@ -259,60 +378,8 @@ function LodgeDetailPage() {
                         Reply comment
                       </p>
                     </div>
-                  </div>
-
-                  <div className=" col-span-1">
-                    <div className="flex justify-between">
-                      <div className="flex justify-start gap-4">
-                        <img
-                          src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1716929513/utilities/LodgeMate_File/Ellipse_15_blt6rt.svg"
-                          alt=""
-                        />
-                        <div className="">
-                          <p className="font-semibold">McGreggor</p>
-                          <p className="text-[14px]">05/05/23</p>
-                          <div className="flex items-center gap-2">
-                            <p>3.5</p>
-                            <div className="h-[4px] w-[4px] rounded-full bg-[#555555]"></div>
-                            <img
-                              src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1716929511/utilities/LodgeMate_File/Stars_pp6r2d.svg"
-                              alt=""
-                            />
-                          </div>
-                        </div>
-                      </div>
-                      <div>
-                        <button>
-                          <img
-                            src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1716929511/utilities/LodgeMate_File/ri_more-fill_isbcab.svg"
-                            alt=""
-                          />
-                        </button>
-                      </div>
                     </div>
-                    <div>
-                      <p>
-                        Lörem ipsum radiotopi triplastisk att radioitet mede,
-                        polimeter. Neometer konitet, cynosmos termometer
-                        entotal. Heterotropi androtes. Dessocial primatos
-                        postcism. Operafaktisk perform tritet. Hypertyp fotoform
-                        terrafili. Cynosmos bitiv fast biokrati pr...
-                      </p>
-                    </div>
-
-                    <div className="flex text-dgray font-bold items-center gap-2">
-                      <p className="text-[15px] underline">Read more</p>
-                      <div className="h-[16px] w-[1px] bg-black"></div>
-                      <p className="text-[15px] underline">
-                        See all replies (17)
-                      </p>
-                      <div className="h-[16px] w-[1px] bg-black"></div>
-
-                      <p className="text-[15px] underline text-[#2271B2]">
-                        Reply comment
-                      </p>
-                    </div>
-                  </div>
+                  ))}
                 </div>
               </div>
             </div>
@@ -381,4 +448,4 @@ function LodgeDetailPage() {
   );
 }
 
-export default LodgeDetailPage;
+export default LodgeInfo;

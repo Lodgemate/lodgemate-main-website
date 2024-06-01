@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect } from "react";
 import SearchBar from "./SearchBar";
-import products from "../../../data/data";
 import { useParams } from "next/navigation";
 import LodgeInfo from "./LodgeInfo";
 

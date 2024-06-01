@@ -21,7 +21,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
 }) => {
   return (
     <div className="max-w-sm rounded overflow-hidden  ">
-      <Link href={`/lodge_details/${id}`} passHref className="relative">
+      <Link href={`/lodges/lodge_details/${id}`} passHref className="relative">
         <img
           className="w-full h-[144px] sm:h-[299px] object-cover rounded-[12px]"
           src={imageUrl}

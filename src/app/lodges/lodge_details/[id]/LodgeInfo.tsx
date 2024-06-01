@@ -3,7 +3,7 @@
 
 import Link from "next/link";
 import React, { useRef } from "react";
-import data from "../../../data/data";
+import data from "../../../../data/data";
 
 interface LodgeInfoProps {
   id: number;
@@ -321,7 +321,7 @@ function LodgeInfo({ id }: LodgeInfoProps) {
               </div>
 
               <div>
-                <div className="grid gap-10 grid-cols-2">
+                <div className="grid gap-10 grid-cols-2 text-[15px]">
                   {/* use maping here too for the reviwes */}
                   {(LodgeData.reviews || []).map((review, index) => (
                     <div>
@@ -339,7 +339,7 @@ function LodgeInfo({ id }: LodgeInfoProps) {
                           </div>
                           <div>
                             <p className="font-bold">{review.userName}</p>
-                            <p className="text-sm text-gray-600">
+                            <p className=" text-gray-600">
                               {review.date}
                             </p>
                             <div className="flex items-center gap-1 mt-">
@@ -367,14 +367,14 @@ function LodgeInfo({ id }: LodgeInfoProps) {
                       <p>{review.text}</p>
 
                      <div className="flex text-dgray font-bold items-center mt-[24px] gap-2">
-                      <p className="text-[15px] underline">Read more</p>
+                      <p className="text-[12px] underline">Read more</p>
                       <div className="h-[16px] w-[1px] bg-black"></div>
-                      <p className="text-[15px] underline">
+                      <p className="text-[12px] underline">
                         See all replies (17)
                       </p>
                       <div className="h-[16px] w-[1px] bg-black"></div>
 
-                      <p className="text-[15px] underline text-[#2271B2]">
+                      <p className="text-[12px] underline text-[#2271B2]">
                         Reply comment
                       </p>
                     </div>

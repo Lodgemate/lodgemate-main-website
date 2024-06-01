@@ -164,11 +164,11 @@ function LodgeInfo({ id }: LodgeInfoProps) {
       </div>
 
       <div className="mt-[24px] relative">
-        <div className="w-full absolute bottom-[40%]">
+        <div className="w-full absolute bottom-[50%]">
           <div className="flex justify-between px-[20px]">
             {/* scroll forward and backward buttons */}
             <button
-              className="absolute left- top-1/2 transform -translate-y-1/2 p-4 border-lgray border-2 border-opacity-[10%] rounded-full bg-white shadow-lg"
+              className="absolute left-10 transform -translate-y-1/2 p-4 border-lgray border-2 border-opacity-[10%] rounded-full bg-white shadow-lg"
               onClick={() => scroll(-500)}
             >
               {" "}
@@ -178,7 +178,7 @@ function LodgeInfo({ id }: LodgeInfoProps) {
               />
             </button>
             <button
-              className="absolute right-20 top-1/2 transform -translate-y-1/2 p-4 border-lgray border-2 border-opacity-[10%] rounded-full bg-white shadow-lg"
+              className="absolute right-20  transform -translate-y-1/2 p-4 border-lgray border-2 border-opacity-[10%] rounded-full bg-white shadow-lg"
               onClick={() => scroll(500)}
             >
               {" "}
@@ -328,7 +328,7 @@ function LodgeInfo({ id }: LodgeInfoProps) {
                       <div className="flex justify-between items-start">
                         <div
                           key={index}
-                          className="flex items-start gap-4 px-[24px] mb-[24px]"
+                          className="flex items-start gap-4 mb-[24px]"
                         >
                           <div>
                             <img

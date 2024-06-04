@@ -27,11 +27,11 @@ const ProductCard: React.FC<ProductCardProps> = ({
           src={imageUrl}
           alt={name}
         />
-        {/* <img
+        <img
           src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1716223206/utilities/LodgeMate_File/Lodge_icon_xw9bll.svg"
           alt="lodgemate"
           className="absolute top-2 left-2 text-xl"
-        /> */}
+        />
         <img
           src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1716223206/utilities/LodgeMate_File/ph_heart-fill_ia430a.svg"
           alt=""

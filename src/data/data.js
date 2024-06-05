@@ -7,7 +7,7 @@ const products = [
     university: "University 2",
     averageReview: "4.5",
     reviewCount: "30",
-    price: "5000",
+    price: 50000,
     negotiable: true,
     description:
       "A beautiful and cozy lodge located in the heart of the mountains. Perfect for a weekend getaway.",
@@ -59,7 +59,7 @@ const products = [
     university: "University 2",
     averageReview: "4.0",
     reviewCount: "20",
-    price: "₦170,000 /yr",
+    price: 120000,
     negotiable: false,
     description: "A comfortable self-contained lodge near University 2.",
     images: [
@@ -107,7 +107,7 @@ const products = [
     university: "University 1",
     averageReview: "4.3",
     reviewCount: "15",
-    price: "₦170,000 /yr",
+    price: 200000000,
     negotiable: false,
     description:
       "A spacious flat with modern amenities, close to University 1.",
@@ -159,7 +159,7 @@ const products = [
     university: "University 2",
     averageReview: "4.2",
     reviewCount: "10",
-    price: "₦170,000 /yr",
+    price: 300000,
     negotiable: false,
     description: "A single room with basic amenities near University 2.",
     images: [
@@ -208,7 +208,7 @@ const products = [
     university: "University 3",
     averageReview: "4.7",
     reviewCount: "50",
-    price: "₦200,000 /yr",
+    price: 356000,
     negotiable: true,
     description: "A luxury lodge with top-notch amenities near University 3.",
     images: [
@@ -309,7 +309,7 @@ const products = [
     university: "University 5",
     averageReview: "4.0",
     reviewCount: "25",
-    price: "₦180,000 /yr",
+    price: 500000,
     negotiable: true,
     description: "A modern lodge with great facilities near University 5.",
     images: [
@@ -359,7 +359,7 @@ const products = [
     university: "University 3",
     averageReview: "4.6",
     reviewCount: "25",
-    price: "₦190,000 /yr",
+    price: 340000,
     negotiable: true,
     description:
       "A serene retreat with stunning sunset views, perfect for relaxation and study.",
@@ -411,7 +411,7 @@ const products = [
     university: "University 4",
     averageReview: "4.7",
     reviewCount: "18",
-    price: "₦185,000 /yr",
+    price: 210000,
     negotiable: false,
     description:
       "Experience the tranquility of the ocean while being close to the university.",
@@ -461,7 +461,7 @@ const products = [
     university: "University 5",
     averageReview: "4.8",
     reviewCount: "35",
-    price: "₦200,000 /yr",
+    price: 200000,
     negotiable: true,
     description:
       "A lodge with breathtaking mountain views, ideal for students seeking tranquility.",
@@ -512,7 +512,7 @@ const products = [
     university: "University 6",
     averageReview: "4.9",
     reviewCount: "30",
-    price: "₦210,000 /yr",
+    price: 220000,
     negotiable: true,
     description:
       "A tranquil lodge nestled in the forest, offering peace and serenity for students.",
@@ -563,7 +563,7 @@ const products = [
     university: "University 7",
     averageReview: "4.8",
     reviewCount: "28",
-    price: "₦220,000 /yr",
+    price: 360000,
     negotiable: false,
     description:
       "A modern lodge in the heart of the city, providing comfort and convenience for students.",

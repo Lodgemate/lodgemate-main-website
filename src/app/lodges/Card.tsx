@@ -7,7 +7,7 @@ interface ProductCardProps {
   name: string;
   location: string;
   nearbyUniversity: string;
-  price: string;
+  price: number ;
   id: any;
 }
 
@@ -19,6 +19,12 @@ const ProductCard: React.FC<ProductCardProps> = ({
   nearbyUniversity,
   price,
 }) => {
+
+  const formattedPrice = new Intl.NumberFormat("en-NG", {
+    style: "currency",
+    currency: "NGN",
+    minimumFractionDigits: 0,
+  }).format(price);
   return (
     <div className="max-w-sm rounded overflow-hidden  ">
       <Link href={`/lodges/lodge_details/${id}`} passHref className="relative">
@@ -64,7 +70,9 @@ const ProductCard: React.FC<ProductCardProps> = ({
             <span>{nearbyUniversity}</span>
           </p>
         </div>
-        <p className="text-dgray text-[15px] font-semibold mt-4">{price}</p>
+        <p className="text-dgray text-[15px] font-semibold mt-4">
+          {formattedPrice}/yr
+        </p>
       </div>
     </div>
   );

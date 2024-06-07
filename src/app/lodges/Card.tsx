@@ -1,14 +1,20 @@
 import Link from "next/link";
 import React from "react";
+import products, { Product } from "./data";
+
 
 
 interface ProductCardProps {
-  imageUrl: string;
+  id: number;
+  type: string;
   name: string;
+  address: string;
+  university: string;
+  images: string[];
+  price: number; // Ensure this is always a number
+  imageUrl: string;
   location: string;
   nearbyUniversity: string;
-  price: number ;
-  id: any;
 }
 
 const ProductCard: React.FC<ProductCardProps> = ({

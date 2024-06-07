@@ -18,9 +18,19 @@ const LodgeDetailPage: React.FC = () => {
     }
   }, [id]);
 
+   const [query, setQuery] = useState<string>("");
+   const [isSearchTriggered, setIsSearchTriggered] = useState<boolean>(false);
+
+   const handleSearch = (searchQuery: string) => {
+     setQuery(searchQuery);
+     setIsSearchTriggered(true);
+  };
+  
   return (
-    <div className="mt-[120px] text-[16px]">
-      <SearchBar />
+    <div className="mt-[80px] sm:mt-[120px] text-[16px]">
+      <div className="hidden sm:block">
+        <SearchBar onSearch={handleSearch} />
+      </div>
       {currentProductId !== null ? (
         <LodgeInfo id={currentProductId} />
       ) : (

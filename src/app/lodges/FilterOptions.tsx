@@ -1,15 +1,16 @@
-"use client"
-
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
+import CustomRangeSlider from "./CustomRangeSlider";
 
 interface FilterOptionsProps {
   onResetFilters: () => void;
   onApplyFilters: (filters: any) => void;
+  onClose: () => void;
 }
 
 const FilterOptions: React.FC<FilterOptionsProps> = ({
   onResetFilters,
   onApplyFilters,
+  onClose,
 }) => {
   const [selectedAccommodationType, setSelectedAccommodationType] = useState<
     string[]
@@ -17,8 +18,11 @@ const FilterOptions: React.FC<FilterOptionsProps> = ({
   const [selectedRooms, setSelectedRooms] = useState<string[]>([]);
   const [selectedOccupants, setSelectedOccupants] = useState<string[]>([]);
   const [selectedFeatures, setSelectedFeatures] = useState<string[]>([]);
-  const [minPrice, setMinPrice] = useState<string>("");
-  const [maxPrice, setMaxPrice] = useState<string>("");
+  const [priceRange, setPriceRange] = useState<[number, number]>([
+    1000, 500000,
+  ]);
+
+  const modalRef = useRef<HTMLDivElement>(null);
 
   const accommodationTypes = [
     {
@@ -39,32 +43,10 @@ const FilterOptions: React.FC<FilterOptionsProps> = ({
     },
   ];
 
-  const roomsOptions = [
-    "Any",
-    "1",
-    "2",
-    "3",
-    "4",
-    "5",
-    "6",
-    "7",
-    "8",
-    "9",
-    "10+",
-  ];
-  const occupantsOptions = [
-    "Any",
-    "1",
-    "2",
-    "3",
-    "4",
-    "5",
-    "6",
-    "7",
-    "8",
-    "9",
-    "10+",
-  ];
+  const roomsOptions = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10+"];
+
+  const occupantsOptions = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10+"];
+
   const featuresOptions = [
     {
       name: "Water",
@@ -117,8 +99,7 @@ const FilterOptions: React.FC<FilterOptionsProps> = ({
     setSelectedRooms([]);
     setSelectedOccupants([]);
     setSelectedFeatures([]);
-    setMinPrice("");
-    setMaxPrice("");
+    setPriceRange([1000, 250000]);
     onResetFilters();
   };
 
@@ -128,30 +109,52 @@ const FilterOptions: React.FC<FilterOptionsProps> = ({
       rooms: selectedRooms,
       occupants: selectedOccupants,
       features: selectedFeatures,
-      minPrice: minPrice ? parseInt(minPrice) : undefined,
-      maxPrice: maxPrice ? parseInt(maxPrice) : undefined,
+      minPrice: priceRange[0],
+      maxPrice: priceRange[1],
     });
+    onClose();
   };
 
+  const handleClickOutside = (event: MouseEvent) => {
+    if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
+      onClose();
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
   return (
-    <div>
-      {/* filter options */}
-      <div className="text-[16px] p-8">
+    <div ref={modalRef}>
+      <div className="text-[16px] p-4 sm:p-8">
         <div className="border-b pb-4 mb-4">
-          <p className="text-[20px]  mb-4  font-medium text-dgray">
+          <p className="text-[20px] mb-4 font-medium text-dgray">
             Price range (per year)
           </p>
-          <div className="flex justify-between items-center">
+          <div className="mb-4">
+            <CustomRangeSlider
+              min={1000}
+              max={2000000}
+              value={priceRange}
+              onChange={(value) => setPriceRange(value)}
+            />
+          </div>
+          <div className="flex justify-between gap-2 items-center">
             <div className="border rounded-lg p-2 flex flex-col gap- w-[222px]">
               <p>Min</p>
               <div className="flex items-center">
                 <p>₦</p>
                 <input
                   type="number"
-                  // value={minPrice}
-                  value={680}
-                  onChange={(e) => setMinPrice(e.target.value)}
-                  className=" rounded-lg w-[130px] p-1 outline-none "
+                  value={priceRange[0]}
+                  onChange={(e) =>
+                    setPriceRange([parseInt(e.target.value), priceRange[1]])
+                  }
+                  className="rounded-lg w-[130px] p-1 outline-none"
                 />
               </div>
             </div>
@@ -160,13 +163,13 @@ const FilterOptions: React.FC<FilterOptionsProps> = ({
               <p>Max</p>
               <div className="flex items-center">
                 <p>₦</p>
-
                 <input
                   type="number"
-                  // value={maxPrice}
-                  value={68000}
-                  onChange={(e) => setMaxPrice(e.target.value)}
-                  className=" rounded-lg w-[130px] p-1 outline-none "
+                  value={priceRange[1]}
+                  onChange={(e) =>
+                    setPriceRange([priceRange[0], parseInt(e.target.value)])
+                  }
+                  className="rounded-lg w-[130px] p-1 outline-none"
                 />
               </div>
             </div>
@@ -177,7 +180,7 @@ const FilterOptions: React.FC<FilterOptionsProps> = ({
           <p className="text-[20px] mb-4 font-medium text-dgray">
             Accommodation type{" "}
           </p>
-          <div className="flex justify-between gap-2">
+          <div className="flex flex-wrap justify-center sm:justify-between gap-2">
             {accommodationTypes.map((type) => (
               <div
                 key={type.name}
@@ -210,10 +213,10 @@ const FilterOptions: React.FC<FilterOptionsProps> = ({
         </div>
 
         <div className="border-b pb-4 mb-4">
-          <p className="text-[20px]  mb-4  font-medium text-dgray">
+          <p className="text-[20px] mb-4 font-medium text-dgray">
             Number of rooms{" "}
           </p>
-          <div className="flex flex-wrap items-center justify-between gap-2">
+          <div className="flex flex-wrap items-center justify-center sm:justify-between gap-2">
             {roomsOptions.map((room) => (
               <div
                 key={room}
@@ -231,10 +234,10 @@ const FilterOptions: React.FC<FilterOptionsProps> = ({
         </div>
 
         <div className="border-b pb-4 mb-4">
-          <p className="text-[20px]  mb-4  font-medium text-dgray">
+          <p className="text-[20px] mb-4 font-medium text-dgray">
             Number of occupants{" "}
           </p>
-          <div className="flex flex-wrap items-center justify-between gap-2">
+          <div className="flex flex-wrap items-center justify-center sm:justify-between gap-2">
             {occupantsOptions.map((occupant) => (
               <div
                 key={occupant}
@@ -258,10 +261,10 @@ const FilterOptions: React.FC<FilterOptionsProps> = ({
         </div>
 
         <div className="border- pb-4 mb-4">
-          <p className="text-[20px]  mb-4  font-medium text-dgray">
+          <p className="text-[20px] mb-4 font-medium text-dgray">
             Accommodation features{" "}
           </p>
-          <div className="flex items-center flex-wrap gap-3">
+          <div className="flex items-center justify-center sm:justify-normal flex-wrap gap-3">
             {featuresOptions.map((feature) => (
               <div
                 key={feature.name}
@@ -296,15 +299,15 @@ const FilterOptions: React.FC<FilterOptionsProps> = ({
       <div className="px-[44px] py-[22px] border-t flex justify-between items-center">
         <button
           onClick={handleResetFilters}
-          className=" border px-6 py-2 rounded-lg"
+          className="border px-6 py-2 rounded-lg"
         >
           <p className="text-lred font-medium underline">Reset all filters</p>
         </button>
         <button
           onClick={handleApplyFilters}
-          className=" border px-6 py-2 rounded-lg bg-primary"
+          className="border px-4 py-2 rounded-lg bg-primary"
         >
-          <p className="text-white font-medium  ">Apply filters</p>
+          <p className="text-white font-medium">Apply filters</p>
         </button>
       </div>
     </div>

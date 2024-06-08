@@ -36,7 +36,7 @@ const LodgeDetailPage: React.FC = () => {
       ) : (
         <div>Loading...</div>
       )}
-    </div>
+    </div> 
   );
 };
 

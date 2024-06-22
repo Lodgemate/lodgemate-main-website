@@ -6,20 +6,22 @@ import { Roommate } from "./data";
 interface ProductCardProps {
   imageUrl: string;
   name: string;
+  sex: string;
   location: string;
   nearbyUniversity: string;
-    onClick: () => void;
+  onClick: () => void;
 }
 
 const ProductCard: React.FC<ProductCardProps> = ({
   imageUrl,
   name,
+  sex,
   location,
   nearbyUniversity,
   onClick,
 }) => {
   return (
-    <button onClick={onClick}  className="max-w-sm rounded overflow-hidden  ">
+    <button onClick={onClick} className="max-w-sm rounded overflow-hidden  ">
       <div className="relative">
         <img
           className="w-full h-[144px] sm:h-[200px] object-cover rounded-[12px]"
@@ -51,16 +53,26 @@ const ProductCard: React.FC<ProductCardProps> = ({
             className=" ml-2"
           />
         </div>
-        <p className="text-lgray text-[16px]">{location}</p>
         <div className="flex items-center mt-[4px] text-gray-600">
           <img
             src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1716223199/utilities/LodgeMate_File/home_pin_mimpts.svg"
+            alt=""
+            className="mr-2 pl-1"
+          />
+          <p className="text-[13px]">
+            {" "}
+            <span>{nearbyUniversity}</span>
+          </p>
+        </div>
+        <div className="flex items-center mt-[4px] text-gray-600">
+          <img
+            src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1718337642/utilities/LodgeMate_File/iconamoon_profile-thin_hkgtcv.svg"
             alt=""
             className="mr-2"
           />
           <p className="text-[13px]">
             {" "}
-            <span>{nearbyUniversity}</span>
+            <span>{sex}</span>
           </p>
         </div>
       </div>

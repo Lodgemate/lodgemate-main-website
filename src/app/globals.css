@@ -27,3 +27,33 @@ body {
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
 }
+
+/* Custom styles for react-select */
+.react-select__control {
+  display: flex;
+  height: auto;
+  padding: 0;
+  border: 1px solid #d1d5db;
+  border-radius: 0.5rem; /* 8px */
+  box-shadow: none; /* Remove the box shadow on focus */
+}
+
+.react-select__menu {
+  border-radius: 0.5rem; /* 8px */
+  z-index: 50;
+}
+
+.react-select__option--is-focused {
+  background-color: #e5e7eb;
+}
+
+.react-select__option--is-selected {
+  background-color: #30A2FF;
+  color: white;
+}
+
+/* Override default focus styles */
+.react-select__control--is-focused {
+  border-color: #d1d5db; /* Ensure the border color is not overridden */
+  box-shadow: none; /* Remove box shadow on focus */
+}

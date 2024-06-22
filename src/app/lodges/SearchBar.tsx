@@ -1,15 +1,17 @@
-"use client";
+"use client"; // Use client
 
-import Image from "next/image";
-import React, { useState, useEffect } from "react";
+import Image from "next/image"; // Import Image from Next.js
+import React, { useState, useEffect } from "react"; // Import React, useState, useEffect from React
 import products from "../../data/data"; // Import the products data
-import Link from "next/link";
+import Link from "next/link"; // Import Link from Next.js
 
 interface SearchBarProps {
-  onSearch: (searchQuery: string) => void;
+  // Define SearchBarProps interface
+  onSearch: (searchQuery: string) => void; // onSearch prop function signature
 }
 
 interface Product {
+  // Define Product interface
   id: number;
   type: string;
   name: string;
@@ -18,53 +20,60 @@ interface Product {
 }
 
 interface SearchResult {
+  // Define SearchResult interface
   lodges: Product[];
   cities: { id: number; address: string }[];
   schools: { id: number; university: string }[];
 }
 
 const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
-  const [query, setQuery] = useState<string>("");
+  // Define SearchBar component
+  const [query, setQuery] = useState<string>(""); // State for query string
   const [results, setResults] = useState<SearchResult>({
+    // State for search results
     lodges: [],
     cities: [],
     schools: [],
   });
 
   useEffect(() => {
+    // Effect hook for handling search
     if (query) {
-      const filteredResults = filterResults(query);
-      setResults(filteredResults);
+      const filteredResults = filterResults(query); // Filter results based on query
+      setResults(filteredResults); // Update results state
     } else {
-      setResults({ lodges: [], cities: [], schools: [] });
+      setResults({ lodges: [], cities: [], schools: [] }); // Reset results if query is empty
     }
-  }, [query]);
+  }, [query]); // Depend on query state for re-rendering
 
   const filterResults = (query: string): SearchResult => {
-    const lowercaseQuery = query.toLowerCase();
+    // Function to filter results
+    const lowercaseQuery = query.toLowerCase(); // Convert query to lowercase
     const lodges: Product[] = [];
     const cities: { id: number; address: string }[] = [];
     const schools: { id: number; university: string }[] = [];
 
     products.forEach((product: Product) => {
+      // Iterate through products data
       if (product.type === "lodge") {
+        // Check if product type is lodge
         if (
-          product.name.toLowerCase().includes(lowercaseQuery) &&
+          product.name.toLowerCase().includes(lowercaseQuery) && // Filter by lodge name
           lodges.length < 3
         ) {
-          lodges.push(product);
+          lodges.push(product); // Add lodge to lodges array
         }
         if (
-          product.address.toLowerCase().includes(lowercaseQuery) &&
+          product.address.toLowerCase().includes(lowercaseQuery) && // Filter by address
           cities.length < 3
         ) {
           cities.push({
             id: product.id,
-            address: product.address.split(",")[1].trim(),
+            address: product.address.split(",")[1].trim(), // Extract city from address
           });
         }
         if (
-          product.university.toLowerCase().includes(lowercaseQuery) &&
+          product.university.toLowerCase().includes(lowercaseQuery) && // Filter by university
           schools.length < 3
         ) {
           schools.push({ id: product.id, university: product.university });
@@ -72,15 +81,14 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
       }
     });
 
-    return { lodges, cities, schools };
+    return { lodges, cities, schools }; // Return filtered results
   };
 
-    const handleSearchClick = () => {
-      onSearch(query);
-          setQuery("");
-
-    };
-
+  const handleSearchClick = () => {
+    // Function to handle search button click
+    onSearch(query); // Execute onSearch callback with query
+    setQuery(""); // Clear query after search
+  };
 
   return (
     <div className="flex relative justify-center w-full items-center mt-[20px]">
@@ -90,10 +98,10 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
           placeholder="Enter name of lodge, city or school"
           className="rounded-full sm:w-[300px] w-[250px] bg-white outline-none"
           value={query}
-          onChange={(e) => setQuery(e.target.value)}
+          onChange={(e) => setQuery(e.target.value)} // Handle input change
         />
         <button
-          onClick={handleSearchClick}
+          onClick={handleSearchClick} // Handle search button click
           className="bg-primary rounded-full flex justify-center items-center text-white px-4"
         >
           <Image
@@ -105,13 +113,13 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
           Search
         </button>
       </div>
-      {query && (
+      {query && ( // Render results if query is not empty
         <div className="absolute w-full text-[16px] z-20 top-20 sm:w-[510px] bg-white border border-stroke shadow-lg rounded-lg">
           <div>
             <h3 className="bg-[#F5F5F5] py-[7px] px-4 text-dgray font-bold">
               Lodges
             </h3>
-            {results.lodges.length > 0 ? (
+            {results.lodges.length > 0 ? ( // Render lodges if found
               results.lodges.map((lodge) => (
                 <Link
                   key={lodge.id}
@@ -133,7 +141,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
             <h3 className="bg-[#F5F5F5] py-[7px] px-4 text-dgray font-bold">
               Cities
             </h3>
-            {results.cities.length > 0 ? (
+            {results.cities.length > 0 ? ( // Render cities if found
               results.cities.map((city) => (
                 <Link
                   key={city.id}
@@ -155,7 +163,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
             <h3 className="bg-[#F5F5F5] py-[7px] px-4 text-dgray font-bold">
               Schools
             </h3>
-            {results.schools.length > 0 ? (
+            {results.schools.length > 0 ? ( // Render schools if found
               results.schools.map((school) => (
                 <Link
                   key={school.id}
@@ -179,4 +187,4 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
   );
 };
 
-export default SearchBar;
+export default SearchBar; // Export SearchBar component

@@ -22,6 +22,7 @@ const config: Config = {
         atag: "#0064B6",
         lred: "#F20C0C",
         lskyblue: "#E5F4FF",
+        xgray: "#CCCCCC",
       },
     },
   },

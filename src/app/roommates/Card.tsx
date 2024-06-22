@@ -1,17 +1,14 @@
 import React from "react";
-import {
-  FaHeart,
-  FaHouseUser,
-  FaCheckCircle,
-  FaMapMarkerAlt,
-} from "react-icons/fa";
+import { Roommate } from "./data";
+
+
 
 interface ProductCardProps {
   imageUrl: string;
   name: string;
   location: string;
   nearbyUniversity: string;
-  price: string;
+    onClick: () => void;
 }
 
 const ProductCard: React.FC<ProductCardProps> = ({
@@ -19,13 +16,13 @@ const ProductCard: React.FC<ProductCardProps> = ({
   name,
   location,
   nearbyUniversity,
-  price,
+  onClick,
 }) => {
   return (
-    <div className="max-w-sm rounded overflow-hidden  ">
+    <button onClick={onClick}  className="max-w-sm rounded overflow-hidden  ">
       <div className="relative">
         <img
-          className="w-full h-[144px] sm:h-[299px] object-cover rounded-[12px]"
+          className="w-full h-[144px] sm:h-[200px] object-cover rounded-[12px]"
           src={imageUrl}
           alt={name}
         />
@@ -66,9 +63,8 @@ const ProductCard: React.FC<ProductCardProps> = ({
             <span>{nearbyUniversity}</span>
           </p>
         </div>
-        <p className="text-dgray text-[15px] font-semibold mt-4">{price}</p>
       </div>
-    </div>
+    </button>
   );
 };
 

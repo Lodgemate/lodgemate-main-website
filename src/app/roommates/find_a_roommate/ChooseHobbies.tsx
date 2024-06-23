@@ -57,7 +57,7 @@ function ChooseHobbies() {
         Choose your hobbies & traits
       </label>
 
-      <div className="mt-[12px] gap-4 flex flex-wrap items-center justify-center">
+      <div className="mt-[12px] gap-4 flex flex-wrap items-center sm:justify-center">
         {Object.keys(hobbyIcons).map((hobby) => (
           <div
             key={hobby}

@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import FormTab1 from "./FormTab1";
 import FormTab2 from "./FormTab2";
 import FormTab3 from "./FormTab3";
+import Link from "next/link";
 
 function FindRoommate() {
   const [currentTab, setCurrentTab] = useState(1);
@@ -24,7 +25,7 @@ function FindRoommate() {
 
   return (
     <div className="mt-[50px]">
-      <div className="grid grid-cols-2">
+      <div className="sm:grid sm:grid-cols-2">
         <div className="col-span-1 pt-[80px] bg-[#FAFAFA] hidden sm:block">
           <div className="flex justify-center items-center flex-col">
             <h1 className="text-[20px] text-primary font-bold pb-[50px]">
@@ -37,10 +38,16 @@ function FindRoommate() {
           </div>
         </div>
 
-        <div className="col-span-1 pt-[80px]">
+        <div className="col-span-1 sm:pt-[80px] pt-[40px]">
           <div className="flex justify-center items-center">
-            <div className="w-[500px] text-lgray border h-screen no-scrollbar overflow-auto">
+            <div className="sm:w-[500px] w-full text-lgray sm:border sm:h-screen no-scrollbar sm:overflow-auto">
               <div className="flex relative border-b justify-center w-full">
+                <Link href="/" className=" absolute top-4 right-6">
+                  <img
+                    src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1718851772/utilities/LodgeMate_File/Group_23_j5sjal.svg"
+                    alt=""
+                  />
+                </Link>
                 {currentTab === 2 && (
                   <button
                     onClick={handleBack}

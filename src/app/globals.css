@@ -57,3 +57,17 @@ body {
   border-color: #d1d5db; /* Ensure the border color is not overridden */
   box-shadow: none; /* Remove box shadow on focus */
 }
+
+.custom-checkbox {
+  display: inline-block;
+  cursor: pointer;
+}
+
+.custom-checkbox input[type="checkbox"] {
+  display: none;
+}
+
+.custom-checkbox .rounded-full {
+  border: 1px solid black;
+  transition: background-color 0.3s ease;
+}

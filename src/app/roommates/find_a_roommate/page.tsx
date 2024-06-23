@@ -18,8 +18,8 @@ function FindRoommate() {
 
   const tabHeadings = [
     "Tell us about yourself",
-    "Roommate Preferences",
-    "Confirm Details",
+    "How you live...",
+    "You’re done!",
   ];
 
   return (
@@ -40,8 +40,18 @@ function FindRoommate() {
         <div className="col-span-1 pt-[80px]">
           <div className="flex justify-center items-center">
             <div className="w-[500px] text-lgray border h-screen no-scrollbar overflow-auto">
-              <div className="flex border-b justify-center w-full">
-                {currentTab > 1 && <button onClick={handleBack}>Back</button>}
+              <div className="flex relative border-b justify-center w-full">
+                {currentTab === 2 && (
+                  <button
+                    onClick={handleBack}
+                    className=" absolute top-3 left-4"
+                  >
+                    <img
+                      src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1719102154/utilities/LodgeMate_File/lucide_move-up_zjmfel.svg"
+                      alt=""
+                    />
+                  </button>
+                )}
                 <h2 className="text-[20px] font-semibold text-center p-[10px]">
                   {tabHeadings[currentTab - 1]}
                 </h2>
@@ -71,7 +81,16 @@ function FindRoommate() {
                 {currentTab === 3 && <FormTab3 />}
               </div>
 
-              <div className="px-4 text-white">
+              <div className="px-4 flex gap-2 text-white">
+                {currentTab > 2 && (
+                  <button
+                    onClick={handleBack}
+                    className=" border text-lgray w-full py-[12px] mb-[24px] rounded-[8px]"
+                  >
+                    Undo request
+                  </button>
+                )}
+
                 <button
                   className="bg-primary w-full py-[12px] mb-[24px] rounded-[8px]"
                   onClick={handleNext}

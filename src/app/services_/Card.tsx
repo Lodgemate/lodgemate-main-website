@@ -6,7 +6,7 @@ interface ProductCardProps {
   name: string;
   location: string;
   nearbyUniversity: string;
-  price: string;
+  price: any;
 }
 
 const ProductCard: React.FC<ProductCardProps> = ({

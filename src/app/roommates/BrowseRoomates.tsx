@@ -153,7 +153,7 @@ const BrowseRoommates: React.FC<BrowseRoommatesProps> = ({
 
         <div>
           {!showMore && (
-            <div className="mt-10 flex flex-col justify-center items-center text-lgray font-medium">
+            <div className="mt-10 flex flex-col justify-center items-center pb-[200px] text-lgray font-medium">
               <p className="text-[16px] pb-[16px] ">
                 Continue exploring lodges
               </p>

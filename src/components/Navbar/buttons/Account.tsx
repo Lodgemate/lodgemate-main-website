@@ -111,10 +111,10 @@ function Account() {
               </button>
             </div>
             <div className="flex flex-col gap-2 text-[16px] p-2">
-              <Link href="/" className="text-gray-700 py-[5px] ">
+              <Link href="/auth/signup" className="text-gray-700 py-[5px] ">
                 Create account
               </Link>
-              <Link href="/" className="text-gray-700 py-[5px]">
+              <Link href="/auth/login" className="text-gray-700 py-[5px]">
                 Profile
               </Link>
             </div>

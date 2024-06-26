@@ -126,7 +126,7 @@ const BrowseLodges: React.FC<BrowseLodgesProps> = ({
         </div>
 
         {!showMore && (
-          <div className="mt-10 flex flex-col justify-center items-center text-lgray font-medium">
+          <div className="mt-10 flex flex-col justify-center items-center text-lgray font-medium pb-[200px]">
             <p className="text-[16px] pb-[16px] ">Continue exploring lodges</p>
             <button
               className="border px-4 py-2 rounded-[12px]"

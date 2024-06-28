@@ -197,7 +197,7 @@ const SignUpForm: React.FC = () => {
           >
             Sign Up
           </button> */}
-          <Link href="/"
+          <Link href="/auth/signup/verify_your_email"
             className="w-full px-4 py-2 flex justify-center items-center  bg-primary text-white rounded-md shadow-sm focus:outline-none"
           >
             Sign Up

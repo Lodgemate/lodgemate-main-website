@@ -2,6 +2,7 @@ import React from "react";
 import Account from "./buttons/Account";
 import Image from "next/image";
 import TopBar from "./menus/TopBar";
+import More from "./buttons/More";
 
 function index() {
   return (
@@ -17,7 +18,8 @@ function index() {
           <TopBar />
         </div>
 
-        <Account />
+        {/* <Account /> */}
+        <More />
       </nav>
     </nav>
   );

@@ -110,10 +110,16 @@ function More() {
                 View profile
               </Link>
               <div className="bg-black opacity-[8%] w-full h-[1px]"></div>
-              <Link href="/" className="text-gray-700 py-[5px]">
+              <Link
+                href="/lodges/list_lodge"
+                className="text-gray-700 py-[5px]"
+              >
                 List a lodge
               </Link>
-              <Link href="/" className="text-gray-700 py-[5px]">
+              <Link
+                href="/services_/list_service"
+                className="text-gray-700 py-[5px]"
+              >
                 List your service
               </Link>
               <Link href="/" className="text-gray-700 py-[5px]">
@@ -208,10 +214,16 @@ function More() {
                 View profile
               </Link>
               <div className="bg-black opacity-[8%] w-full h-[1px]"></div>
-              <Link href="/" className="text-gray-700 py-[5px]">
+              <Link
+                href="/lodges/list_lodge"
+                className="text-gray-700 py-[5px]"
+              >
                 List a lodge
               </Link>
-              <Link href="/" className="text-gray-700 py-[5px]">
+              <Link
+                href="/services_/list_service"
+                className="text-gray-700 py-[5px]"
+              >
                 List your service
               </Link>
               <Link href="/" className="text-gray-700 py-[5px]">

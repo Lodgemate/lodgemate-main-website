@@ -1,4 +1,4 @@
-"use client";
+"use client"
 
 import NotificationModal from "@/components/modals/NotificationModal";
 import Image from "next/image";
@@ -122,18 +122,21 @@ function More() {
               >
                 List your service
               </Link>
-              <Link href="/" className="text-gray-700 py-[5px]">
+              <Link
+                href="/roommates/find_a_roommate"
+                className="text-gray-700 py-[5px]"
+              >
                 Request roommate
               </Link>
               <div className="bg-black opacity-[8%] w-full h-[1px]"></div>
 
-              <Link href="/" className="text-gray-700 py-[5px]">
+              <Link href="/chat" className="text-gray-700 py-[5px]">
                 Chats{" "}
                 <span className="bg-[red] rounded-[4px] px-[4px] text-white">
                   1
                 </span>
               </Link>
-              <Link href="/" className="text-gray-700 py-[5px]">
+              <Link href="/wishlist" className="text-gray-700 py-[5px]">
                 Wishlist{" "}
                 <span className="bg-[red] rounded-[4px] px-[4px] text-white">
                   1
@@ -226,18 +229,21 @@ function More() {
               >
                 List your service
               </Link>
-              <Link href="/" className="text-gray-700 py-[5px]">
+              <Link
+                href="/roommates/find_a_roommate"
+                className="text-gray-700 py-[5px]"
+              >
                 Request roommate
               </Link>
               <div className="bg-black opacity-[8%] w-full h-[1px]"></div>
 
-              <Link href="/" className="text-gray-700 py-[5px]">
+              <Link href="/chat" className="text-gray-700 py-[5px]">
                 Chats{" "}
                 <span className="bg-[red] rounded-[4px] px-[4px] text-white">
                   1
                 </span>
               </Link>
-              <Link href="/" className="text-gray-700 py-[5px]">
+              <Link href="/wishlist" className="text-gray-700 py-[5px]">
                 Wishlist{" "}
                 <span className="bg-[red] rounded-[4px] px-[4px] text-white">
                   1

@@ -32,7 +32,7 @@ const LodgeDescription = () => {
           {tabs.map((tab, index) => (
             <button
               key={index}
-              className={`tab-button h-2 w-[42px] mx-2 rounded-full ${
+              className={`tab-button h-0 w-[42px] mx-2 rounded-full ${
                 activeTab === index ? "bg-primary" : "bg-xgray"
               }`}
               onClick={() => setActiveTab(index)}

@@ -8,14 +8,14 @@ function Listalodge() {
         <img
           src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1719874533/utilities/LodgeMate_File/Lodge_Illustration_t1wdwi.svg"
           alt="lodge"
-          className=' -mb-[120px]'
+          className=' -mb-[120px] -mt-[50px sm:h-[500px]'
         />
         <div>
           <h1 className="font-semibold text-[24px] text-center mb-[12px]">
             List your lodge
           </h1>
           <p className='text-center'>
-            Lodgemate helps match you with people who are <br className='hidden sm:block'/> looking to rent a
+            Lodgemate helps match you with people who are  looking to rent a
             lodge. Try it now!
           </p>
         </div>

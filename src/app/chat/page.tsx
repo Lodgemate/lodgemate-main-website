@@ -167,7 +167,7 @@ const Chat: React.FC = () => {
         </div>
         {activeChat && (
           <div className="flex items-center p-4 border-t border-gray-300">
-            <div className="flex items-center p-1 bg-[#30a2ff28] h-[48px] w-full rounded-full px-4">
+            <div className="flex items-center p-1 bg-[#30a2ff28] h-[48px] w-full rounded-full pl-2 pr-4">
               <button className="mr-1 text-gray-500">
                 <img
                   src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1719952823/utilities/LodgeMate_File/Add_kdegc6.svg"

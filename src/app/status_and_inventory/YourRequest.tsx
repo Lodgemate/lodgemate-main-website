@@ -1,21 +1,22 @@
-"use client"
+"use client";
 
 import React, { useState } from "react";
-import Lodges from "./Lodges";
-import Roommates from "./Roommates";
-import Services from "./Services";
-import TourCart from "./TourCart";
+import Lodges from "./requests/Lodges";
+import Roommates from "./requests/Roommates";
+import Services from "./requests/Services";
 
 interface TabData {
+  name: string;
   message: string;
   content: JSX.Element;
 }
 
-function Wishlist() {
+function YourRequest() {
   const [activeTab, setActiveTab] = useState<string>("Lodges");
 
   const tabData: { [key: string]: TabData } = {
     Lodges: {
+      name: "Lodge requests",
       message: "You have 7 lodges in your wishlist",
       content: (
         <div>
@@ -24,10 +25,16 @@ function Wishlist() {
       ),
     },
     Roommates: {
+      name: "Service request",
       message: "You have 5 roomies in your wishlist",
-      content: <div><Roommates /></div>,
+      content: (
+        <div>
+          <Roommates />
+        </div>
+      ),
     },
     Serivices: {
+      name: "Roommate request",
       message: "You have 3 services in your wishlist",
       content: (
         <div>
@@ -35,29 +42,21 @@ function Wishlist() {
         </div>
       ),
     },
-    "Tour cart": {
-      message: "You saved 3 lodges for tour/visiting",
-      content: <div><TourCart /></div>,
-    },
   };
 
   return (
-    <div className="p-4 mt-[100px] min-h-screen sm:px-[100px] text-lblack ">
-      <div className="flex justify-between items-center">
-        <h1 className="text-[24px]">{tabData[activeTab].message}</h1>
-        <div className="flex  bg-[#F8F8F8] p-1 rounded-[8px]">
+    <div className="p-4 min-h-screen text-lblack ">
+      <div className="flex  items-center">
+        <div className="flex  bg-[#F8F8F8 p-1 rounded-[8px]">
           {Object.keys(tabData).map((tab) => (
             <button
               key={tab}
-              className={`px-4 py-2 rounded ${
-                activeTab === tab
-                  ? "bg-primary text-white"
-                  : " text-lblack"
-                }`}
-              
+              className={`px-4 py-2 rounded font-semibold ${
+                activeTab === tab ? "text-primary bg-white border-b-2 border-primary" : " text-lblack"
+              }`}
               onClick={() => setActiveTab(tab)}
             >
-              {tab}
+              {tabData[tab].name}
             </button>
           ))}
         </div>
@@ -67,4 +66,4 @@ function Wishlist() {
   );
 }
 
-export default Wishlist;
+export default YourRequest;

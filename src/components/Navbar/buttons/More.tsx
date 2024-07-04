@@ -142,15 +142,15 @@ function More() {
                   1
                 </span>
               </Link>
-              <Link href="/" className="text-gray-700 py-[5px]">
+              <Link href="/status_and_inventory" className="text-gray-700 py-[5px]">
                 Status & inventory
               </Link>
               <div className="bg-black opacity-[8%] w-full h-[1px]"></div>
 
-              <Link href="/" className="text-gray-700 py-[5px]">
+              <Link href="/help_and_support" className="text-gray-700 py-[5px]">
                 Help & Support
               </Link>
-              <Link href="/" className="text-gray-700 py-[5px]">
+              <Link href="/settings" className="text-gray-700 py-[5px]">
                 Settings
               </Link>
               <Link href="/auth/login" className="text-gray-700 py-[5px]">
@@ -249,15 +249,15 @@ function More() {
                   1
                 </span>
               </Link>
-              <Link href="/" className="text-gray-700 py-[5px]">
+              <Link href="/status_and_inventory" className="text-gray-700 py-[5px]">
                 Status & inventory
               </Link>
               <div className="bg-black opacity-[8%] w-full h-[1px]"></div>
 
-              <Link href="/" className="text-gray-700 py-[5px]">
+              <Link href="/help_and_support" className="text-gray-700 py-[5px]">
                 Help & Support
               </Link>
-              <Link href="/" className="text-gray-700 py-[5px]">
+              <Link href="/settings" className="text-gray-700 py-[5px]">
                 Settings
               </Link>
               <Link href="/auth/login" className="text-gray-700 py-[5px]">

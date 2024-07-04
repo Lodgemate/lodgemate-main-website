@@ -12,6 +12,7 @@ interface CardProps {
   imageUrl: string;
   description: string;
   nearbyUniversity: string;
+  status: string;
 }
 
 const Card: React.FC<CardProps> = ({
@@ -21,12 +22,48 @@ const Card: React.FC<CardProps> = ({
   description,
   nearbyUniversity,
   price,
+  status,
 }) => {
   const formattedPrice = new Intl.NumberFormat("en-NG", {
     style: "currency",
     currency: "NGN",
     minimumFractionDigits: 0,
   }).format(price);
+
+
+   let statusStyles = {
+     backgroundColor: "",
+     textColor: "",
+     imageSrc: "",
+   };
+
+   switch (status) {
+     case "Pending":
+       statusStyles = {
+         backgroundColor: "bg-yellow-100",
+         textColor: "text-yellow-500",
+         imageSrc:
+           "https://res.cloudinary.com/dcb4ilgmr/image/upload/v1720098651/utilities/LodgeMate_File/hourglass_c3bjey.svg",
+       };
+       break;
+     case "Approved":
+       statusStyles = {
+         backgroundColor: "bg-green-100",
+         textColor: "text-green-500",
+         imageSrc:
+           "https://res.cloudinary.com/dcb4ilgmr/image/upload/v1720098651/utilities/LodgeMate_File/check_circle_xyrhoc.svg",
+       };
+       break;
+     case "Denied":
+       statusStyles = {
+         backgroundColor: "bg-red-100",
+         textColor: "text-red-500",
+         imageSrc:
+           "https://res.cloudinary.com/dcb4ilgmr/image/upload/v1720098651/utilities/LodgeMate_File/error_a2ko9f.svg",
+       };
+       break;
+  }
+  
 
   return (
     <div className="max-w-sm rounded overflow-hidden">
@@ -38,11 +75,12 @@ const Card: React.FC<CardProps> = ({
             alt={name}
           />
 
-          {/* <img
-            src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1719973782/utilities/LodgeMate_File/Heart_Icon_ickosd.svg"
-            alt="heart"
-            className="absolute top-2 right-2 text-xl"
-          /> */}
+          <div
+            className={`absolute px-2 py-1 rounded-lg top-2 left-2 text-[12px] flex items-center gap-2 ${statusStyles.backgroundColor} ${statusStyles.textColor}`}
+          >
+            <img src={statusStyles.imageSrc} alt={status} />
+            <p>{status}</p>
+          </div>
           <img
             src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1716223205/utilities/LodgeMate_File/Indicators_psmeyv.svg"
             alt=""
@@ -53,7 +91,6 @@ const Card: React.FC<CardProps> = ({
       <div className="py-[15px]">
         <div className="font-bold text-[16px] flex justify-between items-start">
           {name}{" "}
-          
         </div>
         <p className="text-lgray text-[16px]">{description}</p>
         <div className="flex items-center mt-[4px] text-gray-600">
@@ -86,6 +123,7 @@ const serivices = [
       "I offer electrical rewiring services with lorem ipsum dolor sit amet, consectetur dolor sit amet, consectetudolor sit amet add",
     nearbyUniversity: "University One",
     price: 50000,
+    status: "Pending",
   },
   {
     id: 2,
@@ -97,6 +135,7 @@ const serivices = [
       "Hello there, we’re a room refresh and painting service with over 3 years of experience in the industry. Contact us for...",
     nearbyUniversity: "University Two",
     price: 60000,
+    status: "Pending",
   },
   {
     id: 3,
@@ -108,6 +147,7 @@ const serivices = [
       "I offer electrical rewiring services with lorem ipsum dolor sit amet, consectetur dolor sit amet, consectetudolor sit amet add",
     nearbyUniversity: "University Three",
     price: 70000,
+    status: "Approved",
   },
 ];
 
@@ -123,6 +163,7 @@ function Serivices() {
           description={service.description}
           nearbyUniversity={service.nearbyUniversity}
           price={service.price}
+          status={service.status}
         />
       ))}
     </div>

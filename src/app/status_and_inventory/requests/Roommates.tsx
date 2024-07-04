@@ -12,6 +12,7 @@ interface CardProps {
   imageUrl: string;
   location: string;
   nearbyUniversity: string;
+  status: string;
 }
 
 const Card: React.FC<CardProps> = ({
@@ -21,8 +22,42 @@ const Card: React.FC<CardProps> = ({
   location,
   nearbyUniversity,
   sex,
+    status,
 }) => {
   
+let statusStyles = {
+  backgroundColor: "",
+  textColor: "",
+  imageSrc: "",
+  };
+  
+ switch (status) {
+   case "Pending":
+     statusStyles = {
+       backgroundColor: "bg-yellow-100",
+       textColor: "text-yellow-500",
+       imageSrc:
+         "https://res.cloudinary.com/dcb4ilgmr/image/upload/v1720098651/utilities/LodgeMate_File/hourglass_c3bjey.svg",
+     };
+     break;
+   case "Approved":
+     statusStyles = {
+       backgroundColor: "bg-green-100",
+       textColor: "text-green-500",
+       imageSrc:
+         "https://res.cloudinary.com/dcb4ilgmr/image/upload/v1720098651/utilities/LodgeMate_File/check_circle_xyrhoc.svg",
+     };
+     break;
+   case "Denied":
+     statusStyles = {
+       backgroundColor: "bg-red-100",
+       textColor: "text-red-500",
+       imageSrc:
+         "https://res.cloudinary.com/dcb4ilgmr/image/upload/v1720098651/utilities/LodgeMate_File/error_a2ko9f.svg",
+     };
+     break;
+ }
+
 
   return (
     <div className="max-w-sm rounded overflow-hidden">
@@ -34,11 +69,12 @@ const Card: React.FC<CardProps> = ({
             alt={name}
           />
 
-          {/* <img
-            src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1719973782/utilities/LodgeMate_File/Heart_Icon_ickosd.svg"
-            alt="heart"
-            className="absolute top-2 right-2 text-xl"
-          /> */}
+          <div
+            className={`absolute px-2 py-1 rounded-lg top-2 left-2 text-[12px] flex items-center gap-2 ${statusStyles.backgroundColor} ${statusStyles.textColor}`}
+          >
+            <img src={statusStyles.imageSrc} alt={status} />
+            <p>{status}</p>
+          </div>
           <img
             src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1716223205/utilities/LodgeMate_File/Indicators_psmeyv.svg"
             alt=""
@@ -78,7 +114,7 @@ const Card: React.FC<CardProps> = ({
   );
 };
 
-const serivices = [
+const roommates = [
   {
     id: 1,
     imageUrl:
@@ -88,6 +124,7 @@ const serivices = [
     location: "123 Mountain Rd, Colorado Springs, CO",
     nearbyUniversity: "University One",
     sex: "male",
+    status: "Pending",
   },
   {
     id: 2,
@@ -98,6 +135,7 @@ const serivices = [
     location: "456 River St, Austin, TX",
     nearbyUniversity: "University Two",
     sex: "female",
+    status: "Pending",
   },
   {
     id: 3,
@@ -108,6 +146,7 @@ const serivices = [
     location: "789 Valley Rd, San Francisco, CA",
     nearbyUniversity: "University Three",
     sex: "female",
+    status: "Pending",
   },
   {
     id: 4,
@@ -118,25 +157,27 @@ const serivices = [
     location: "Location Four",
     nearbyUniversity: "University Four",
     sex: "female",
+    status: "Pending",
   },
 ];
 
-function Serivices() {
+function Roommates() {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-      {serivices.map((service) => (
+      {roommates.map((roommate) => (
         <Card
-          key={service.id}
-          id={service.id}
-          imageUrl={service.imageUrl}
-          name={service.name}
-          location={service.location}
-          nearbyUniversity={service.nearbyUniversity}
-          sex={service.sex}
+          key={roommate.id}
+          id={roommate.id}
+          imageUrl={roommate.imageUrl}
+          name={roommate.name}
+          location={roommate.location}
+          nearbyUniversity={roommate.nearbyUniversity}
+          sex={roommate.sex}
+          status={roommate.status}
         />
       ))}
     </div>
   );
 }
 
-export default Serivices;
+export default Roommates;

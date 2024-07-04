@@ -12,6 +12,7 @@ interface ProductCardProps {
   imageUrl: string;
   location: string;
   nearbyUniversity: string;
+  status: string;
 }
 
 const ProductCard: React.FC<ProductCardProps> = ({
@@ -21,12 +22,46 @@ const ProductCard: React.FC<ProductCardProps> = ({
   location,
   nearbyUniversity,
   price,
+  status,
 }) => {
   const formattedPrice = new Intl.NumberFormat("en-NG", {
     style: "currency",
     currency: "NGN",
     minimumFractionDigits: 0,
   }).format(price);
+
+  let statusStyles = {
+    backgroundColor: "",
+    textColor: "",
+    imageSrc: "",
+  };
+
+  switch (status) {
+    case "Pending":
+      statusStyles = {
+        backgroundColor: "bg-yellow-100",
+        textColor: "text-yellow-500",
+        imageSrc:
+          "https://res.cloudinary.com/dcb4ilgmr/image/upload/v1720098651/utilities/LodgeMate_File/hourglass_c3bjey.svg",
+      };
+      break;
+    case "Approved":
+      statusStyles = {
+        backgroundColor: "bg-green-100",
+        textColor: "text-green-500",
+        imageSrc:
+          "https://res.cloudinary.com/dcb4ilgmr/image/upload/v1720098651/utilities/LodgeMate_File/check_circle_xyrhoc.svg",
+      };
+      break;
+    case "Denied":
+      statusStyles = {
+        backgroundColor: "bg-red-100",
+        textColor: "text-red-500",
+        imageSrc:
+          "https://res.cloudinary.com/dcb4ilgmr/image/upload/v1720098651/utilities/LodgeMate_File/error_a2ko9f.svg",
+      };
+      break;
+  }
 
   return (
     <div className="max-w-sm rounded overflow-hidden">
@@ -38,11 +73,13 @@ const ProductCard: React.FC<ProductCardProps> = ({
             alt={name}
           />
 
-          {/* <img
-            src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1719973782/utilities/LodgeMate_File/Heart_Icon_ickosd.svg"
-            alt="heart"
-            className="absolute top-2 right-2 text-xl"
-          /> */}
+          <div
+            className={`absolute px-2 py-1 rounded-lg top-2 left-2 text-[12px] flex items-center gap-2 ${statusStyles.backgroundColor} ${statusStyles.textColor}`}
+          >
+            <img src={statusStyles.imageSrc} alt={status} />
+            <p>{status}</p>
+          </div>
+
           <img
             src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1716223205/utilities/LodgeMate_File/Indicators_psmeyv.svg"
             alt=""
@@ -51,7 +88,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
         </div>
       </Link>
       <div className="py-[15px]">
-        <div className="font-bold text-[16px] flex items-start">{name} </div>
+        <div className="font-bold text-[16px] flex items-start">{name}</div>
         <p className="text-lgray text-[16px]">{location}</p>
         <div className="flex items-center mt-[4px] text-gray-600">
           <img
@@ -82,6 +119,7 @@ const lodges = [
     location: "123 Mountain Rd, Colorado Springs, CO",
     nearbyUniversity: "University One",
     price: 50000,
+    status: "Pending",
   },
   {
     id: 2,
@@ -92,6 +130,7 @@ const lodges = [
     location: "456 River St, Austin, TX",
     nearbyUniversity: "University Two",
     price: 60000,
+    status: "Pending",
   },
   {
     id: 3,
@@ -102,6 +141,7 @@ const lodges = [
     location: "789 Valley Rd, San Francisco, CA",
     nearbyUniversity: "University Three",
     price: 70000,
+    status: "Approved",
   },
   {
     id: 4,
@@ -112,6 +152,7 @@ const lodges = [
     location: "Location Four",
     nearbyUniversity: "University Four",
     price: 80000,
+    status: "Approved",
   },
   {
     id: 5,
@@ -121,6 +162,7 @@ const lodges = [
     location: "Location Five",
     nearbyUniversity: "University Five",
     price: 90000,
+    status: "Approved",
   },
   {
     id: 6,
@@ -131,6 +173,7 @@ const lodges = [
     location: "Location Six",
     nearbyUniversity: "University Six",
     price: 100000,
+    status: "Denied",
   },
   {
     id: 7,
@@ -141,6 +184,7 @@ const lodges = [
     location: "Location Seven",
     nearbyUniversity: "University Seven",
     price: 110000,
+    status: "Denied",
   },
 ];
 
@@ -156,6 +200,7 @@ function Lodges() {
           location={lodge.location}
           nearbyUniversity={lodge.nearbyUniversity}
           price={lodge.price}
+          status={lodge.status}
         />
       ))}
     </div>

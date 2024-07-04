@@ -29,7 +29,7 @@ function YourRequest() {
       message: "You have 5 roomies in your wishlist",
       content: (
         <div>
-          <Roommates />
+          <Services />
         </div>
       ),
     },
@@ -38,7 +38,7 @@ function YourRequest() {
       message: "You have 3 services in your wishlist",
       content: (
         <div>
-          <Services />
+          <Roommates />
         </div>
       ),
     },

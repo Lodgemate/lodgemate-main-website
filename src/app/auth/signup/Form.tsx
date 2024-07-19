@@ -2,6 +2,9 @@
 
 import Link from "next/link";
 import React, { useState } from "react";
+import SelectSchool from "./components/SelectSchool";
+import Geolocation from "./components/Geolocation";
+
 
 const SignUpForm: React.FC = () => {
   const [firstName, setFirstName] = useState("");
@@ -9,7 +12,7 @@ const SignUpForm: React.FC = () => {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [email, setEmail] = useState("");
   const [gender, setGender] = useState("");
-  const [school, setSchool] = useState("");
+  // const [school, setSchool] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [errors, setErrors] = useState({
@@ -18,7 +21,7 @@ const SignUpForm: React.FC = () => {
     phoneNumber: "",
     email: "",
     gender: "",
-    school: "",
+    // school: "",
     password: "",
     confirmPassword: "",
   });
@@ -30,7 +33,7 @@ const SignUpForm: React.FC = () => {
       phoneNumber: "",
       email: "",
       gender: "",
-      school: "",
+      // school: "",
       password: "",
       confirmPassword: "",
     };
@@ -40,7 +43,7 @@ const SignUpForm: React.FC = () => {
     if (!email) tempErrors.email = "Email is required";
     else if (!/\S+@\S+\.\S+/.test(email)) tempErrors.email = "Email is invalid";
     if (!gender) tempErrors.gender = "Gender is required";
-    if (!school) tempErrors.school = "School is required";
+    // if (!school) tempErrors.school = "School is required";
     if (!password) tempErrors.password = "Password is required";
     else if (password.length < 6)
       tempErrors.password = "Password must be at least 6 characters";
@@ -62,7 +65,7 @@ const SignUpForm: React.FC = () => {
         phoneNumber,
         email,
         gender,
-        school,
+        // school,
         password,
         confirmPassword,
       });
@@ -135,7 +138,7 @@ const SignUpForm: React.FC = () => {
             id="gender"
             value={gender}
             onChange={(e) => setGender(e.target.value)}
-            className="mt-1 block h-[48px] w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none"
+            className="mt-1 block h-[48px] sm:w-1/2- w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none"
           >
             <option value="" disabled>
               Select Gender
@@ -143,22 +146,15 @@ const SignUpForm: React.FC = () => {
             <option value="male">Male</option>
             <option value="female">Female</option>
           </select>
-          <input
-            type="text"
-            name="school"
-            id="school"
-            placeholder="School"
-            value={school}
-            onChange={(e) => setSchool(e.target.value)}
-            className="mt-1 block h-[48px] w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none"
-          />
+
+          {/* <SelectSchool /> */}
         </div>
         {errors.gender && (
           <div className="text-red-500 text-sm">{errors.gender}</div>
         )}
-        {errors.school && (
+        {/* {errors.school && (
           <div className="text-red-500 text-sm">{errors.school}</div>
-        )}
+        )} */}
 
         <div className="mb-4 mt-[20px]">
           <input
@@ -191,17 +187,18 @@ const SignUpForm: React.FC = () => {
         </div>
 
         <div className="flex w-full justify-center items-center">
-          {/* <button
+          <button
             type="submit"
             className="w-full px-4 py-2 bg-primary text-white rounded-md shadow-sm focus:outline-none"
           >
             Sign Up
-          </button> */}
-          <Link href="/auth/signup/verify_your_email"
+          </button>
+          {/* <Link
+            href="/auth/signup/verify_your_email"
             className="w-full px-4 py-2 flex justify-center items-center  bg-primary text-white rounded-md shadow-sm focus:outline-none"
           >
             Sign Up
-          </Link>
+          </Link> */}
         </div>
         <div>
           <p className="text-end mt-[12px]">

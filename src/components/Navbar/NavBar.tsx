@@ -18,8 +18,8 @@ function index() {
           <TopBar />
         </div>
 
-        {/* <Account /> */}
-        <More />
+        <Account />
+        {/* <More /> */}
       </nav>
     </nav>
   );

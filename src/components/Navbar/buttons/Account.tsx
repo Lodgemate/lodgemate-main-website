@@ -61,7 +61,7 @@ function Account() {
                 Create account
               </Link>
               <Link href="/auth/login" className="text-gray-700 py-[5px]">
-                Profile
+                Login
               </Link>
             </div>
           </div>
@@ -115,7 +115,7 @@ function Account() {
                 Create account
               </Link>
               <Link href="/auth/login" className="text-gray-700 py-[5px]">
-                Profile
+                Login
               </Link>
             </div>
           </div>

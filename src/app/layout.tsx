@@ -4,6 +4,9 @@ import { Inter } from "next/font/google";
 import Navbar from "@/components/Navbar/NavBar";
 import Footer from "@/components/Footer/Footer";
 import BottomNavbar from "@/components/Navbar/BottomNavbar";
+import "aos/dist/aos.css";
+
+
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -21,7 +24,7 @@ export default function RootLayout({
     <html lang="en">
       <Navbar />
       <body className={inter.className}>
-        <div className=" min-h-screen">{children}</div>
+          <div className=" min-h-screen">{children}</div>
       </body>
       <Footer />
       <BottomNavbar />

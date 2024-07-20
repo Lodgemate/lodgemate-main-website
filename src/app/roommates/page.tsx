@@ -5,6 +5,7 @@ import HeroSection from "./HeroSection";
 import SearchBar from "./SearchBar";
 import BrowseRoomates from "./BrowseRoomates";
 import ProfileDetails from "./roomate_details/ProfileDetails";
+import AOS from "aos";
 
 function Roommates() {
   const [selectedCity, setSelectedCity] = useState<string | null>(null);
@@ -32,6 +33,11 @@ function Roommates() {
     setIsSearchTriggered(false);
   };
 
+   React.useEffect(() => {
+     AOS.init({
+       duration: 1000,
+     });
+   });
   return (
     <div>
       <HeroSection />

@@ -4,6 +4,8 @@ import React, { useState } from "react";
 import HeroSection from "./HeroSection";
 import SearchBar from "./SearchBar";
 import BrowseLodges from "./BrowseLodges";
+import AOS from "aos";
+
 
 function LodgesPage() {
   const [query, setQuery] = useState<string>("");
@@ -14,12 +16,21 @@ function LodgesPage() {
     setIsSearchTriggered(true);
   };
 
+  React.useEffect(() => {
+    AOS.init({
+      duration: 3000,
+    });
+  });
+
   return (
     <div>
-      <HeroSection />
-      <div className="px-4">
-        <SearchBar onSearch={handleSearch} />
+      <div data-aos="zoom-in-up">
+        <HeroSection />
+        <div className="px-4">
+          <SearchBar onSearch={handleSearch} />
+        </div>
       </div>
+
       <BrowseLodges query={query} isSearchTriggered={isSearchTriggered} />
     </div>
   );

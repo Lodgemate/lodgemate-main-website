@@ -1,6 +1,5 @@
 "use client";
 
-
 import Link from "next/link";
 import React, { useRef } from "react";
 import data from "../../../../data/data";
@@ -94,7 +93,7 @@ function LodgeInfo({ id }: LodgeInfoProps) {
     <div>
       <div className="sm:px-[100px] sm:mt-[51px]">
         {/* the Name of the Product */}
-        <h1 className="text-[24px] sm:block hidden font-semibold text-dgray">
+        <h1 className="sm:text-[24px] text-[20px] sm:block hidden font-semibold text-dgray">
           {LodgeData.name}
         </h1>
 
@@ -211,7 +210,7 @@ function LodgeInfo({ id }: LodgeInfoProps) {
         </div>
       </div>
 
-      <h1 className="text-[24px] mt-[24px] mb-[20px] px-4 sm:hidden font-semibold text-dgray">
+      <h1 className="text-[20px] mt-[24px] mb-[20px] px-4 sm:hidden font-semibold text-dgray">
         {LodgeData.name}
       </h1>
 
@@ -247,7 +246,7 @@ function LodgeInfo({ id }: LodgeInfoProps) {
 
           {/* <div className="h-[76px] w-[1px] bg-lgray opacity-[20%]"></div> */}
 
-          <div className="flex items-start gap-4">
+          <div className="flex items-start gap-1 ">
             <div>
               <img
                 src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1716818031/utilities/LodgeMate_File/entypo_price-tag_qrxul2.svg"
@@ -256,11 +255,11 @@ function LodgeInfo({ id }: LodgeInfoProps) {
             </div>
 
             {/* the p tag displays the price of each product  */}
-            <p className="text-[22px] text-dgray border-b pb-2 ">
+            <p className="text-[18px] text-dgray font-semibold border-b pb-2 ">
               ₦{LodgeData.price} /yr
             </p>
             {LodgeData.negotiable && (
-              <div className="bg-lskyblue px-2 mt-2 font-bold text-lblue rounded-lg text-[15px]">
+              <div className="bg-lskyblue px-2 ml-2 font-bold mt-3 text-lblue rounded-lg text-[15px]">
                 {/* this only displays when the product is Negotiable */}
                 <p>Negotiable</p>
               </div>
@@ -268,12 +267,15 @@ function LodgeInfo({ id }: LodgeInfoProps) {
           </div>
         </div>
       </div>
+      {/* <div className="flex px-4 mt-[18px]">
+        <div className="h-[1px] w-full flex bg-black opacity-[8%]"></div>
+      </div> */}
 
-      <div className="mt-[70px] px-4 sm:px-[100px]">
+      <div className="sm:mt-[70px] mt-[24px] px-4 sm:px-[100px]">
         <div className=" justify-start grid grid-cols-1 sm:grid-cols-3 sm:gap-[100px]">
           <div className="col-span-2">
-            <div className="pb-[40px] mb-[40px] border-lgray border-b-2 border-opacity-[10%]">
-              <h2 className="pb-[28-px] text-[24px] mb-[2px] sm:mb-[28px]">
+            <div className="py-[18px]  mb-[18px]- border-lgray border-t-2 border-b-2 border-opacity-[10%]">
+              <h2 className="pb-[28-px] text-[20px] mb-[2px] sm:mb-[28px]">
                 Description
               </h2>
 
@@ -281,8 +283,8 @@ function LodgeInfo({ id }: LodgeInfoProps) {
               <p>{LodgeData.description}</p>
             </div>
 
-            <div className="pb-[40px] mb-[40px] border-lgray border-b-2 border-opacity-[10%]">
-              <h2 className="pb-2 sm:pb-[28px]  text-[24px] text-dgray">
+            <div className="py-[18px] mb-[18px]- border-lgray border-b-2 border-opacity-[10%]">
+              <h2 className="pb-2 sm:pb-[28px]  text-[20px] text-dgray font-semibold">
                 Accommodation features
               </h2>
 
@@ -312,7 +314,7 @@ function LodgeInfo({ id }: LodgeInfoProps) {
               <div className="grid grid-cols-1 sm:grid-cols-2 ">
                 <div className="col-span-1 sm:border-r border-b sm:border-b-0 pb-6 mb-4 border-lgray border-opacity-[20%]">
                   <div>
-                    <h2 className="text-[24px] text-dgray pb-2 sm:pb-[28px]">
+                    <h2 className="text-[20px] font-semibold text-dgray pb-2 sm:pb-[28px]">
                       Accommodation type
                     </h2>
                     <div className="flex justify-start ">
@@ -330,7 +332,7 @@ function LodgeInfo({ id }: LodgeInfoProps) {
                 </div>
                 <div className="col-span-1  ">
                   <div>
-                    <h2 className="text-[24px] sm:text-end text-dgray pb-2 sm:pb-[28px]">
+                    <h2 className="text-[20px] font-semibold sm:text-end text-dgray pb-2 sm:pb-[28px]">
                       Number of rooms
                     </h2>
                     <div className="flex justify-start sm:justify-end ">

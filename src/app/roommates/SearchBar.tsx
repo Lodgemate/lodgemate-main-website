@@ -121,13 +121,13 @@ const SearchBar: React.FC<SearchBarProps> = ({
         <input
           type="text"
           placeholder="Where do you want to live...?"
-          className="rounded-full sm:w-[300px] w-[250px]  bg-white outline-none"
+          className="rounded-full sm:w-[300px] w-[250px]- w-full  bg-white outline-none mr-2"
           onChange={(e) => setQuery(e.target.value)}
           value={query}
         />
 
         <button
-          className="bg-primary rounded-full flex justify-center items-center text-white px-4"
+          className="bg-primary rounded-full flex justify-center items-center text-white px-6"
           onClick={handleSearchClick}
         >
           <Image

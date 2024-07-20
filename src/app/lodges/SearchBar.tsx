@@ -96,13 +96,13 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
         <input
           type="text"
           placeholder="Enter name of lodge, city or school"
-          className="rounded-full sm:w-[300px] w-[250px] bg-white outline-none"
+          className="rounded-full sm:w-[300px] w-[250px]- w-full bg-white outline-none mr-2"
           value={query}
           onChange={(e) => setQuery(e.target.value)} // Handle input change
         />
         <button
           onClick={handleSearchClick} // Handle search button click
-          className="bg-primary rounded-full flex justify-center items-center text-white px-4"
+          className="bg-primary rounded-full flex justify-center items-center text-white px-6"
         >
           <Image
             src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1715961596/utilities/LodgeMate_File/Search_1_tf10cm.svg"
@@ -134,7 +134,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
                 </Link>
               ))
             ) : (
-              <p>No similar lodges found.</p>
+              <p className="px-4">No similar lodges found.</p>
             )}
           </div>
           <div>
@@ -156,7 +156,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
                 </Link>
               ))
             ) : (
-              <p>No similar cities found.</p>
+              <p className="px-4">No similar cities found.</p>
             )}
           </div>
           <div>
@@ -178,7 +178,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
                 </Link>
               ))
             ) : (
-              <p>No similar schools found.</p>
+              <p className="px-4">No similar schools found.</p>
             )}
           </div>
         </div>

@@ -14,8 +14,8 @@ function Account() {
   return (
     <div>
       {/* desktop */}
-      <div className="relative sm:block hidden">
-        <div className="p-[13px] sm:block hidden rounded-[8px] bg-primary">
+      <div className="relative lg:block hidden">
+        <div className="p-[13px] lg:block hidden rounded-[8px] bg-primary">
           <button
             onClick={toggleDropdown}
             className="flex text-[16px] text-white font-medium items-center gap-2"
@@ -68,8 +68,8 @@ function Account() {
         )}
       </div>
       {/* Mobile */}
-      <div className="relative sm:hidden ">
-        <div className="p-[13px] sm:hidden rounded-[8px] bg-white border-2 border-stroke">
+      <div className="relative lg:hidden ">
+        <div className="p-[13px] lg:hidden rounded-[8px] bg-white border-2 border-stroke">
           <button
             onClick={toggleDropdown}
             className="flex text-[16px] text-dgr font-medium items-center gap-2"

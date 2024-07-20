@@ -9,7 +9,7 @@ function BottomNavbar() {
   const pathname = usePathname();
 
   return (
-    <div className="fixed sm:hidden flex w-full bottom-0">
+    <div className="fixed lg:hidden flex w-full bottom-0">
       <div className="flex w-full justify-center border-stroke bg-white border-t p-2">
         <div className="flex items-center text-[16px] text-dgray gap-12">
           <Link href="/" className="flex-col  flex justify-center items-center">

@@ -15,7 +15,7 @@ function BottomNavbar() {
           <Link href="/" className="flex-col  flex justify-center items-center">
             <Image
               src={
-                pathname === "/"
+                pathname === "/" || pathname.includes("/lodges")
                   ? "https://res.cloudinary.com/dcb4ilgmr/image/upload/v1716807199/utilities/LodgeMate_File/HouseLine_ts7oua.svg"
                   : "https://res.cloudinary.com/dcb4ilgmr/image/upload/v1715976699/utilities/LodgeMate_File/HouseLine_fzjq5q.svg"
               }
@@ -25,7 +25,7 @@ function BottomNavbar() {
             />
             <p
               className={
-                pathname === "/"
+                pathname === "/" || pathname.includes("/lodges")
                   ? "text-primary border-b-4 pb-2 border-primary"
                   : "pb-2"
               }
@@ -39,7 +39,7 @@ function BottomNavbar() {
           >
             <Image
               src={
-                pathname === "/roommates"
+                pathname === "/roommates" || pathname.includes("/roommates")
                   ? "https://res.cloudinary.com/dcb4ilgmr/image/upload/v1716807199/utilities/LodgeMate_File/Friends_ukbqk0.svg"
                   : "https://res.cloudinary.com/dcb4ilgmr/image/upload/v1715961598/utilities/LodgeMate_File/Friends_dgallb.svg"
               }
@@ -49,7 +49,7 @@ function BottomNavbar() {
             />
             <p
               className={
-                pathname === "/roommates"
+                pathname === "/roommates" || pathname.includes("/roommates")
                   ? "text-primary pb-2 border-b-4 border-primary"
                   : "pb-2"
               }
@@ -63,7 +63,7 @@ function BottomNavbar() {
           >
             <Image
               src={
-                pathname === "/services_"
+                pathname === "/services_" || pathname.includes("/services_")
                   ? "https://res.cloudinary.com/dcb4ilgmr/image/upload/v1716812220/utilities/LodgeMate_File/Frame_39530_vskwxe.svg"
                   : "https://res.cloudinary.com/dcb4ilgmr/image/upload/v1715961597/utilities/LodgeMate_File/Frame_r45mxx.svg"
               }
@@ -73,7 +73,7 @@ function BottomNavbar() {
             />
             <p
               className={
-                pathname === "/services_"
+                pathname === "/services_" || pathname.includes("/services_")
                   ? "text-primary pb-2 border-b-4 border-primary"
                   : "pb-2"
               }

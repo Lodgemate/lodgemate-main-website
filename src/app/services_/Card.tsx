@@ -1,4 +1,5 @@
 import React from "react";
+import AOS from "aos";
 
 
 interface ProductCardProps {
@@ -16,8 +17,15 @@ const ProductCard: React.FC<ProductCardProps> = ({
   nearbyUniversity,
   price,
 }) => {
+
+  React.useEffect(() => {
+    AOS.init({
+      duration: 1000,
+    });
+  });
+
   return (
-    <div className="max-w-sm rounded overflow-hidden  ">
+    <div className="max-w-sm rounded overflow-hidden  " data-aos="fade-up">
       <div className="relative">
         <img
           className="w-full h-[144px] sm:h-[299px] object-cover rounded-[12px]"

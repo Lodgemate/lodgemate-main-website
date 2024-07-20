@@ -1,5 +1,6 @@
 import React from "react";
 import { Roommate } from "./data";
+import AOS from "aos";
 
 
 
@@ -20,8 +21,18 @@ const ProductCard: React.FC<ProductCardProps> = ({
   nearbyUniversity,
   onClick,
 }) => {
+
+   React.useEffect(() => {
+     AOS.init({
+       duration: 1000,
+     });
+   });
   return (
-    <button onClick={onClick} className="max-w-sm rounded overflow-hidden  ">
+    <button
+      onClick={onClick}
+      className="max-w-sm rounded overflow-hidden  "
+      data-aos="fade-up"
+    >
       <div className="relative">
         <img
           className="w-full h-[144px] sm:h-[200px] object-cover rounded-[12px]"

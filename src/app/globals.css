@@ -71,3 +71,8 @@ body {
   border: 1px solid black;
   transition: background-color 0.3s ease;
 }
+.text-truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

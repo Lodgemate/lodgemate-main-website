@@ -5,11 +5,13 @@ import { ObjectValidation, onFocusValidation } from "@/utils/formValidation";
 import { getUserLongLang } from "@/utils/geolocator";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 
 const SignUpForm: React.FC = () => {
   const router = useRouter();
   const [submitState, setSubmitState] = useState(false)
+  const [locationState, setLocationState] = useState("Use location")
+  const loadingRef = useRef(locationState)
   const [formData, setformData] = useState({
     firstName: "",
     lastName: "",
@@ -55,7 +57,25 @@ const SignUpForm: React.FC = () => {
       return null;
     }
  }
+const handleLocation=async()=>{
+  setLocationState((prev)=>{loadingRef.current ="searching..."
+return loadingRef.current
+}
+)
+ const currentLocation= await reverseGeocoding()
+ if (currentLocation) {
+  setformData({...formData, location: currentLocation})
+  setLocationState((prev)=>{loadingRef.current =currentLocation.address_text
+    return loadingRef.current
+    })
+ }else{
+  console.log(currentLocation)
+  setLocationState((prev)=>{loadingRef.current ="Use location"
+    return loadingRef.current
+    })
+ }
 
+}
   return (
     <div className='sm:w-[500px] w-full m-auto py-4 bg-white text-lgray text-[16px] rounded-2xl shadow-md border mt-[100px]'>
       <div className='flex w-full items-center justify-center border-b'>
@@ -152,14 +172,19 @@ const SignUpForm: React.FC = () => {
         {/* location field */}
         <div className=''>
           <input
-            name='gender'
-            id='gender'
+            name='location'
+            id='location'
             type='button'
-            value='get location'
-            className='mt-1 block h-[48px] w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none'
-            onClick={reverseGeocoding}
-            // onClick={getUserLongLang}
+            value={locationState}
+            className='text-truncate mt-1 block h-[48px] w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none text-xs '
+            onClick={handleLocation}
           />
+         {(submitState && locationState === "Use location") && (
+            <>
+            <div className='text-red-500 text-xs'>Your location is not set</div>
+            </>
+            
+          )}
         </div>
 
         <div className=''>
@@ -172,11 +197,7 @@ const SignUpForm: React.FC = () => {
             onChange={UpdateForm}
             className='mt-1 block w-full h-[48px] px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none'
           />
-          {(submitState || formData.password) && (
-            <FormWarning
-              prop={onFocusValidation("password", formData.password)}
-            />
-          )}
+          
         </div>
 
         <div className=''>
@@ -194,7 +215,6 @@ const SignUpForm: React.FC = () => {
           )}
         </div>
 
-        {/* <div className='flex w-full justify-center items-center'> */}
 
         <button
           type='submit'

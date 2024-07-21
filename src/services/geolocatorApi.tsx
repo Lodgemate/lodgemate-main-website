@@ -13,7 +13,9 @@ export const reverseGeocoding = async () => {
   const data = await fetch(url);
   const res = await data.json();
 
-  const locationData = {
+
+if (res.status === "OK") {
+    const locationData = {
     address_text: res.results[0].formatted_address,
     latitude: res.results[0].geometry.location.lat,
     logitutude: res.results[0].geometry.location.lng,
@@ -27,5 +29,9 @@ export const reverseGeocoding = async () => {
       (obj: AddressComponent) => obj.types[0] === "administrative_area_level_2"
     ).long_name,
   };
-  console.log(locationData);
+  return locationData;
+} else {
+    return
+}
+  
 };

@@ -5,8 +5,7 @@ import Navbar from "@/components/Navbar/NavBar";
 import Footer from "@/components/Footer/Footer";
 import BottomNavbar from "@/components/Navbar/BottomNavbar";
 import "aos/dist/aos.css";
-
-
+import StoreProvider from "./StoreProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -21,13 +20,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <Navbar />
-      <body className={inter.className}>
-          <div className=" min-h-screen">{children}</div>
-      </body>
-      <Footer />
-      <BottomNavbar />
+    <html lang='en'>
+      <StoreProvider>
+         <Navbar />
+        <body className={inter.className}>
+          <div className=' min-h-screen'>{children}</div>
+        </body>
+        <Footer />
+        <BottomNavbar />
+      </StoreProvider>
     </html>
   );
 }

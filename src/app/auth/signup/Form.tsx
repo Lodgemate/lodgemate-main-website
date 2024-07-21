@@ -1,13 +1,17 @@
 "use client";
 
+import { reverseGeocoding } from "@/services/geolocatorApi";
 import { ObjectValidation, onFocusValidation } from "@/utils/formValidation";
+import { getUserLongLang } from "@/utils/geolocator";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 
 const SignUpForm: React.FC = () => {
   const router = useRouter();
   const [submitState, setSubmitState] = useState(false)
+  const [locationState, setLocationState] = useState("Use location")
+  const loadingRef = useRef(locationState)
   const [formData, setformData] = useState({
     firstName: "",
     lastName: "",
@@ -53,45 +57,25 @@ const SignUpForm: React.FC = () => {
       return null;
     }
  }
-  const [errors, setErrors] = useState({
-    firstName: "",
-    lastName: "",
-    phoneNumber: "",
-    email: "",
-    gender: "",
-    school: "",
-    password: "",
-    confirmPassword: "",
-  });
-  const validate = () => {
-    let tempErrors = {
-      firstName: "",
-      lastName: "",
-      phoneNumber: "",
-      email: "",
-      gender: "",
-      school: "",
-      password: "",
-      confirmPassword: "",
-    };
-    if (!formData.firstName) tempErrors.firstName = "First name is required";
-    if (!formData.lastName) tempErrors.lastName = "Last name is required";
-    if (!formData.phoneNumber) tempErrors.phoneNumber = "Phone number is required";
-    if (!formData.email) tempErrors.email = "Email is required";
-    else if (!/\S+@\S+\.\S+/.test(formData.email)) tempErrors.email = "Email is invalid";
-    if (!formData.gender) tempErrors.gender = "Gender is required";
-    if (!formData.password) tempErrors.password = "Password is required";
-    else if (formData.password.length < 6)
-      tempErrors.password = "Password must be at least 6 characters";
-    if (!formData.confirmPassword)
-      tempErrors.confirmPassword = "Confirm password is required";
-    else if (formData.password !== formData.confirmPassword)
-      tempErrors.confirmPassword = "Passwords do not match";
+const handleLocation=async()=>{
+  setLocationState((prev)=>{loadingRef.current ="searching..."
+return loadingRef.current
+}
+)
+ const currentLocation= await reverseGeocoding()
+ if (currentLocation) {
+  setformData({...formData, location: currentLocation})
+  setLocationState((prev)=>{loadingRef.current =currentLocation.address_text
+    return loadingRef.current
+    })
+ }else{
+  console.log(currentLocation)
+  setLocationState((prev)=>{loadingRef.current ="Use location"
+    return loadingRef.current
+    })
+ }
 
-    setErrors(tempErrors);
-    return Object.values(tempErrors).every((x) => x === "");
-  };
- 
+}
   return (
     <div className='sm:w-[500px] w-full m-auto py-4 bg-white text-lgray text-[16px] rounded-2xl shadow-md border mt-[100px]'>
       <div className='flex w-full items-center justify-center border-b'>
@@ -111,7 +95,11 @@ const SignUpForm: React.FC = () => {
             onChange={UpdateForm}
             className='mt-1 block h-[48px] w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none'
           />
-          {submitState && <FormWarning prop={onFocusValidation("firstName", formData.firstName)}/>}
+          {submitState && (
+            <FormWarning
+              prop={onFocusValidation("firstName", formData.firstName)}
+            />
+          )}
         </div>
 
         <div className='lastName_container'>
@@ -124,7 +112,11 @@ const SignUpForm: React.FC = () => {
             onChange={UpdateForm}
             className='mt-1 block h-[48px] w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none'
           />
-          {submitState && <FormWarning prop={onFocusValidation("lastName", formData.lastName)}/>}
+          {submitState && (
+            <FormWarning
+              prop={onFocusValidation("lastName", formData.lastName)}
+            />
+          )}
         </div>
 
         <div className='phoneNumber_container'>
@@ -137,10 +129,14 @@ const SignUpForm: React.FC = () => {
             onChange={UpdateForm}
             className='mt-1 block h-[48px] w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none'
           />
-          {(submitState || formData.phoneNumber) && <FormWarning prop={onFocusValidation("phoneNumber", formData.phoneNumber)}/>}
+          {(submitState || formData.phoneNumber) && (
+            <FormWarning
+              prop={onFocusValidation("phoneNumber", formData.phoneNumber)}
+            />
+          )}
         </div>
 
-        <div className=''>
+        <div className='email_container'>
           <input
             type='email'
             name='email'
@@ -150,10 +146,12 @@ const SignUpForm: React.FC = () => {
             onChange={UpdateForm}
             className='mt-1 block h-[48px] w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none'
           />
-          {(submitState || formData.email) && <FormWarning prop={onFocusValidation("email", formData.email)}/>}
+          {(submitState || formData.email) && (
+            <FormWarning prop={onFocusValidation("email", formData.email)} />
+          )}
         </div>
 
-        <div className=''>
+        <div className='gender_container'>
           <select
             name='gender'
             id='gender'
@@ -167,23 +165,26 @@ const SignUpForm: React.FC = () => {
             <option value='male'>Male</option>
             <option value='female'>Female</option>
           </select>
-          {submitState && <FormWarning prop={onFocusValidation("gender", formData.gender)}/>}
+          {submitState && (
+            <FormWarning prop={onFocusValidation("gender", formData.gender)} />
+          )}
         </div>
+        {/* location field */}
         <div className=''>
-          <select
-            name='gender'
-            id='gender'
-            value={formData.gender}
-            onChange={UpdateForm}
-            className='mt-1 block h-[48px] w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none'
-          >
-            <option value='' disabled>
-              Select Gender
-            </option>
-            <option value='male'>Male</option>
-            <option value='female'>Female</option>
-          </select>
-          {/* {submitState && <FormWarning prop={onFocusValidation("firstName", formData.firstName)}/>} */}
+          <input
+            name='location'
+            id='location'
+            type='button'
+            value={locationState}
+            className='text-truncate mt-1 block h-[48px] w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none text-xs '
+            onClick={handleLocation}
+          />
+         {(submitState && locationState === "Use location") && (
+            <>
+            <div className='text-red-500 text-xs'>Your location is not set</div>
+            </>
+            
+          )}
         </div>
 
         <div className=''>
@@ -196,7 +197,7 @@ const SignUpForm: React.FC = () => {
             onChange={UpdateForm}
             className='mt-1 block w-full h-[48px] px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none'
           />
-          {(submitState || formData.password) && <FormWarning prop={onFocusValidation("password", formData.password)}/>}
+          
         </div>
 
         <div className=''>
@@ -209,31 +210,34 @@ const SignUpForm: React.FC = () => {
             onChange={UpdateForm}
             className='mt-1 block w-full h-[48px] px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none'
           />
-          {(submitState || formData.confirmPassword) &&  <FormWarning prop={confirmPwCheck()}/>}
+          {(submitState || formData.confirmPassword) && (
+            <FormWarning prop={confirmPwCheck()} />
+          )}
         </div>
 
-        {/* <div className='flex w-full justify-center items-center'> */}
 
-          <button type="submit" className='w-full px-4 mt-2 py-2 flex justify-center items-center sm:col-span-2  bg-primary text-white rounded-md shadow-sm focus:outline-none'>
-            Sign Up
-          </button>
+        <button
+          type='submit'
+          className='w-full px-4 mt-2 py-2 flex justify-center items-center sm:col-span-2  bg-primary text-white rounded-md shadow-sm focus:outline-none'
+        >
+          Sign Up
+        </button>
         {/* </div> */}
-       
       </form>
       <div>
-          <p className='text-center mt-5'>
-            Already have an account?{" "}
-            <span>
-              <Link
-                href='/auth/login'
-                type='button'
-                className='font-bold text-primary hover:underline'
-              >
-                Log in
-              </Link>
-            </span>{" "}
-          </p>
-        </div>
+        <p className='text-center mt-5'>
+          Already have an account?{" "}
+          <span>
+            <Link
+              href='/auth/login'
+              type='button'
+              className='font-bold text-primary hover:underline'
+            >
+              Log in
+            </Link>
+          </span>{" "}
+        </p>
+      </div>
       <div className='px-4 flex flex-col justify-center items-center pb-[50px] overflow-x-hidden'>
         <div className='flex items-center justify-center pt-[32px]'>
           <div className='bg-lgray w-[210px] h-[1px]'></div>

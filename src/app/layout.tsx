@@ -6,6 +6,7 @@ import Footer from "@/components/Footer/Footer";
 import BottomNavbar from "@/components/Navbar/BottomNavbar";
 import "aos/dist/aos.css";
 import StoreProvider from "./StoreProvider";
+import LogoLoader from "@/Ui/shared/logoLoader";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -23,9 +24,11 @@ export default function RootLayout({
     <html lang='en'>
       <StoreProvider>
          <Navbar />
-        <body className={inter.className}>
+        <body className={`  relative  ${inter.className}`}>
           <div className=' min-h-screen'>{children}</div>
+         {/* <LogoLoader /> */}
         </body>
+       
         <Footer />
         <BottomNavbar />
       </StoreProvider>

@@ -1,87 +1,115 @@
 "use client";
 
+import { ObjectValidation, onFocusValidation } from "@/utils/formValidation";
 import Link from "next/link";
-import React, { useState } from "react";
+import { useRouter } from "next/navigation";
+import React, { useEffect, useRef, useState } from "react";
+import { selectAllSignindata, selectAllSigninStatus, selectAllSigninError, Signin, setAuthenticated  } from "@/lib/features/Login/signinSlice";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 
 const LoginForm: React.FC = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [errors, setErrors] = useState({ email: "", password: "" });
-
-  const validate = () => {
-    let tempErrors = { email: "", password: "" };
-    if (!email) tempErrors.email = "Email is required";
-    else if (!/\S+@\S+\.\S+/.test(email)) tempErrors.email = "Email is invalid";
-    if (!password) tempErrors.password = "Password is required";
-    else if (password.length < 6)
-      tempErrors.password = "Password must be at least 6 characters";
-    setErrors(tempErrors);
-    return Object.values(tempErrors).every((x) => x === "");
+  const router = useRouter();
+  const dispatch =useAppDispatch()
+  const data =useAppSelector(selectAllSignindata)
+  const Status =useAppSelector(selectAllSigninStatus)
+  const Error =useAppSelector(selectAllSigninError)
+  const [submitState, setSubmitState] = useState(false);
+  const [locationState, setLocationState] = useState("Use location");
+  const loadingRef = useRef(locationState);
+  const [formData, setformData] = useState({
+    email: "",
+    password: "",
+  });
+  
+  const UpdateForm = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
+    setformData({ ...formData, [e.target.name]: e.target.value });
   };
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (validate()) {
-      console.log({ email, password });
+ 
+  const FormWarning = ({ prop }: any) => {
+    if (prop !== null) {
+      return <div className='text-red-500 text-xs'>{prop}</div>;
     }
   };
 
+
+   const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setSubmitState(true);
+    const validating = await ObjectValidation(formData);
+    if (validating ) {
+      // @ts-ignore
+      const response =await dispatch(Signin(formData))
+  
+      console.log(data)
+      console.log(Error)
+      // console.log(data.json())
+      console.log(Status)
+      // router.push("/auth/signup/verify_your_email");
+    }
+  };
+  useEffect(()=>{
+    if (data === null) {
+      return 
+    }
+    console.log(data)
+      if (data.status === 'success') {
+        console.log(data.token)
+        localStorage.setItem("token", JSON.stringify(data.token) )
+         dispatch(setAuthenticated());
+      }
+  },[data])
+  console.log(data)
+      console.log(Error)
+      // console.log(data.json())
+      console.log(Status)
   return (
-    <div className="w-full sm:w-[500px] mx-auto py-4 bg-white text-lgray text-[16px] rounded-2xl shadow-md border mt-[100px]">
-      <div className="flex w-full items-center justify-center border-b  ">
-        <h2 className=" font-bold mb-4 text-center ">Login</h2>
+    <div className='sm:w-[500px] w-full m-auto py-4 bg-white text-lgray text-[16px] rounded-2xl shadow-md border mt-[100px]'>
+      <div className='flex w-full items-center justify-center border-b'>
+        <h2 className='font-bold mb-4 text-center'>Sign In</h2>
       </div>
-      <form onSubmit={handleSubmit} className="px-4">
-        <div className="mb-4 mt-[34px]">
+      <form
+        onSubmit={handleSubmit}
+        className='px-4  mt-5'
+      >
+        <div className='email_container pb-3'>
           <input
-            type="email"
-            name="email"
-            id="email"
-            placeholder="Enter your email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="mt-1 block h-[48px] w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none "
+            type='email'
+            name='email'
+            id='email'
+            placeholder='Email'
+            value={formData.email}
+            onChange={UpdateForm}
+            className='mt-1 block h-[48px] w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none'
           />
-          {errors.email && (
-            <div className="text-red-500 text-sm">{errors.email}</div>
+          {(submitState || formData.email) && (
+            <FormWarning prop={onFocusValidation("email", formData.email)} />
           )}
         </div>
-
-        <div className="mb-4 mt-[20px]">
+        <div className=''>
           <input
-            type="password"
-            name="password"
-            id="password"
-            placeholder="Enter password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="mt-1 block w-full h-[48px] px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none "
+            type='password'
+            name='password'
+            id='password'
+            placeholder='Enter Password'
+            value={formData.password}
+            onChange={UpdateForm}
+            className='mt-1 block w-full h-[48px] px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none'
           />
-          {errors.password && (
-            <div className="text-red-500 text-sm">{errors.password}</div>
+          {(submitState|| formData.password ) && (
+            <FormWarning prop={onFocusValidation("password", formData.password)} />
           )}
         </div>
-
-        <div className="sm:mb-[200px] mb-[70px] text-right ">
-          <Link
-            href="/auth/forgotpassword"
-            type="button"
-            className="text-sm text-primary hover:underline"
-          >
-            Forgot password?
-          </Link>
-        </div>
-
-        <div>
-          <button
-            type="submit"
-            className="w-full px-4 py-2 bg-primary text-white rounded-md shadow-sm  focus:outline-none "
-          >
-            Log In
-          </button>
-        </div>
-        <div>
-          <p className=" text-end mt-[12px]">
+        <button
+          type='submit'
+          className='w-full px-4 mt-2 py-2 flex justify-center items-center sm:col-span-2  bg-primary text-white rounded-md shadow-sm focus:outline-none'
+        >
+          Sign In
+        </button>
+      </form>
+      <div>
+      <p className=" text-center mt-[12px]">
             Don’t have an account?{" "}
             <span>
               <Link
@@ -93,19 +121,17 @@ const LoginForm: React.FC = () => {
               </Link>
             </span>{" "}
           </p>
-        </div>
-      </form>
-      <div className="px-4 flex flex-col justify-center items-center pb-[50px] ">
-        <div className="flex items-center justify-center pt-[32px]">
-          <div className="bg-lgray w-[210px] h-[1px]"></div>
+      </div>
+      <div className='px-4 flex flex-col justify-center items-center pb-[50px] overflow-x-hidden'>
+        <div className='flex items-center justify-center pt-[32px]'>
+          <div className='bg-lgray w-[210px] h-[1px]'></div>
           <p>OR</p>
-          <div className="bg-lgray w-[210px] h-[1px]"></div>
+          <div className='bg-lgray w-[210px] h-[1px]'></div>
         </div>
-
-        <button className="flex gap-2 w-full border py-3 justify-center items-center rounded-[8px] mt-[32px]  ">
+        <button className='flex gap-2 w-full border py-3 justify-center items-center rounded-[8px] mt-[32px]'>
           <img
-            src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1719371440/utilities/LodgeMate_File/flat-color-icons_google_sqyie0.svg"
-            alt="google_auth"
+            src='https://res.cloudinary.com/dcb4ilgmr/image/upload/v1719371440/utilities/LodgeMate_File/flat-color-icons_google_sqyie0.svg'
+            alt='google_auth'
           />
           Continue with Google
         </button>

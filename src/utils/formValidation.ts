@@ -59,6 +59,7 @@ export const onFocusValidation = (field: field, fieldValue: any) => {
 };
 
 export const ObjectValidation = async (object: any) => {
+  
   if (typeof object !== "object" || object === null) {
     return false;
   }

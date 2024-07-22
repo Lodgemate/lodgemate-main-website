@@ -2,16 +2,22 @@
 
 import { reverseGeocoding } from "@/services/geolocatorApi";
 import { ObjectValidation, onFocusValidation } from "@/utils/formValidation";
-import { getUserLongLang } from "@/utils/geolocator";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useRef, useState } from "react";
+import { selectAlldata, selectAllStatus, selectAllError, SignUp } from "@/lib/features/Auth/authSlice";
+import { selectAllSignindata, selectAllSigninStatus, selectAllSigninError, Signin } from "@/lib/features/Login/signinSlice";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 
 const SignUpForm: React.FC = () => {
   const router = useRouter();
-  const [submitState, setSubmitState] = useState(false)
-  const [locationState, setLocationState] = useState("Use location")
-  const loadingRef = useRef(locationState)
+  const dispatch =useAppDispatch()
+  const data =useAppSelector(selectAlldata)
+  const Status =useAppSelector(selectAllStatus)
+  const Error =useAppSelector(selectAllError)
+  const [submitState, setSubmitState] = useState(false);
+  const [locationState, setLocationState] = useState("Use location");
+  const loadingRef = useRef(locationState);
   const [formData, setformData] = useState({
     firstName: "",
     lastName: "",
@@ -23,59 +29,75 @@ const SignUpForm: React.FC = () => {
     location: {
       address_text: "",
       latitude: "",
-      logitutude: "",
+      longitude: "",
       country: "",
       administrativeArea: "",
       subAdministrativeArea: "",
     },
   });
-  const UpdateForm =(e:  React.ChangeEvent<HTMLInputElement | HTMLSelectElement>)=>{
-    setformData({...formData, [e.target.name]: e.target.value})
-  }
-  const handleSubmit = async(e: React.FormEvent) => {
-    e.preventDefault();
-    console.log(submitState)
-    setSubmitState(true)
-    const validating = await ObjectValidation(formData)
-    if (validating) {
-      router.push("/auth/signup/verify_your_email")
+  
+  const UpdateForm = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
+    setformData({ ...formData, [e.target.name]: e.target.value });
+  };
+ 
+  const FormWarning = ({ prop }: any) => {
+    if (prop !== null) {
+      return <div className='text-red-500 text-xs'>{prop}</div>;
     }
   };
-  const FormWarning=({prop}: any,)=>{
-    if (prop !== null) {
-      return(
-      <div className='text-red-500 text-xs'>{prop}</div>
-    )
-    }
-   }
- const confirmPwCheck =()=>{
-    if (formData.confirmPassword && formData.confirmPassword !== formData.password) {
-      return  "Password is doesn't match";
+  const confirmPwCheck = () => {
+    if (
+      formData.confirmPassword &&
+      formData.confirmPassword !== formData.password
+    ) {
+      return "Password is doesn't match";
     } else if (!formData.confirmPassword) {
-      return "Confirm your password"
+      return "Confirm your password";
     } else {
       return null;
     }
- }
-const handleLocation=async()=>{
-  setLocationState((prev)=>{loadingRef.current ="searching..."
-return loadingRef.current
-}
-)
- const currentLocation= await reverseGeocoding()
- if (currentLocation) {
-  setformData({...formData, location: currentLocation})
-  setLocationState((prev)=>{loadingRef.current =currentLocation.address_text
-    return loadingRef.current
-    })
- }else{
-  console.log(currentLocation)
-  setLocationState((prev)=>{loadingRef.current ="Use location"
-    return loadingRef.current
-    })
- }
-
-}
+  };
+  const handleLocation = async () => {
+    setLocationState((prev) => {
+      loadingRef.current = "searching...";
+      return loadingRef.current;
+    });
+    const currentLocation = await reverseGeocoding();
+    if (currentLocation) {
+      setformData({ ...formData, location: currentLocation });
+      setLocationState((prev) => {
+        loadingRef.current = currentLocation.address_text;
+        return loadingRef.current;
+      });
+    } else {
+      setLocationState((prev) => {
+        loadingRef.current = "Use location";
+        return loadingRef.current;
+      });
+    }
+  };
+   const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setSubmitState(true);
+    const validating = await ObjectValidation(formData);
+    const Locationvalidating = await ObjectValidation(formData.location);
+    if (validating && Locationvalidating) {
+      // @ts-ignore
+      const response =await dispatch(SignUp(formData))
+  
+      console.log(data)
+      console.log(Error)
+      // console.log(data.json())
+      console.log(Status)
+      // router.push("/auth/signup/verify_your_email");
+    }
+  };
+  console.log(data)
+      console.log(Error)
+      // console.log(data.json())
+      console.log(Status)
   return (
     <div className='sm:w-[500px] w-full m-auto py-4 bg-white text-lgray text-[16px] rounded-2xl shadow-md border mt-[100px]'>
       <div className='flex w-full items-center justify-center border-b'>
@@ -179,11 +201,12 @@ return loadingRef.current
             className='text-truncate mt-1 block h-[48px] w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none text-xs '
             onClick={handleLocation}
           />
-         {(submitState && locationState === "Use location") && (
+          {submitState && locationState === "Use location" && (
             <>
-            <div className='text-red-500 text-xs'>Your location is not set</div>
+              <div className='text-red-500 text-xs'>
+                Your location is not set
+              </div>
             </>
-            
           )}
         </div>
 
@@ -197,7 +220,6 @@ return loadingRef.current
             onChange={UpdateForm}
             className='mt-1 block w-full h-[48px] px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none'
           />
-          
         </div>
 
         <div className=''>
@@ -214,7 +236,6 @@ return loadingRef.current
             <FormWarning prop={confirmPwCheck()} />
           )}
         </div>
-
 
         <button
           type='submit'

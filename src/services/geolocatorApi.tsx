@@ -18,7 +18,7 @@ if (res.status === "OK") {
     const locationData = {
     address_text: res.results[0].formatted_address,
     latitude: res.results[0].geometry.location.lat,
-    logitutude: res.results[0].geometry.location.lng,
+    longitude: res.results[0].geometry.location.lng,
     country: res.results[0].address_components.find(
       (obj: AddressComponent) => obj.types[0] === "country"
     ).long_name,

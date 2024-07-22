@@ -6,7 +6,6 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useRef, useState } from "react";
 import { selectAlldata, selectAllStatus, selectAllError, SignUp } from "@/lib/features/Auth/authSlice";
-import { selectAllSignindata, selectAllSigninStatus, selectAllSigninError, Signin } from "@/lib/features/Login/signinSlice";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 
 const SignUpForm: React.FC = () => {

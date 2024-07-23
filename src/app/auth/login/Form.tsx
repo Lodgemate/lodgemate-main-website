@@ -44,11 +44,6 @@ const LoginForm: React.FC = () => {
     dispatch(showLoadingModal("Authenticating"));
       // @ts-ignore
       const response =await dispatch(Signin(formData))
-  
-      console.log(data)
-      console.log(Error)
-      // console.log(data.json())
-      console.log(Status)
       // router.push("/auth/signup/verify_your_email");
     }
   };
@@ -117,6 +112,11 @@ const LoginForm: React.FC = () => {
             <FormWarning prop={onFocusValidation("password", formData.password)} />
           )}
         </div>
+        <p className=" mt-3 hover:text-primary">
+          <Link href="/auth/forgotpassword">
+          Forgot Password
+          </Link>
+        </p>
         <button
           type='submit'
           className='w-full px-4 mt-2 py-2 flex justify-center items-center sm:col-span-2  bg-primary text-white rounded-md shadow-sm focus:outline-none'

@@ -5,7 +5,7 @@ interface BlurbgProps {
 }
 const Blurbg: FC<BlurbgProps> = ({ children }) => {
   return (
-    <section className=' bg-opacity-65 w-full h-full bg-lgray absolute top-20 flex justify-center pt-48'>
+    <section className=' bg-opacity-65 w-full h-full bg-lgray absolute top-0 flex justify-center pt-48'>
       {children}
     </section>
   );

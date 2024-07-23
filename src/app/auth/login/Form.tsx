@@ -44,11 +44,6 @@ const LoginForm: React.FC = () => {
     dispatch(showLoadingModal("Authenticating"));
       // @ts-ignore
       const response =await dispatch(Signin(formData))
-  
-      console.log(data)
-      console.log(Error)
-      // console.log(data.json())
-      console.log(Status)
       // router.push("/auth/signup/verify_your_email");
     }
   };

@@ -9,6 +9,7 @@ import StoreProvider from "./StoreProvider";
 import LogoLoader from "@/Ui/shared/logoLoader";
 import Aproved from "@/Ui/shared/Aproved";
 import Failed from "@/Ui/shared/Failed";
+import EmailModal from "@/Ui/shared/EmailModal";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -34,6 +35,8 @@ export default function RootLayout({
         </body>
         <Footer />
         <BottomNavbar />
+      <EmailModal/>
+
       </StoreProvider>
     </html>
   );

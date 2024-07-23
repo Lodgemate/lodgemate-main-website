@@ -4,8 +4,9 @@ import { ObjectValidation, onFocusValidation } from "@/utils/formValidation";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useRef, useState } from "react";
-import { selectAllSignindata, selectAllSigninStatus, selectAllSigninError, Signin, setAuthenticated  } from "@/lib/features/Login/signinSlice";
+import { selectAllSignindata, selectAllSigninStatus, selectAllSigninError, Signin, setAuthenticated, resetState  } from "@/lib/features/Login/signinSlice";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
+import { showFailedModal, showLoadingModal, showSuccessfulModal } from "@/lib/features/Modal/ModalSlice";
 
 const LoginForm: React.FC = () => {
   const router = useRouter();
@@ -36,9 +37,11 @@ const LoginForm: React.FC = () => {
 
    const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    dispatch(showLoadingModal("Validating Credentials"));
     setSubmitState(true);
     const validating = await ObjectValidation(formData);
     if (validating ) {
+    dispatch(showLoadingModal("Authenticating"));
       // @ts-ignore
       const response =await dispatch(Signin(formData))
   
@@ -50,16 +53,29 @@ const LoginForm: React.FC = () => {
     }
   };
   useEffect(()=>{
+    if (Error) {
+      dispatch(showLoadingModal(null));
+        dispatch(showFailedModal(Error));
+        dispatch(resetState());
+    }
     if (data === null) {
       return 
     }
-    console.log(data)
+    console.log(data.status)
       if (data.status === 'success') {
         console.log(data.token)
         localStorage.setItem("token", JSON.stringify(data.token) )
          dispatch(setAuthenticated());
+         dispatch(showLoadingModal(null));
+         dispatch(showSuccessfulModal("login Successful"));
+         dispatch(showSuccessfulModal(null));
+        router.back()
+      }else if(!data.status){
+        dispatch(showLoadingModal(null));
+        dispatch(showFailedModal(data));
+        dispatch(resetState());
       }
-  },[data])
+  },[data,Status, Error])
   console.log(data)
       console.log(Error)
       // console.log(data.json())

@@ -1,9 +1,16 @@
 import { RootState } from "@/lib/store";
+import { ApiResponse } from "@/lib/Types";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 const url = `${process.env.NEXT_PUBLIC_BASE_URL}/v1/user/signup`;
-const initialState = {
-  data: {},
+interface initialStateType{
+  data: ApiResponse | null ,
+  status: string,
+  error: string|null,
+
+}
+const initialState: initialStateType = {
+  data: null,
   status: "idle",
   error: null,
 };

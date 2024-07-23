@@ -2,6 +2,7 @@ let latitude: number;
 let longitude:number;
 
 export const getUserLongLang = async(): Promise<{ latitude: number; longitude: number }> =>{
+
       return new Promise<{ latitude: number; longitude: number }> ((resolve,reject)=>{
         navigator.geolocation.getCurrentPosition((position)=>{
           latitude=position.coords.latitude
@@ -12,3 +13,4 @@ export const getUserLongLang = async(): Promise<{ latitude: number; longitude: n
         })
       })
 }
+

@@ -4,10 +4,12 @@ import { reverseGeocoding } from "@/services/geolocatorApi";
 import { ObjectValidation, onFocusValidation } from "@/utils/formValidation";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { selectAlldata, selectAllStatus, selectAllError, SignUp } from "@/lib/features/Auth/authSlice";
-import { selectAllSignindata, selectAllSigninStatus, selectAllSigninError, Signin } from "@/lib/features/Login/signinSlice";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
+import { showEmailOtpModal, showFailedModal, showLoadingModal, showSuccessfulModal } from "@/lib/features/Modal/ModalSlice";
+import EmailModal from "@/Ui/shared/EmailModal";
+import { resetState, selectAllSignindata, setAuthenticated, Signin } from "@/lib/features/Login/signinSlice";
 
 const SignUpForm: React.FC = () => {
   const router = useRouter();
@@ -15,6 +17,7 @@ const SignUpForm: React.FC = () => {
   const data =useAppSelector(selectAlldata)
   const Status =useAppSelector(selectAllStatus)
   const Error =useAppSelector(selectAllError)
+  const signedInData =useAppSelector(selectAllSignindata)
   const [submitState, setSubmitState] = useState(false);
   const [locationState, setLocationState] = useState("Use location");
   const loadingRef = useRef(locationState);
@@ -60,20 +63,27 @@ const SignUpForm: React.FC = () => {
     }
   };
   const handleLocation = async () => {
+    dispatch(showLoadingModal("Fetching Location"));
     setLocationState((prev) => {
       loadingRef.current = "searching...";
       return loadingRef.current;
     });
     const currentLocation = await reverseGeocoding();
-    if (currentLocation) {
+    if (typeof currentLocation === "string") {
+      dispatch(showLoadingModal(null));
+      dispatch(showFailedModal("Location permission denied"));
+    } else if (typeof currentLocation === "object") {
       setformData({ ...formData, location: currentLocation });
       setLocationState((prev) => {
         loadingRef.current = currentLocation.address_text;
         return loadingRef.current;
       });
+      dispatch(showLoadingModal(null));
     } else {
       setLocationState((prev) => {
         loadingRef.current = "Use location";
+        dispatch(showLoadingModal(null));
+        dispatch(showFailedModal("Something went wrong, Try again"));
         return loadingRef.current;
       });
     }
@@ -84,20 +94,68 @@ const SignUpForm: React.FC = () => {
     const validating = await ObjectValidation(formData);
     const Locationvalidating = await ObjectValidation(formData.location);
     if (validating && Locationvalidating) {
+      dispatch(showLoadingModal("Creating account"))
       // @ts-ignore
       const response =await dispatch(SignUp(formData))
-  
-      console.log(data)
+  if(response.payload.status === 'success'){
+    dispatch(showLoadingModal("Sigining in"))
+    const credentials={
+      email: formData.email,
+      password: formData.password
+    }
+     
+      // @ts-ignore
+   const signin=await dispatch(Signin(credentials))
+
+    console.log("sign in")
+
+  }
+  else if (response.payload.status === 'fail' && response.payload.message) {
+    dispatch(showLoadingModal(null))
+    dispatch(showFailedModal(response.payload.message));
+    
+  }
+      console.log(response.payload)
+      console.log(response.payload.status)
+      console.log(response.payload.err.errors)
       console.log(Error)
       // console.log(data.json())
       console.log(Status)
       // router.push("/auth/signup/verify_your_email");
+      dispatch(showLoadingModal(null))
     }
   };
   console.log(data)
       console.log(Error)
       // console.log(data.json())
       console.log(Status)
+      useEffect(()=>{
+        if (Error) {
+          dispatch(showLoadingModal(null));
+            dispatch(showFailedModal(Error));
+            dispatch(resetState());
+        }
+        if (signedInData === null) {
+          return 
+        }
+        console.log(signedInData.status)
+          if (signedInData.status === 'success' && signedInData.token) {
+            console.log(signedInData.token)
+            localStorage.setItem("token", JSON.stringify(signedInData.token) )
+             dispatch(setAuthenticated());
+             dispatch(showLoadingModal(null));
+             dispatch(showSuccessfulModal("login Successful"));
+             dispatch(showSuccessfulModal(null));
+   dispatch(showEmailOtpModal(formData.email))
+
+            // router.back()
+          }else if(!signedInData.status){
+            dispatch(showLoadingModal(null));
+            dispatch(showFailedModal(signedInData));
+            dispatch(resetState());
+          }
+      },[signedInData,Status, Error])
+
   return (
     <div className='sm:w-[500px] w-full m-auto py-4 bg-white text-lgray text-[16px] rounded-2xl shadow-md border mt-[100px]'>
       <div className='flex w-full items-center justify-center border-b'>

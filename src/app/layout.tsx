@@ -7,6 +7,9 @@ import BottomNavbar from "@/components/Navbar/BottomNavbar";
 import "aos/dist/aos.css";
 import StoreProvider from "./StoreProvider";
 import LogoLoader from "@/Ui/shared/logoLoader";
+import Aproved from "@/Ui/shared/Aproved";
+import Failed from "@/Ui/shared/Failed";
+import EmailModal from "@/Ui/shared/EmailModal";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -23,14 +26,17 @@ export default function RootLayout({
   return (
     <html lang='en'>
       <StoreProvider>
-         <Navbar />
+        <Navbar />
         <body className={`  relative  ${inter.className}`}>
           <div className=' min-h-screen'>{children}</div>
-         {/* <LogoLoader /> */}
+          <LogoLoader />
+          <Aproved />
+          <Failed />
         </body>
-       
         <Footer />
         <BottomNavbar />
+      <EmailModal/>
+
       </StoreProvider>
     </html>
   );

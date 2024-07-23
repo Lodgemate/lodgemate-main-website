@@ -63,6 +63,14 @@ const authSlice = createSlice({
       state.isAuthenticated = false;
       localStorage.removeItem("token")
     },
+    resetState:(state)=>{
+      state.data = null,
+      state.status= "idle",
+      state.error= null,
+      state.isAuthenticated= false,
+      state.token=null
+    },
+    
   },
   extraReducers: (builder) => {
     builder
@@ -84,5 +92,5 @@ const authSlice = createSlice({
 export const selectAllSignindata = (state: RootState) => state.login.data;
 export const selectAllSigninStatus = (state: RootState) => state.login.status;
 export const selectAllSigninError = (state: RootState) => state.login.error;
-export const { setAuthenticated, Logout } = authSlice.actions;
+export const { setAuthenticated, Logout, resetState } = authSlice.actions;
 export default authSlice.reducer;

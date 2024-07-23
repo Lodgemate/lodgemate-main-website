@@ -67,7 +67,7 @@ useEffect(()=>{
     if (/^\d{6}$/.test(pasteData)) {
       setOtp(pasteData.split(""));
       // Automatically focus on the last input field after pasting
-      inputsRef.current[3]?.focus();
+      inputsRef.current[5]?.focus();
     }
   };
   // handle failed Otp

@@ -11,11 +11,7 @@ import {
 } from "@/lib/features/Modal/ModalSlice";
 import Blurbg from "./Blurbg";
 import { useRouter } from "next/navigation";
-
-const EmailModal = () => {
-  const modalMssg = useAppSelector(selectAllemailOtpModalModalMssg);
-  const router = useRouter();
-  const hidemail = (mail: string) => {
+ export const hidemail = (mail: string) => {
     const astericGenerator = (number: number) => {
       return "*".repeat(number);
     };
@@ -29,6 +25,10 @@ const EmailModal = () => {
     sessionStorage.setItem("hiddenemail", JSON.stringify(mail));
     return generatedMail;
   };
+const EmailModal = () => {
+  const modalMssg = useAppSelector(selectAllemailOtpModalModalMssg);
+  const router = useRouter();
+ 
   return (
     <>
       {modalMssg && (

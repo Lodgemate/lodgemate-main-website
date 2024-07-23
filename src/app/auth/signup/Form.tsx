@@ -5,19 +5,35 @@ import { ObjectValidation, onFocusValidation } from "@/utils/formValidation";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useRef, useState } from "react";
-import { selectAlldata, selectAllStatus, selectAllError, SignUp } from "@/lib/features/Auth/authSlice";
+import {
+  selectAlldata,
+  selectAllStatus,
+  selectAllError,
+  SignUp,
+} from "@/lib/features/Auth/authSlice";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
-import { showEmailOtpModal, showFailedModal, showLoadingModal, showSuccessfulModal } from "@/lib/features/Modal/ModalSlice";
-import EmailModal from "@/Ui/shared/EmailModal";
-import { resetState, selectAllSignindata, setAuthenticated, Signin } from "@/lib/features/Login/signinSlice";
+import {
+  showEmailOtpModal,
+  showFailedModal,
+  showLoadingModal,
+  showSuccessfulModal,
+} from "@/lib/features/Modal/ModalSlice";
+import EmailModal, { hidemail } from "@/Ui/shared/EmailModal";
+import {
+  resetState,
+  selectAllSignindata,
+  setAuthenticated,
+  Signin,
+} from "@/lib/features/Login/signinSlice";
+import { verifyEmail } from "@/services/verifyEmail";
 
 const SignUpForm: React.FC = () => {
   const router = useRouter();
-  const dispatch =useAppDispatch()
-  const data =useAppSelector(selectAlldata)
-  const Status =useAppSelector(selectAllStatus)
-  const Error =useAppSelector(selectAllError)
-  const signedInData =useAppSelector(selectAllSignindata)
+  const dispatch = useAppDispatch();
+  const data = useAppSelector(selectAlldata);
+  const Status = useAppSelector(selectAllStatus);
+  const Error = useAppSelector(selectAllError);
+  const signedInData = useAppSelector(selectAllSignindata);
   const [submitState, setSubmitState] = useState(false);
   const [locationState, setLocationState] = useState("Use location");
   const loadingRef = useRef(locationState);
@@ -38,13 +54,13 @@ const SignUpForm: React.FC = () => {
       subAdministrativeArea: "",
     },
   });
-  
+
   const UpdateForm = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
     setformData({ ...formData, [e.target.name]: e.target.value });
   };
- 
+
   const FormWarning = ({ prop }: any) => {
     if (prop !== null) {
       return <div className='text-red-500 text-xs'>{prop}</div>;
@@ -88,73 +104,84 @@ const SignUpForm: React.FC = () => {
       });
     }
   };
-   const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitState(true);
     const validating = await ObjectValidation(formData);
     const Locationvalidating = await ObjectValidation(formData.location);
     if (validating && Locationvalidating) {
-      dispatch(showLoadingModal("Creating account"))
+      dispatch(showLoadingModal("Creating account"));
       // @ts-ignore
-      const response =await dispatch(SignUp(formData))
-  if(response.payload.status === 'success'){
-    dispatch(showLoadingModal("Sigining in"))
-    const credentials={
-      email: formData.email,
-      password: formData.password
-    }
-     
-      // @ts-ignore
-   const signin=await dispatch(Signin(credentials))
+      const response = await dispatch(SignUp(formData));
+      if (response.payload.status === "success") {
+        dispatch(showLoadingModal("Sigining in"));
+        const credentials = {
+          email: formData.email,
+          password: formData.password,
+        };
 
-    console.log("sign in")
-
-  }
-  else if (response.payload.status === 'fail' && response.payload.message) {
-    dispatch(showLoadingModal(null))
-    dispatch(showFailedModal(response.payload.message));
-    
-  }
-      console.log(response.payload)
-      console.log(response.payload.status)
-      console.log(response.payload.err.errors)
-      console.log(Error)
+        // @ts-ignore
+        const signin = await dispatch(Signin(credentials));
+        // verifyEmail
+        console.log(signin);
+      } else if (
+        response.payload.status === "fail" &&
+        response.payload.message
+      ) {
+        dispatch(showLoadingModal(null));
+        dispatch(showFailedModal(response.payload.message));
+      }
+      console.log(response.payload);
+      console.log(response.payload.status);
+      console.log(response.payload.err.errors);
+      console.log(Error);
       // console.log(data.json())
-      console.log(Status)
+      console.log(Status);
       // router.push("/auth/signup/verify_your_email");
-      dispatch(showLoadingModal(null))
+      dispatch(showLoadingModal(null));
     }
   };
-  console.log(data)
-      console.log(Error)
-      // console.log(data.json())
-      console.log(Status)
-      useEffect(()=>{
-        if (Error) {
-          dispatch(showLoadingModal(null));
-            dispatch(showFailedModal(Error));
-            dispatch(resetState());
-        }
-        if (signedInData === null) {
-          return 
-        }
-        console.log(signedInData.status)
-          if (signedInData.status === 'success' && signedInData.token) {
-            console.log(signedInData.token)
-            localStorage.setItem("token", JSON.stringify(signedInData.token) )
-             dispatch(setAuthenticated());
-             dispatch(showLoadingModal(null));
-             dispatch(showSuccessfulModal("login Successful"));
-             dispatch(showSuccessfulModal(null));
-   dispatch(showEmailOtpModal(formData.email))
+  console.log(data);
+  console.log(Error);
+  // console.log(data.json())
+  console.log(Status);
+  useEffect(() => {
+    const worker =async()=>{
+    if (Error) {
+      dispatch(showLoadingModal(null));
+      dispatch(showFailedModal(Error));
+      dispatch(resetState());
+    }
+    if (signedInData === null) {
+      return;
+    }
+    console.log(signedInData.status);
+    if (signedInData.status === "success" && signedInData.token) {
+      console.log(signedInData.token);
+      localStorage.setItem("token", JSON.stringify(signedInData.token));
+      dispatch(setAuthenticated());
+      // dispatch(showLoadingModal(null));
+      // dispatch(showSuccessfulModal("login Successful"));
+      // dispatch(showSuccessfulModal(null));
+      const res = await verifyEmail({email :formData.email});
+      console.log(res)
+      if (res.status === "success") {
+        hidemail(formData.email)
+       
+        router.push("/auth/signup/verify_your_email");
+      } else if (res.status === "fail") {
+  }
 
-            // router.back()
-          }else if(!signedInData.status){
-            dispatch(showLoadingModal(null));
-            dispatch(showFailedModal(signedInData));
-            dispatch(resetState());
-          }
-      },[signedInData,Status, Error])
+     
+      // router.back()
+    } else if (!signedInData.status) {
+      dispatch(showLoadingModal(null));
+      dispatch(showFailedModal(signedInData));
+      dispatch(resetState());
+    }
+    }
+    worker()
+  }, [signedInData, Status, Error]);
 
   return (
     <div className='sm:w-[500px] w-full m-auto py-4 bg-white text-lgray text-[16px] rounded-2xl shadow-md border mt-[100px]'>

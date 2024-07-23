@@ -28,15 +28,14 @@ interface fetchResetPw {
   password: string;
   confirmPassword: string;
 }
-export const fetchResetPw = async (credentials:  fetchResetPw ) => {
+export const fetchResetPw = async (credentials: fetchResetPw) => {
   const url = Endpoints.resetpw;
-  const payload=
-    {
-      "otp": credentials.otp,
-      "newPassword": credentials.password,
-      "newConfirmPassword": credentials.confirmPassword
-  }
-  
+  const payload = {
+    otp: credentials.otp,
+    newPassword: credentials.password,
+    newConfirmPassword: credentials.confirmPassword,
+  };
+
   try {
     const data = await fetch(url, {
       method: "PATCH",

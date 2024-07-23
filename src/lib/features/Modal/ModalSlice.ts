@@ -9,7 +9,6 @@ const initialState={
     emailOtpModal:null
 }
 
-
 const ModalSlice = createSlice({
     name:"Modal",
     initialState,

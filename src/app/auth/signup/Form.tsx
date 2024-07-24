@@ -350,13 +350,21 @@ const SignUpForm: React.FC = () => {
           <p>OR</p>
           <div className='bg-lgray w-[210px] h-[1px]'></div>
         </div>
-        <button className='flex gap-2 w-full border py-3 justify-center items-center rounded-[8px] mt-[32px]'>
-          <img
-            src='https://res.cloudinary.com/dcb4ilgmr/image/upload/v1719371440/utilities/LodgeMate_File/flat-color-icons_google_sqyie0.svg'
-            alt='google_auth'
-          />
-          Continue with Google
-        </button>
+       
+          <button className='flex gap-2 w-full border py-3 justify-center items-center rounded-[8px] mt-[32px]'>
+          <a
+          href='https://api.lodgemate.com.ng/v1/user/auth/google'
+          target='_blank'
+          className="flex gap-2"
+        >
+            <img
+              src='https://res.cloudinary.com/dcb4ilgmr/image/upload/v1719371440/utilities/LodgeMate_File/flat-color-icons_google_sqyie0.svg'
+              alt='google_auth'
+            />
+            Continue with Google{" "}
+            </a>
+          </button>
+       
       </div>
     </div>
   );

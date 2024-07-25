@@ -1,5 +1,7 @@
+'use client'
 import React from 'react';
 import SignUpForm from "./Form";
+import withAuth from '@/components/restrictedRoute/Authenticated';
 
 
 function SignUp() {
@@ -13,4 +15,4 @@ function SignUp() {
   );
 }
 
-export default SignUp
+export default withAuth(SignUp)

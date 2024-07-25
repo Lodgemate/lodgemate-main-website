@@ -1,8 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import data from "../../../../data/data";
+import WriteReview from "../../modals/WriteReview";
+
 
 interface LodgeInfoProps {
   id: number;
@@ -62,6 +64,15 @@ const features: Feature[] = [
 
 function LodgeInfo({ id }: LodgeInfoProps) {
   const LodgeData = data.find((item) => item.id === id);
+    const [isWriteReviewOpen, setIsWriteReviewOpen] = useState(false);
+
+   const handleOpenWriteReview = () => {
+     setIsWriteReviewOpen(true);
+   };
+
+   const handleCloseWriteReview = () => {
+     setIsWriteReviewOpen(false);
+   };
 
   if (!LodgeData) {
     return <div>Product not found</div>;
@@ -92,6 +103,10 @@ function LodgeInfo({ id }: LodgeInfoProps) {
   return (
     <div>
       <div className="sm:px-[100px] sm:mt-[51px]">
+        <WriteReview
+          show={isWriteReviewOpen}
+          onClose={handleCloseWriteReview}
+        />
         {/* the Name of the Product */}
         <h1 className="sm:text-[24px] text-[20px] sm:block hidden font-semibold text-dgray">
           {LodgeData.name}
@@ -370,7 +385,10 @@ function LodgeInfo({ id }: LodgeInfoProps) {
                   </div>
 
                   <div>
-                    <button className="flex items-center gap-2 px-[24px] py-[12px] border-2 rounded-lg border-opacity-[30%] ">
+                    <button
+                      onClick={handleOpenWriteReview}
+                      className="flex items-center gap-2 px-[24px] py-[12px] border-2 rounded-lg border-opacity-[30%] "
+                    >
                       <img
                         src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1716926488/utilities/LodgeMate_File/fluent_pen-28-regular_miqhhk.svg"
                         alt=""
@@ -518,7 +536,10 @@ function LodgeInfo({ id }: LodgeInfoProps) {
                   </div>
 
                   <div>
-                    <button className="flex w-full justify-center items-center gap-2 px-[24px] py-[12px] border-2 rounded-lg border-opacity-[30%] ">
+                    <button
+                      onClick={handleOpenWriteReview}
+                      className="flex w-full justify-center items-center gap-2 px-[24px] py-[12px] border-2 rounded-lg border-opacity-[30%] "
+                    >
                       <img
                         src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1716926488/utilities/LodgeMate_File/fluent_pen-28-regular_miqhhk.svg"
                         alt=""

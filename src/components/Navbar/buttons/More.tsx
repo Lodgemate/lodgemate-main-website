@@ -1,6 +1,8 @@
 "use client"
 
 import NotificationModal from "@/components/modals/NotificationModal";
+import { selectAllAuthenticated } from "@/lib/features/Login/signinSlice";
+import { useAppSelector } from "@/lib/hooks";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useState } from "react";
@@ -16,9 +18,12 @@ function More() {
   const NotificationShow = () => {
     setIsNotificationOpen(!isNotificationOpen);
   };
-
+  const isAuthenticated =useAppSelector(selectAllAuthenticated)
+  if (!isAuthenticated) {
+    return null;
+  }
   return (
-    <div>
+    <div className="">
       {/* desktop */}
       <div className="relative sm:block hidden">
         <div className="px-[13px] py-2 sm:block hidden rounded-[8px] bg-primary">

@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import AOS from "aos";
+
 
 interface LodgeSavedProps {
   show: boolean;
@@ -9,6 +11,13 @@ const LodgeSaved: React.FC<LodgeSavedProps> = ({
   show,
   onClose,
 }) => {
+
+    useEffect(() => {
+      AOS.init({
+        duration: 1000,
+      });
+    }, []);
+
   useEffect(() => {
     if (show) {
       document.body.style.overflow = "hidden";
@@ -25,6 +34,7 @@ const LodgeSaved: React.FC<LodgeSavedProps> = ({
     return null;
   }
 
+    
   return (
     <div
       className="fixed inset-0 bg-black bg-opacity-50 flex pt-[100px] items-start z-50 justify-center"
@@ -33,6 +43,7 @@ const LodgeSaved: React.FC<LodgeSavedProps> = ({
       <div
         className="bg-white p-6 rounded-[12px] shadow-lg relative"
         onClick={(e) => e.stopPropagation()}
+        data-aos="zoom-in-up"
       >
         <button
           className="absolute top-2 right-2 text-gray-600 hover:text-gray-800"

@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import AOS from "aos";
+
 
 interface WriteReviewProps {
   show: boolean;
@@ -14,6 +16,12 @@ const WriteReview: React.FC<WriteReviewProps> = ({ show, onClose }) => {
     "/icons/star_black.svg",
   ]);
 
+     useEffect(() => {
+       AOS.init({
+         duration: 1000,
+       });
+     }, []);
+    
   useEffect(() => {
     if (show) {
       document.body.style.overflow = "hidden";
@@ -35,16 +43,20 @@ const WriteReview: React.FC<WriteReviewProps> = ({ show, onClose }) => {
 
   if (!show) {
     return null;
-  }
+    }
+    
+    
 
   return (
     <div
       className="fixed inset-0 bg-black bg-opacity-50 flex items-start pt-[100px]  justify-center"
       onClick={onClose}
     >
-      <div
-        className="bg-white p-6 rounded-[12px] shadow-lg relative"
-        onClick={(e) => e.stopPropagation()}
+          <div
+              
+        className="bg-white p-6 rounded-[12px]  shadow-lg relative"
+              onClick={(e) => e.stopPropagation()}
+              data-aos="zoom-in-up"
       >
         <button
           className="absolute top-2 right-2 text-gray-600 hover:text-gray-800"

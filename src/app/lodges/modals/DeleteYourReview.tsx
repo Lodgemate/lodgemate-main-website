@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import AOS from "aos";
+
 
 interface DeleteYourReviewProps {
   show: boolean;
@@ -7,6 +9,11 @@ interface DeleteYourReviewProps {
 
 const DeleteYourReview: React.FC<DeleteYourReviewProps> = ({ show, onClose }) => {
   
+useEffect(() => {
+  AOS.init({
+    duration: 1000,
+  });
+}, []);
 
   useEffect(() => {
     if (show) {
@@ -26,6 +33,8 @@ const DeleteYourReview: React.FC<DeleteYourReviewProps> = ({ show, onClose }) =>
     return null;
   }
 
+    
+
   return (
     <div
       className="fixed inset-0 bg-black bg-opacity-50 flex pt-[100px] justify-center"
@@ -34,6 +43,7 @@ const DeleteYourReview: React.FC<DeleteYourReviewProps> = ({ show, onClose }) =>
       <div
         className="bg-white p-6 rounded-[12px] shadow-lg relative"
         onClick={(e) => e.stopPropagation()}
+        data-aos="zoom-in-up"
       >
         <button
           className="absolute top-2 right-2 text-gray-600 hover:text-gray-800"

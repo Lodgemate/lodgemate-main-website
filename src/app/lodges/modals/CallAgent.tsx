@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import AOS from "aos";
 
 interface CallAgentProps {
   show: boolean;
@@ -9,6 +10,12 @@ const CallAgent: React.FC<CallAgentProps> = ({
   show,
   onClose,
 }) => {
+
+    useEffect(() => {
+      AOS.init({
+        duration: 1000,
+      });
+    }, []);
  
   useEffect(() => {
     if (show) {
@@ -27,6 +34,8 @@ const CallAgent: React.FC<CallAgentProps> = ({
     return null;
   }
 
+    
+
   return (
     <div
       className="fixed inset-0 bg-black bg-opacity-50 flex pt-[100px] items-start justify-center"
@@ -35,6 +44,7 @@ const CallAgent: React.FC<CallAgentProps> = ({
       <div
         className="bg-white p-6 rounded-[12px] shadow-lg relative"
         onClick={(e) => e.stopPropagation()}
+        data-aos="zoom-in-up"
       >
         <button
           className="absolute top-2 right-2 text-gray-600 hover:text-gray-800"

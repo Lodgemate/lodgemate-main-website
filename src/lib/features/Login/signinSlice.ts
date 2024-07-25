@@ -22,8 +22,6 @@ export const Signin = createAsyncThunk(
   "Auth/SignIn",
   async (credentials) => {
     try {
-      console.log(credentials);
-      console.log(signInurl);
       const response = await fetch(signInurl, {
         method: "POST",
         headers: {
@@ -33,7 +31,6 @@ export const Signin = createAsyncThunk(
         body: JSON.stringify(credentials),
       });
       const parsedRes=await response.json()
-      console.log(parsedRes.status);
       if (parsedRes.status === "fail") {
       console.log(parsedRes.message);
           throw (parsedRes || "Failed to sign up");
@@ -92,5 +89,6 @@ const authSlice = createSlice({
 export const selectAllSignindata = (state: RootState) => state.login.data;
 export const selectAllSigninStatus = (state: RootState) => state.login.status;
 export const selectAllSigninError = (state: RootState) => state.login.error;
+export const selectAllAuthenticated = (state: RootState) => state.login.isAuthenticated;
 export const { setAuthenticated, Logout, resetState } = authSlice.actions;
 export default authSlice.reducer;

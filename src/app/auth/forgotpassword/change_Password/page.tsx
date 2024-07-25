@@ -142,7 +142,7 @@ const payload={...formData, otp: otpCode}
       if (res.status === 'success') {
         dispatch(showLoadingModal(null))
         sessionStorage.removeItem("email")
-        sessionStorage.removeItem("hiddenmail")
+        sessionStorage.removeItem("hiddenemail")
         dispatch(showSuccessfulModal("Password updated"))
         setTimeout(() => {
         dispatch(showSuccessfulModal(null))

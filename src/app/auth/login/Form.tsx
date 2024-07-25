@@ -19,6 +19,7 @@ import {
   showSuccessfulModal,
 } from "@/lib/features/Modal/ModalSlice";
 import { GoogleAuth } from "@/services/GoogleAuth";
+import withAuth from "@/components/restrictedRoute/Authenticated";
 
 const LoginForm: React.FC = () => {
   const router = useRouter();
@@ -112,10 +113,6 @@ const LoginForm: React.FC = () => {
       dispatch(resetState());
     }
   }, [data, Status, Error]);
-  console.log(data);
-  console.log(Error);
-  // console.log(data.json())
-  console.log(Status);
   return (
     <div className='sm:w-[500px] w-full m-auto py-4 bg-white text-lgray text-[16px] rounded-2xl shadow-md border mt-[100px]'>
       <div className='flex w-full items-center justify-center border-b'>

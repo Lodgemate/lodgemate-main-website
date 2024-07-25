@@ -39,11 +39,11 @@ const WriteReview: React.FC<WriteReviewProps> = ({ show, onClose }) => {
 
   return (
     <div
-      className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center"
+      className="fixed inset-0 bg-black bg-opacity-50 flex items-start pt-[100px]  justify-center"
       onClick={onClose}
     >
       <div
-        className="bg-white p-6 rounded shadow-lg relative"
+        className="bg-white p-6 rounded-[12px] shadow-lg relative"
         onClick={(e) => e.stopPropagation()}
       >
         <button
@@ -54,7 +54,10 @@ const WriteReview: React.FC<WriteReviewProps> = ({ show, onClose }) => {
         </button>
         <div className="mb-4">
           <div className="flex gap-2">
-            <img src="/icons/star_black.svg" alt="" />
+            <img
+              src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1720745689/utilities/LodgeMate_File/Img_jccfin.svg"
+              alt=""
+            />
             <div>
               <h1 className="font-semibold">McGreggor</h1>
               <p>05/05/23</p>

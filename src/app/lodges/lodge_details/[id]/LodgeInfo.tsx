@@ -1,8 +1,15 @@
 "use client";
 
 import Link from "next/link";
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import data from "../../../../data/data";
+import WriteReview from "../../modals/WriteReview";
+import DeleteYourReview from "../../modals/DeleteYourReview";
+import CallAgent from "../../modals/CallAgent";
+import LodgeSaved from "../../modals/LodgeSaved";
+
+
+
 
 interface LodgeInfoProps {
   id: number;
@@ -62,6 +69,30 @@ const features: Feature[] = [
 
 function LodgeInfo({ id }: LodgeInfoProps) {
   const LodgeData = data.find((item) => item.id === id);
+    const [isWriteReviewOpen, setIsWriteReviewOpen] = useState(false);
+    const [isCallAgentOpen, setIsCallAgentOpen] = useState(false);
+    const [isLodgeSavedOpen, setIsLodgeSavedOpen] = useState(false);
+
+   const handleOpenWriteReview = () => {
+     setIsWriteReviewOpen(true);
+  };
+  
+  const handleOpenCallAgent = () => {
+    setIsCallAgentOpen(true);
+  };
+  const handleOpenLodgeSaved = () => {
+    setIsLodgeSavedOpen(true);
+  };
+
+   const handleCloseWriteReview = () => {
+     setIsWriteReviewOpen(false);
+  };
+   const handleCloseCallAgent = () => {
+     setIsCallAgentOpen(false);
+  };
+  const handleCloseLodgeSaved = () => {
+    setIsLodgeSavedOpen(false);
+  };
 
   if (!LodgeData) {
     return <div>Product not found</div>;
@@ -92,11 +123,17 @@ function LodgeInfo({ id }: LodgeInfoProps) {
   return (
     <div>
       <div className="sm:px-[100px] sm:mt-[51px]">
+        {/* modals render */}
+        <WriteReview
+          show={isWriteReviewOpen}
+          onClose={handleCloseWriteReview}
+        />
+        <CallAgent show={isCallAgentOpen} onClose={handleCloseCallAgent} />{" "}
+        <LodgeSaved show={isLodgeSavedOpen} onClose={handleCloseLodgeSaved} />
         {/* the Name of the Product */}
         <h1 className="sm:text-[24px] text-[20px] sm:block hidden font-semibold text-dgray">
           {LodgeData.name}
         </h1>
-
         <div className="sm:flex justify-between hidden">
           <div className="flex gap-[24px] items-center">
             <div className="">
@@ -151,7 +188,10 @@ function LodgeInfo({ id }: LodgeInfoProps) {
           </div>
 
           <div>
-            <button className="border- border-opacity-[8%] border-2 flex rounded-lg py-[10px] gap-2 px-[16px]">
+            <button
+              onClick={handleOpenLodgeSaved}
+              className="border- border-opacity-[8%] border-2 flex rounded-lg py-[10px] gap-2 px-[16px]"
+            >
               <img
                 src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1716817967/utilities/LodgeMate_File/ph_heart-fill_cidon6.svg"
                 alt=""
@@ -370,7 +410,10 @@ function LodgeInfo({ id }: LodgeInfoProps) {
                   </div>
 
                   <div>
-                    <button className="flex items-center gap-2 px-[24px] py-[12px] border-2 rounded-lg border-opacity-[30%] ">
+                    <button
+                      onClick={handleOpenWriteReview}
+                      className="flex items-center gap-2 px-[24px] py-[12px] border-2 rounded-lg border-opacity-[30%] "
+                    >
                       <img
                         src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1716926488/utilities/LodgeMate_File/fluent_pen-28-regular_miqhhk.svg"
                         alt=""
@@ -455,7 +498,10 @@ function LodgeInfo({ id }: LodgeInfoProps) {
                 </button>
 
                 <div className="h-[3px] w-full mb-[18px] bg-black opacity-[10%] "></div>
-                <button className="w-full border-2 rounded-lg border-opacity-[20px] py-[12px] mb-[18px]">
+                <button
+                  onClick={handleOpenCallAgent}
+                  className="w-full border-2 rounded-lg border-opacity-[20px] py-[12px] mb-[18px]"
+                >
                   Call
                 </button>
 
@@ -491,7 +537,10 @@ function LodgeInfo({ id }: LodgeInfoProps) {
                 </div>
               </div>
               <div className="my-[40px] flex w-full">
-                <button className="flex justify-center rounded-lg py-[12px] items-center gap-4 bg-primary text-white w-full ">
+                <button
+                  onClick={handleOpenLodgeSaved}
+                  className="flex justify-center rounded-lg py-[12px] items-center gap-4 bg-primary text-white w-full "
+                >
                   <img
                     src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1716939371/utilities/LodgeMate_File/Vector_iozdjc.svg"
                     alt=""
@@ -518,7 +567,10 @@ function LodgeInfo({ id }: LodgeInfoProps) {
                   </div>
 
                   <div>
-                    <button className="flex w-full justify-center items-center gap-2 px-[24px] py-[12px] border-2 rounded-lg border-opacity-[30%] ">
+                    <button
+                      onClick={handleOpenWriteReview}
+                      className="flex w-full justify-center items-center gap-2 px-[24px] py-[12px] border-2 rounded-lg border-opacity-[30%] "
+                    >
                       <img
                         src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1716926488/utilities/LodgeMate_File/fluent_pen-28-regular_miqhhk.svg"
                         alt=""

@@ -147,7 +147,10 @@ const dispatch = useAppDispatch();
                   1
                 </span>
               </Link>
-              <Link href="/status_and_inventory" className="text-gray-700 py-[5px]">
+              <Link
+                href="/status_and_inventory"
+                className="text-gray-700 py-[5px]"
+              >
                 Status & inventory
               </Link>
               <div className="bg-black opacity-[8%] w-full h-[1px]"></div>
@@ -218,7 +221,10 @@ const dispatch = useAppDispatch();
                   3
                 </span>
               </Link>
-              <Link href="/" className="text-gray-700 py-[5px]">
+              <Link
+                href="/user_profile/my_profile"
+                className="text-gray-700 py-[5px]"
+              >
                 View profile
               </Link>
               <div className="bg-black opacity-[8%] w-full h-[1px]"></div>
@@ -254,7 +260,10 @@ const dispatch = useAppDispatch();
                   1
                 </span>
               </Link>
-              <Link href="/status_and_inventory" className="text-gray-700 py-[5px]">
+              <Link
+                href="/status_and_inventory"
+                className="text-gray-700 py-[5px]"
+              >
                 Status & inventory
               </Link>
               <div className="bg-black opacity-[8%] w-full h-[1px]"></div>

@@ -24,14 +24,14 @@ const Tab4Content: React.FC = () => {
 
   return (
     <div className="flex flex-col items-center mt-[20px]">
-      <form className="flex flex-wrap max-w-[500px] gap-5 mt-5">
+      <form className="flex flex-wrap max-w-[500px] justify-center sm:gap-5 gap-2 mt-5">
         {placeholders.map((placeholder, index) => (
           <div
             key={index}
             className={`${
               index === 0
-                ? "w-[500px] h-[300px]"
-                : "w-[240px] h-[160px] overflow-hidden"
+                ? "sm:w-[500px] w-full h-[300px]"
+                : "sm:w-[240px] w-[160px] h-[100px] overflow-hidden"
             }  flex items-center justify-center`}
           >
             <label

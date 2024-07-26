@@ -1,5 +1,7 @@
 "use client"
 
+import { selectAllAuthenticated } from "@/lib/features/Login/signinSlice";
+import { useAppSelector } from "@/lib/hooks";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useState } from "react";
@@ -10,7 +12,10 @@ function Account() {
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
   };
-
+  const isAuthenticated =useAppSelector(selectAllAuthenticated)
+  if (isAuthenticated) {
+    return null;
+  }
   return (
     <div>
       {/* desktop */}
@@ -57,10 +62,10 @@ function Account() {
               </button>
             </div>
             <div className="flex flex-col gap-2 text-[16px] p-2">
-              <Link href="/auth/signup" className="text-gray-700 py-[5px] ">
+            <Link href="/auth/signup" onClick={()=>toggleDropdown()} className="text-gray-700 py-[5px] ">
                 Create account
               </Link>
-              <Link href="/auth/login" className="text-gray-700 py-[5px]">
+              <Link href="/auth/login" onClick={()=>toggleDropdown()}  className="text-gray-700 py-[5px]">
                 Login
               </Link>
             </div>
@@ -111,10 +116,10 @@ function Account() {
               </button>
             </div>
             <div className="flex flex-col gap-2 text-[16px] p-2">
-              <Link href="/auth/signup" className="text-gray-700 py-[5px] ">
+              <Link href="/auth/signup" onClick={()=>toggleDropdown()} className="text-gray-700 py-[5px] ">
                 Create account
               </Link>
-              <Link href="/auth/login" className="text-gray-700 py-[5px]">
+              <Link href="/auth/login" onClick={()=>toggleDropdown()}  className="text-gray-700 py-[5px]">
                 Login
               </Link>
             </div>

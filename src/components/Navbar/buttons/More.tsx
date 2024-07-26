@@ -1,6 +1,8 @@
 "use client"
 
 import NotificationModal from "@/components/modals/NotificationModal";
+import { Logout, selectAllAuthenticated } from "@/lib/features/Login/signinSlice";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useState } from "react";
@@ -8,7 +10,7 @@ import React, { useState } from "react";
 function More() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isNotificationOpen, setIsNotificationOpen] = useState(false);
-
+const dispatch = useAppDispatch();
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
   };
@@ -16,9 +18,12 @@ function More() {
   const NotificationShow = () => {
     setIsNotificationOpen(!isNotificationOpen);
   };
-
+  const isAuthenticated =useAppSelector(selectAllAuthenticated)
+  if (!isAuthenticated) {
+    return null;
+  }
   return (
-    <div>
+    <div className="">
       {/* desktop */}
       <div className="relative sm:block hidden">
         <div className="px-[13px] py-2 sm:block hidden rounded-[8px] bg-primary">
@@ -46,8 +51,8 @@ function More() {
         </div>
         {/* Dropdown modal */}
         {isDropdownOpen && (
-          <div className="absolute right-0 w-[262px] mt-2 bg-white border border-gray-200 rounded-[12px] p-[16px] shadow-lg z-10">
-            <div className="flex justify-end ">
+          <div className="absolute right-0 w-[262px] mt-2 bg-white border border-gray-200 rounded-[12px] p-[10px] shadow-lg z-10">
+            <div className=" absolute right-5 ">
               <button className="text-gray-500" onClick={toggleDropdown}>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -68,7 +73,7 @@ function More() {
             <div className="flex flex-col gap-2 text-[16px] p-2">
               <button
                 onClick={NotificationShow}
-                className="flex text-gray-700 py-[5px] "
+                className="flex text-gray-700  "
               >
                 Notification{" "}
                 <span className="bg-[red] rounded-[4px] px-[4px] text-white">
@@ -156,7 +161,7 @@ function More() {
               <Link href="/settings" className="text-gray-700 py-[5px]">
                 Settings
               </Link>
-              <Link href="/auth/login" className="text-gray-700 py-[5px]">
+              <Link href="/" onClick={()=>{dispatch(Logout())}} className="text-gray-700 py-[5px]">
                 Logout
               </Link>
             </div>
@@ -191,7 +196,7 @@ function More() {
         {/* Dropdown modal */}
         {isDropdownOpen && (
           <div className="absolute right-0 w-[197px] mt-2 bg-white border border-gray-200 rounded-[12px] p-[16px] shadow-lg z-10">
-            <div className="flex justify-end ">
+            <div className="absolute right-5 ">
               <button className="text-gray-500" onClick={toggleDropdown}>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -210,7 +215,7 @@ function More() {
               </button>
             </div>
             <div className="flex flex-col gap-2 text-[16px] p-2">
-              <Link href="/" className="text-gray-700 py-[5px] ">
+              <Link href="/" className="text-gray-700  ">
                 Notification{" "}
                 <span className="bg-[red] rounded-[4px] px-[4px] text-white">
                   3
@@ -269,7 +274,7 @@ function More() {
               <Link href="/settings" className="text-gray-700 py-[5px]">
                 Settings
               </Link>
-              <Link href="/auth/login" className="text-gray-700 py-[5px]">
+              <Link href="/" onClick={()=>{dispatch(Logout())}} className="text-gray-700 py-[5px]">
                 Logout
               </Link>
             </div>

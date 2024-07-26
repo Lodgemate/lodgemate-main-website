@@ -54,7 +54,6 @@ const authSlice = createSlice({
       const localStorageToken=localStorage.getItem("token")
       const parsedToken=localStorageToken && JSON.parse(localStorageToken)
       state.token = parsedToken
-      console.log(state.token)
     },
     Logout:(state)=>{
       state.isAuthenticated = false;

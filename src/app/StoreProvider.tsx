@@ -35,10 +35,6 @@ function DataInitializer({ children }: { children: React.ReactNode }) {
  const status= useAppSelector(selectAllUsersStatus) 
  const error= useAppSelector(selectAllUsersError)
  const isAuthenticated = useAppSelector(selectAllAuthenticated);
-
-console.log(data)
-console.log(status)
-console.log(error)
   useEffect(() => {
 if (!isAuthenticated) {
    dispatch(getUsersData());}

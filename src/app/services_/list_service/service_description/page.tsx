@@ -26,7 +26,7 @@ const LodgeDescription = () => {
   };
 
   return (
-    <div className="flex w-full px-[150px] min-h-screen mb-[50px] ">
+    <div className="flex w-full px-4 sm:px-[150px] min-h-screen mb-[50px] ">
       <div className="flex w-full flex-col">
         <div className=" mt-[100px] justify-center flex items-center w-full">
           {tabs.map((tab, index) => (
@@ -50,7 +50,7 @@ const LodgeDescription = () => {
           />
         </button>
         <div className="tab-content mb-[100px]">{tabs[activeTab].content}</div>
-        <div className="flex justify-center items-center">
+        <div className="flex justify-between sm:justify-center items-center">
           <button
             onClick={prevTab}
             disabled={activeTab === 0}
@@ -65,7 +65,7 @@ const LodgeDescription = () => {
           <button
             onClick={nextTab}
             disabled={activeTab === tabs.length - 1}
-            className="bg-primary text-white w-[300px] h-[48px] rounded-[8px]"
+            className="bg-primary text-white w-1/2 sm:w-[300px] h-[48px] rounded-[8px]"
           >
             {activeTab === 1 ? "List your lodge" : "Next"}
           </button>

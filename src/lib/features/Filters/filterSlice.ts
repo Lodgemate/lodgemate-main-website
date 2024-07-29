@@ -14,6 +14,7 @@ const filterSlice=createSlice({
     initialState,
     reducers:{
         setLocation:(state,action)=>{
+            console.log(action.payload)
             state.location=action.payload
         },
         setPrice:(state,action)=>{

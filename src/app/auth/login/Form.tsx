@@ -100,6 +100,8 @@ const LoginForm: React.FC = () => {
     if (data === null) {
       return;
     }
+    console.log(data)
+
     if (data.status === "success") {
       localStorage.setItem("token", JSON.stringify(data.token));
       dispatch(setAuthenticated());

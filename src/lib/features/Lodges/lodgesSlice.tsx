@@ -10,7 +10,7 @@ const initialState = {
 };
 
 export const FetchLodges = createAsyncThunk(
-  "Auth/SignIn",
+  "lodges",
   async (fetchUrl: string, { signal }: { signal: AbortSignal }) => {
     const controller = new AbortController();
     
@@ -45,10 +45,12 @@ export const FetchLodges = createAsyncThunk(
 );
 
 const lodgeSlice = createSlice({
-  name: "login",
+  name: "lodge/Slice",
   initialState,
   reducers: {
-
+    setLodgesData:(state,action)=>{
+      state.data= action.payload
+    }
   },
   extraReducers: (builder) => {
     builder
@@ -70,5 +72,5 @@ const lodgeSlice = createSlice({
 export const selectAllFetchLodgesdata = (state: RootState) => state.lodges.data;
 export const selectAllFetchLodgesStatus = (state: RootState) => state.lodges.status;
 export const selectAllFetchLodgesError = (state: RootState) => state.lodges.error;
-// export const { setAuthenticated, Logout, resetState } = authSlice.actions;
+ export const { setLodgesData } = lodgeSlice.actions;
 export default lodgeSlice.reducer;

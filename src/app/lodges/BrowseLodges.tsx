@@ -13,6 +13,7 @@ import {
   selectAllLocationFilter,
   selectAllQueryFilter,
 } from "@/lib/features/Filters/filterSlice";
+import { selectAllAuthenticated } from "@/lib/features/Login/signinSlice";
 interface BrowseLodgesProps {
   query: string;
   isSearchTriggered: boolean;
@@ -29,6 +30,7 @@ const BrowseLodges: React.FC<BrowseLodgesProps> = ({
   const dispatch = useAppDispatch();
   const storequery = useAppSelector(selectAllQueryFilter);
   const storelocation = useAppSelector(selectAllLocationFilter);
+  const isAuth = useAppSelector(selectAllAuthenticated);
   const param = {
     query: storequery,
     location: storelocation,
@@ -109,14 +111,34 @@ const BrowseLodges: React.FC<BrowseLodgesProps> = ({
   //   // setFilteredProducts(filtered);
   //   setShowFiltersModal(false); // Close modal after applying filters
    };
+   console.log(isAuth)
+ const GetToken =async()=>{
+  const localStorageToken= localStorage.getItem("token")
+  if (!localStorageToken) {
+    return null
+  }
+      const parsedToken=  JSON.parse(localStorageToken)
+      return (parsedToken)
+ }
 
- 
   // fetching lodges data
   useEffect(() => {
     const fetchData = async () => {
-      const fetchUrl = Endpoints.getPublicLodges + urlGenerator(param);
+      const token= await GetToken()
+      let fetchUrl;
+      if (isAuth && token) {
+        // this will be uncommented when db is updated
+      // fetchUrl= Endpoints.getPrivateLodges + urlGenerator(param); 
+        // this will be deleted when db is updated
+      fetchUrl = Endpoints.getPublicLodges + urlGenerator(param);
+      }else if( !token){
+        fetchUrl = Endpoints.getPublicLodges + urlGenerator(param);
+      }
       console.log(fetchUrl);
-      
+    // nullify fetch
+      if (!fetchUrl) {
+      return
+     } 
  // Check if the data is in the cache
  if (cache.has(fetchUrl)) {
   // console.log('Using cached data');
@@ -172,11 +194,12 @@ const BrowseLodges: React.FC<BrowseLodgesProps> = ({
       </div>
 
       <div>
+      {/* Move to another component and laxzy load it with suspense */}
         <div className='grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4'>
           {LodgesData &&
             LodgesData.data?.lodges
               .slice(0, showMore ? LodgesData.data.lodges.length : 2)
-              .map((product) => (
+              .map((product: any) => (
                 ///@ts-ignore
                 <Card
                   {...product}

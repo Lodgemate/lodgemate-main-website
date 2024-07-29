@@ -8,6 +8,8 @@ export const Endpoints ={
     googleAuth:`${process.env.NEXT_PUBLIC_BASE_URL}/v1/user/auth/google/web-sign-in`,
     getUsers:`${process.env.NEXT_PUBLIC_BASE_URL}/v1/user/me`,
     getPublicLodges:`${process.env.NEXT_PUBLIC_BASE_URL}/v1/lodges/p?`,
-    getPublicLodgesbyId:`${process.env.NEXT_PUBLIC_BASE_URL}/v1/lodges/`,
+    getPublicLodgesbyId:`${process.env.NEXT_PUBLIC_BASE_URL}/v1/lodges/p/`,
+    getPrivateLodges:`${process.env.NEXT_PUBLIC_BASE_URL}/v1/lodges?`,
+    getPrivateLodgesbyId:`${process.env.NEXT_PUBLIC_BASE_URL}/v1/lodges/`,
     
 }

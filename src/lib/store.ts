@@ -3,6 +3,8 @@ import authReducer from "./features/Auth/authSlice"
 import loginReducer from "./features/Login/signinSlice"
 import modalReducer from "./features/Modal/ModalSlice"
 import userReducer from "./features/Users/usersSlice"
+import lodgeReducer from "./features/Lodges/lodgesSlice"
+import filterReducer from "./features/Filters/filterSlice"
 export const makeStore = () => {
   return configureStore({
     reducer: {
@@ -10,6 +12,8 @@ export const makeStore = () => {
       login: loginReducer,
       Modal: modalReducer,
       User: userReducer,
+      lodges: lodgeReducer,
+      filter: filterReducer,
     },
   })
 }

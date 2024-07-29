@@ -23,7 +23,8 @@ interface SearchResult {
   schools: { id: number; university: string }[];
 }
 
-const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
+
+const SearchBar = () => {
   const [query, setQuery] = useState<string>("");
   const [results, setResults] = useState<SearchResult>({
     lodges: [],
@@ -76,8 +77,8 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
   };
 
   const handleSearchClick = () => {
-    onSearch(query);
-    setQuery("");
+    // onSearch(query);
+    // setQuery("");
   };
 
   return (

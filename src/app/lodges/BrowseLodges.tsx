@@ -2,13 +2,21 @@ import React, { useState, useEffect } from "react";
 import Card from "./Card";
 import products, { Product } from "./data";
 import FilterOptions from "./FilterOptions";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
+import { FetchLodges, selectAllFetchLodgesdata } from "@/lib/features/Lodges/lodgesSlice";
+import { Endpoints } from "@/services/Api/endpoints";
+import { urlGenerator } from "@/utils/urlGenerator";
+import { selectAllQueryFilter } from "@/lib/features/Filters/filterSlice";
+
+
 
 interface BrowseLodgesProps {
+  data:any;
   query: string;
   isSearchTriggered: boolean;
 }
 
-const BrowseLodges: React.FC<BrowseLodgesProps> = ({
+const BrowseLodges: React.FC<BrowseLodgesProps> = ({ data,
   query,
   isSearchTriggered,
 }) => {
@@ -16,7 +24,7 @@ const BrowseLodges: React.FC<BrowseLodgesProps> = ({
   const [showFiltersModal, setShowFiltersModal] = useState(false);
   const [filters, setFilters] = useState({});
   const [showMore, setShowMore] = useState(false);
-
+ const LodgesData= useAppSelector(selectAllFetchLodgesdata)
   useEffect(() => {
     if (isSearchTriggered) {
       const lowercaseQuery = query.toLowerCase();
@@ -83,6 +91,27 @@ const BrowseLodges: React.FC<BrowseLodgesProps> = ({
       setShowFiltersModal(false);
     }
   };
+  console.log(urlGenerator("m"))
+// fetching lodges data
+  const dispatch = useAppDispatch();
+  const storequery =useAppSelector(selectAllQueryFilter)
+console.log(LodgesData)
+  useEffect(() => {
+    const fetchData = async () => {
+      const fetchUrl = Endpoints.getPublicLodges + urlGenerator(storequery);
+console.log(fetchUrl)
+
+
+      const abortController = new AbortController();
+        await dispatch(FetchLodges(fetchUrl));
+      return () => {
+        abortController.abort(); // Cleanup on unmount
+      };
+    };
+
+    fetchData();
+  }, [dispatch,storequery]);
+
 
   return (
     <div className="px-4 sm:px-[100px] mt-[50px]">
@@ -109,7 +138,7 @@ const BrowseLodges: React.FC<BrowseLodgesProps> = ({
 
       <div>
         <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          {filteredProducts
+          {/* {LodgesData && LodgesData.lodges
             .filter((product) => product.type === "lodge") // Filtering to only show lodges
             .slice(0, showMore ? filteredProducts.length : 8) // Show only the first 8 items initially, then all when showMore is true
             .map((product) => (
@@ -120,6 +149,21 @@ const BrowseLodges: React.FC<BrowseLodgesProps> = ({
                 name={product.name}
                 location={product.address}
                 nearbyUniversity={product.university}
+                price={product.price || 0}
+              />
+            ))} */}
+
+{LodgesData && LodgesData.data?.lodges
+.slice(0, showMore ? LodgesData.data.lodges.length : 2)
+.map((product) => (
+  ///@ts-ignore
+              <Card
+                {...product}
+                key={product._id}
+                imageUrl={product.coverphoto} // Using the first image
+                name={product.lodgeName}
+                location={product.address_text}
+                nearbyUniversity={product.administrativeArea}
                 price={product.price || 0}
               />
             ))}

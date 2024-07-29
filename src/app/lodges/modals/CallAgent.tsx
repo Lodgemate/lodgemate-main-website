@@ -4,11 +4,13 @@ import AOS from "aos";
 interface CallAgentProps {
   show: boolean;
   onClose: () => void;
+  phoneNo?: any;
 }
 
 const CallAgent: React.FC<CallAgentProps> = ({
   show,
   onClose,
+  phoneNo
 }) => {
 
     useEffect(() => {
@@ -54,7 +56,7 @@ const CallAgent: React.FC<CallAgentProps> = ({
         </button>
         <div className="mb-4">
           <div className="flex w-full justify-center">
-            <p className="text-[24px] text-black mb-8">+1 700 1020 973</p>
+            <p className="text-[24px] text-black mb-8">{phoneNo}</p>
           </div>
         </div>
         <div className="text-gray-700">

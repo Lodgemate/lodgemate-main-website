@@ -6,5 +6,8 @@ export const Endpoints ={
     verifyEmail:`${process.env.NEXT_PUBLIC_BASE_URL}/v1/user/send-email-otp`,
     verifyEmailPost:`${process.env.NEXT_PUBLIC_BASE_URL}/v1/user/verify-email`,
     googleAuth:`${process.env.NEXT_PUBLIC_BASE_URL}/v1/user/auth/google/web-sign-in`,
-    getUsers:`${process.env.NEXT_PUBLIC_BASE_URL}/v1/user/me`
+    getUsers:`${process.env.NEXT_PUBLIC_BASE_URL}/v1/user/me`,
+    getPublicLodges:`${process.env.NEXT_PUBLIC_BASE_URL}/v1/lodges/p?`,
+    getPublicLodgesbyId:`${process.env.NEXT_PUBLIC_BASE_URL}/v1/lodges/`,
+    
 }

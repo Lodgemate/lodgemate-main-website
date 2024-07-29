@@ -1,18 +1,21 @@
 "use client";
 
 import Link from "next/link";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import data from "../../../../data/data";
 import WriteReview from "../../modals/WriteReview";
 import DeleteYourReview from "../../modals/DeleteYourReview";
 import CallAgent from "../../modals/CallAgent";
 import LodgeSaved from "../../modals/LodgeSaved";
+import { Endpoints } from "@/services/Api/endpoints";
+import { useParams } from "next/navigation";
+import { Lodge } from "@/lib/Types";
 
 
 
 
 interface LodgeInfoProps {
-  id: number;
+  id: string;
 }
 
 interface Feature {
@@ -67,11 +70,52 @@ const features: Feature[] = [
   },
 ];
 
-function LodgeInfo({ id }: LodgeInfoProps) {
-  const LodgeData = data.find((item) => item.id === id);
-    const [isWriteReviewOpen, setIsWriteReviewOpen] = useState(false);
-    const [isCallAgentOpen, setIsCallAgentOpen] = useState(false);
-    const [isLodgeSavedOpen, setIsLodgeSavedOpen] = useState(false);
+function LodgeInfo() {
+  const params = useParams();
+  const { id } = params || {};
+  const [LodgeData, setLodgeData]= useState<Lodge | null>(null);
+  const [isWriteReviewOpen, setIsWriteReviewOpen] = useState(false);
+  const [isCallAgentOpen, setIsCallAgentOpen] = useState(false);
+  const [isLodgeSavedOpen, setIsLodgeSavedOpen] = useState(false);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+
+
+    useEffect(() => {
+      const fetchData = async () => {
+        const fetchUrl = `${Endpoints.getPublicLodgesbyId + id}`;
+        const abortController = new AbortController();
+        
+        try {
+          const res =await fetch(fetchUrl, {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2OWNkNTgxOTY4ODM5YmRjYTYzOTdjNiIsImlhdCI6MTcyMjA2ODA3OSwiZXhwIjoxNzI0NjYwMDc5fQ.5lYgErj3aqtQrr18TiUYgx9aOmhOEXs3cy7uE6MkG1U"}`
+            },
+          });
+    
+const parsedRes = await res.json()
+if (parsedRes.status === 'success') {
+  setLodgeData(parsedRes.data.lodge)
+}
+         
+         
+        } catch (error: any) {
+          if (error.name === "AbortError") {
+            console.log("Request aborted");
+          } else {
+            console.error("Error fetching data:", error.message);
+          }
+        }
+        
+        return () => {
+          abortController.abort(); // Cleanup on unmount
+        };
+      };
+  
+      fetchData();
+    }, []);
+
 
    const handleOpenWriteReview = () => {
      setIsWriteReviewOpen(true);
@@ -99,7 +143,7 @@ function LodgeInfo({ id }: LodgeInfoProps) {
   }
 
   // Ensure LodgeData.features is defined and of correct type
-  const lodgeFeatures = LodgeData.features || [];
+  const lodgeFeatures = LodgeData.lodgeFeatures || [];
 
   // Function to get icon URL based on feature name
   const getFeatureIcon = (featureName: string) => {
@@ -109,7 +153,6 @@ function LodgeInfo({ id }: LodgeInfoProps) {
     return feature ? feature.icon : "";
   };
 
-  const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   const scroll = (scrollOffset: number) => {
     if (scrollContainerRef.current) {
@@ -128,11 +171,11 @@ function LodgeInfo({ id }: LodgeInfoProps) {
           show={isWriteReviewOpen}
           onClose={handleCloseWriteReview}
         />
-        <CallAgent show={isCallAgentOpen} onClose={handleCloseCallAgent} />{" "}
+        <CallAgent show={isCallAgentOpen} phoneNo={LodgeData.postedBy.phoneNumber} onClose={handleCloseCallAgent} />{" "}
         <LodgeSaved show={isLodgeSavedOpen} onClose={handleCloseLodgeSaved} />
         {/* the Name of the Product */}
         <h1 className="sm:text-[24px] text-[20px] sm:block hidden font-semibold text-dgray">
-          {LodgeData.name}
+          {LodgeData.lodgeName}
         </h1>
         <div className="sm:flex justify-between hidden">
           <div className="flex gap-[24px] items-center">
@@ -146,7 +189,7 @@ function LodgeInfo({ id }: LodgeInfoProps) {
                 </div>
 
                 {/* the address should be in this paragraph */}
-                <p>{LodgeData.address}</p>
+                <p>{LodgeData.address_text}</p>
               </div>
 
               <div className="flex gap-2 items-center">
@@ -159,7 +202,7 @@ function LodgeInfo({ id }: LodgeInfoProps) {
 
                 {/* the avrage review and the number of reviews is suppused to be displayed in this paragraph */}
                 <p>
-                  {LodgeData.averageReview} • {LodgeData.reviewCount} reviews
+                  {LodgeData.ratings.avgRating} • {LodgeData.ratings.totalRatings} reviews
                 </p>
               </div>
             </div>
@@ -235,9 +278,8 @@ function LodgeInfo({ id }: LodgeInfoProps) {
           <div
             className="flex gap-4 overflow-x-scroll scroll-smooth no-scrollbar"
             style={{ scrollBehavior: "smooth" }}
-            ref={scrollContainerRef}
           >
-            {LodgeData.images.map((image, index) => (
+            {LodgeData.photos.map((image, index) => (
               <div key={index} className="flex-none">
                 <img
                   src={image}
@@ -251,7 +293,7 @@ function LodgeInfo({ id }: LodgeInfoProps) {
       </div>
 
       <h1 className="text-[20px] mt-[24px] mb-[20px] px-4 sm:hidden font-semibold text-dgray">
-        {LodgeData.name}
+        {LodgeData.lodgeName}
       </h1>
 
       <div className="  sm:hidden">
@@ -266,7 +308,7 @@ function LodgeInfo({ id }: LodgeInfoProps) {
               </div>
 
               {/* the address should be in this paragraph */}
-              <p>{LodgeData.address}</p>
+              <p>{LodgeData.address_text}</p>
             </div>
 
             <div className="flex gap-2 items-center">
@@ -279,7 +321,7 @@ function LodgeInfo({ id }: LodgeInfoProps) {
 
               {/* the avrage review and the number of reviews is suppused to be displayed in this paragraph */}
               <p>
-                {LodgeData.averageReview} • {LodgeData.reviewCount} reviews
+                {LodgeData.ratings.avgRating} • {LodgeData.ratings.userCount} reviews
               </p>
             </div>
           </div>
@@ -320,7 +362,7 @@ function LodgeInfo({ id }: LodgeInfoProps) {
               </h2>
 
               {/* this p tag should display the description of the product */}
-              <p>{LodgeData.description}</p>
+              <p>{LodgeData.lodgeDescription}</p>
             </div>
 
             <div className="py-[18px] mb-[18px]- border-lgray border-b-2 border-opacity-[10%]">
@@ -331,19 +373,20 @@ function LodgeInfo({ id }: LodgeInfoProps) {
               {/* this div should use mapping to display all the Accommodation features  of the product */}
               <div className="flex flex-wrap gap-4">
                 {" "}
-                {lodgeFeatures.map((feature, index) => (
+                {lodgeFeatures.map((feature, index) => 
+                (
                   <div
                     key={index}
                     className="flex gap-2 items-center px-4 py-2 border-lgray border-2 border-opacity-[10%] rounded-lg"
                   >
                     <img
                       src={getFeatureIcon(
-                        typeof feature === "string" ? feature : feature.name
+                        typeof feature === "string" ? feature : feature
                       )}
-                      alt={typeof feature === "string" ? feature : feature.name}
+                      alt={typeof feature === "string" ? feature : feature}
                     />
                     <p>
-                      {typeof feature === "string" ? feature : feature.name}
+                      {typeof feature === "string" ? feature : feature}
                     </p>
                   </div>
                 ))}
@@ -364,7 +407,7 @@ function LodgeInfo({ id }: LodgeInfoProps) {
                           alt=""
                         />
                         <p className="pt-[8px]">
-                          {LodgeData.accommodationType}
+                          {LodgeData.type}
                         </p>
                       </div>{" "}
                     </div>
@@ -403,7 +446,7 @@ function LodgeInfo({ id }: LodgeInfoProps) {
                         alt=""
                       />
                       <p>
-                        {LodgeData.averageReview} • {LodgeData.reviewCount}{" "}
+                        {LodgeData.ratings.avgRating} • {LodgeData.ratings.userCount}{" "}
                         reviews
                       </p>
                     </div>
@@ -560,7 +603,7 @@ function LodgeInfo({ id }: LodgeInfoProps) {
                         alt=""
                       />
                       <p>
-                        {LodgeData.averageReview} • {LodgeData.reviewCount}{" "}
+                        {LodgeData.ratings.avgRating} • {LodgeData.ratings.userCount}{" "}
                         reviews
                       </p>
                     </div>

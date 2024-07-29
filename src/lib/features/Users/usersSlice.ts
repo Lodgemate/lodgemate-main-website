@@ -1,9 +1,10 @@
 import { RootState } from "@/lib/store";
+import { ApiResponse } from "@/lib/Types";
 import { Endpoints } from "@/services/Api/endpoints";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  data: null,
+  data: null as ApiResponse | null,
   status: "idle",
   error: null,
 };

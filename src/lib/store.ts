@@ -5,6 +5,7 @@ import modalReducer from "./features/Modal/ModalSlice"
 import userReducer from "./features/Users/usersSlice"
 import lodgeReducer from "./features/Lodges/lodgesSlice"
 import filterReducer from "./features/Filters/filterSlice"
+import servicesReducer from "./features/Services/servicesSlice"
 export const makeStore = () => {
   return configureStore({
     reducer: {
@@ -14,6 +15,7 @@ export const makeStore = () => {
       User: userReducer,
       lodges: lodgeReducer,
       filter: filterReducer,
+      services: servicesReducer,
     },
   })
 }

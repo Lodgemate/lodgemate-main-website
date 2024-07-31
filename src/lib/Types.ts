@@ -39,6 +39,7 @@ export interface user {
 export interface Ratings {
     totalRatings: number;
     userCount: number;
+    avgRatings:number;
   }
   
   export interface Location {
@@ -125,4 +126,44 @@ export interface Ratings {
     status: string;
     results: number;
     data: Data;
+  }
+  export interface LodgesApiResponse {
+    status: string;
+    results: number;
+    data: Data;
+  }
+
+ export interface Service {
+    location: Coordinates;
+    ratings: Ratings;
+    _id: string;
+    verifiedService: boolean;
+    vendor: string;
+    coverphoto: string;
+    photos: string[];
+    serviceName: string;
+    serviceCategories: string[];
+    otherServiceCategories: string[];
+    address_text: string;
+    latitude: number;
+    longitude: number;
+    country: string;
+    administrativeArea: string;
+    subAdministrativeArea: string;
+    minPrice: number;
+    maxPrice: number;
+    contactForPrice: boolean;
+    description: string;
+    dateCreated: string;
+    id: string;
+  }
+  
+ export interface ServiceData {
+    services: Service[];
+  }
+  
+ export interface ServiceApiResponse {
+    status: string;
+    results: number;
+    data: ServiceData;
   }

@@ -15,12 +15,10 @@ import {
 } from "@/lib/features/Filters/filterSlice";
 import { selectAllAuthenticated } from "@/lib/features/Login/signinSlice";
 interface BrowseLodgesProps {
-  query: string;
   isSearchTriggered: boolean;
 }
 const cache = new Map<string, any>();
 const BrowseLodges: React.FC<BrowseLodgesProps> = ({
-  query,
   isSearchTriggered,
 }) => {
   const [showFiltersModal, setShowFiltersModal] = useState(false);
@@ -160,7 +158,7 @@ const BrowseLodges: React.FC<BrowseLodgesProps> = ({
       }
     };
     fetchData();
-  }, [dispatch, query, storelocation]);
+  }, [dispatch, storequery, storelocation]);
 
   const handleShowMore = () => {
     setShowMore(true);
@@ -175,7 +173,7 @@ const BrowseLodges: React.FC<BrowseLodgesProps> = ({
       <div className='flex justify-between gap-8 items-center text-lgray mb-[24px]'>
         <h1 className='text-[18px] flex flex-wrap sm:text-[24px] text-lgray '>
           {isSearchTriggered
-            ? `Showing results for "${query}"`
+            ? `Showing results for "${storequery}"`
             : "Showing lodges based on your location"}
         </h1>
 

@@ -43,16 +43,9 @@ function Roommates() {
       <HeroSection />
       <div className="px-4">
         <SearchBar
-          onSearch={handleSearch}
-          onCitySelect={handleCitySelect}
-          onSchoolSelect={handleSchoolSelect}
         />{" "}
       </div>
       <BrowseRoomates
-        selectedCity={selectedCity}
-        selectedSchool={selectedSchool}
-        query={searchQuery}
-        isSearchTriggered={isSearchTriggered}
       />
     </div>
   );

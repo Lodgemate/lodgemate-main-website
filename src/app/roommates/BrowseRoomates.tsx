@@ -169,7 +169,7 @@ function BrowseRoommates() {
         <h1 className='text-[18px] flex flex-wrap sm:text-[24px] text-lgray '>
           {isSearchTriggered
             ? `Showing results for "${query}"`
-            : "Showing Services based on your location"}
+            : "Showing available roommates around"}
         </h1>
 
         <button

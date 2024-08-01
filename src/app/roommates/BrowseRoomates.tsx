@@ -103,6 +103,121 @@ const BrowseRoommates: React.FC<BrowseRoommatesProps> = ({
      setSelectedRoommate(roommate);
    };
 
+
+
+
+
+
+
+
+
+
+
+  //  const [showFiltersModal, setShowFiltersModal] = useState(false);
+  //  //  (useless for now) const [filters, setFilters] = useState({});
+  //  const [showMore, setShowMore] = useState(false);
+  //  const LodgesData = useAppSelector(selectAllFetchLodgesdata);
+  //  const dispatch = useAppDispatch();
+  //  const storequery = useAppSelector(selectAllQueryFilter);
+  //  const storelocation = useAppSelector(selectAllLocationFilter);
+  //  const isAuth = useAppSelector(selectAllAuthenticated);
+  //  const param = {
+  //    query: storequery,
+  //    location: storelocation,
+  //  };
+   
+ 
+ //  useless for now ( more optimised version of useeffect above)
+   // const filteredProducts = useMemo(() => {
+   //   if (isSearchTriggered) {
+   //     const lowercaseQuery = query.toLowerCase();
+   //     return products.filter((product) => {
+   //       return (
+   //         product.type === "lodge" &&
+   //         (product.name.toLowerCase().includes(lowercaseQuery) ||
+   //           product.address.toLowerCase().includes(lowercaseQuery) ||
+   //           product.university.toLowerCase().includes(lowercaseQuery))
+   //       );
+   //     });
+   //   }
+   //   return products;
+   // }, [query, isSearchTriggered]);
+ 
+
+  const GetToken =async()=>{
+   const localStorageToken= localStorage.getItem("token")
+   if (!localStorageToken) {
+     return null
+   }
+       const parsedToken=  JSON.parse(localStorageToken)
+       return (parsedToken)
+  }
+ 
+   // fetching lodges data
+//    useEffect(() => {
+//      const fetchData = async () => {
+//        const token= await GetToken()
+//        let fetchUrl;
+//        if (isAuth && token) {
+//          // this will be uncommented when db is updated
+//        // fetchUrl= Endpoints.getPrivateLodges + urlGenerator(param); 
+//          // this will be deleted when db is updated
+//        fetchUrl = Endpoints.getPublicLodges + urlGenerator(param);
+//        }else if( !token){
+//          fetchUrl = Endpoints.getPublicLodges + urlGenerator(param);
+//        }
+//        console.log(fetchUrl);
+//      // nullify fetch
+//        if (!fetchUrl) {
+//        return
+//       } 
+//   // Check if the data is in the cache
+//   if (cache.has(fetchUrl)) {
+//    // console.log('Using cached data');
+//    const cacheData=cache.get(fetchUrl)
+//    dispatch(setLodgesData(cacheData.payload));
+//    return;
+//  }
+       
+//        const abortController = new AbortController();
+//        try {
+//          const response =await dispatch(FetchLodges(fetchUrl));
+//          cache.set(fetchUrl, response);
+//        } catch (error: any) {
+//          if (error.name !== "AbortError") {
+//            console.error("Error fetching data:", error);
+//          }
+//        } finally {
+//          return () => abortController.abort();
+//        }
+//      };
+//      fetchData();
+//    }, [dispatch, query, storelocation]);
+ 
+//    const handleShowMore = () => {
+//      setShowMore(true);
+//    };
+//    const handleModalClick = (e: React.MouseEvent<HTMLDivElement>) => {
+//      if (e.target === e.currentTarget) {
+//        setShowFiltersModal(false);
+//      }
+//    };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   return (
     <div>
       {selectedRoommate && (

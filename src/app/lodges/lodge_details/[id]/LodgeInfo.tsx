@@ -90,7 +90,6 @@ function LodgeInfo() {
             method: "GET",
             headers: {
               "Content-Type": "application/json",
-              Authorization: `Bearer ${"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2OWNkNTgxOTY4ODM5YmRjYTYzOTdjNiIsImlhdCI6MTcyMjA2ODA3OSwiZXhwIjoxNzI0NjYwMDc5fQ.5lYgErj3aqtQrr18TiUYgx9aOmhOEXs3cy7uE6MkG1U"}`
             },
           });
     

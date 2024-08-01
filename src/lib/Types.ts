@@ -162,8 +162,49 @@ export interface Ratings {
     services: Service[];
   }
   
+ /**
+  * Interface representing the structure of a service API response.
+  */
  export interface ServiceApiResponse {
     status: string;
     results: number;
     data: ServiceData;
   }
+
+  /**
+   * Represents the interface for a roommate who posted a listing.
+   */
+  export interface RoommatePostedBy {
+    _id: string;
+    firstName: string;
+    lastName: string;
+    gender: "male" | "female" | "other"; // Adjust the values based on your requirements
+  }
+  
+  // Define the structure of a single roommate object
+export interface Roommate {
+  location: Location;
+  _id: string;
+  postedBy: PostedBy;
+  status: "pending" | "approved" | "rejected"; // Adjust the values based on your requirements
+  address_text: string;
+  latitude: number;
+  longitude: number;
+  country: string;
+  administrativeArea: string;
+  subAdministrativeArea: string;
+  preferredRoommateDescription: string;
+  hobbiesAndTraits: string[];
+  alreadyHasAccomodation: boolean;
+  preferredAccomodationTypes: string[];
+  otherAccomodationTypes: string[];
+  preferredLivingArrangement: "separate" | "shared"; // Adjust the values based on your requirements
+}
+
+// Define the structure of the response data
+export interface RoommatesResponse {
+  status: "success" | "error"; // Adjust the values based on your requirements
+  data: {
+    roommates: Roommate[];
+  };
+}

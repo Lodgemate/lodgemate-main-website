@@ -15,4 +15,8 @@ export const Endpoints ={
     getPublicServicesbyId:`${process.env.NEXT_PUBLIC_BASE_URL}/v1/lodges/p/`,
     getPrivateServices:`${process.env.NEXT_PUBLIC_BASE_URL}/v1/lodges?`,
     getPrivateServicesbyId:`${process.env.NEXT_PUBLIC_BASE_URL}/v1/lodges/`,
+    getPublicRoommates:`${process.env.NEXT_PUBLIC_BASE_URL}/v1/roommate-requests/p?`,
+    getPublicRoommatesbyId:`${process.env.NEXT_PUBLIC_BASE_URL}/v1/roommate-requests/p/`,
+    getPrivateRoommates:`${process.env.NEXT_PUBLIC_BASE_URL}/v1/roommate-requests?`,
+    getPrivateRoommatesbyId:`${process.env.NEXT_PUBLIC_BASE_URL}/v1/roommate-requests/`,
 }

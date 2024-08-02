@@ -37,7 +37,6 @@ function BrowseRoommates() {
   const [selectedRoommate, setSelectedRoommate] = useState< null>(
     null
   );
-  const query = "";
   const isSearchTriggered = "";
 
   const GetToken = async () => {
@@ -51,6 +50,7 @@ function BrowseRoommates() {
   const handleCardClick = (roommate: any) => {
     setSelectedRoommate(roommate);
   };
+  console.log(storequery)
   // fetching Services data
   /**
    * useEffect hook that fetches data based on authentication status and token availability.
@@ -94,7 +94,7 @@ function BrowseRoommates() {
       }
     };
     fetchData();
-  }, [dispatch, query, storelocation]);
+  }, [dispatch, storequery, storelocation]);
 
   /**
    * Function to handle the action of showing more content.
@@ -168,7 +168,7 @@ function BrowseRoommates() {
       <div className='flex justify-between gap-8 items-center text-lgray mb-[24px]'>
         <h1 className='text-[18px] flex flex-wrap sm:text-[24px] text-lgray '>
           {isSearchTriggered
-            ? `Showing results for "${query}"`
+            ? `Showing results for "${storequery}"`
             : "Showing available roommates around"}
         </h1>
 

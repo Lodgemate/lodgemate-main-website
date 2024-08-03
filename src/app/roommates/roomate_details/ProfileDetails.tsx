@@ -1,6 +1,7 @@
+import { Roommate } from "@/lib/Types";
 import Link from "next/link";
 import React from "react";
-import { Roommate } from "../data";
+
 
 interface ProfileDetailsProps {
   roommate: Roommate;
@@ -8,40 +9,40 @@ interface ProfileDetailsProps {
 }
 
 const hobbyIcons: { [key: string]: string } = {
-  Musician:
+  musician:
     "https://res.cloudinary.com/dcb4ilgmr/image/upload/v1718407630/utilities/LodgeMate_File/Group_1_txdty2.svg",
-  Dancer:
+  dancer:
     "https://res.cloudinary.com/dcb4ilgmr/image/upload/v1718407630/utilities/LodgeMate_File/game-icons_party-hat_xrupol.svg",
-  Artist:
+  artist:
     "https://res.cloudinary.com/dcb4ilgmr/image/upload/v1718407628/utilities/LodgeMate_File/streamline_interface-edit-magic-wand-design-magic-star-supplies-tool-wand_shufta.svg",
-  "Book warm":
+  "book warm":
     "https://res.cloudinary.com/dcb4ilgmr/image/upload/v1718407628/utilities/LodgeMate_File/gg_read_tptvwk.svg",
-  "Football addict":
+  "football addict":
     "https://res.cloudinary.com/dcb4ilgmr/image/upload/v1718407630/utilities/LodgeMate_File/Group_1_txdty2.svg",
-  Gamer:
+  gamer:
     "https://res.cloudinary.com/dcb4ilgmr/image/upload/v1718407630/utilities/LodgeMate_File/Group_1_txdty2.svg",
-  Foodie:
+  foodie:
     "https://res.cloudinary.com/dcb4ilgmr/image/upload/v1718407630/utilities/LodgeMate_File/Group_1_txdty2.svg",
-  Evangelism:
+  evangelism:
     "https://res.cloudinary.com/dcb4ilgmr/image/upload/v1718407630/utilities/LodgeMate_File/Group_1_txdty2.svg",
-  Volunteering:
+  volunteering:
     "https://res.cloudinary.com/dcb4ilgmr/image/upload/v1718407630/utilities/LodgeMate_File/Group_1_txdty2.svg",
-  Fitness:
+  fitness:
     "https://res.cloudinary.com/dcb4ilgmr/image/upload/v1718407630/utilities/LodgeMate_File/Group_1_txdty2.svg",
   "Party freak":
     "https://res.cloudinary.com/dcb4ilgmr/image/upload/v1718407630/utilities/LodgeMate_File/Group_1_txdty2.svg",
-  Neat: "https://res.cloudinary.com/dcb4ilgmr/image/upload/v1718407630/utilities/LodgeMate_File/Group_1_txdty2.svg",
-  Fashionista:
+  neat: "https://res.cloudinary.com/dcb4ilgmr/image/upload/v1718407630/utilities/LodgeMate_File/Group_1_txdty2.svg",
+  fashionista:
     "https://res.cloudinary.com/dcb4ilgmr/image/upload/v1718407630/utilities/LodgeMate_File/Group_1_txdty2.svg",
-  Techy:
+  techy:
     "https://res.cloudinary.com/dcb4ilgmr/image/upload/v1718407630/utilities/LodgeMate_File/Group_1_txdty2.svg",
-  Gister:
+  gister:
     "https://res.cloudinary.com/dcb4ilgmr/image/upload/v1718407630/utilities/LodgeMate_File/Group_1_txdty2.svg",
   "Make-up artist":
     "https://res.cloudinary.com/dcb4ilgmr/image/upload/v1718407630/utilities/LodgeMate_File/Group_1_txdty2.svg",
-  Writer:
+  writer:
     "https://res.cloudinary.com/dcb4ilgmr/image/upload/v1718407630/utilities/LodgeMate_File/Group_1_txdty2.svg",
-  Photography:
+  photography:
     "https://res.cloudinary.com/dcb4ilgmr/image/upload/v1718407628/utilities/LodgeMate_File/streamline_interface-edit-magic-wand-design-magic-star-supplies-tool-wand_shufta.svg",
 };
 
@@ -51,80 +52,83 @@ const ProfileDetails: React.FC<ProfileDetailsProps> = ({
   roommate,
   onClose,
 }) => {
-
   return (
-    <div>
-      <div className="flex fixed justify-center w-full bg- top-[100px] overflow-y-auto text-dgray text-[16px] z-50">
-        <div className="w-[500px] h-[400px] bg-white border shadow-lg rounded-[20px] overflow-y-auto no-scrollbar ">
-          <div className="relative flex justify-center items-center p-4 border-b">
+    <div className="">
+      <div className=' flex fixed justify-center w-full bg- left-0 top-[100px] overflow-y-auto text-dgray text-[16px] z-50 '>
+        <div className='w-[500px] h-[400px] bg-white border shadow-lg rounded-[20px] overflow-y-auto no-scrollbar '>
+          <div className='relative flex justify-center items-center p-4 border-b'>
             <p>Profile details</p>
             <button
-              className="absolute top-0 right-0 mb-4 p-4 rounded-full"
+              className='absolute top-0 right-0 mb-4 p-4 rounded-full'
               onClick={onClose}
             >
               <img
-                src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1718851772/utilities/LodgeMate_File/Group_23_j5sjal.svg"
-                alt="cancle"
+                src='https://res.cloudinary.com/dcb4ilgmr/image/upload/v1718851772/utilities/LodgeMate_File/Group_23_j5sjal.svg'
+                alt='cancle'
               />
             </button>{" "}
           </div>
 
-          <div className="flex justify-center items-center flex-col gap-4 px-4 ">
-            <div className="w-[150px] h-[150px]  overflow-hidden items-center mt-[24px] mb-[16px flex">
+          <div className='flex justify-center items-center flex-col gap-4 px-4 '>
+            <div className='w-[150px] h-[150px]  overflow-hidden items-center mt-[24px] mb-[16px flex'>
               <img
-                src={roommate.images}
-                alt={roommate.name}
-                className="rounded-full w-[150px] h-[150px]"
+                src={roommate.postedBy.profilePicture}
+                alt={roommate.postedBy.firstName}
+                className='rounded-full w-[150px] h-[150px]'
               />
             </div>
-            <p className="text-[20px] font-semibold">{roommate.name}</p>
-            <div className="flex items-center gap-5">
-              <div className="flex flex-col gap-2 items-center">
+            <p className='text-[20px] font-semibold'>
+              {roommate.postedBy.firstName}
+            </p>
+            <div className='flex items-center gap-5'>
+              <div className='flex flex-col gap-2 items-center'>
                 <img
-                  src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1718337645/utilities/LodgeMate_File/home_pin_1_jvqqfs.svg                          "
-                  alt=""
+                  src='https://res.cloudinary.com/dcb4ilgmr/image/upload/v1718337645/utilities/LodgeMate_File/home_pin_1_jvqqfs.svg                          '
+                  alt=''
                 />
                 <p>
-                  Near <span>{roommate.university}</span>{" "}
+                  Near <span>{roommate.subAdministrativeArea}</span>{" "}
                 </p>
               </div>
-              <div className="flex flex-col gap-2 items-center">
+              <div className='flex flex-col gap-2 items-center'>
                 <img
-                  src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1718337642/utilities/LodgeMate_File/iconamoon_profile-thin_hkgtcv.svg"
-                  alt=""
+                  src='https://res.cloudinary.com/dcb4ilgmr/image/upload/v1718337642/utilities/LodgeMate_File/iconamoon_profile-thin_hkgtcv.svg'
+                  alt=''
                 />
-                <p> {roommate.sex}</p>
+                <p> {roommate.postedBy.gender}</p>
               </div>
-              <div className="flex flex-col gap-2 items-center">
+              <div className='flex flex-col gap-2 items-center'>
                 <img
-                  src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1718408373/utilities/LodgeMate_File/covid_quarantine-place-self-lockdown-2_s4rvvo.svg"
-                  alt=""
+                  src='https://res.cloudinary.com/dcb4ilgmr/image/upload/v1718408373/utilities/LodgeMate_File/covid_quarantine-place-self-lockdown-2_s4rvvo.svg'
+                  alt=''
                 />
-                <p> {roommate.houseType}</p>
+                {roommate.preferredAccomodationTypes.map((houseType: any) => {
+                  return <p key={houseType}> {houseType}</p>;
+                })}
               </div>{" "}
             </div>
-            <div className="flex flex-col gap-2 items-center">
+            <div className='flex flex-col gap-2 items-center'>
               <img
-                src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1718337642/utilities/LodgeMate_File/House_1_fpt0yj.svg"
-                alt=""
+                src='https://res.cloudinary.com/dcb4ilgmr/image/upload/v1718337642/utilities/LodgeMate_File/House_1_fpt0yj.svg'
+                alt=''
               />
-              <p>{roommate.availableSpace} rooms to share</p>
+              <p>Living arrangements {roommate.preferredLivingArrangement}</p>
             </div>{" "}
-            <div className="flex flex-col items-center ">
-              <h2 className="text-center text-[20px] font-semibold pb-4">
+            <div className='flex flex-col items-center '>
+              <h2 className='text-center text-[20px] font-semibold pb-4'>
                 Who I’m looking for!
               </h2>
-              <p className="text-center text-black">{roommate.lookingFor}</p>
+              <p className='text-center text-black'>{roommate.preferredRoommateDescription}</p>
             </div>
-            <div className="flex  justify-center flex-col items-center">
-              <h2 className="text-[20px] font-semibold text-center">
+            <div className='flex  justify-center flex-col items-center'>
+              <h2 className='text-[20px] font-semibold text-center'>
                 Hobbies & Traits
               </h2>
-              <div className="flex flex-wrap items-center justify-center mt-4 gap-4">
-                {roommate.hobbies.map((hobby) => (
+              <div className='flex flex-wrap items-center justify-center mt-4 gap-4'>
+                {roommate.hobbiesAndTraits.map((hobby) => (
                   <div
                     key={hobby}
-                    className="flex items-center border px-4 py-2 rounded-lg gap-2"
+                    className='flex items-center border px-4 py-2 rounded-lg gap-2'
                   >
                     <img src={hobbyIcons[hobby]} alt={hobby} />
                     <p>{hobby}</p>
@@ -132,47 +136,47 @@ const ProfileDetails: React.FC<ProfileDetailsProps> = ({
                 ))}
               </div>
 
-              <div className="">
-                <h2 className="text-center pt-8 text-[20px] font-semibold">
+              <div className=''>
+                <h2 className='text-center pt-8 text-[20px] font-semibold'>
                   Contact details
                 </h2>{" "}
-                <div className="flex items-center gap-4 py-4">
-                  <Link href={roommate.facebookLink}>
+                <div className='flex items-center gap-4 py-4'>
+                  <Link href={"/"}>
                     <img
-                      src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1716939370/utilities/LodgeMate_File/Facebook_ryntge.svg"
-                      alt=""
+                      src='https://res.cloudinary.com/dcb4ilgmr/image/upload/v1716939370/utilities/LodgeMate_File/Facebook_ryntge.svg'
+                      alt=''
                     />
                   </Link>{" "}
-                  <Link href={roommate.igLink}>
+                  <Link href={"/"}>
                     <img
-                      src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1716939370/utilities/LodgeMate_File/Instagram_vwhjji.svg"
-                      alt=""
+                      src='https://res.cloudinary.com/dcb4ilgmr/image/upload/v1716939370/utilities/LodgeMate_File/Instagram_vwhjji.svg'
+                      alt=''
                     />
                   </Link>{" "}
-                  <Link href={roommate.twitterLink}>
+                  <Link href={"/"}>
                     <img
-                      src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1716939370/utilities/LodgeMate_File/Twitter_ffgjak.svg"
-                      alt=""
+                      src='https://res.cloudinary.com/dcb4ilgmr/image/upload/v1716939370/utilities/LodgeMate_File/Twitter_ffgjak.svg'
+                      alt=''
                     />
                   </Link>{" "}
-                  <Link href={roommate.linkedinLink}>
+                  <Link href={"/"}>
                     <img
-                      src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1716939370/utilities/LodgeMate_File/LinkedIn_a3gtp7.svg"
-                      alt=""
+                      src='https://res.cloudinary.com/dcb4ilgmr/image/upload/v1716939370/utilities/LodgeMate_File/LinkedIn_a3gtp7.svg'
+                      alt=''
                     />
                   </Link>
                 </div>
-                <div className="py-4 flex gap-2 items-center">
+                <div className='py-4 flex gap-2 items-center'>
                   <img
-                    src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1718410116/utilities/LodgeMate_File/flag_ul6f0p.svg"
-                    alt=""
+                    src='https://res.cloudinary.com/dcb4ilgmr/image/upload/v1718410116/utilities/LodgeMate_File/flag_ul6f0p.svg'
+                    alt=''
                   />
-                  <Link href="">
-                    <p className="text-lred underline">Report profile</p>
+                  <Link href=''>
+                    <p className='text-lred underline'>Report profile</p>
                   </Link>
                 </div>
               </div>
-              <button className="py-4 w-full flex justify-center bg-primary font-medium text-white rounded-[8px] mb-4">
+              <button className='py-4 w-full flex justify-center bg-primary font-medium text-white rounded-[8px] mb-4'>
                 Chat with Jude
               </button>
             </div>

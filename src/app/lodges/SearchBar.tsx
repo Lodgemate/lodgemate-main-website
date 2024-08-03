@@ -54,7 +54,6 @@ const dispatch = useAppDispatch();
     const lowercaseQuery = query.toLowerCase(); // Convert query to lowercase
     const lodges: { id: number| string; name: string }[]= [];
     const cities: { id: number| string; address: string }[] = [];
-    // const schools: { id: number; university: string }[] = [];
 if (!data) {
   return  { lodges, cities };
 }

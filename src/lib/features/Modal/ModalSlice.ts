@@ -1,5 +1,5 @@
 import { RootState } from "@/lib/store"
-import { createSlice } from "@reduxjs/toolkit"
+import { createSelector, createSlice } from "@reduxjs/toolkit"
 
 
 const initialState={
@@ -27,10 +27,15 @@ const ModalSlice = createSlice({
             }
     }
 })
+ const selectSelf =(state:RootState) => state.Modal
 
 export const {showFailedModal, showLoadingModal, showSuccessfulModal, showEmailOtpModal}= ModalSlice.actions
-export const selectAllfailedModalMssg = (state:RootState) => state.Modal.failedModalMssg
-export const selectAllsuccessModalMssg = (state:RootState) => state.Modal.successfulModalMssg
-export const selectAllloadingModalMssg = (state:RootState) => state.Modal.loadingModalMssg
-export const selectAllemailOtpModalModalMssg = (state:RootState) => state.Modal.emailOtpModal
+export const selectAllfailedModalMssg = createSelector([selectSelf], 
+    (state) => state.failedModalMssg)
+export const selectAllsuccessModalMssg = createSelector([selectSelf], 
+    (state) => state.successfulModalMssg)
+export const selectAllloadingModalMssg = createSelector([selectSelf], 
+    (state) => state.loadingModalMssg)
+export const selectAllemailOtpModalModalMssg = createSelector([selectSelf], 
+    (state) => state.emailOtpModal)
 export default ModalSlice.reducer;

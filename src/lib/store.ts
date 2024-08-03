@@ -6,6 +6,7 @@ import userReducer from "./features/Users/usersSlice"
 import lodgeReducer from "./features/Lodges/lodgesSlice"
 import filterReducer from "./features/Filters/filterSlice"
 import servicesReducer from "./features/Services/servicesSlice"
+import roommateReducer from "./features/Roommates/RoommateSlice"
 export const makeStore = () => {
   return configureStore({
     reducer: {
@@ -16,6 +17,7 @@ export const makeStore = () => {
       lodges: lodgeReducer,
       filter: filterReducer,
       services: servicesReducer,
+      roommate: roommateReducer,
     },
   })
 }

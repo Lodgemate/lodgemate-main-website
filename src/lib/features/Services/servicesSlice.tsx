@@ -50,7 +50,7 @@ export const Fetchservices = createAsyncThunk(
 );
 
 const serviceSlice = createSlice({
-  name: "lodge/Slice",
+  name: "service/Slice",
   initialState,
   reducers: {
     setservicesData:(state,action)=>{

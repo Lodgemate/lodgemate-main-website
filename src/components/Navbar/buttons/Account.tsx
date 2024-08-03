@@ -13,7 +13,7 @@ function Account() {
     setIsDropdownOpen(!isDropdownOpen);
   };
   const isAuthenticated =useAppSelector(selectAllAuthenticated)
-  if (!isAuthenticated) {
+  if (isAuthenticated) {
     return null;
   }
   return (

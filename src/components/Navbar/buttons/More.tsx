@@ -19,7 +19,8 @@ const dispatch = useAppDispatch();
     setIsNotificationOpen(!isNotificationOpen);
   };
   const isAuthenticated =useAppSelector(selectAllAuthenticated)
-  if (!isAuthenticated) {
+  // if (!isAuthenticated) {
+  if (isAuthenticated) {
     return null;
   }
   return (

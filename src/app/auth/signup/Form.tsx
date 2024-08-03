@@ -35,7 +35,7 @@ const SignUpForm: React.FC = () => {
   const Error = useAppSelector(selectAllError);
   const signedInData = useAppSelector(selectAllSignindata);
   const [submitState, setSubmitState] = useState(false);
-  const [locationState, setLocationState] = useState("Use location");
+  const [locationState, setLocationState] = useState("Use your location");
   const loadingRef = useRef(locationState);
   const [formData, setformData] = useState({
     firstName: "",
@@ -97,7 +97,7 @@ const SignUpForm: React.FC = () => {
       dispatch(showLoadingModal(null));
     } else {
       setLocationState((prev) => {
-        loadingRef.current = "Use location";
+        loadingRef.current = "Use your location";
         dispatch(showLoadingModal(null));
         dispatch(showFailedModal("Something went wrong, Try again"));
         return loadingRef.current;
@@ -283,12 +283,13 @@ const SignUpForm: React.FC = () => {
             id='location'
             type='button'
             value={locationState}
-            className='text-truncate mt-1 block h-[48px] w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none text-xs '
+            className='text-truncate mt-1 text-start  block h-[48px] w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none text '
             onClick={handleLocation}
           />
-          {submitState && locationState === "Use location" && (
+          
+          {submitState && locationState === "Use your location" && (
             <>
-              <div className='text-red-500 text-xs'>
+              <div className='text-red-500 text-'>
                 Your location is not set
               </div>
             </>

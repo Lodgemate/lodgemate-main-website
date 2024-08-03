@@ -1,3 +1,9 @@
+/**
+ * Functional component for the Lodges page.
+ * This component renders the HeroSection, SearchBar, and BrowseLodges components.
+ * It also initializes AOS library for animations and manages the search state.
+ * @returns JSX element representing the Lodges page.
+ */
 "use client"
 
 import React, { useState } from "react";
@@ -8,11 +14,9 @@ import AOS from "aos";
 
 
 function LodgesPage() {
-  const [query, setQuery] = useState<string>("");
   const [isSearchTriggered, setIsSearchTriggered] = useState<boolean>(false);
 
-  const handleSearch = (searchQuery: string) => {
-    setQuery(searchQuery);
+  const handleSearch = () => {
     setIsSearchTriggered(true);
   };
 
@@ -31,7 +35,7 @@ function LodgesPage() {
         </div>
       </div>
 
-      <BrowseLodges query={query} isSearchTriggered={isSearchTriggered} />
+      <BrowseLodges isSearchTriggered={isSearchTriggered} />
     </div>
   );
 }

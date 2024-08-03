@@ -1,7 +1,16 @@
+"use client"
+
 import Link from "next/link";
-import React from "react";
+import React, { useState } from "react";
+import ProfileMenuModal from "./modals/ProfileMenu";
 
 const UserDetailas: React.FC = () => {
+    const [isOpen, setIsOpen] = useState(false);
+
+  const toggleDropdown = () => {
+    setIsOpen(!isOpen);
+  };
+
   return (
     <div className="w-full sm:max-w-430px sm:shadow sm:border pt-[100px]  sm:pt-[65px] text-[14px] rounded-[12px] sm:p-4 bg-white">
       {/* User image and menu button */}
@@ -13,13 +22,18 @@ const UserDetailas: React.FC = () => {
             className="w-16 h-16 rounded-full"
           />
         </div>
-        <button className="p- rounded-full">
-          <img
-            src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1719611975/utilities/LodgeMate_File/menu_cx8xja.svg"
-            alt="Menu"
-            className="w-6 h-6"
-          />
-        </button>
+        <div className=" relative">
+          <button className="p- rounded-full" onClick={toggleDropdown}>
+            <img
+              src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1719611975/utilities/LodgeMate_File/menu_cx8xja.svg"
+              alt="Menu"
+              className="w-6 h-6"
+            />
+          </button>
+          <div className=" absolute bottom-0 right-0">
+            <ProfileMenuModal isOpen={isOpen} toggleDropdown={toggleDropdown} />
+          </div>
+        </div>
       </div>
 
       {/* User name and status */}
@@ -91,7 +105,7 @@ const UserDetailas: React.FC = () => {
 
       {/* User stats */}
       <div className="flex justify-between mb-2">
-        <p className="font-bold">Lodges listed</p>
+        <p className="font-bold-">Lodges listed</p>
         <p className="font-bold">13</p>
       </div>
       <div className="flex justify-between mb-2">

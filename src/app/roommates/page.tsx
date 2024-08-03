@@ -20,7 +20,6 @@ function Roommates() {
     setIsSearchTriggered(true);
   };
 
-  
   const handleCitySelect = (city: string) => {
     setSelectedCity(city);
     setSearchQuery("");
@@ -42,17 +41,9 @@ function Roommates() {
     <div>
       <HeroSection />
       <div className="px-4">
-        <SearchBar
-          onSearch={handleSearch}
-          onCitySelect={handleCitySelect}
-          onSchoolSelect={handleSchoolSelect}
-        />{" "}
+        <SearchBar />{" "}
       </div>
       <BrowseRoomates
-        selectedCity={selectedCity}
-        selectedSchool={selectedSchool}
-        query={searchQuery}
-        isSearchTriggered={isSearchTriggered}
       />
     </div>
   );

@@ -39,6 +39,7 @@ export interface user {
 export interface Ratings {
     totalRatings: number;
     userCount: number;
+    avgRatings:number;
   }
   
   export interface Location {
@@ -126,3 +127,84 @@ export interface Ratings {
     results: number;
     data: Data;
   }
+  export interface LodgesApiResponse {
+    status: string;
+    results: number;
+    data: Data;
+  }
+
+ export interface Service {
+    location: Coordinates;
+    ratings: Ratings;
+    _id: string;
+    verifiedService: boolean;
+    vendor: string;
+    coverphoto: string;
+    photos: string[];
+    serviceName: string;
+    serviceCategories: string[];
+    otherServiceCategories: string[];
+    address_text: string;
+    latitude: number;
+    longitude: number;
+    country: string;
+    administrativeArea: string;
+    subAdministrativeArea: string;
+    minPrice: number;
+    maxPrice: number;
+    contactForPrice: boolean;
+    description: string;
+    dateCreated: string;
+    id: string;
+  }
+  
+ export interface ServiceData {
+    services: Service[];
+  }
+  
+ /**
+  * Interface representing the structure of a service API response.
+  */
+ export interface ServiceApiResponse {
+    status: string;
+    results: number;
+    data: ServiceData;
+  }
+
+  /**
+   * Represents the interface for a roommate who posted a listing.
+   */
+  export interface RoommatePostedBy {
+    _id: string;
+    firstName: string;
+    lastName: string;
+    gender: "male" | "female" | "other"; // Adjust the values based on your requirements
+  }
+  
+  // Define the structure of a single roommate object
+export interface Roommate {
+  location: Location;
+  _id: string;
+  postedBy: PostedBy;
+  status: "pending" | "approved" | "rejected"; // Adjust the values based on your requirements
+  address_text: string;
+  latitude: number;
+  longitude: number;
+  country: string;
+  administrativeArea: string;
+  subAdministrativeArea: string;
+  preferredRoommateDescription: string;
+  hobbiesAndTraits: string[];
+  alreadyHasAccomodation: boolean;
+  preferredAccomodationTypes: string[];
+  otherAccomodationTypes: string[];
+  preferredLivingArrangement: "separate" | "shared"; // Adjust the values based on your requirements
+}
+
+// Define the structure of the response data
+export interface RoommatesResponse {
+  status: "success" | "error"; // Adjust the values based on your requirements
+  data: {
+    roommates: Roommate[];
+  };
+}

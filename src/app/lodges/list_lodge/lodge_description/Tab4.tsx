@@ -1,16 +1,24 @@
 "use client";
 
-import React, { useState } from "react";
+import { selectAllList_Lodgesdata } from "@/lib/features/List_Lodges/List_LogdesSlice";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
+import React, { useEffect, useState } from "react";
 
 const Tab4Content: React.FC = () => {
+  const dispatch = useAppDispatch();
+  const data =useAppSelector(selectAllList_Lodgesdata)
+  console.log(data)
   const [images, setImages] = useState<string[]>([]);
+  const [coverImage, setCoverImage] = useState<string | null>(data.coverphoto);
   const [placeholders, setPlaceholders] = useState<number[]>([1, 2, 3, 4, 5]);
-
+  console.log(images)
+  console.log(typeof images[0])
   const handleImageUpload = (
     event: React.ChangeEvent<HTMLInputElement>,
     index: number
   ) => {
     if (event.target.files && event.target.files[0]) {
+      console.log( event.target.files[0])
       const newImage = URL.createObjectURL(event.target.files[0]);
       const newImages = [...images];
       newImages[index] = newImage;
@@ -21,6 +29,10 @@ const Tab4Content: React.FC = () => {
   const addPlaceholder = () => {
     setPlaceholders([...placeholders, placeholders.length + 1]);
   };
+
+  useEffect(()=>{
+
+  },[])
 
   return (
     <div className="flex flex-col items-center mt-[20px]">

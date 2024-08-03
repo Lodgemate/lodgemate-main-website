@@ -26,9 +26,7 @@ interface SearchResult {
   // Define SearchResult interface
   lodges: { id: number| string; name: string }[];
   cities: { id: number| string; address: string }[];
-  // schools: { id: number| string; university: string }[];
 }
-
 const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
 const dispatch = useAppDispatch();
   // Define SearchBar component
@@ -37,7 +35,6 @@ const dispatch = useAppDispatch();
     // State for search results
     lodges: [],
     cities: [],
-    
   });
  const data = useAppSelector(selectAllFetchLodgesdata)
 //  console.log(data.data.lodges)
@@ -57,7 +54,6 @@ const dispatch = useAppDispatch();
     const lowercaseQuery = query.toLowerCase(); // Convert query to lowercase
     const lodges: { id: number| string; name: string }[]= [];
     const cities: { id: number| string; address: string }[] = [];
-    // const schools: { id: number; university: string }[] = [];
 if (!data) {
   return  { lodges, cities };
 }
@@ -84,12 +80,6 @@ if (!data) {
             address: product.address_text.split(",")[1].trim(), // Extract city from address
           });
         }
-        // if (
-        //   product.university.toLowerCase().includes(lowercaseQuery) && // Filter by university
-        //   schools.length < 3
-        // ) {
-        //   schools.push({ id: product.id, university: product.university });
-        // }
       }
     );
 

@@ -1,5 +1,7 @@
 "user client"
 
+import { selectAllList_Lodgesdata, setStateItem } from "@/lib/features/List_Lodges/List_LogdesSlice";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import React, { useState } from "react";
 
 interface Box {
@@ -9,37 +11,40 @@ interface Box {
 }
 
 const Tab1Content: React.FC = () => {
-  const [selectedBox, setSelectedBox] = useState<number | null>(null);
-
+  const dispatch = useAppDispatch();
+  const data =useAppSelector(selectAllList_Lodgesdata)
+  console.log(data)
+  const [selectedBox, setSelectedBox] = useState<string | null>(data.type);
   const boxes: Box[] = [
     {
       id: 1,
       imgSrc:
         "https://res.cloudinary.com/dcb4ilgmr/image/upload/v1719880287/utilities/LodgeMate_File/fluent_building-multiple-20-regular_mbdur2.svg",
-      text: "Apartment",
+      text: "apartment",
     },
     {
       id: 2,
       imgSrc:
         "https://res.cloudinary.com/dcb4ilgmr/image/upload/v1718408373/utilities/LodgeMate_File/covid_quarantine-place-self-lockdown-2_s4rvvo.svg",
-      text: "Self-contained",
+      text: "self-contained",
     },
     {
       id: 3,
       imgSrc:
         "https://res.cloudinary.com/dcb4ilgmr/image/upload/v1718408373/utilities/LodgeMate_File/covid_quarantine-place-self-lockdown-2_s4rvvo.svg",
-      text: "Flat",
+      text: "flat",
     },
     {
       id: 4,
       imgSrc:
         "https://res.cloudinary.com/dcb4ilgmr/image/upload/v1718337642/utilities/LodgeMate_File/House_1_fpt0yj.svg",
-      text: "Single room",
+      text: "single-room",
     },
   ];
 
-  const handleBoxClick = (id: number) => {
-    setSelectedBox(id);
+  const handleBoxClick = (text: string) => {
+    setSelectedBox(text);
+    dispatch(setStateItem({ key: 'type', value: text }))
   };
 
   return (
@@ -49,9 +54,9 @@ const Tab1Content: React.FC = () => {
           <div
             key={box.id}
             className={`w-[300px] rounded-[8px] h-[122px] border flex flex-col items-center justify-center cursor-pointer transition-all duration-300 ${
-              selectedBox === box.id ? "bg-primary text-white" : "bg-white"
+              selectedBox === box.text ? "bg-primary text-white" : "bg-white"
             }`}
-            onClick={() => handleBoxClick(box.id)}
+            onClick={() => handleBoxClick(box.text)}
           >
             <img src={box.imgSrc} alt={box.text} className="w-[28px] h-[28px]" />
             <p className="mt-2">{box.text}</p>

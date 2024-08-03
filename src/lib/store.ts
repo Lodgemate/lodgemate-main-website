@@ -7,6 +7,7 @@ import lodgeReducer from "./features/Lodges/lodgesSlice"
 import filterReducer from "./features/Filters/filterSlice"
 import servicesReducer from "./features/Services/servicesSlice"
 import roommateReducer from "./features/Roommates/RoommateSlice"
+import List_LogdesReducer from "./features/List_Lodges/List_LogdesSlice"
 export const makeStore = () => {
   return configureStore({
     reducer: {
@@ -18,6 +19,7 @@ export const makeStore = () => {
       filter: filterReducer,
       services: servicesReducer,
       roommate: roommateReducer,
+      List_Logdes: List_LogdesReducer,
     },
   })
 }

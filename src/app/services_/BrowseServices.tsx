@@ -177,6 +177,7 @@ const handleResetFilters = () => {
           .map((product, index) => (
            <Card
               key={index}
+              id={product._id}
               imageUrl={product.coverphoto} // Using the first image
              name={product.serviceName}
              location={product.address_text}

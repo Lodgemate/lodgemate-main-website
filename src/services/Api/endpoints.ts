@@ -12,7 +12,7 @@ export const Endpoints ={
     getPrivateLodges:`${process.env.NEXT_PUBLIC_BASE_URL}/v1/lodges?`,
     getPrivateLodgesbyId:`${process.env.NEXT_PUBLIC_BASE_URL}/v1/lodges/`,
     getPublicServices:`${process.env.NEXT_PUBLIC_BASE_URL}/v1/services/p?`,
-    getPublicServicesbyId:`${process.env.NEXT_PUBLIC_BASE_URL}/v1/lodges/p/`,
+    getPublicServicesbyId:`${process.env.NEXT_PUBLIC_BASE_URL}/v1/services/p/`,
     getPrivateServices:`${process.env.NEXT_PUBLIC_BASE_URL}/v1/lodges?`,
     getPrivateServicesbyId:`${process.env.NEXT_PUBLIC_BASE_URL}/v1/lodges/`,
     getPublicRoommates:`${process.env.NEXT_PUBLIC_BASE_URL}/v1/roommate-requests/p?`,

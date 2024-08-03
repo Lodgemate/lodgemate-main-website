@@ -1,8 +1,10 @@
 import React from "react";
 import AOS from "aos";
+import Link from "next/link";
 
 
 interface ProductCardProps {
+  id: any;
   imageUrl: string;
   name: string;
   location: string;
@@ -11,6 +13,7 @@ interface ProductCardProps {
 }
 
 const ProductCard: React.FC<ProductCardProps> = ({
+  id,
   imageUrl,
   name,
   location,
@@ -26,6 +29,9 @@ const ProductCard: React.FC<ProductCardProps> = ({
 
   return (
     <div className="max-w-sm rounded overflow-hidden  " data-aos="fade-up">
+      <Link 
+      href={`/services_/service_details/${id}`} passHref>
+     
       <div className="relative">
         <img
           className="w-full h-[144px] sm:h-[299px] object-cover rounded-[12px]"
@@ -71,6 +77,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
         </div>
         <p className="text-dgray text-[15px] font-semibold mt-4">{price}</p>
       </div>
+       </Link>
     </div>
   );
 };

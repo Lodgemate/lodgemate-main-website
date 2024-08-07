@@ -1,5 +1,6 @@
 "use client";
 
+import LocationSuggestion from "@/components/Shared/locationSuggestion";
 import React, { useState } from "react";
 
 const Tab4Content: React.FC = () => {
@@ -15,11 +16,15 @@ const Tab4Content: React.FC = () => {
           placeholder="Enter name of lodge"
           className="w-full p-2 border border-gray-300 rounded"
         />
-        <input
+        <div className="relative">
+          <input
           type="text"
           placeholder="Enter location of lodge"
           className="w-full p-2 border border-gray-300 rounded"
         />
+          <LocationSuggestion/>
+        </div>
+        
         <input
           type="number"
           placeholder="Price"

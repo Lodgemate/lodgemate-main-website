@@ -12,8 +12,13 @@ interface Box {
 const Tab2Content: React.FC = () => {
   const dispatch = useAppDispatch();
   const data =useAppSelector(selectAllList_Lodgesdata)
+  const hasKey = data.has('numberOfRooms');
+  console.log(hasKey); 
+  const extractedData = hasKey && data.getAll('numberOfRooms') || null
+    console.log(extractedData)
+    console.log(data)
   console.log(data)
-  const [selectedBox, setSelectedBox] = useState<string | null>(data.numberOfRooms);
+  const [selectedBox, setSelectedBox] = useState<any>(extractedData && extractedData[0] || null);
 
   const boxes: Box[] = [
     {

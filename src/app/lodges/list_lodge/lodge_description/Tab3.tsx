@@ -1,6 +1,6 @@
 "user client";
 
-import { selectAllList_Lodgesdata, setStateItem } from "@/lib/features/List_Lodges/List_LogdesSlice";
+import { appendStateItem, selectAllList_Lodgesdata, setStateItem } from "@/lib/features/List_Lodges/List_LogdesSlice";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import React, { useState } from "react";
 
@@ -13,8 +13,13 @@ interface Box {
 const Tab3Content: React.FC = () => {
   const dispatch = useAppDispatch();
   const data =useAppSelector(selectAllList_Lodgesdata)
-  console.log(data)
-  const [selectedBox, setSelectedBox] = useState<string[]>(data.lodgeFeatures);
+  const hasKey = data.has('lodgeFeatures');
+  console.log(hasKey); 
+  const extractedData: any = hasKey && data.get('lodgeFeatures') || null
+  const parsedData = JSON.parse(extractedData)
+    console.log(JSON.parse(extractedData))
+    console.log(data)
+  const [selectedBox, setSelectedBox] = useState<any>(parsedData && parsedData ||[]);
   console.log(selectedBox)
   const boxes: Box[] = [
     {
@@ -76,13 +81,16 @@ const Tab3Content: React.FC = () => {
 
   const handleBoxClick = (text: string) => {
     if (selectedBox.includes(text)) {
-      let updatedArr = selectedBox.filter((ent) => ent != text);
+      let updatedArr = selectedBox.filter((ent: string) => ent != text);
+      console.log(updatedArr)
       setSelectedBox(updatedArr);
-      dispatch(setStateItem({ key: "lodgeFeatures", value: updatedArr }));
+      dispatch(setStateItem({ key: "lodgeFeatures", value: JSON.stringify(updatedArr) }));
     } else {
       let updatedArr = [...selectedBox, text];
+      console.log(updatedArr)
+
       setSelectedBox(updatedArr);
-      dispatch(setStateItem({ key: "lodgeFeatures", value: updatedArr }));
+      dispatch(setStateItem({ key: "lodgeFeatures", value: JSON.stringify(updatedArr) }));
     }
   };
 

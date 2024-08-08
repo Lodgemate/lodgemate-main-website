@@ -80,18 +80,28 @@ const Tab3Content: React.FC = () => {
   ];
 
   const handleBoxClick = (text: string) => {
-    if (selectedBox.includes(text)) {
-      let updatedArr = selectedBox.filter((ent: string) => ent != text);
-      console.log(updatedArr)
-      setSelectedBox(updatedArr);
-      dispatch(setStateItem({ key: "lodgeFeatures", value: JSON.stringify(updatedArr) }));
-    } else {
-      let updatedArr = [...selectedBox, text];
-      console.log(updatedArr)
+    // if (selectedBox.includes(text)) {
+    //   let updatedArr = selectedBox.filter((ent: string) => ent != text);
+    //   console.log(updatedArr)
+    //   setSelectedBox(updatedArr);
+    //   dispatch(setStateItem({ key: "lodgeFeatures", value: JSON.stringify(updatedArr) }));
+    // } else {
+    //   let updatedArr = [...selectedBox, text];
+    //   console.log(updatedArr)
 
-      setSelectedBox(updatedArr);
-      dispatch(setStateItem({ key: "lodgeFeatures", value: JSON.stringify(updatedArr) }));
-    }
+    //   setSelectedBox(updatedArr);
+    //   dispatch(setStateItem({ key: "lodgeFeatures", value: JSON.stringify(updatedArr) }));
+    // }
+
+    let updatedArr = [...selectedBox, text];
+    console.log(updatedArr)
+
+    setSelectedBox(updatedArr);
+    dispatch(setStateItem({ key: "lodgeFeatures", value: JSON.stringify(updatedArr) }));
+
+    updatedArr.forEach((feature, index) => {
+      formData.append(`lodgeFeatures[]`, feature);
+    });
   };
 
   return (

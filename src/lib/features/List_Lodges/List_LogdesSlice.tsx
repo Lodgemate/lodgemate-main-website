@@ -22,32 +22,20 @@ const List_LodgeSlice = createSlice({
   initialState,
   reducers: {
     setStateItem: (state, action: PayloadAction<SetStateItemPayload>) => {
-      const { key, value } = action.payload;
-      console.log(key, value)
-      // Use the append method to add key-value pairs to the FormData object
-      state.formData.set(key, value);
-console.log(Object.fromEntries(state.formData))
-      
+      const { key, value } = action.payload;      // Use the set method to add key-value pairs to the FormData object
+      state.formData.set(key, value);      
     },
     appendStateItem: (state, action: PayloadAction<SetStateItemPayload>) => {
       const { key, value } = action.payload;
-      console.log(key, value)
       // Use the append method to add key-value pairs to the FormData object
       state.formData.append(key, value);
-console.log(Object.fromEntries(state.formData))
     },
     imagesSetStateItem: (state, action: PayloadAction<SetStateItemPayload>) => {
        const { key, value, index } = action.payload;
-       console.log(key, value , index)
         if (index === 0 ) {
-          console.log("yay")
       state.formData.set("coverphoto", value);
-      console.log(Object.fromEntries(state.formData))
-
         }else{
-          state.formData.append("photo", value);
-      console.log(state.formData.getAll("photo"))
-      console.log(Object.fromEntries(state.formData))
+          state.formData.append("photos", value);
         }
     },  
     setImagesUrl: (state, action: PayloadAction<string[]| []>) => {

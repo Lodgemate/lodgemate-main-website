@@ -16,7 +16,7 @@ export async function fetchData(endpoint: any) {
 
   let debounceTimeoutId :any;
 
-export const debounceFetch = (url : string, options = {}, delay = 500) => {
+export const debounceFetch = (url : string, options = {}, delay = 1000) => {
   // Clear the previous timeout if it exists
   clearTimeout(debounceTimeoutId);
 

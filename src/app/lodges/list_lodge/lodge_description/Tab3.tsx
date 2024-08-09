@@ -13,13 +13,11 @@ interface Box {
 const Tab3Content: React.FC = () => {
   const dispatch = useAppDispatch();
   const data =useAppSelector(selectAllList_Lodgesdata)
-  const hasKey = data.has('lodgeFeatures');
+  const hasKey = data.has('lodgeFeatures[]');
   console.log(hasKey); 
-  const extractedData: any = hasKey && data.get('lodgeFeatures') || null
-  const parsedData = JSON.parse(extractedData)
-    console.log(JSON.parse(extractedData))
-    console.log(data)
-  const [selectedBox, setSelectedBox] = useState<any>(parsedData && parsedData ||[]);
+  const extractedData: any = hasKey && data.getAll('lodgeFeatures[]') || null
+    console.log(extractedData)
+  const [selectedBox, setSelectedBox] = useState<any>(extractedData && extractedData ||[]);
   console.log(selectedBox)
   const boxes: Box[] = [
     {
@@ -92,17 +90,34 @@ const Tab3Content: React.FC = () => {
     //   setSelectedBox(updatedArr);
     //   dispatch(setStateItem({ key: "lodgeFeatures", value: JSON.stringify(updatedArr) }));
     // }
+    if (selectedBox.includes(text)) {
+      
+      let updatedArr = selectedBox.filter((ent: string) => ent != text);
+      setSelectedBox(updatedArr);
+      data.delete("lodgeFeatures[]")
+      updatedArr.forEach((element: string) => {
+      dispatch(appendStateItem({ key: "lodgeFeatures[]", value: element }));
+        
+      });
+    }else{
+       let updatedArr = [...selectedBox, text];
+       setSelectedBox(updatedArr);
+      dispatch(appendStateItem({ key: "lodgeFeatures[]", value: text }));
 
-    let updatedArr = [...selectedBox, text];
-    console.log(updatedArr)
+      // let updatedArr = [...selectedBox, text];
+      // setSelectedBox(updatedArr);
+      // updatedArr.forEach((element: string) => {
+      //   dispatch(appendStateItem({ key: "lodgeFeatures[]", value: element }));
+      //   });
+    }
+    
+    }
 
-    setSelectedBox(updatedArr);
-    dispatch(setStateItem({ key: "lodgeFeatures", value: JSON.stringify(updatedArr) }));
-
-    updatedArr.forEach((feature, index) => {
-      formData.append(`lodgeFeatures[]`, feature);
-    });
-  };
+  // make an array
+  // in the function create a shallow arr"
+  // use the shallow arrar to dispatch to store 
+  // correct reducer logic
+  // from there use store to revalidate component
 
   return (
     <div className="flex flex-col items-center">
@@ -111,9 +126,9 @@ const Tab3Content: React.FC = () => {
           <div
             key={box.id}
             className={` rounded-[8px] p-[20px] border flex gap-2 items-center justify-center cursor-pointer transition-all duration-300 ${
-              selectedBox.includes(box.text) ? "bg-primary text-white" : "bg-white"
+              selectedBox.includes(box.text.toLowerCase()) ? "bg-primary text-white" : "bg-white"
             }`}
-            onClick={() => handleBoxClick(box.text)}
+            onClick={() => handleBoxClick( box.text.toLowerCase())}
           >
             <img
               src={box.imgSrc}

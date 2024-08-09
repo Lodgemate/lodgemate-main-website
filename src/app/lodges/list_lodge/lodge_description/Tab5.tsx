@@ -3,7 +3,7 @@
 import LocationSuggestion, { Result } from "@/components/Shared/locationSuggestion";
 import { selectAllList_Lodgesdata, setStateItem } from "@/lib/features/List_Lodges/List_LogdesSlice";
 import { useAppSelector } from "@/lib/hooks";
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 
 const Tab4Content: React.FC = () => {
@@ -22,20 +22,24 @@ const Tab4Content: React.FC = () => {
   const [Price, setPrice] = useState(ExtractDataFromFormData('price'))
   // extract price
   const [lodgeDescription, setLodgeDescription] = useState(ExtractDataFromFormData('lodgeDescription'))
-  // const onFocus = useRef(false);
-  console.log(onFocus);
- const locationOnchange =(data : Result[])=>{
+
+  const locationOnchange =(data : Result[])=>{
   dispatch(setStateItem({ 
+    
     // its long Ik :)
     key: "location[administrativeArea]",
      value: data[0].address_components.filter((each) => each.types[0] === 'administrative_area_level_1')[0].long_name
      }));
-  dispatch(
+
+     const filterdArr = data[0].address_components.filter((each) => each.types[0] === 'locality' || 'administrative_area_level_1')
+     if (filterdArr) {
+      dispatch(
     setStateItem({ 
       key: "location[subAdministrativeArea]",
-       value:  data[0].address_components.filter((each) => each.types[0] === 'administrative_area_level_2')[0].long_name
+       value:  data[0].address_components.filter((each) => each.types[0] === 'locality' || 'administrative_area_level_1')[0].long_name
+      })); 
+     }
  
-      }));
   dispatch(
     setStateItem({ 
       key: "location[country]",
@@ -45,58 +49,9 @@ const Tab4Content: React.FC = () => {
   dispatch(setStateItem({ key: "location[latitude]", value: data[0].geometry.location.lat }));
   dispatch(setStateItem({ key: "location[longitude]", value: data[0].geometry.location.lng }));
   dispatch(setStateItem({ key: "lodgeLocation", value: data[0].formatted_address }));
- 
-console.log(data)
- }
+  }
 
- console.log(Object.fromEntries(data))
- console.log(data.getAll("photos"))
-
-
-const mock =  [
-  { long_name: '2', short_name: '2', types: [ 'street_number' ] },
-  {
-    long_name: 'Umunwakum Street Achara Layout',
-    short_name: 'Umunwakum Street Achara Layout',
-    types: [ 'route' ]
-  },
-  {
-    long_name: 'Uwani',
-    short_name: 'Uwani',
-    types: [ 'political', 'sublocality', 'sublocality_level_1' ]
-  },
-  {
-    long_name: 'Enugu',
-    short_name: 'Enugu',
-    types: [ 'locality', 'political' ]
-  },
-  {
-    long_name: 'Achara Layout West',
-    short_name: 'Achara Layout West',
-    types: [ 'administrative_area_level_3', 'political' ]
-  },
-  {
-    long_name: 'Enugu South',
-    short_name: 'Enugu South',
-    types: [ 'administrative_area_level_2', 'political' ]
-  },
-  {
-    long_name: 'Enugu',
-    short_name: 'EN',
-    types: [ 'administrative_area_level_1', 'political' ]
-  },
-  {
-    long_name: 'Nigeria',
-    short_name: 'NG',
-    types: [ 'country', 'political' ]
-  },
-  { long_name: '400107', short_name: '400107', types: [ 'postal_code' ] }
-]
-
-
-console.log(
-  mock.filter((each) => each.types[0] === 'administrative_area_level_1')[0].long_name
-);
+//  console.log(Object.fromEntries(data))
 
   return (
     <div className="flex flex-col items-center text-dgray">
@@ -120,7 +75,7 @@ console.log(
           onFocus={()=>setonFocus(true)}
           onBlur={() => setonFocus(false)}
         />
-          {onFocus && <LocationSuggestion handleLocation={locationOnchange} input={loacation}/>}
+          {onFocus && <LocationSuggestion handleLocation={locationOnchange} input={loacation} setInput={setloacation}/>}
         </div>
         
         <input

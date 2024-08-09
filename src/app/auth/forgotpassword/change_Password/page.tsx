@@ -76,7 +76,6 @@ useEffect(()=>{
     if (emailhide) {
       dispatch(showLoadingModal("Verifying Email Address"))
       const res = await fetchForgotPw({"email": emailhide})
-      console.log(res)
       if (res === 'success') {
         dispatch(showLoadingModal(null))
         dispatch(showEmailOtpModal(emailhide))
@@ -135,7 +134,6 @@ useEffect(()=>{
     e.preventDefault();
     const otpCode = otp.join("");
     if (otpCode.length === 6 && !confirmPwCheck() && !onFocusValidation("password", formData.password)) {
-      console.log(email)
       dispatch(showLoadingModal('Updating password'))
 const payload={...formData, otp: otpCode}
       const res = await fetchResetPw(payload)
@@ -153,15 +151,11 @@ const payload={...formData, otp: otpCode}
         dispatch(showLoadingModal(null))
         dispatch(showFailedModal(res.message))
       } 
-      console.log(res)
     }
-    
-    console.log("Entered OTP:", otpCode);
-    console.log( otpCode.length);
+
     // Add your verification logic here
     // clean up sessionStorage
   };
-console.log(email)
   return (
     <div className="sm:w-[500px] w-full mx-auto py-4 bg-white text-lgray text-[16px] rounded-2xl shadow-md border mt-[100px]">
       <div className="flex w-full items-center justify-center border-b">

@@ -47,13 +47,11 @@ useEffect(() => {
     return
   }
   if (status === 'succeeded' && data?.status === 'success') {
-    console.log(data)
     dispatch(setAuthenticated())
     const location ={
       latitude: data.data.user.latitude,
         longitude: data.data.user.longitude,
     }
-    console.log(location)
     dispatch(setLocation(location))
     
   }

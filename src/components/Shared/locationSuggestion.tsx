@@ -41,16 +41,15 @@ interface ApiResponse {
 
 interface LocationSuggestionProps {
   input: string;
-  handleLocation: React.FC
+  handleLocation: any
 }
 const LocationSuggestion: React.FC<LocationSuggestionProps> = ({handleLocation, input }) => {
   const [result, setresult] = useState<Result[]>([]);
-  console.log(input);
   useEffect(() => {
     const fetchData = async () => {
       const cleanString = formattedString(input);
       const res: ApiResponse | any = await debounceFetch(
-        `https:maps.googleapis.com/maps/api/geocode/json?address=${cleanString}&key=AIzaSyAT2e0pEJTw05c58G5VKux66rTOfd5EZLg`
+        `https:maps.googleapis.com/maps/api/geocode/json?address=${cleanString}&key=${process.env.NEXT_PUBLIC_GEOCODING_KEY}`
       );
       console.log(res);
       setresult(res.results);
@@ -75,6 +74,7 @@ const LocationSuggestion: React.FC<LocationSuggestionProps> = ({handleLocation, 
       {result.map((result, index) => {
         return (
           <p
+          
             key={index}
             className='p-2 hover:text-black text-sm cursor-pointer truncate'
           >

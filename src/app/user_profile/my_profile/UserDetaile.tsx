@@ -3,14 +3,17 @@
 import Link from "next/link";
 import React, { useState } from "react";
 import ProfileMenuModal from "./modals/ProfileMenu";
+import { useAppSelector } from "@/lib/hooks";
+import { selectAllUsersdata } from "@/lib/features/Users/usersSlice";
 
 const UserDetailas: React.FC = () => {
     const [isOpen, setIsOpen] = useState(false);
-
+    const data= useAppSelector(selectAllUsersdata)
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
   };
 
+console.log(data)
   return (
     <div className="w-full sm:max-w-430px sm:shadow sm:border pt-[100px]  sm:pt-[65px] text-[14px] rounded-[12px] sm:p-4 bg-white">
       {/* User image and menu button */}
@@ -38,7 +41,7 @@ const UserDetailas: React.FC = () => {
 
       {/* User name and status */}
       <div className="flex items-center mb-4">
-        <h1 className="text-[24px] font-bold mr-2">John Doe</h1>
+        <h1 className="text-[24px] font-bold mr-2">{data?.data.user.lastName + " " + data?.data.user.firstName}</h1>
         <img
           src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1716223406/utilities/LodgeMate_File/Vector_aflwdv.png"
           alt="Status"
@@ -53,17 +56,13 @@ const UserDetailas: React.FC = () => {
           alt="Rating"
           className="w-4 h-4 mr-2"
         />
-        <p className="text-gray-600 text-[12px]">4.2 (19 people)</p>
+        <p className="text-gray-600 text-[12px]">4.2 (19 people) cannot be found</p>
       </div>
 
       {/* User description */}
       <div className="mb-4">
         <p>
-          I'm John and I'm on Lodgemate to connect with students and make their
-          life easier. With over 27 reviews and ratings from past clients, so
-          you can be sure you're in good hands. Whether you're looking for a new
-          place to live or need a hand fixing something around your lodge, I'm
-          here to help.
+         {data?.data.user.bio ? data?.data.user.bio : "please edit your bio"}
         </p>
       </div>
 
@@ -105,16 +104,20 @@ const UserDetailas: React.FC = () => {
 
       {/* User stats */}
       <div className="flex justify-between mb-2">
-        <p className="font-bold-">Lodges listed</p>
-        <p className="font-bold">13</p>
+        <p className="font-bold-">Total lodges</p>
+        <p className="font-bold">{data?.data.user.totalLodges}</p>
       </div>
       <div className="flex justify-between mb-2">
-        <p className="font-bol">Services listed</p>
-        <p className="font-bold">4</p>
+        <p className="font-bol">Total services</p>
+        <p className="font-bold">{data?.data.user.totalServices}</p>
       </div>
       <div className="flex justify-between mb-2">
-        <p className="font-bol">Ratings & reviews</p>
-        <p className="font-bold">27</p>
+        <p className="font-bol">Lodge ratings</p>
+        <p className="font-bold">{data?.data.user.ratings.lodgeRatings.totalRatings + "/" + data?.data.user.ratings.lodgeRatings.userCount}</p>
+      </div>
+      <div className="flex justify-between mb-2">
+        <p className="font-bol">Service ratings</p>
+        <p className="font-bold">{data?.data.user.ratings.serviceRatings.totalRatings + "/" + data?.data.user.ratings.serviceRatings.userCount}</p>
       </div>
     </div>
   );

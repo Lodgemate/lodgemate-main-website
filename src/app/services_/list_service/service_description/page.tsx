@@ -1,14 +1,18 @@
-"use client";
+ "use client";
 
 import React, { useState } from "react";
 import Tab1Content from "./Tab1";
 import Tab2Content from "./Tab2";
+import { useAppSelector } from "@/lib/hooks";
+import { selectAllList_Listingdata } from "@/lib/features/Listing/ListingSlice";
+import { FetchApi } from "@/utils/Fetchdata";
+import { Endpoints } from "@/services/Api/endpoints";
 
 const LodgeDescription = () => {
   const [activeTab, setActiveTab] = useState(0);
+  const formData =useAppSelector(selectAllList_Listingdata)
 
   const tabs = [
-    
     { title: "Tab 1", content: <Tab1 /> },
     { title: "Tab 2", content: <Tab2 /> },
   ];
@@ -24,7 +28,32 @@ const LodgeDescription = () => {
       setActiveTab(activeTab - 1);
     }
   };
+  const handleListServices= async()=>{
+    const localStorageToken = localStorage.getItem("token");
+    const parseToken =localStorageToken && JSON.parse(localStorageToken)
+    console.log(parseToken)
+    console.log(formData)
+  console.log(Object.fromEntries(formData))
+if (!(formData instanceof FormData)) {
+  console.error('FormData is not available or is not of type FormData');
+  return;
+}
+const body = {
+ method: "PUT",
+ headers: {
+  Authorization: `Bearer ${parseToken}`,
+ },
+  body: formData,
+};
+     console.log ( "res")
 
+     try {
+       const res = FetchApi(Endpoints.getPrivateServices,body)
+       console.log (await res)
+     } catch (error) {
+      console.log (await error)
+     }
+  }
   return (
     <div className="flex w-full px-4 sm:px-[150px] min-h-screen mb-[50px] ">
       <div className="flex w-full flex-col">
@@ -63,8 +92,8 @@ const LodgeDescription = () => {
             Back
           </button>
           <button
-            onClick={nextTab}
-            disabled={activeTab === tabs.length - 1}
+            onClick={activeTab === 1 ?handleListServices:nextTab }
+            // disabled={activeTab === tabs.length - 1}
             className="bg-primary text-white w-1/2 sm:w-[300px] h-[48px] rounded-[8px]"
           >
             {activeTab === 1 ? "List your lodge" : "Next"}

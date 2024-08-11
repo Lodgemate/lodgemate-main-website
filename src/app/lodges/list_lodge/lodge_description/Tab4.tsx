@@ -1,6 +1,6 @@
 "use client";
 
-import { imagesSetStateItem, selectAllList_imagesUrl, selectAllList_Lodgesdata, setImagesUrl } from "@/lib/features/List_Lodges/List_LogdesSlice";
+import { imagesSetStateItem, selectAllList_imagesUrl, selectAllList_Listingdata, setImagesUrl } from "@/lib/features/Listing/ListingSlice";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import React, { useEffect, useState } from "react";
 

@@ -70,7 +70,7 @@ const LocationSuggestion: React.FC<LocationSuggestionProps> = ({handleLocation, 
    
 
   return (
-    <div className='floating_suggestion_box absolute w-full  z-20 rounded min-h-fit bg-slate-50 shadow shadow-slate-400'>
+    <div className='floating_suggestion_box absolute w-full   z-20 rounded min-h-fit bg-slate-50 shadow shadow-slate-400'>
       {result.map((result, index) => {
         return (
           <p

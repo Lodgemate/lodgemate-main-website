@@ -1,16 +1,15 @@
 "use client";
 
 import LocationSuggestion, { Result } from "@/components/Shared/locationSuggestion";
-import { selectAllList_Lodgesdata, setStateItem } from "@/lib/features/List_Lodges/List_LogdesSlice";
-import { useAppSelector } from "@/lib/hooks";
+import { selectAllList_Listingdata, setStateItem } from "@/lib/features/Listing/ListingSlice";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
 
 const Tab4Content: React.FC = () => {
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
   const [loacation, setloacation] = useState("")
   const [onFocus, setonFocus] = useState(false)
-  const data =useAppSelector(selectAllList_Lodgesdata)
+  const data =useAppSelector(selectAllList_Listingdata)
   const ExtractDataFromFormData =(name: string)=>{
     const hasKey = data.has(name);
     const extractedData: any = hasKey && data.get(name) || null

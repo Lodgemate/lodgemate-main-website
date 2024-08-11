@@ -1,9 +1,9 @@
 "user client";
 
 import {
-  selectAllList_Lodgesdata,
+  selectAllList_Listingdata,
   setStateItem,
-} from "@/lib/features/List_Lodges/List_LogdesSlice";
+} from "@/lib/features/Listing/ListingSlice";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import React, { useState } from "react";
 
@@ -15,7 +15,7 @@ interface Box {
 
 const Tab1Content: React.FC = () => {
   const dispatch = useAppDispatch();
-  const data = useAppSelector(selectAllList_Lodgesdata);
+  const data = useAppSelector(selectAllList_Listingdata);
   const hasKey = data.has("type");
   const extractedData = (hasKey && data.getAll("type")) || null;
   const [selectedBox, setSelectedBox] = useState<any>(

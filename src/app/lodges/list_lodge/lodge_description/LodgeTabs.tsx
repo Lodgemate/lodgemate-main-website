@@ -8,12 +8,12 @@ import Tab4Content from "./Tab4";
 import Tab5Content from "./Tab5";
 import { FetchApi } from "@/utils/Fetchdata";
 import { useAppSelector } from "@/lib/hooks";
-import { selectAllList_Lodgesdata } from "@/lib/features/List_Lodges/List_LogdesSlice";
+import { selectAllList_Listingdata } from "@/lib/features/Listing/ListingSlice";
 import { Endpoints } from "@/services/Api/endpoints";
 
 const LodgeTabs = () => {
   const [activeTab, setActiveTab] = useState(0);
-  const formData =useAppSelector(selectAllList_Lodgesdata)
+  const formData =useAppSelector(selectAllList_Listingdata)
   const tabs = [
     { title: "Tab 1", content: <Tab1 /> },
     { title: "Tab 2", content: <Tab2 /> },
@@ -99,7 +99,7 @@ const body = {
           </button>
           <button
             onClick={activeTab === 4 ?handleListLodges:nextTab }
-            disabled={activeTab ===  1 || activeTab > 4}
+            // disabled={activeTab ===  1 || activeTab > 4}
             className="bg-primary text-white w-1/2 sm:w-[300px] h-[48px] rounded-[8px]"
           >
             {activeTab === 4 ? "List your lodge" : "Next"}

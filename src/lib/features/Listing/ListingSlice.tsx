@@ -8,16 +8,16 @@ interface SetStateItemPayload {
   index?: number
 }
 
-interface ListLodgeState {
+interface ListingState {
   formData: FormData;
   imagesUrl: string[] | []
 }
-const initialState: ListLodgeState = {
+const initialState: ListingState = {
   formData: new FormData(),
   imagesUrl:[]
 };
 
-const List_LodgeSlice = createSlice({
+const ListingSlice = createSlice({
   name: 'List_lodge',
   initialState,
   reducers: {
@@ -45,8 +45,8 @@ const List_LodgeSlice = createSlice({
     
   }
 });
-export const selectAllList_Lodgesdata = (state: RootState) => state.List_Logdes.formData;
+export const selectAllList_Listingdata = (state: RootState) => state.List_Logdes.formData;
 export const selectAllList_imagesUrl = (state: RootState) => state.List_Logdes.imagesUrl;
 
-export const { setStateItem,appendStateItem, imagesSetStateItem, setImagesUrl } = List_LodgeSlice.actions;
-export default List_LodgeSlice.reducer;
+export const { setStateItem,appendStateItem, imagesSetStateItem, setImagesUrl } = ListingSlice.actions;
+export default ListingSlice.reducer;

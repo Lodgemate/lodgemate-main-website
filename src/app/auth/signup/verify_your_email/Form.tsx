@@ -18,6 +18,7 @@ const VerifyEmailForm = () => {
   const router = useRouter();
 useEffect(()=>{
   dispatch(showEmailOtpModal(null))
+  dispatch(showLoadingModal(null));
 
     const email =sessionStorage.getItem("email")
     const emailhid =sessionStorage.getItem("hiddenemail")

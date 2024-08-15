@@ -1,26 +1,62 @@
 "use client";
 
+import { imagesSetStateItem, selectAllList_imagesUrl, setImagesUrl } from "@/lib/features/Listing/ListingSlice";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import React, { useState } from "react";
 
 const Tab1Content: React.FC = () => {
-  const [images, setImages] = useState<string[]>([]);
-  const [placeholders, setPlaceholders] = useState<number[]>([1, 2, 3, 4, 5]);
+  // const [images, setImages] = useState<string[]>([]);
+  // const [placeholders, setPlaceholders] = useState<number[]>([1, 2, 3, 4, 5]);
 
+  
+  const dispatch = useAppDispatch();
+  const data =useAppSelector(selectAllList_imagesUrl)
+  const images =data;
+  const [placeholders, setPlaceholders] = useState<number[]>([1, 2, 3, 4, 5]);
+  console.log(images)
+  console.log(typeof images[0])
   const handleImageUpload = (
     event: React.ChangeEvent<HTMLInputElement>,
     index: number
   ) => {
     if (event.target.files && event.target.files[0]) {
+      console.log(event.target.files[0])
       const newImage = URL.createObjectURL(event.target.files[0]);
       const newImages = [...images];
       newImages[index] = newImage;
-      setImages(newImages);
+      dispatch(setImagesUrl(newImages))
+      dispatch(imagesSetStateItem({key: 'photos', value:event.target.files[0], index: index}))
     }
   };
 
   const addPlaceholder = () => {
     setPlaceholders([...placeholders, placeholders.length + 1]);
   };
+
+
+
+
+
+
+
+
+
+  
+  // const handleImageUpload = (
+  //   event: React.ChangeEvent<HTMLInputElement>,
+  //   index: number
+  // ) => {
+  //   if (event.target.files && event.target.files[0]) {
+  //     const newImage = URL.createObjectURL(event.target.files[0]);
+  //     const newImages = [...images];
+  //     newImages[index] = newImage;
+  //     setImages(newImages);
+  //   }
+  // };
+
+  // const addPlaceholder = () => {
+  //   setPlaceholders([...placeholders, placeholders.length + 1]);
+  // };
 
   return (
     <div className="flex flex-col items-center mt-[20px]">

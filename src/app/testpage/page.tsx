@@ -248,7 +248,7 @@ function LodgeDetailPage() {
                     </div>
 
                     <div className="flex text-dgray font-bold items-center gap-2">
-                      <p className="text-[15px] underline">Read more</p>
+                      {/* <p className="text-[15px] underline">Read more</p> */}
                       <div className="h-[16px] w-[1px] bg-black"></div>
                       <p className="text-[15px] underline">
                         See all replies (17)
@@ -301,7 +301,7 @@ function LodgeDetailPage() {
                     </div>
 
                     <div className="flex text-dgray font-bold items-center gap-2">
-                      <p className="text-[15px] underline">Read more</p>
+                      {/* <p className="text-[15px] underline">Read more</p> */}
                       <div className="h-[16px] w-[1px] bg-black"></div>
                       <p className="text-[15px] underline">
                         See all replies (17)

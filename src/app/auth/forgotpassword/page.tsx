@@ -32,7 +32,6 @@ function Forgotpassword() {
     if (formData.email) {
       dispatch(showLoadingModal("Verifying Email Address"))
       const res = await fetchForgotPw(formData)
-      console.log(res)
       if (res === 'success') {
         dispatch(showLoadingModal(null))
         dispatch(showEmailOtpModal(formData.email))

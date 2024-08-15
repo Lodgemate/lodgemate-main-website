@@ -1,7 +1,7 @@
 import { RootState } from "@/lib/store";
 import { ApiResponse } from "@/lib/Types";
 import { Endpoints } from "@/services/Api/endpoints";
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, createSelector } from "@reduxjs/toolkit";
 
 const initialState = {
   data: null as ApiResponse | null,
@@ -13,6 +13,8 @@ export const getUsersData = createAsyncThunk("usersData", async () => {
   const tokenStorage = localStorage.getItem("token");
   try {
     if (tokenStorage) {
+console.log("data")
+
       const token = JSON.parse(tokenStorage);
       const response = await fetch(url, {
         method: "GET",
@@ -36,7 +38,11 @@ export const getUsersData = createAsyncThunk("usersData", async () => {
 const userSlice = createSlice({
   name: "Users",
   initialState,
-  reducers: {},
+  reducers: {
+    setUserData:(state,action)=>{
+      state.data = action.payload
+    }
+  },
   extraReducers: (builder) => {
     builder
       .addCase(getUsersData.pending, (state) => {
@@ -52,9 +58,11 @@ const userSlice = createSlice({
       });
   },
 });
+const selectSelf =(state:RootState) => state.User
 
-export const selectAllUsersdata = (state: RootState) => state.User.data;
-export const selectAllUsersStatus = (state: RootState) => state.User.status;
-export const selectAllUsersError = (state: RootState) => state.User.error;
-// export const { setAuthenticated, Logout, resetState } = authSlice.actions;
+export const selectAllUsersdata = createSelector([selectSelf],(state) => state.data);
+export const selectAllUsersStatus = createSelector([selectSelf],(state) => state.status);
+export const selectAllUsersError = createSelector([selectSelf],(state) => state.error);
+
+ export const { setUserData } = userSlice.actions;
 export default userSlice.reducer;

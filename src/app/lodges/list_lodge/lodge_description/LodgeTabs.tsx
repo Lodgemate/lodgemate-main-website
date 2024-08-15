@@ -1,31 +1,19 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import Tab1Content from "./Tab1";
 import Tab2Content from "./Tab2";
 import Tab3Content from "./Tab3";
 import Tab4Content from "./Tab4";
 import Tab5Content from "./Tab5";
+import { FetchApi } from "@/utils/Fetchdata";
+import { useAppSelector } from "@/lib/hooks";
+import { selectAllList_Listingdata } from "@/lib/features/Listing/ListingSlice";
+import { Endpoints } from "@/services/Api/endpoints";
 
 const LodgeTabs = () => {
   const [activeTab, setActiveTab] = useState(0);
-const [formData, setFormData] = useState({
-    lodgeName:"",
-    coverphoto: null,
-    photos:[],
-    type:"",
-    price:"",
-    lodgeLocation:"",
-    lodgeLocationDescription:"",
-    location:[
-
-    ],
-    lodgeFeatures:[
-
-    ],
-    numberOfRooms:""
-    
-})
+  const formData =useAppSelector(selectAllList_Listingdata)
   const tabs = [
     { title: "Tab 1", content: <Tab1 /> },
     { title: "Tab 2", content: <Tab2 /> },
@@ -46,6 +34,33 @@ const [formData, setFormData] = useState({
     }
   };
 
+  const handleListLodges= async()=>{
+    const localStorageToken = localStorage.getItem("token");
+    const parseToken =localStorageToken && JSON.parse(localStorageToken)
+    console.log(parseToken)
+    console.log(formData)
+//  console.log(Object.fromEntries(data))
+if (!(formData instanceof FormData)) {
+  console.error('FormData is not available or is not of type FormData');
+  return;
+}
+const body = {
+ method: "PUT",
+ headers: {
+  Authorization: `Bearer ${parseToken}`,
+ },
+  body: formData,
+};
+     console.log ( "res")
+
+     try {
+       const res = FetchApi(Endpoints.getPrivateLodges,body)
+       console.log (await res)
+     } catch (error) {
+      console.log (await error)
+     }
+  }
+// make an unorderd list for err
   return (
       <div className="flex w-full flex-col">
         <div className=" mt-[100px] justify-center flex items-center w-full">
@@ -83,8 +98,8 @@ const [formData, setFormData] = useState({
             Back
           </button>
           <button
-            onClick={nextTab}
-            disabled={activeTab === tabs.length - 1}
+            onClick={activeTab === 4 ?handleListLodges:nextTab }
+            // disabled={activeTab ===  1 || activeTab > 4}
             className="bg-primary text-white w-1/2 sm:w-[300px] h-[48px] rounded-[8px]"
           >
             {activeTab === 4 ? "List your lodge" : "Next"}

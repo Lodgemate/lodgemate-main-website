@@ -1,3 +1,4 @@
+import { ServiceApiResponse } from "@/lib/Types";
 import React from "react";
 
 // Sample data
@@ -48,16 +49,16 @@ const services = [
 ];
 
 interface ServiceCardProps {
-  id: number;
-  type: string;
-  name: string;
-  address: string;
-  category: string;
-  images: string[];
+  id?: number;
+  type?: string;
+  name?: string;
+  address?: string;
+  category?: string;
+  images?: string[];
   price: number;
-  imageUrl: string;
+  imageUrl?: string;
   location: string;
-  nearbyCategory: string;
+  nearbyCategory?: string;
 }
 
 const ServiceCard: React.FC<ServiceCardProps> = ({
@@ -106,7 +107,7 @@ const ServiceCard: React.FC<ServiceCardProps> = ({
             alt=""
             className="mr-2"
           />
-          <p className="text-[13px]">{nearbyCategory}</p>
+          <p className="text-[13px]">{nearbyCategory}dsds</p>
         </div>
         <p className="text-dgray text-[15px] font-semibold mt-2">
           {formattedPrice}/yr
@@ -115,24 +116,27 @@ const ServiceCard: React.FC<ServiceCardProps> = ({
     </div>
   );
 };
+interface serviceListedProps{
+  data: ServiceApiResponse | null
+}
 
-const ServicesListed: React.FC = () => {
+const ServicesListed: React.FC<serviceListedProps> = ({data}) => {
   return (
     <div className="container mx-auto p-4">
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
-        {services.slice(0, 9).map((service) => (
+        {data?.data.services.slice(0, 9).map((service) => (
           <ServiceCard
-            key={service.id}
-            id={service.id}
-            type={service.type}
-            name={service.name}
-            address={service.address}
-            category={service.category}
-            images={service.images}
-            price={service.price}
-            imageUrl={service.imageUrl}
-            location={service.location}
-            nearbyCategory={service.nearbyCategory}
+            key={String(service._id)}
+            id={Number(service._id)}
+            // type={service.t}
+            name={service.serviceName}
+            address={service.address_text}
+            // category={service.serviceCategories}
+            images={service.photos}
+            price={service.maxPrice}
+            imageUrl={service.coverphoto}
+            location={service.address_text}
+            // nearbyCategory={service.nearbyCategory}
           />
         ))}
       </div>

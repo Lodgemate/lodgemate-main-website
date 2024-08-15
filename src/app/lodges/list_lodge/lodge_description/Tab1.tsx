@@ -1,6 +1,9 @@
-"user client"
+"user client";
 
-import { selectAllList_Lodgesdata, setStateItem } from "@/lib/features/List_Lodges/List_LogdesSlice";
+import {
+  selectAllList_Listingdata,
+  setStateItem,
+} from "@/lib/features/Listing/ListingSlice";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import React, { useState } from "react";
 
@@ -12,9 +15,12 @@ interface Box {
 
 const Tab1Content: React.FC = () => {
   const dispatch = useAppDispatch();
-  const data =useAppSelector(selectAllList_Lodgesdata)
-  console.log(data)
-  const [selectedBox, setSelectedBox] = useState<string | null>(data.type);
+  const data = useAppSelector(selectAllList_Listingdata);
+  const hasKey = data.has("type");
+  const extractedData = (hasKey && data.getAll("type")) || null;
+  const [selectedBox, setSelectedBox] = useState<any>(
+    (extractedData && extractedData[0]) || "null"
+  );
   const boxes: Box[] = [
     {
       id: 1,
@@ -44,12 +50,12 @@ const Tab1Content: React.FC = () => {
 
   const handleBoxClick = (text: string) => {
     setSelectedBox(text);
-    dispatch(setStateItem({ key: 'type', value: text }))
+    dispatch(setStateItem({ key: "type", value: text }));
   };
 
   return (
-    <div className="flex flex-col items-center">
-      <form className="flex flex-wrap justify-center gap-5 mt-5">
+    <div className='flex flex-col items-center'>
+      <form className='flex flex-wrap justify-center gap-5 mt-5'>
         {boxes.map((box) => (
           <div
             key={box.id}
@@ -58,8 +64,12 @@ const Tab1Content: React.FC = () => {
             }`}
             onClick={() => handleBoxClick(box.text)}
           >
-            <img src={box.imgSrc} alt={box.text} className="w-[28px] h-[28px]" />
-            <p className="mt-2">{box.text}</p>
+            <img
+              src={box.imgSrc}
+              alt={box.text}
+              className='w-[28px] h-[28px]'
+            />
+            <p className='mt-2'>{box.text}</p>
           </div>
         ))}
       </form>
@@ -67,4 +77,4 @@ const Tab1Content: React.FC = () => {
   );
 };
 
-export default Tab1Content;
+export default React.memo(Tab1Content);

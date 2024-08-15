@@ -1,6 +1,6 @@
 "user client";
 
-import { selectAllList_Lodgesdata, setStateItem } from "@/lib/features/List_Lodges/List_LogdesSlice";
+import { selectAllList_Listingdata, setStateItem } from "@/lib/features/Listing/ListingSlice";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import React, { useState } from "react";
 
@@ -11,9 +11,14 @@ interface Box {
 
 const Tab2Content: React.FC = () => {
   const dispatch = useAppDispatch();
-  const data =useAppSelector(selectAllList_Lodgesdata)
+  const data =useAppSelector(selectAllList_Listingdata)
+  const hasKey = data.has('numberOfRooms');
+  console.log(hasKey); 
+  const extractedData = hasKey && data.get('numberOfRooms') || null
+    console.log(extractedData)
+    console.log(data)
   console.log(data)
-  const [selectedBox, setSelectedBox] = useState<string | null>(data.numberOfRooms);
+  const [selectedBox, setSelectedBox] = useState<any>(extractedData && Number(extractedData) || null);
 
   const boxes: Box[] = [
     {
@@ -59,7 +64,7 @@ const Tab2Content: React.FC = () => {
     
   ];
 
-  const handleBoxClick = (text: string) => {
+  const handleBoxClick = (text: number) => {
     setSelectedBox(text);
     dispatch(setStateItem({ key: 'numberOfRooms', value: text }))
   };
@@ -71,9 +76,9 @@ const Tab2Content: React.FC = () => {
           <div
             key={box.id}
             className={`w-[150px] rounded-[8px] h-[88px] border flex flex-col items-center justify-center cursor-pointer transition-all duration-300 ${
-              selectedBox === box.text ? "bg-primary text-white" : "bg-white"
+              selectedBox === box.id ? "bg-primary text-white" : "bg-white"
             }`}
-            onClick={() => handleBoxClick(box.text)}
+            onClick={() => handleBoxClick(box.id)}
           >
             <img
               src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1718337642/utilities/LodgeMate_File/House_1_fpt0yj.svg"

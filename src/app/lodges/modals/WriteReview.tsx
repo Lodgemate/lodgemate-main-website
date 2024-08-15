@@ -1,13 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import AOS from "aos";
 
 
 interface WriteReviewProps {
   show: boolean;
   onClose: () => void;
+  data?: any,
+  handlePost:(param: any)=>void
 }
 
-const WriteReview: React.FC<WriteReviewProps> = ({ show, onClose }) => {
+const WriteReview: React.FC<WriteReviewProps> = React.memo(({ show, onClose, handlePost }) => {
   const [starSources, setStarSources] = useState<string[]>([
     "/icons/star_black.svg",
     "/icons/star_black.svg",
@@ -15,12 +17,22 @@ const WriteReview: React.FC<WriteReviewProps> = ({ show, onClose }) => {
     "/icons/star_black.svg",
     "/icons/star_black.svg",
   ]);
-
+  const GetStars= useCallback(()=>{
+   const newArr =starSources.filter((ent)=> ent === "/icons/star_gold.svg")
+  return  newArr
+  },[starSources])
+  const [Review, setReview] = useState({
+    comment:"",
+    rating: 0
+   })
      useEffect(() => {
        AOS.init({
          duration: 1000,
        });
      }, []);
+     useEffect(() => {
+      setReview({...Review, rating :GetStars().length})
+     }, [starSources]);
     
   useEffect(() => {
     if (show) {
@@ -45,8 +57,7 @@ const WriteReview: React.FC<WriteReviewProps> = ({ show, onClose }) => {
     return null;
     }
     
-    
-
+    console.log(Review)
   return (
     <div
       className="fixed inset-0 bg-black bg-opacity-50 flex items-start pt-[100px]  justify-center"
@@ -90,13 +101,21 @@ const WriteReview: React.FC<WriteReviewProps> = ({ show, onClose }) => {
           <textarea
             name="review"
             placeholder="Write something here..."
+            value={Review.comment}
+            onChange={(e)=>setReview({...Review, comment :e.target.value})}
             className="border w-[350px] sm:w-[700px] resize-none mt-4 h-24 p-2 rounded-lg outline-none"
           ></textarea>
+          <div className="w-full flex justify-between items-center">
+          <button onClick={()=>handlePost(Review)} className="bg-lblue px-2 py-1 text-white rounded cursor-pointer">
+            Post
+          </button>
           <p className="text-end">500/500 remaining</p>
+          </div>
+          
         </div>
       </div>
     </div>
   );
-};
+});
 
 export default WriteReview;

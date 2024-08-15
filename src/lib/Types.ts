@@ -1,5 +1,6 @@
 export interface ApiResponse {
     status: string;
+    message?:string;
     token?: string;
     data: {
       user: user;
@@ -35,6 +36,7 @@ export interface user {
       lastChangedPassword: string;
       __v: number;
       id: string;
+      bio: string;
 }
 export interface Ratings {
     totalRatings: number;

@@ -6,7 +6,11 @@ const initialState={
     failedModalMssg: null,
     successfulModalMssg: null,
     loadingModalMssg: null,
-    emailOtpModal:null
+    emailOtpModal:null,
+    delteModal:{
+        deleteFunction: null,
+        message: "",
+      },
 }
 
 const ModalSlice = createSlice({
@@ -24,12 +28,16 @@ const ModalSlice = createSlice({
             },
             showEmailOtpModal:(state, action)=>{
                 state.emailOtpModal= action.payload
-            }
+            },
+            showDeleteModal:(state, action)=>{
+                console.log(action.payload)
+                state.delteModal= action.payload
+            },
     }
 })
  const selectSelf =(state:RootState) => state.Modal
 
-export const {showFailedModal, showLoadingModal, showSuccessfulModal, showEmailOtpModal}= ModalSlice.actions
+export const {showDeleteModal,showFailedModal, showLoadingModal, showSuccessfulModal, showEmailOtpModal}= ModalSlice.actions
 export const selectAllfailedModalMssg = createSelector([selectSelf], 
     (state) => state.failedModalMssg)
 export const selectAllsuccessModalMssg = createSelector([selectSelf], 
@@ -38,4 +46,6 @@ export const selectAllloadingModalMssg = createSelector([selectSelf],
     (state) => state.loadingModalMssg)
 export const selectAllemailOtpModalModalMssg = createSelector([selectSelf], 
     (state) => state.emailOtpModal)
+export const selectAlldeleteModalModalMssg = createSelector([selectSelf], 
+    (state) => state.delteModal)
 export default ModalSlice.reducer;

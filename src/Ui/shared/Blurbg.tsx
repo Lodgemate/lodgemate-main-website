@@ -17,7 +17,7 @@ const Blurbg: FC<BlurbgProps> = ({ children }) => {
   //   };
   // }, []);
   return (
-    <section className=' bg-opacity-65 w-full h-screen overflow-hidden bg-lgray absolute top-0 flex justify-center items-center'>
+    <section className='fixed inset-0 z-50 bg-black  bg-opacity-65 w-full h-screen overflow-hidden flex justify-center items-center'>
       {children}
     </section>
   );

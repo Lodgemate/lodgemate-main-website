@@ -3,9 +3,6 @@
 import Link from "next/link";
 import React, { useState } from "react";
 import ProfileMenuModal from "./modals/ProfileMenu";
-import { useAppSelector } from "@/lib/hooks";
-import { selectAllUsersdata } from "@/lib/features/Users/usersSlice";
-import DeleteModal from "@/components/modals/DeleteModal";
 import { ApiResponse } from "@/lib/Types";
 interface UserDetailasProps{
   data:  ApiResponse| null
@@ -13,11 +10,9 @@ interface UserDetailasProps{
 
 const UserDetailas: React.FC<UserDetailasProps> = React.memo(({data}) => {
     const [isOpen, setIsOpen] = useState(false);
-  const toggleDropdown = () => {
-    setIsOpen(!isOpen);
-  };
-
-console.log(data)
+    const toggleDropdown = () => {
+      setIsOpen(!isOpen);
+    };
   return (
     <div className="w-full sm:max-w-430px sm:shadow sm:border pt-[100px]  sm:pt-[65px] text-[14px] rounded-[12px] sm:p-4 bg-white">
       {/* User image and menu button */}

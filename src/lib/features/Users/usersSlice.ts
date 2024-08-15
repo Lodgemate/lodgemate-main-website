@@ -13,6 +13,8 @@ export const getUsersData = createAsyncThunk("usersData", async () => {
   const tokenStorage = localStorage.getItem("token");
   try {
     if (tokenStorage) {
+console.log("data")
+
       const token = JSON.parse(tokenStorage);
       const response = await fetch(url, {
         method: "GET",
@@ -32,7 +34,6 @@ export const getUsersData = createAsyncThunk("usersData", async () => {
     return error.message;
   }
 });
-console.log("data")
 
 const userSlice = createSlice({
   name: "Users",

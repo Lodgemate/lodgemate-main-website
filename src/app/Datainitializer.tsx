@@ -25,18 +25,20 @@ function DataInitializer({ children }: { children: React.ReactNode }) {
 
   // Function to fetch user data
   const fetchData = useCallback(() => {
-    if (!isAuthenticated) {
-      dispatch(getUsersData());
-    }
+    const localStorageToken = localStorage.getItem("token");
+    const parseToken =localStorageToken && JSON.parse(localStorageToken)
+      if (parseToken) {
+       dispatch(getUsersData());
+      }
   }, [dispatch, isAuthenticated]);
 
   // Initial data fetching
   useEffect(() => {
     if (!data) {
       fetchData();
+      
     }
   }, [fetchData]);
-
   useEffect(() => {
     if (!data) {
       return;

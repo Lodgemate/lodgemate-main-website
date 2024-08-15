@@ -123,7 +123,6 @@ const SignUpForm: React.FC = () => {
         // @ts-ignore
         const signin = await dispatch(Signin(credentials));
         // verifyEmail
-        console.log(signin);
       } else if (
         response.payload.status === "fail" &&
         response.payload.message
@@ -131,12 +130,7 @@ const SignUpForm: React.FC = () => {
         dispatch(showLoadingModal(null));
         dispatch(showFailedModal(response.payload.message));
       }
-      console.log(response.payload);
-      console.log(response.payload.status);
-      console.log(response.payload.err.errors);
-      console.log(Error);
       // console.log(data.json())
-      console.log(Status);
       // router.push("/auth/signup/verify_your_email");
       dispatch(showLoadingModal(null));
     }

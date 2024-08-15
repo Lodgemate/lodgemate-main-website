@@ -1,5 +1,4 @@
-"use client";
-
+"use client"
 import React, { useEffect, useState } from "react";
 import UserDetailas from "./UserDetaile";
 import LodgeListed from "./LodgesListed";
@@ -11,38 +10,51 @@ import { selectAllUsersdata } from "@/lib/features/Users/usersSlice";
 import { FetchApi } from "@/utils/Fetchdata";
 import { Endpoints } from "@/services/Api/endpoints";
 
-const MyProfile: React.FC = () => {
-  const data= useAppSelector(selectAllUsersdata)
-console.log(data)
+const MyProfile = () => {
   const [activeTab, setActiveTab] = useState("Lodges listed");
     const [tabData, setTabData] = useState({
       lodgesdata:"" as any,
-      Servicessdata:""as any,
+      Servicesdata:""as any,
     })
-  let user;
- useEffect(()=>{
-  const localStorageToken = localStorage.getItem("token");
-  const parseToken =localStorageToken && JSON.parse(localStorageToken)
-  const body= {
-    headers:{
-        "content-type": "Application-json",
-        Authorization:`Bearer ${parseToken}`
-    }
-  }
-      const fetchData= async()=>{
-        try {
-  console.log("Rendered")
-          const res =await FetchApi(`${Endpoints.getPrivateLodges}postedBy=${data?.data.user._id}`, body)
-  console.log(res)
-  setTabData({...tabData, lodgesdata: res})
-        } catch (error) {
-          
-        }
+  const data= useAppSelector(selectAllUsersdata)
+console.log(data)
+console.log("data")
+
+
+ useEffect(() => {
+   const localStorageToken = localStorage.getItem("token");
+   const parseToken = localStorageToken && JSON.parse(localStorageToken);
+   const body = {
+     headers: {
+       "content-type": "Application-json",
+       Authorization: `Bearer ${parseToken}`,
+     },
+   };
+   const fetchData = async () => {
+     try {
+      // p-ut a cache here
+      if (activeTab ==="Lodges listed") {
+        const res = await FetchApi(
+          `${Endpoints.getPrivateLodges}postedBy=${data?.data.user._id}`,
+          body
+        );
+        console.log(res);
+        setTabData({ ...tabData, lodgesdata: res });
+      } else if (activeTab ==="Services listed") {
+        const res = await FetchApi(
+          `${Endpoints.getPrivateServices}vendor=${data?.data.user._id}`,
+          body
+        );
+        console.log(res);
+        setTabData({ ...tabData, Servicesdata: res });
       }
-      if (data) {
-      fetchData()
-      }
- },[data])
+      
+     } catch (error) {}
+   };
+   if (data) {
+     fetchData();
+   }
+ }, [data, activeTab]);
  console.log(tabData.lodgesdata)
   return (
     <div className=' min-h-[1000px] p-'>
@@ -61,33 +73,35 @@ console.log(data)
         <div className='sm:col-span-3'>
           <div className='py-4 bg- rounded'>
             <div className='flex sm:space-x-4 space-x-2 sm:border-b-0 overflow-x-auto whitespace-nowrap'>
-              {[
-                "Lodges listed",
-                "Services listed",
-                "Ratings & reviews",
-              ].map((tab) => (
-                <div
-                  key={tab}
-                  className={`cursor-pointer p-2 ${
-                    activeTab === tab
-                      ? "border-b-primary border-b-4 text-primary"
-                      : ""
-                  }`}
-                  onClick={() => setActiveTab(tab)}
-                >
-                  {tab}
-                </div>
-              ))}
+              {["Lodges listed", "Services listed", "Ratings & reviews"].map(
+                (tab) => (
+                  <div
+                    key={tab}
+                    className={`cursor-pointer p-2 ${
+                      activeTab === tab
+                        ? "border-b-primary border-b-4 text-primary"
+                        : ""
+                    }`}
+                    onClick={() => setActiveTab(tab)}
+                  >
+                    {tab}
+                  </div>
+                )
+              )}
             </div>
             <div className='mt-4'>
               {activeTab === "Lodges listed" && (
                 <div>
-                  <LodgeListed data={data}/>
+                  {tabData.lodgesdata && (
+                    <LodgeListed data={tabData.lodgesdata} />
+                  )}
                 </div>
               )}
               {activeTab === "Services listed" && (
                 <div>
-                  <ServicesListed data={data}/>
+                   {tabData.Servicesdata && (
+                    <ServicesListed data={tabData.Servicesdata} />
+                  )}
                 </div>
               )}
               {activeTab === "Ratings & reviews" && (
@@ -97,8 +111,8 @@ console.log(data)
           </div>
         </div>
       </div>
-              <EditProfileModal/>
-              <DeleteModal/>
+      <EditProfileModal />
+      <DeleteModal /> 
     </div>
   );
 };

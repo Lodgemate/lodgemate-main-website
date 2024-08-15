@@ -2,9 +2,10 @@ import type { InferGetStaticPropsType, GetStaticProps } from 'next'
 
 import ProductCard from "@/components/Lodges/profileLodges";
 import Link from "next/link";
-import React from "react";
+import React, { useMemo } from "react";
 import { useAppSelector } from '@/lib/hooks';
 import { selectAllUsersdata } from '@/lib/features/Users/usersSlice';
+import { LodgesApiResponse } from '@/lib/Types';
 
 // Sample data
 const products = [
@@ -94,33 +95,29 @@ const products = [
 
 ];
 
+interface LodgeListedProps{
+  data: LodgesApiResponse | null
+}
 
 
-
-const LodgeListed: React.FC = React.memo(() => {
-console.log("UserData")
-// console.log(UserData)
-
-
-
-
-
+const LodgeListed: React.FC<LodgeListedProps> = React.memo(({data}) => {
+  console.log(data)
   return (
     <div className="container mx-auto p-4">
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        {products.slice(0, 9).map((product) => (
+        {data?.data.lodges.slice(0, 9).map((product) => (
           <ProductCard
-            key={product.id}
-            id={product.id}
+            key={product._id}
+            id={product._id }
             type={product.type}
-            name={product.name}
-            address={product.address}
-            university={product.university}
-            images={product.images}
+            name={product.lodgeName}
+            address={product.address_text}
+            // university={product.university}
+            images={product.photos}
             price={product.price}
-            imageUrl={product.imageUrl}
-            location={product.location}
-            nearbyUniversity={product.nearbyUniversity}
+            imageUrl={product.coverphoto}
+            location={product.administrativeArea}
+            // nearbyUniversity={product.nearbyUniversity}
           />
         ))}
       </div>

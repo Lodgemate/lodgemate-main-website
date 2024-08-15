@@ -3,17 +3,19 @@ import { RiDeleteBinLine } from "react-icons/ri";
 import { IoPencil } from "react-icons/io5";
 import { useAppDispatch } from '@/lib/hooks';
 import { showDeleteModal } from '@/lib/features/Modal/ModalSlice';
+import { FetchApi } from '@/utils/Fetchdata';
+import { Endpoints } from '@/services/Api/endpoints';
 interface ProductCardProps {
-    id: number;
+    id: any;
     type: string;
     name: string;
     address: string;
-    university: string;
+    university?: string;
     images: string[];
     price: number; // Ensure this is always a number
     imageUrl: string;
     location: string;
-    nearbyUniversity: string;
+    nearbyUniversity?: string;
   }
 
 const ProductCard: React.FC<ProductCardProps> = React.memo(({
@@ -30,11 +32,26 @@ const ProductCard: React.FC<ProductCardProps> = React.memo(({
       minimumFractionDigits: 0,
     }).format(price);
     const dispatch = useAppDispatch();
+    console.log(id)
+    const handleDelete = async () => {
+      const localStorageToken = localStorage.getItem("token");
+      const parseToken = localStorageToken && JSON.parse(localStorageToken);
+      const body = {
+        method: "DELETE",
+        headers: {
+          "content-type": "Application-json",
+          Authorization: `Bearer ${parseToken}`,
+        },
+      };
+      try {
+        const res = FetchApi(Endpoints.getPrivateLodgesbyId + id, body);
+        console.log(await res);
+      } catch (error) {}
+    };
 
-    const handleDelete=async()=>{
-
-
-
+    const deleteProps ={
+      deleteFunction: handleDelete,
+      message: "Do you want to delete this Lodge"
     }
   
     return (
@@ -61,8 +78,8 @@ const ProductCard: React.FC<ProductCardProps> = React.memo(({
             className="absolute bottom-4 right-[40%]  text-xl"
           />
           <div className="absolute bottom-4 flex justify-between items-center w-full px-5 ">
-          <IoPencil onClick={()=> dispatch(showDeleteModal("Do you want to delete this Lodge"))} className=' text-slate-50 z-20 text-xl font-bold hover:text-slate-100 cursor-pointer' />
-          <RiDeleteBinLine className=' text-slate-50 z-20 text-xl font-bold hover:text-slate-100 cursor-pointer'  />
+          <IoPencil className=' bg-slate-800 p-1 rounded-full text-slate-50 z-20 text-2xl font-bold hover:text-slate-100 cursor-pointer' />
+          <RiDeleteBinLine onClick={()=> dispatch(showDeleteModal(deleteProps))} className='  bg-slate-800 p-1 rounded-full text-slate-50 z-20 text-2xl font-bold hover:text-slate-100 cursor-pointer'  />
           </div>
         </button>
         <div className="py-[15px] gap-y-2 flex flex-col justify-between ">

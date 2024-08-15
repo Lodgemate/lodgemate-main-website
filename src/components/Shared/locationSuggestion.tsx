@@ -42,6 +42,7 @@ interface ApiResponse {
 interface LocationSuggestionProps {
   input: string;
   handleLocation: any
+  setInput:any
 }
 const LocationSuggestion: React.FC<LocationSuggestionProps> = ({handleLocation, input }) => {
   const [result, setresult] = useState<Result[]>([]);

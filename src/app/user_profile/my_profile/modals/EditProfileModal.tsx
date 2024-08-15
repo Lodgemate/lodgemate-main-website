@@ -28,7 +28,7 @@ const EditProfileModal = () => {
     
     console.log(formdata)
     console.log(data?.data.user.bio)
-    const handleChange=(e)=>{
+    const handleChange=(e:any)=>{
             setformdata({...formdata, [e.target.name]:e.target.value})
     }
     const handleSubmit=async(e:  React.FormEvent)=>{
@@ -42,7 +42,7 @@ const EditProfileModal = () => {
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${parseToken}`,
             },
-            body:JSON.stringify()
+            body:JSON.stringify(formdata)
         }
         try {
             const res = await FetchApi(Endpoints.getUsers,body)

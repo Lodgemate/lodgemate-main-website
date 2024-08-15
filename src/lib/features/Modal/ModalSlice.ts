@@ -7,7 +7,10 @@ const initialState={
     successfulModalMssg: null,
     loadingModalMssg: null,
     emailOtpModal:null,
-    delteModal:null
+    delteModal:{
+        deleteFunction: null,
+        message: "",
+      },
 }
 
 const ModalSlice = createSlice({
@@ -27,6 +30,7 @@ const ModalSlice = createSlice({
                 state.emailOtpModal= action.payload
             },
             showDeleteModal:(state, action)=>{
+                console.log(action.payload)
                 state.delteModal= action.payload
             },
     }

@@ -36,6 +36,7 @@ export const debounceFetch = (url : string, options = {}, delay = 1000) => {
   });
 };
 export const FetchApi = (url : string, options = {}, ) => {
+  console.log(url)
   console.log(options)
   return new Promise((resolve, reject) => {
       fetch(url, options)

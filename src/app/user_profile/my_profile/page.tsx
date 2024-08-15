@@ -1,14 +1,49 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import UserDetailas from "./UserDetaile";
 import LodgeListed from "./LodgesListed";
 import ServicesListed from "./ServicesList";
 import EditProfileModal from "./modals/EditProfileModal";
+import DeleteModal from "@/components/modals/DeleteModal";
+import { useAppSelector } from "@/lib/hooks";
+import { selectAllUsersdata } from "@/lib/features/Users/usersSlice";
+import { FetchApi } from "@/utils/Fetchdata";
+import { Endpoints } from "@/services/Api/endpoints";
 
 const MyProfile: React.FC = () => {
-  const [activeTab, setActiveTab] = useState("Lodges listed (13)");
-
+  const data= useAppSelector(selectAllUsersdata)
+console.log(data)
+  const [activeTab, setActiveTab] = useState("Lodges listed");
+    const [tabData, setTabData] = useState({
+      lodgesdata:"" as any,
+      Servicessdata:""as any,
+    })
+  let user;
+ useEffect(()=>{
+  const localStorageToken = localStorage.getItem("token");
+  const parseToken =localStorageToken && JSON.parse(localStorageToken)
+  const body= {
+    headers:{
+        "content-type": "Application-json",
+        Authorization:`Bearer ${parseToken}`
+    }
+  }
+      const fetchData= async()=>{
+        try {
+  console.log("Rendered")
+          const res =await FetchApi(`${Endpoints.getPrivateLodges}postedBy=${data?.data.user._id}`, body)
+  console.log(res)
+  setTabData({...tabData, lodgesdata: res})
+        } catch (error) {
+          
+        }
+      }
+      if (data) {
+      fetchData()
+      }
+ },[data])
+ console.log(tabData.lodgesdata)
   return (
     <div className=' min-h-[1000px] p-'>
       <div className='w-full h-[270px] hidden sm:block border-b bg-[#F9F9F9]'></div>
@@ -18,18 +53,18 @@ const MyProfile: React.FC = () => {
           <div className='sm:relative p-4 bg- rounded border- bg-[CCCCCC]'>
             <p className='hidden sm:flex'>user</p>
             <div className='flex w-full sm:absolute -top-10'>
-              <UserDetailas />
+              <UserDetailas data={data}/>
             </div>
           </div>
         </div>
         {/* Tab Header and Content Column */}
         <div className='sm:col-span-3'>
-          <div className='py-4 bg- rounded '>
+          <div className='py-4 bg- rounded'>
             <div className='flex sm:space-x-4 space-x-2 sm:border-b-0 overflow-x-auto whitespace-nowrap'>
               {[
-                "Lodges listed (13)",
-                "Services listed (4)",
-                "Ratings & reviews (27)",
+                "Lodges listed",
+                "Services listed",
+                "Ratings & reviews",
               ].map((tab) => (
                 <div
                   key={tab}
@@ -45,17 +80,17 @@ const MyProfile: React.FC = () => {
               ))}
             </div>
             <div className='mt-4'>
-              {activeTab === "Lodges listed (13)" && (
+              {activeTab === "Lodges listed" && (
                 <div>
-                  <LodgeListed />
+                  <LodgeListed data={data}/>
                 </div>
               )}
-              {activeTab === "Services listed (4)" && (
+              {activeTab === "Services listed" && (
                 <div>
-                  <ServicesListed />
+                  <ServicesListed data={data}/>
                 </div>
               )}
-              {activeTab === "Ratings & reviews (27)" && (
+              {activeTab === "Ratings & reviews" && (
                 <div>Ratings & reviews content</div>
               )}
             </div>
@@ -63,6 +98,7 @@ const MyProfile: React.FC = () => {
         </div>
       </div>
               <EditProfileModal/>
+              <DeleteModal/>
     </div>
   );
 };

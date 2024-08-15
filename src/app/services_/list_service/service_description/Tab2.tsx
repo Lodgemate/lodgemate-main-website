@@ -50,7 +50,6 @@ const Tab2Content: React.FC = () => {
     dispatch(setStateItem({ key: "location[address_text]", value: data[0].formatted_address }));
     dispatch(setStateItem({ key: "location[latitude]", value: data[0].geometry.location.lat }));
     dispatch(setStateItem({ key: "location[longitude]", value: data[0].geometry.location.lng }));
-    dispatch(setStateItem({ key: "lodgeLocation", value: data[0].formatted_address }));
     }
   return (
     <div className='flex flex-col items-center text-dgray'>

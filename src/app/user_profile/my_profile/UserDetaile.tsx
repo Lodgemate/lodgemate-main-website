@@ -5,10 +5,14 @@ import React, { useState } from "react";
 import ProfileMenuModal from "./modals/ProfileMenu";
 import { useAppSelector } from "@/lib/hooks";
 import { selectAllUsersdata } from "@/lib/features/Users/usersSlice";
+import DeleteModal from "@/components/modals/DeleteModal";
+import { ApiResponse } from "@/lib/Types";
+interface UserDetailasProps{
+  data:  ApiResponse| null
+}
 
-const UserDetailas: React.FC = () => {
+const UserDetailas: React.FC<UserDetailasProps> = React.memo(({data}) => {
     const [isOpen, setIsOpen] = useState(false);
-    const data= useAppSelector(selectAllUsersdata)
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
   };
@@ -121,6 +125,6 @@ console.log(data)
       </div>
     </div>
   );
-};
+});
 
 export default UserDetailas;

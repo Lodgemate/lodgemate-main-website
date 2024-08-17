@@ -147,7 +147,7 @@ const handleResetFilters = () => {
   //   // setFilteredProducts(filtered);
   //   setShowFiltersModal(false); // Close modal after applying filters
    }
-
+console.log(ServicesData)
   return (
     <div className="px-4 sm:px-[100px] mt-[50px]">
       <div className='flex justify-between gap-8 items-center text-lgray mb-[24px]'>

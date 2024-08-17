@@ -73,23 +73,7 @@ const features: Feature[] = [
   },
 ];
  
-// interface  reviews[
-//   {
-//     _id: '66bb06c4ff82c9f4fa2d8285',
-//     postedBy: {
-//       _id: '669f08b917f07047b9fb6cc6',
-//       firstName: 'Danielsdsd',
-//       profilePicture: 'default.png',
-//       profileLink: 'https://lodgemate.com.ng/p/669f08b917f07047b9fb6cc6',
-//       id: '669f08b917f07047b9fb6cc6'
-//     },
-//     type: 'review',
-//     rating: 2,
-//     comment: 'erer',
-//     repliesCount: 0,
-//     dateCreated: '2024-08-13T07:09:56.363Z'
-//   }
-// ]
+
 function LodgeInfo() {
   const currentUserData= useAppSelector(selectAllUsersdata)
   const params = useParams();
@@ -157,9 +141,7 @@ console.log
     fetchData();
   }, []);
 
-  const handleOpenWriteReview = () => {
-    setIsWriteReviewOpen(true);
-  };
+
 
   const handleOpenCallAgent = () => {
     setIsCallAgentOpen(true);
@@ -167,7 +149,9 @@ console.log
   const handleOpenLodgeSaved = () => {
     setIsLodgeSavedOpen(true);
   };
-
+  const handleOpenWriteReview = () => {
+    setIsWriteReviewOpen(true);
+  };
   const handleCloseWriteReview = () => {
     setIsWriteReviewOpen(false);
   };
@@ -218,7 +202,14 @@ console.log
     });
     console.log(resReviews)
     console.log(await resReviews.json())
+    const parsedRes= await resReviews.json()
+    if (parsedRes.status === 'success') {
+      handleCloseWriteReview()
+    } else {
+      console.log("failed")
+    }
   }
+ 
  console.log(RevieweData)
  console.log(commentsOrReplies)
 

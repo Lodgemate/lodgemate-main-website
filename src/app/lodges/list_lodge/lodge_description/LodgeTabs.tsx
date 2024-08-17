@@ -22,6 +22,7 @@ const LodgeTabs = () => {
     { title: "Tab 5", content: <Tab5 /> },
   ];
 
+  
   const nextTab = () => {
     if (activeTab < tabs.length - 1) {
       setActiveTab(activeTab + 1);

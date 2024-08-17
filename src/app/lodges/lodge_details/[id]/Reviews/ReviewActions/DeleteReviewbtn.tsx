@@ -13,6 +13,8 @@ interface DeleteReviewbtProps{
 
 const DeleteReviewbtn: React.FC<DeleteReviewbtProps> = ({data, LodgeDataId}) => {
   const dispatch= useAppDispatch()
+  console.log(data.comment);
+
   console.log(data._id)
   console.log(LodgeDataId)
    const handleDelete=async()=>{

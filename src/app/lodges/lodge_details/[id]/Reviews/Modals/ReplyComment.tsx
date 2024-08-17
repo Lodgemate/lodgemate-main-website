@@ -55,25 +55,15 @@ const ReviewComments: React.FC<ReviewCommentsProps> = React.memo(({data, show, o
 
       console.log(Url)
 
-      const res = await FetchApi(Url, body)
-      console.log(await res)
+      const res: any = await FetchApi(Url, body)
+      if (res.status === "success") {
+        onClose()
+      } else {
+        console.log("replies posted successfully")
+      }
     }
     console.log(data)
-    // {
-    //   _id: '66bb622dff82c9f4fa2d85e0',
-    //   postedBy: {
-    //     _id: '669f08b917f07047b9fb6cc6',
-    //     firstName: 'Danielsdsd',
-    //     profilePicture: 'default.png',
-    //     profileLink: 'https://lodgemate.com.ng/p/669f08b917f07047b9fb6cc6',
-    //     id: '669f08b917f07047b9fb6cc6'
-    //   },
-    //   type: 'review',
-    //   rating: 3,
-    //   comment: 'testing this shii lets see if it works.....',
-    //   repliesCount: 0,
-    //   dateCreated: '2024-08-13T13:39:57.293Z'
-    // }
+ 
 
 
     const ReplyFormUi = () => {

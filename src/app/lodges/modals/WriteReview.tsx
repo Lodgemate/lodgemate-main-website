@@ -106,7 +106,10 @@ const WriteReview: React.FC<WriteReviewProps> = React.memo(({ show, onClose, han
             className="border w-[350px] sm:w-[700px] resize-none mt-4 h-24 p-2 rounded-lg outline-none"
           ></textarea>
           <div className="w-full flex justify-between items-center">
-          <button onClick={()=>handlePost(Review)} className="bg-lblue px-2 py-1 text-white rounded cursor-pointer">
+          <button onClick={()=>{
+            handlePost(Review)
+            onClose()
+            }} className="bg-lblue px-2 py-1 text-white rounded cursor-pointer">
             Post
           </button>
           <p className="text-end">500/500 remaining</p>

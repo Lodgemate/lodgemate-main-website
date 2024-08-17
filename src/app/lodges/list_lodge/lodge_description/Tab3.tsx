@@ -7,6 +7,7 @@ import React, { useState } from "react";
 interface Box {
   id: number;
   imgSrc: string;
+  imgSrc2: string;
   text: string;
 }
 
@@ -22,59 +23,58 @@ const Tab3Content: React.FC = () => {
   const boxes: Box[] = [
     {
       id: 1,
-      imgSrc:
-        "https://res.cloudinary.com/dcb4ilgmr/image/upload/v1717201088/utilities/LodgeMate_File/Vector_1_njk9ml.svg",
+      imgSrc: "/icons/water.svg",
+      imgSrc2: "/icons/water_white.svg",
       text: "Water",
     },
     {
       id: 2,
-      imgSrc:
-        "https://res.cloudinary.com/dcb4ilgmr/image/upload/v1717201087/utilities/LodgeMate_File/Vector_2_iqvt3t.svg",
+      imgSrc: "/icons/hot_water.svg",
+      imgSrc2: "/icons/hot_water_white.svg",
       text: "Water heater",
     },
     {
       id: 3,
-      imgSrc:
-        "https://res.cloudinary.com/dcb4ilgmr/image/upload/v1717201086/utilities/LodgeMate_File/Vector_6_vamzbw.svg",
+      imgSrc: "/icons/wifi.svg",
+      imgSrc2: "/icons/wifi_white.svg",
       text: "Wifi",
     },
     {
       id: 4,
-      imgSrc:
-        "https://res.cloudinary.com/dcb4ilgmr/image/upload/v1717201232/utilities/LodgeMate_File/pro_iztpun.svg",
+      imgSrc: "/icons/45d_arrow.svg",
+      imgSrc2: "/icons/45d_arrow_white.svg",
       text: "Proximity to school",
     },
     {
       id: 5,
-      imgSrc:
-        "https://res.cloudinary.com/dcb4ilgmr/image/upload/v1717201521/utilities/LodgeMate_File/Vector_8_tz6xyw.svg",
+      imgSrc: "/icons/electric.svg",
+      imgSrc2: "/icons/electric_white.svg",
       text: "Electricity",
     },
     {
       id: 6,
-      imgSrc:
-        "https://res.cloudinary.com/dcb4ilgmr/image/upload/v1717201086/utilities/LodgeMate_File/Vector_7_rcxtti.svg",
+      imgSrc: "/icons/safe.svg",
+      imgSrc2: "/icons/safe_white.svg",
       text: "Security",
     },
     {
       id: 7,
-      imgSrc:
-        "https://res.cloudinary.com/dcb4ilgmr/image/upload/v1717201086/utilities/LodgeMate_File/Vector_5_ppfwpx.svg",
+      imgSrc: "/icons/car1.svg",
+      imgSrc2: "/icons/car1_white.svg",
       text: "Parking space",
     },
     {
       id: 8,
-      imgSrc:
-        "https://res.cloudinary.com/dcb4ilgmr/image/upload/v1717201087/utilities/LodgeMate_File/Vector_4_kjhg0c.svg",
+      imgSrc: "/icons/ball1.svg",
+      imgSrc2: "/icons/ball1_white.svg",
       text: "Recreation center",
     },
     {
       id: 9,
-      imgSrc:
-        "https://res.cloudinary.com/dcb4ilgmr/image/upload/v1717201086/utilities/LodgeMate_File/Vector_3_uyvtoc.svg",
+      imgSrc: "/icons/shop1.svg",
+      imgSrc2: "/icons/shop1_white.svg",
       text: "Provision shop",
     },
-    
   ];
 
   const handleBoxClick = (text: string) => {
@@ -126,12 +126,18 @@ const Tab3Content: React.FC = () => {
           <div
             key={box.id}
             className={` rounded-[8px] p-[20px] border flex gap-2 items-center justify-center cursor-pointer transition-all duration-300 ${
-              selectedBox.includes(box.text.toLowerCase()) ? "bg-primary text-white" : "bg-white"
+              selectedBox.includes(box.text.toLowerCase())
+                ? "bg-primary text-white"
+                : "bg-white"
             }`}
-            onClick={() => handleBoxClick( box.text.toLowerCase())}
+            onClick={() => handleBoxClick(box.text.toLowerCase())}
           >
             <img
-              src={box.imgSrc}
+              src={
+                selectedBox.includes(box.text.toLowerCase())
+                  ? box.imgSrc2
+                  : box.imgSrc
+              }
               alt={box.text}
               className="w-[18px] h-[18px]"
             />

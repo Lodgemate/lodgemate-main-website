@@ -30,7 +30,7 @@ function LodgesPage() {
     <div>
       <div data-aos="zoom-in-up">
         <HeroSection />
-        <div className="px-4">
+        <div className="px-4 ">
           <SearchBar onSearch={handleSearch} />
         </div>
       </div>

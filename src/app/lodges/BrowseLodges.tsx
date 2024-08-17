@@ -193,10 +193,10 @@ const BrowseLodges: React.FC<BrowseLodgesProps> = ({
 
       <div>
       {/* Move to another component and laxzy load it with suspense */}
-        <div className='grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4'>
+        <div className='grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 '>
           {LodgesData &&
             LodgesData.data?.lodges
-              .slice(0, showMore ? LodgesData.data.lodges.length : 2)
+              .slice(0, showMore ? LodgesData.data.lodges.length : 15)
               .map((product: any) => (
                 ///@ts-ignore
                 <Card
@@ -227,7 +227,7 @@ const BrowseLodges: React.FC<BrowseLodgesProps> = ({
       {/* Filters Modal */}
       {showFiltersModal && (
         <div
-          className='fixed top-0 left-0 right-0 bottom-0 px-1 bg-black bg-opacity-25 flex justify-center z-50'
+          className='fixed top-0 left-0 right-0 bottom-0 px-1 bg-black bg-opacity-25 flex justify-center z-[999'
           onClick={handleModalClick}
         >
           <div className='bg-white  rounded-[20px]  w-[768px] mt-6 max-h-[80vh] no-scrollbar overflow-y-auto'>

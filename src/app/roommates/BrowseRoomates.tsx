@@ -156,8 +156,8 @@ function BrowseRoommates() {
   };
 
   return (
-    <div className='px-4 sm:px-[100px] mt-[50px]'>
-          {selectedRoommate && (
+    <div className="px-4 sm:px-[100px] mt-[50px] text-[14px] sm:text-[16px]">
+      {selectedRoommate && (
         <div>
           <ProfileDetails
             roommate={selectedRoommate}
@@ -165,8 +165,8 @@ function BrowseRoommates() {
           />
         </div>
       )}
-      <div className='flex justify-between gap-8 items-center text-lgray mb-[24px]'>
-        <h1 className='text-[18px] flex flex-wrap sm:text-[24px] text-lgray '>
+      <div className="flex justify-between gap-8 items-center text-lgray mb-[24px]">
+        <h1 className=" flex flex-wrap  text-lgray ">
           {isSearchTriggered
             ? `Showing results for "${storequery}"`
             : "Showing available roommates around"}
@@ -179,34 +179,34 @@ function BrowseRoommates() {
           } border-2 border-black border-opacity-[40%] items-center gap-4 rounded-[8px] px-[16px] py-[10px]`}
         >
           <img
-            src='https://res.cloudinary.com/dcb4ilgmr/image/upload/v1717408109/utilities/LodgeMate_File/page_info_y6jhz3.svg'
-            alt='filter'
+            src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1717408109/utilities/LodgeMate_File/page_info_y6jhz3.svg"
+            alt="filter"
           />
           Filter
         </button>
       </div>
-      <div className='grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4'>
+      <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {RoommatesData &&
           RoommatesData.data?.roommates
             .slice(0, showMore ? RoommatesData.data.roommates.length : 2)
             .map((roommate, index) => (
               <Card
-              {...roommate}
-              key={index}
-              imageUrl={roommate.postedBy.profilePicture}
-              name={roommate.postedBy.firstName}
-              location={roommate.address_text}
-              nearbyUniversity={roommate.subAdministrativeArea}
-              onClick={() => handleCardClick(roommate)}
-              sex={roommate.postedBy.gender}
-            />
+                {...roommate}
+                key={index}
+                imageUrl={roommate.postedBy.profilePicture}
+                name={roommate.postedBy.firstName}
+                location={roommate.address_text}
+                nearbyUniversity={roommate.subAdministrativeArea}
+                onClick={() => handleCardClick(roommate)}
+                sex={roommate.postedBy.gender}
+              />
             ))}
       </div>
       {!showMore && (
-        <div className='mt-10 flex flex-col justify-center items-center text-lgray font-medium pb-[200px]'>
-          <p className='text-[16px] pb-[16px] '>Continue exploring Services</p>
+        <div className="mt-10 flex flex-col justify-center items-center text-lgray font-medium pb-[200px]">
+          <p className="text-[16px] pb-[16px] ">Continue exploring Services</p>
           <button
-            className='border px-4 py-2 rounded-[12px]'
+            className="border px-4 py-2 rounded-[12px]"
             onClick={handleShowMore}
           >
             Show more
@@ -216,29 +216,29 @@ function BrowseRoommates() {
       {/* Filters Modal */}
       {showFiltersModal && (
         <div
-          className='fixed top-0 left-0 right-0 bottom-0 px-1 bg-black bg-opacity-25 flex justify-center z-50'
+          className="fixed top-0 left-0 right-0 bottom-0 px-1 bg-black bg-opacity-25 flex justify-center z-50"
           onClick={handleModalClick}
         >
-          <div className='bg-white  rounded-[20px]  w-[768px] mt-6 max-h-[80vh] no-scrollbar overflow-y-auto'>
+          <div className="bg-white  rounded-[20px]  w-[768px] mt-6 max-h-[80vh] no-scrollbar overflow-y-auto">
             {/* Header */}
-            <div className='flex relative justify-center p-2 items-center mb- border-b bor'>
-              <h2 className='text-xl font-bold'>Filters</h2>
+            <div className="flex relative justify-center p-2 items-center mb- border-b bor">
+              <h2 className="text-xl font-bold">Filters</h2>
               <button
                 onClick={() => setShowFiltersModal(false)}
-                className='text-gray-500  absolute right-4 top-2 hover:text-gray-800'
+                className="text-gray-500  absolute right-4 top-2 hover:text-gray-800"
               >
                 <svg
-                  xmlns='http://www.w3.org/2000/svg'
-                  className='h-6 w-6'
-                  fill='none'
-                  viewBox='0 0 24 24'
-                  stroke='currentColor'
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-6 w-6"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
                 >
                   <path
-                    strokeLinecap='round'
-                    strokeLinejoin='round'
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
                     strokeWidth={2}
-                    d='M6 18L18 6M6 6l12 12'
+                    d="M6 18L18 6M6 6l12 12"
                   />
                 </svg>
               </button>

@@ -41,7 +41,9 @@ const ProductCard: React.FC<ProductCardProps> = ({
   });
   
   return (
-    <div
+    <Link
+      href={`/lodges/lodge_details/${id}`}
+      passHref
       className="max-w-sm rounded overflow-hidden -z-10   "
       data-aos="fade-up"
     >
@@ -96,7 +98,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
           {formattedPrice}/yr
         </p>
       </div>
-    </div>
+    </Link>
   );
 };
 

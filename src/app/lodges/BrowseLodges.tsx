@@ -169,9 +169,9 @@ const BrowseLodges: React.FC<BrowseLodgesProps> = ({
     }
   };
   return (
-    <div className='px-4 sm:px-[100px] mt-[50px]'>
-      <div className='flex justify-between gap-8 items-center text-lgray mb-[24px]'>
-        <h1 className='text-[18px] flex flex-wrap sm:text-[24px] text-lgray '>
+    <div className="px-4 sm:px-[100px] mt-[50px] text-[14px] sm:text-[16px]">
+      <div className="flex justify-between gap-8 items-center text-lgray mb-[24px]">
+        <h1 className=" flex flex-wrap  text-lgray ">
           {isSearchTriggered
             ? `Showing results for "${storequery}"`
             : "Showing lodges based on your location"}
@@ -184,16 +184,16 @@ const BrowseLodges: React.FC<BrowseLodgesProps> = ({
           } border-2 border-black border-opacity-[40%] items-center gap-4 rounded-[8px] px-[16px] py-[10px]`}
         >
           <img
-            src='https://res.cloudinary.com/dcb4ilgmr/image/upload/v1717408109/utilities/LodgeMate_File/page_info_y6jhz3.svg'
-            alt='filter'
+            src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1717408109/utilities/LodgeMate_File/page_info_y6jhz3.svg"
+            alt="filter"
           />
           Filter
         </button>
       </div>
 
       <div>
-      {/* Move to another component and laxzy load it with suspense */}
-        <div className='grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 '>
+        {/* Move to another component and laxzy load it with suspense */}
+        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 ">
           {LodgesData &&
             LodgesData.data?.lodges
               .slice(0, showMore ? LodgesData.data.lodges.length : 15)
@@ -212,10 +212,10 @@ const BrowseLodges: React.FC<BrowseLodgesProps> = ({
         </div>
 
         {!showMore && (
-          <div className='mt-10 flex flex-col justify-center items-center text-lgray font-medium pb-[200px]'>
-            <p className='text-[16px] pb-[16px] '>Continue exploring lodges</p>
+          <div className="mt-10 flex flex-col justify-center items-center text-lgray font-medium pb-[200px]">
+            <p className="text-[16px] pb-[16px] ">Continue exploring lodges</p>
             <button
-              className='border px-4 py-2 rounded-[12px]'
+              className="border px-4 py-2 rounded-[12px]"
               onClick={handleShowMore}
             >
               Show more
@@ -227,29 +227,29 @@ const BrowseLodges: React.FC<BrowseLodgesProps> = ({
       {/* Filters Modal */}
       {showFiltersModal && (
         <div
-          className='fixed top-0 left-0 right-0 bottom-0 px-1 bg-black bg-opacity-25 flex justify-center z-[999'
+          className="fixed top-0 left-0 right-0 bottom-0 px-1 bg-black bg-opacity-25 flex justify-center z-[999"
           onClick={handleModalClick}
         >
-          <div className='bg-white  rounded-[20px]  w-[768px] mt-6 max-h-[80vh] no-scrollbar overflow-y-auto'>
+          <div className="bg-white  rounded-[20px]  w-[768px] mt-6 max-h-[80vh] no-scrollbar overflow-y-auto">
             {/* Header */}
-            <div className='flex relative justify-center p-2 items-center mb- border-b bor'>
-              <h2 className='text-xl font-bold'>Filters</h2>
+            <div className="flex relative justify-center p-2 items-center mb- border-b bor">
+              <h2 className="text-xl font-bold">Filters</h2>
               <button
                 onClick={() => setShowFiltersModal(false)}
-                className='text-gray-500  absolute right-4 top-2 hover:text-gray-800'
+                className="text-gray-500  absolute right-4 top-2 hover:text-gray-800"
               >
                 <svg
-                  xmlns='http://www.w3.org/2000/svg'
-                  className='h-6 w-6'
-                  fill='none'
-                  viewBox='0 0 24 24'
-                  stroke='currentColor'
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-6 w-6"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
                 >
                   <path
-                    strokeLinecap='round'
-                    strokeLinejoin='round'
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
                     strokeWidth={2}
-                    d='M6 18L18 6M6 6l12 12'
+                    d="M6 18L18 6M6 6l12 12"
                   />
                 </svg>
               </button>

@@ -16,6 +16,8 @@ import ReviewComments from "./Reviews/Modals/ReplyComment";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { selectAllUsersdata } from "@/lib/features/Users/usersSlice";
 import DeleteModal from "@/components/modals/DeleteModal";
+import { LoadingSkeleton } from "./DetalsSkeleton";
+import NotFoundPage from "@/app/not-found";
 
 interface LodgeInfoProps {
   id: string;
@@ -85,16 +87,17 @@ function LodgeInfo() {
   const [isWriteReviewOpen, setIsWriteReviewOpen] = useState(false);
   const [isCallAgentOpen, setIsCallAgentOpen] = useState(false);
   const [isLodgeSavedOpen, setIsLodgeSavedOpen] = useState(false);
+  const [isLoading, setisLoading] = useState(false);
   const [commentsOrReplies, setcommentsOrReplies] = useState(null)
   const scrollContainerRef = useRef<HTMLDivElement>(null);
-console.log
+  
   useEffect(() => {
     const fetchData = async () => {
+      setisLoading(true)
       const fetchUrl = `${Endpoints.getPublicLodgesbyId + id}`;
       const abortController = new AbortController();
       const localStorageToken = localStorage.getItem("token");
       const parseToken =localStorageToken && JSON.parse(localStorageToken)
-      console.log(parseToken)
       try {
         const res = await fetch(fetchUrl, {
           method: "GET",
@@ -104,6 +107,7 @@ console.log
         });
         const parsedRes = await res.json();
         if (parsedRes.status === "success") {
+          setisLoading(false)
           setLodgeData(parsedRes.data.lodge);
           // /v1/lodges/:id/reviews
           try {
@@ -118,8 +122,6 @@ console.log
           });
           // these are all the reviews
           const reviewdata = await resReviews.json()
-          console.log(reviewdata)
-
           setRevieweData(reviewdata)
           } catch (error) {
             
@@ -132,10 +134,11 @@ console.log
           console.error("Error fetching data:", error.message);
         }
       }
-
+      setisLoading(false)
       return () => {
         abortController.abort(); // Cleanup on unmount
       };
+      
     };
 
     fetchData();
@@ -162,8 +165,11 @@ console.log
     setIsLodgeSavedOpen(false);
   };
 
+  if (isLoading) {
+    return <><LoadingSkeleton/></>
+  }
   if (!LodgeData) {
-    return <div>Product not found</div>;
+    return <div className="h-fit"><NotFoundPage/></div> ;
   }
 
   // Ensure LodgeData.features is defined and of correct type

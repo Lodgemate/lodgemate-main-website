@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect } from "react";
 import Card from "./Card";
 import FilterOptions from "./FilterOptions";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
@@ -14,6 +14,7 @@ import {
   selectAllQueryFilter,
 } from "@/lib/features/Filters/filterSlice";
 import { selectAllAuthenticated } from "@/lib/features/Login/signinSlice";
+import GallerySkeleton from "./LodgeSkeleton";
 interface BrowseLodgesProps {
   isSearchTriggered: boolean;
 }
@@ -22,6 +23,7 @@ const BrowseLodges: React.FC<BrowseLodgesProps> = ({
   isSearchTriggered,
 }) => {
   const [showFiltersModal, setShowFiltersModal] = useState(false);
+  const [isLoading, setisLoading] = useState(false);
   //  (useless for now) const [filters, setFilters] = useState({});
   const [showMore, setShowMore] = useState(false);
   const LodgesData = useAppSelector(selectAllFetchLodgesdata);
@@ -33,8 +35,8 @@ const BrowseLodges: React.FC<BrowseLodgesProps> = ({
     query: storequery,
     location: storelocation,
   };
-  
-//  useless for now
+
+  //  useless for now
   // useEffect(() => {
   //   if (isSearchTriggered) {
   //     const lowercaseQuery = query.toLowerCase();
@@ -52,7 +54,7 @@ const BrowseLodges: React.FC<BrowseLodgesProps> = ({
   //   }
   // }, [query, isSearchTriggered]);
 
-//  useless for now ( more optimised version of useeffect above)
+  //  useless for now ( more optimised version of useeffect above)
   // const filteredProducts = useMemo(() => {
   //   if (isSearchTriggered) {
   //     const lowercaseQuery = query.toLowerCase();
@@ -68,92 +70,95 @@ const BrowseLodges: React.FC<BrowseLodgesProps> = ({
   //   return products;
   // }, [query, isSearchTriggered]);
 
-//  useless for now
-   const handleResetFilters = () => {
-  //   setFilters({});
-  //   setFilteredProducts(products); // Resetting to all products
-   };
+  //  useless for now
+  const handleResetFilters = () => {
+    //   setFilters({});
+    //   setFilteredProducts(products); // Resetting to all products
+  };
 
   //  useless for now
-   const handleApplyFilters = (appliedFilters: any) => {
-  //   setFilters(appliedFilters);
-  //   // Logic to filter the product list based on appliedFilters
-  //   const filtered = products.filter((product) => {
-  //     const matchesPrice =
-  //       (!appliedFilters.minPrice ||
-  //         product.price >= appliedFilters.minPrice) &&
-  //       (!appliedFilters.maxPrice || product.price <= appliedFilters.maxPrice);
-  //     const matchesType =
-  //       !appliedFilters.accommodationType.length ||
-  //       appliedFilters.accommodationType.includes(product.accommodationType);
-  //     const matchesRooms =
-  //       !appliedFilters.rooms.length ||
-  //       appliedFilters.rooms.includes(String(product.numberOfRooms));
-  //     const matchesOccupants =
-  //       !appliedFilters.occupants.length ||
-  //       appliedFilters.occupants.includes(String(product.numberOfRooms));
-  //     const matchesFeatures =
-  //       !appliedFilters.features.length ||
-  //       appliedFilters.features.every((feature: string) =>
-  //         product.features.map((f) => f.name).includes(feature)
-  //       );
+  const handleApplyFilters = (appliedFilters: any) => {
+    //   setFilters(appliedFilters);
+    //   // Logic to filter the product list based on appliedFilters
+    //   const filtered = products.filter((product) => {
+    //     const matchesPrice =
+    //       (!appliedFilters.minPrice ||
+    //         product.price >= appliedFilters.minPrice) &&
+    //       (!appliedFilters.maxPrice || product.price <= appliedFilters.maxPrice);
+    //     const matchesType =
+    //       !appliedFilters.accommodationType.length ||
+    //       appliedFilters.accommodationType.includes(product.accommodationType);
+    //     const matchesRooms =
+    //       !appliedFilters.rooms.length ||
+    //       appliedFilters.rooms.includes(String(product.numberOfRooms));
+    //     const matchesOccupants =
+    //       !appliedFilters.occupants.length ||
+    //       appliedFilters.occupants.includes(String(product.numberOfRooms));
+    //     const matchesFeatures =
+    //       !appliedFilters.features.length ||
+    //       appliedFilters.features.every((feature: string) =>
+    //         product.features.map((f) => f.name).includes(feature)
+    //       );
+    //     return (
+    //       matchesPrice &&
+    //       matchesType &&
+    //       matchesRooms &&
+    //       matchesOccupants &&
+    //       matchesFeatures
+    //     );
+    //   });
+    //   // setFilteredProducts(filtered);
+    //   setShowFiltersModal(false); // Close modal after applying filters
+  };
 
-  //     return (
-  //       matchesPrice &&
-  //       matchesType &&
-  //       matchesRooms &&
-  //       matchesOccupants &&
-  //       matchesFeatures
-  //     );
-  //   });
-  //   // setFilteredProducts(filtered);
-  //   setShowFiltersModal(false); // Close modal after applying filters
-   };
-   console.log(isAuth)
- const GetToken =async()=>{
-  const localStorageToken= localStorage.getItem("token")
-  if (!localStorageToken) {
-    return null
-  }
-      const parsedToken=  JSON.parse(localStorageToken)
-      return (parsedToken)
- }
+  const GetToken = async () => {
+    const localStorageToken = localStorage.getItem("token");
+    if (!localStorageToken) {
+      return null;
+    }
+    const parsedToken = JSON.parse(localStorageToken);
+    return parsedToken;
+  };
 
   // fetching lodges data
   useEffect(() => {
+    setisLoading(true);
     const fetchData = async () => {
-      const token= await GetToken()
+      const token = await GetToken();
+
       let fetchUrl;
       if (isAuth && token) {
         // this will be uncommented when db is updated
-      // fetchUrl= Endpoints.getPrivateLodges + urlGenerator(param); 
+        // fetchUrl= Endpoints.getPrivateLodges + urlGenerator(param);
         // this will be deleted when db is updated
-      fetchUrl = Endpoints.getPublicLodges + urlGenerator(param);
-      }else if( !token){
+        fetchUrl = Endpoints.getPublicLodges + urlGenerator(param);
+      } else if (!token) {
         fetchUrl = Endpoints.getPublicLodges + urlGenerator(param);
       }
       console.log(fetchUrl);
-    // nullify fetch
+      // nullify fetch
       if (!fetchUrl) {
-      return
-     } 
- // Check if the data is in the cache
- if (cache.has(fetchUrl)) {
-  // console.log('Using cached data');
-  const cacheData=cache.get(fetchUrl)
-  dispatch(setLodgesData(cacheData.payload));
-  return;
-}
-      
+        return;
+      }
+      // Check if the data is in the cache
+      if (cache.has(fetchUrl)) {
+        // console.log('Using cached data');
+        const cacheData = cache.get(fetchUrl);
+        dispatch(setLodgesData(cacheData.payload));
+        setisLoading(false);
+        return;
+      }
+
       const abortController = new AbortController();
       try {
-        const response =await dispatch(FetchLodges(fetchUrl));
+        const response = await dispatch(FetchLodges(fetchUrl));
         cache.set(fetchUrl, response);
       } catch (error: any) {
         if (error.name !== "AbortError") {
           console.error("Error fetching data:", error);
         }
       } finally {
+        setisLoading(false);
         return () => abortController.abort();
       }
     };
@@ -163,13 +168,36 @@ const BrowseLodges: React.FC<BrowseLodgesProps> = ({
   const handleShowMore = () => {
     setShowMore(true);
   };
+
   const handleModalClick = (e: React.MouseEvent<HTMLDivElement>) => {
     if (e.target === e.currentTarget) {
       setShowFiltersModal(false);
     }
   };
+  const MappedLodges=()=>{
+    
+    return(
+      <>
+      {LodgesData &&
+            LodgesData.data?.lodges
+              .slice(0, showMore ? LodgesData.data.lodges.length : LodgesData.data.lodges.length/2)
+              .map((product: any) => (
+                ///@ts-ignore
+                <Card
+                  {...product}
+                  key={product._id}
+                  imageUrl={product.coverphoto} // Using the first image
+                  name={product.lodgeName}
+                  location={product.address_text}
+                  nearbyUniversity={product.administrativeArea}
+                  price={product.price || 0}
+                />
+              ))}
+      </>
+    )
+  }
   return (
-    <div className='px-4 sm:px-[100px] mt-[50px]'>
+    <div className='px-4 sm:px-[100px] mt-[50px] '>
       <div className='flex justify-between gap-8 items-center text-lgray mb-[24px]'>
         <h1 className='text-[18px] flex flex-wrap sm:text-[24px] text-lgray '>
           {isSearchTriggered
@@ -192,23 +220,13 @@ const BrowseLodges: React.FC<BrowseLodgesProps> = ({
       </div>
 
       <div>
-      {/* Move to another component and laxzy load it with suspense */}
-        <div className='grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4'>
-          {LodgesData &&
-            LodgesData.data?.lodges
-              .slice(0, showMore ? LodgesData.data.lodges.length : 2)
-              .map((product: any) => (
-                ///@ts-ignore
-                <Card
-                  {...product}
-                  key={product._id}
-                  imageUrl={product.coverphoto} // Using the first image
-                  name={product.lodgeName}
-                  location={product.address_text}
-                  nearbyUniversity={product.administrativeArea}
-                  price={product.price || 0}
-                />
-              ))}
+        {/* Move to another component and laxzy load it with suspense */}
+        <div className='grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 '>
+            {
+              isLoading?
+              <GallerySkeleton/>
+             : <MappedLodges/>
+            }      
         </div>
 
         {!showMore && (

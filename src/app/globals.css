@@ -28,6 +28,7 @@
 
 /* Custom styles for react-select */
 .react-select__control {
+  
   display: flex;
   height: auto;
   padding: 0;

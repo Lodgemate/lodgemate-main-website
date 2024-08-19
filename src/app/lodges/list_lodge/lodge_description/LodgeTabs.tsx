@@ -10,6 +10,7 @@ import { FetchApi } from "@/utils/Fetchdata";
 import { useAppSelector } from "@/lib/hooks";
 import { selectAllList_Listingdata } from "@/lib/features/Listing/ListingSlice";
 import { Endpoints } from "@/services/Api/endpoints";
+import WebSocketComponent from "@/services/webSocketApi";
 
 const LodgeTabs = () => {
   const [activeTab, setActiveTab] = useState(0);
@@ -105,6 +106,9 @@ const body = {
           >
             {activeTab === 4 ? "List your lodge" : "Next"}
           </button>
+
+      <WebSocketComponent/>
+
         </div>
       </div>
   );

@@ -5,9 +5,14 @@ import FormTab1 from "./FormTab1";
 import FormTab2 from "./FormTab2";
 import FormTab3 from "./FormTab3";
 import Link from "next/link";
+import { Endpoints } from "@/services/Api/endpoints";
+import { FetchApi } from "@/utils/Fetchdata";
+import { useAppSelector } from "@/lib/hooks";
+import { selectAllList_Listingdata } from "@/lib/features/Listing/ListingSlice";
 
 function FindRoommate() {
   const [currentTab, setCurrentTab] = useState(1);
+  const formData =useAppSelector(selectAllList_Listingdata)
 
   const handleNext = () => {
     if (currentTab < 3) setCurrentTab(currentTab + 1);
@@ -22,6 +27,45 @@ function FindRoommate() {
     "How you live...",
     "You’re done!",
   ];
+
+
+  const handleListRoommates = async () => {
+    const localStorageToken = localStorage.getItem("token");
+    const parseToken = localStorageToken && JSON.parse(localStorageToken);
+  
+    console.log(parseToken);
+    console.log(formData);
+    console.log(Object.fromEntries(formData));
+  
+    // Ensure formData is of the correct type
+    if (!(formData instanceof FormData)) {
+      console.error("formData is not available or is not of type FormData");
+      return;
+    }
+  
+    const url = Endpoints.getPrivateRoommates;
+  
+    // When sending FormData, do not manually set the 'Content-Type' header
+    const options = {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${parseToken}`,
+        // Do not set Content-Type when using FormData
+        // "Content-Type": "multipart/form-data" will be automatically set
+      },
+      body: formData, // Directly pass the formData as the body
+    };
+  
+    console.log(url);
+  
+    try {
+      const res = await FetchApi(url, options);
+      console.log(await res);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  
 
   return (
     <div className="mt-[50px]">
@@ -100,7 +144,7 @@ function FindRoommate() {
 
                 <button
                   className="bg-primary w-full py-[12px] mb-[24px] rounded-[8px]"
-                  onClick={handleNext}
+                  onClick={currentTab === 2 ? handleListRoommates :handleNext}
                 >
                   Continue
                 </button>

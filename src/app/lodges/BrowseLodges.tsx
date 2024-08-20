@@ -14,7 +14,7 @@ import {
   selectAllQueryFilter,
 } from "@/lib/features/Filters/filterSlice";
 import { selectAllAuthenticated } from "@/lib/features/Login/signinSlice";
-import GallerySkeleton from "./LodgeSkeleton";
+import GallerySkeleton from "../../components/Skeletons/cardsSkeleton";
 interface BrowseLodgesProps {
   isSearchTriggered: boolean;
 }

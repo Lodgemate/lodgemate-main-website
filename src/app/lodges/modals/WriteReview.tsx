@@ -17,6 +17,7 @@ const WriteReview: React.FC<WriteReviewProps> = React.memo(({ show, onClose, han
     "/icons/star_black.svg",
     "/icons/star_black.svg",
   ]);
+  const [Clicked, setClicked] = useState(false)
   const GetStars= useCallback(()=>{
    const newArr =starSources.filter((ent)=> ent === "/icons/star_gold.svg")
   return  newArr
@@ -25,39 +26,48 @@ const WriteReview: React.FC<WriteReviewProps> = React.memo(({ show, onClose, han
     comment:"",
     rating: 0
    })
+
+
+     useEffect(() => {
+       if (Clicked) {
+         setClicked(false);
+       }
+     }, [show]);
+
      useEffect(() => {
        AOS.init({
          duration: 1000,
        });
      }, []);
+
      useEffect(() => {
-      setReview({...Review, rating :GetStars().length})
+       setReview({ ...Review, rating: GetStars().length });
      }, [starSources]);
-    
-  useEffect(() => {
-    if (show) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "unset";
-    }
 
-    return () => {
-      document.body.style.overflow = "unset";
-    };
-  }, [show]);
+     useEffect(() => {
+       if (show) {
+         document.body.style.overflow = "hidden";
+       } else {
+         document.body.style.overflow = "unset";
+       }
 
-  const handleStarClick = (index: number) => {
-    const newStarSources = starSources.map((src, i) =>
-      i <= index ? "/icons/star_gold.svg" : "/icons/star_black.svg"
-    );
-    setStarSources(newStarSources);
-  };
+       return () => {
+         document.body.style.overflow = "unset";
+       };
+     }, [show]);
+
+     const handleStarClick = (index: number) => {
+       const newStarSources = starSources.map((src, i) =>
+         i <= index ? "/icons/star_gold.svg" : "/icons/star_black.svg"
+       );
+       setStarSources(newStarSources);
+     };
 
   if (!show) {
     return null;
     }
-    
-    console.log(Review)
+  
+
   return (
     <div
       className="fixed inset-0 bg-black bg-opacity-50 flex items-start pt-[100px]  justify-center"
@@ -108,9 +118,9 @@ const WriteReview: React.FC<WriteReviewProps> = React.memo(({ show, onClose, han
           <div className="w-full flex justify-between items-center">
           <button onClick={()=>{
             handlePost(Review)
-            onClose()
-            }} className="bg-lblue px-2 py-1 text-white rounded cursor-pointer">
-            Post
+            setClicked(true)
+            }} className="bg-lblue px-2 py-1 text-white rounded cursor-pointer flex items-center gap-2">
+           {Clicked?<>Posting <div className="circularLoader"/></>:'Post'}
           </button>
           <p className="text-end">500/500 remaining</p>
           </div>

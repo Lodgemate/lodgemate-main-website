@@ -1,10 +1,6 @@
-/**
- * Component for browsing services based on location and filters.
- * @returns JSX element displaying services based on location and filters.
- */
 'use client'
+
 import React, { useState, useEffect, useMemo } from "react";
-import products from "../../data/data"; // Importing the products data
 import Card from "./Card";
 // import FilterOptions from "./FilterOptions";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
@@ -21,13 +17,13 @@ import {
 } from "@/lib/features/Filters/filterSlice";
 import { selectAllAuthenticated } from "@/lib/features/Login/signinSlice";
 import FilterOptions from "../lodges/FilterOptions";
-function BrowseServices() {
 
-interface BrowseLodgesProps {
-  query: string;
-  isSearchTriggered: boolean;
-}
-const cache = new Map<string, any>();
+function BrowseServices() {
+  interface BrowseLodgesProps {
+    query: string;
+    isSearchTriggered: boolean;
+  }
+  const cache = new Map<string, any>();
 
   const [showFiltersModal, setShowFiltersModal] = useState(false);
   //  (useless for now) const [filters, setFilters] = useState({});
@@ -41,47 +37,46 @@ const cache = new Map<string, any>();
     query: storequery,
     location: storelocation,
   };
-const query =""
-const isSearchTriggered =""
+  const query = "";
+  const isSearchTriggered = "";
 
- const GetToken =async()=>{
-  const localStorageToken= localStorage.getItem("token")
-  if (!localStorageToken) {
-    return null
-  }
-      const parsedToken=  JSON.parse(localStorageToken)
-      return (parsedToken)
- }
+  const GetToken = async () => {
+    const localStorageToken = localStorage.getItem("token");
+    if (!localStorageToken) {
+      return null;
+    }
+    const parsedToken = JSON.parse(localStorageToken);
+    return parsedToken;
+  };
 
   // fetching Services data
   useEffect(() => {
     const fetchData = async () => {
-      const token= await GetToken()
+      const token = await GetToken();
       let fetchUrl;
       if (isAuth && token) {
         // this will be uncommented when db is updated
-      // fetchUrl= Endpoints.getPrivateServices + urlGenerator(param); 
+        // fetchUrl= Endpoints.getPrivateServices + urlGenerator(param);
         // this will be deleted when db is updated
-      fetchUrl = Endpoints.getPublicServices + urlGenerator(param);
-      }else if( !token){
+        fetchUrl = Endpoints.getPublicServices + urlGenerator(param);
+      } else if (!token) {
         fetchUrl = Endpoints.getPublicServices + urlGenerator(param);
       }
       console.log(fetchUrl);
-    // nullify fetch
       if (!fetchUrl) {
-      return
-     } 
- // Check if the data is in the cache
- if (cache.has(fetchUrl)) {
-  // console.log('Using cached data');
-  const cacheData=cache.get(fetchUrl)
-  dispatch(setservicesData(cacheData.payload));
-  return;
-}
-      
+        return;
+      }
+      // Check if the data is in the cache
+      if (cache.has(fetchUrl)) {
+        // console.log('Using cached data');
+        const cacheData = cache.get(fetchUrl);
+        dispatch(setservicesData(cacheData.payload));
+        return;
+      }
+
       const abortController = new AbortController();
       try {
-        const response =await dispatch(Fetchservices(fetchUrl));
+        const response = await dispatch(Fetchservices(fetchUrl));
         cache.set(fetchUrl, response);
       } catch (error: any) {
         if (error.name !== "AbortError") {
@@ -103,53 +98,49 @@ const isSearchTriggered =""
     }
   };
 
-
-
-
-//  useless for now
-const handleResetFilters = () => {
-  //   setFilters({});
-  //   setFilteredProducts(products); // Resetting to all products
-   };
+  //  useless for now
+  const handleResetFilters = () => {
+    //   setFilters({});
+    //   setFilteredProducts(products); // Resetting to all products
+  };
 
   //  useless for now
-   const handleApplyFilters = (appliedFilters: any) => {
-  //   setFilters(appliedFilters);
-  //   // Logic to filter the product list based on appliedFilters
-  //   const filtered = products.filter((product) => {
-  //     const matchesPrice =
-  //       (!appliedFilters.minPrice ||
-  //         product.price >= appliedFilters.minPrice) &&
-  //       (!appliedFilters.maxPrice || product.price <= appliedFilters.maxPrice);
-  //     const matchesType =
-  //       !appliedFilters.accommodationType.length ||
-  //       appliedFilters.accommodationType.includes(product.accommodationType);
-  //     const matchesRooms =
-  //       !appliedFilters.rooms.length ||
-  //       appliedFilters.rooms.includes(String(product.numberOfRooms));
-  //     const matchesOccupants =
-  //       !appliedFilters.occupants.length ||
-  //       appliedFilters.occupants.includes(String(product.numberOfRooms));
-  //     const matchesFeatures =
-  //       !appliedFilters.features.length ||
-  //       appliedFilters.features.every((feature: string) =>
-  //         product.features.map((f) => f.name).includes(feature)
-  //       );
-
-  //     return (
-  //       matchesPrice &&
-  //       matchesType &&
-  //       matchesRooms &&
-  //       matchesOccupants &&
-  //       matchesFeatures
-  //     );
-  //   });
-  //   // setFilteredProducts(filtered);
-  //   setShowFiltersModal(false); // Close modal after applying filters
-   }
-console.log(ServicesData)
+  const handleApplyFilters = (appliedFilters: any) => {
+    //   setFilters(appliedFilters);
+    //   // Logic to filter the product list based on appliedFilters
+    //   const filtered = products.filter((product) => {
+    //     const matchesPrice =
+    //       (!appliedFilters.minPrice ||
+    //         product.price >= appliedFilters.minPrice) &&
+    //       (!appliedFilters.maxPrice || product.price <= appliedFilters.maxPrice);
+    //     const matchesType =
+    //       !appliedFilters.accommodationType.length ||
+    //       appliedFilters.accommodationType.includes(product.accommodationType);
+    //     const matchesRooms =
+    //       !appliedFilters.rooms.length ||
+    //       appliedFilters.rooms.includes(String(product.numberOfRooms));
+    //     const matchesOccupants =
+    //       !appliedFilters.occupants.length ||
+    //       appliedFilters.occupants.includes(String(product.numberOfRooms));
+    //     const matchesFeatures =
+    //       !appliedFilters.features.length ||
+    //       appliedFilters.features.every((feature: string) =>
+    //         product.features.map((f) => f.name).includes(feature)
+    //       );
+    //     return (
+    //       matchesPrice &&
+    //       matchesType &&
+    //       matchesRooms &&
+    //       matchesOccupants &&
+    //       matchesFeatures
+    //     );
+    //   });
+    //   // setFilteredProducts(filtered);
+    //   setShowFiltersModal(false); // Close modal after applying filters
+  };
+  console.log(ServicesData);
   return (
-    <div className="px-4 sm:px-[100px] mt-[50px]">
+    <div className='px-4 sm:px-[100px] mt-[50px]'>
       <div className='flex justify-between gap-8 items-center text-lgray mb-[24px]'>
         <h1 className='text-[18px] flex flex-wrap sm:text-[24px] text-lgray '>
           {isSearchTriggered
@@ -170,36 +161,35 @@ console.log(ServicesData)
           Filter
         </button>
       </div>
-      <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className='grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4'>
         {ServicesData &&
-            ServicesData.data?.services
-              .slice(0, showMore ? ServicesData.data.services.length : 2)
-          .map((product, index) => (
-           <Card
-              key={index}
-              id={product._id}
-              imageUrl={product.coverphoto} // Using the first image
-             name={product.serviceName}
-             location={product.address_text}
-             nearbyUniversity={product.administrativeArea}
-             price={product.minPrice || "N/A"}
-             />
-          ))
-        }
+          ServicesData.data?.services
+            .slice(0, showMore ? ServicesData.data.services.length : 2)
+            .map((product, index) => (
+              <Card
+                key={index}
+                id={product._id}
+                imageUrl={product.coverphoto} // Using the first image
+                name={product.serviceName}
+                location={product.address_text}
+                nearbyUniversity={product.administrativeArea}
+                price={product.minPrice || "N/A"}
+              />
+            ))}
       </div>
       {!showMore && (
-          <div className='mt-10 flex flex-col justify-center items-center text-lgray font-medium pb-[200px]'>
-            <p className='text-[16px] pb-[16px] '>Continue exploring Services</p>
-            <button
-              className='border px-4 py-2 rounded-[12px]'
-              onClick={handleShowMore}
-            >
-              Show more
-            </button>
-          </div>
-        )}
-       {/* Filters Modal */}
-       {showFiltersModal && (
+        <div className='mt-10 flex flex-col justify-center items-center text-lgray font-medium pb-[200px]'>
+          <p className='text-[16px] pb-[16px] '>Continue exploring Services</p>
+          <button
+            className='border px-4 py-2 rounded-[12px]'
+            onClick={handleShowMore}
+          >
+            Show more
+          </button>
+        </div>
+      )}
+      {/* Filters Modal */}
+      {showFiltersModal && (
         <div
           className='fixed top-0 left-0 right-0 bottom-0 px-1 bg-black bg-opacity-25 flex justify-center z-50'
           onClick={handleModalClick}

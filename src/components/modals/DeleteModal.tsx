@@ -1,16 +1,22 @@
 import { selectAlldeleteModalModalMssg, showDeleteModal } from '@/lib/features/Modal/ModalSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import Blurbg from '@/Ui/shared/Blurbg'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
 const DeleteModal:React.FC= () => {
     const dispatch = useAppDispatch();
     const deleteData = useAppSelector(selectAlldeleteModalModalMssg);
+    const [Clicked, setClicked] = useState(false)
     const handleDelete=deleteData.deleteFunction? deleteData.deleteFunction :()=>{} 
     const reset={
       deleteFunction: null,
       message:""
     }
+    useEffect(() => {
+      if (Clicked) {
+        setClicked(false);
+      }
+    }, []);
   return (
     <>
       {deleteData.deleteFunction && (
@@ -20,10 +26,13 @@ const DeleteModal:React.FC= () => {
               {deleteData.message}
             </p>
             <button
-              onClick={() => handleDelete()}
+              onClick={() =>{
+                 handleDelete()
+                 setClicked(true)}}
+                 disabled={Clicked}
               className='bg-lblue px-4 py-2 text-white rounded hover:scale-95 hover:text-slate-300'
             >
-              Delete
+              {Clicked? <>Deleting... <div className="circularLoader"/></>:'Delete'}
             </button>
             <p
               onClick={() => dispatch(showDeleteModal(reset))}

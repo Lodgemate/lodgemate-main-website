@@ -36,6 +36,24 @@ const EditRepliesModal: React.FC<EditRepliesModalProps> = React.memo(
       return null;
     }
 
+    // const handlePost = useCallback(async () => {
+    //   const localStorageToken = localStorage.getItem("token");
+    //   const parseToken = localStorageToken && JSON.parse(localStorageToken);
+    //   const Url = `${Endpoints.getPrivateLodgesbyId}${currentlodgeId}/reviews/${currentReviewId}/replies`;
+    //   const body = {
+    //     method: "GET",
+    //     headers: {
+    //       "content-type": "application/json",
+    //       Authorization: `Bearer ${parseToken}`,
+    //     },
+    //   };
+
+    //   const res = await FetchApi(Url, body);
+    //   const parsedRes: any = await res;
+    //   if (parsedRes.status === "success") {
+    //     setReplies(parsedRes);
+    //   }
+    // }, [currentlodgeId, currentReviewId]);
     const handleEditReview = async (param: any) => {
       const localStorageToken = localStorage.getItem("token");
       const parseToken = localStorageToken && JSON.parse(localStorageToken);

@@ -66,7 +66,7 @@ function ChooseHobbies() {
     }
   };
 
-  const isHobbySelected = (hobby: string) => selectedHobbies.some(selectedHobby => selectedHobby.toLowerCase() === hobby.toLowerCase());
+  const isHobbySelected = (hobby: string) => selectedHobbies.some((selectedHobby: any) => selectedHobby.toLowerCase() === hobby.toLowerCase());
 
   return (
     <div>

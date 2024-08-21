@@ -27,7 +27,7 @@ console.log("data")
    const body = {
      headers: {
        "content-type": "Application-json",
-       Authorization: `Bearer ${parseToken}`,
+      //  Authorization: `Bearer ${parseToken}`,
      },
    };
    const fetchData = async () => {
@@ -38,11 +38,12 @@ console.log("data")
           `${Endpoints.getPrivateLodges}postedBy=${data?.data.user._id}`,
           body
         );
+        console.log( `${Endpoints.getPublicServicesbyId}vendor=${data?.data.user._id}`);
         console.log(res);
         setTabData({ ...tabData, lodgesdata: res });
       } else if (activeTab ==="Services listed") {
         const res = await FetchApi(
-          `${Endpoints.getPrivateServices}vendor=${data?.data.user._id}`,
+          `${Endpoints.getPublicServicesbyId}vendor=${data?.data.user._id}`,
           body
         );
         console.log(res);

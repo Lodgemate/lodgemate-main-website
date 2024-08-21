@@ -105,7 +105,7 @@ const LodgeListed: React.FC<LodgeListedProps> = React.memo(({data}) => {
   return (
     <div className="container mx-auto p-4">
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        {data?.data.lodges.slice(0, 9).map((product) => (
+        {data?.status === 'success' && data?.data.lodges.slice(0, 9).map((product) => (
           <ProductCard
             key={product._id}
             id={product._id }

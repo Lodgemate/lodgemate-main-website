@@ -57,6 +57,7 @@ function BrowseRoommates() {
    * useEffect hook that fetches data based on authentication status and token availability.
    * @returns None
    */
+  console.log(RoommatesData)
   useEffect(() => {
     setisLoading(true);
     const fetchData = async () => {

@@ -1,8 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import React, { useEffect, useRef, useState } from "react";
-import data from "../../../../data/data";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import WriteReview from "../../modals/WriteReview";
 import DeleteYourReview from "../../modals/DeleteYourReview";
 import CallAgent from "../../modals/CallAgent";
@@ -16,6 +15,12 @@ import ReviewComments from "./Reviews/Modals/ReplyComment";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { selectAllUsersdata } from "@/lib/features/Users/usersSlice";
 import DeleteModal from "@/components/modals/DeleteModal";
+import { LoadingSkeleton } from "../../../../components/Skeletons/DetalsSkeleton";
+import NotFoundPage from "@/app/not-found";
+import {
+  selectAllReviews,
+  setReviews,
+} from "@/lib/features/Reviews/ReviewsSlice";
 
 interface LodgeInfoProps {
   id: string;
@@ -72,45 +77,53 @@ const features: Feature[] = [
     icon: "https://res.cloudinary.com/dcb4ilgmr/image/upload/v1717201086/utilities/LodgeMate_File/Vector_3_uyvtoc.svg",
   },
 ];
- 
-// interface  reviews[
-//   {
-//     _id: '66bb06c4ff82c9f4fa2d8285',
-//     postedBy: {
-//       _id: '669f08b917f07047b9fb6cc6',
-//       firstName: 'Danielsdsd',
-//       profilePicture: 'default.png',
-//       profileLink: 'https://lodgemate.com.ng/p/669f08b917f07047b9fb6cc6',
-//       id: '669f08b917f07047b9fb6cc6'
-//     },
-//     type: 'review',
-//     rating: 2,
-//     comment: 'erer',
-//     repliesCount: 0,
-//     dateCreated: '2024-08-13T07:09:56.363Z'
-//   }
-// ]
+
 function LodgeInfo() {
-  const currentUserData= useAppSelector(selectAllUsersdata)
   const params = useParams();
   const { id } = params || {};
+  const dispatch = useAppDispatch();
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+
+  const currentUserData = useAppSelector(selectAllUsersdata);
+  const RevieweData: any = useAppSelector(selectAllReviews);
   const [LodgeData, setLodgeData] = useState<Lodge | null>(null);
-  const [RevieweData, setRevieweData] = useState<any>([]);
-  const [showReplies, setshowReplies] = useState(false)
-  const [writereply, setwritereply] = useState(false)
+  const [showReplies, setshowReplies] = useState(false);
+  const [writereply, setwritereply] = useState(false);
   const [isWriteReviewOpen, setIsWriteReviewOpen] = useState(false);
   const [isCallAgentOpen, setIsCallAgentOpen] = useState(false);
   const [isLodgeSavedOpen, setIsLodgeSavedOpen] = useState(false);
-  const [commentsOrReplies, setcommentsOrReplies] = useState(null)
-  const scrollContainerRef = useRef<HTMLDivElement>(null);
-console.log
+  const [isLoading, setisLoading] = useState(false);
+  const [commentsOrReplies, setcommentsOrReplies] = useState(null);
+
+  const reFetchReviews = async () => {
+    const localStorageToken = localStorage.getItem("token");
+    const parseToken = localStorageToken && JSON.parse(localStorageToken);
+    try {
+      // getting reviews
+      const Url = `${Endpoints.getPrivateLodgesbyId + id}/reviews`;
+      const resReviews = await fetch(Url, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${parseToken}`,
+        },
+      });
+      // these are all the reviews
+      const reviewdata: any = await resReviews.json();
+      if (reviewdata.status === "success") {
+        dispatch(setReviews(reviewdata.data.reviews));
+      }
+      // setRevieweData(reviewdata)
+    } catch (error) {}
+  };
+
   useEffect(() => {
     const fetchData = async () => {
+      setisLoading(true);
       const fetchUrl = `${Endpoints.getPublicLodgesbyId + id}`;
       const abortController = new AbortController();
       const localStorageToken = localStorage.getItem("token");
-      const parseToken =localStorageToken && JSON.parse(localStorageToken)
-      console.log(parseToken)
+      const parseToken = localStorageToken && JSON.parse(localStorageToken);
       try {
         const res = await fetch(fetchUrl, {
           method: "GET",
@@ -120,26 +133,27 @@ console.log
         });
         const parsedRes = await res.json();
         if (parsedRes.status === "success") {
+          setisLoading(false);
           setLodgeData(parsedRes.data.lodge);
-          // /v1/lodges/:id/reviews
           try {
             // getting reviews
-          const Url = `${Endpoints.getPrivateLodgesbyId + id}/reviews`;
-          const resReviews = await fetch(Url, {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${parseToken}`
-            },
-          });
-          // these are all the reviews
-          const reviewdata = await resReviews.json()
-          console.log(reviewdata)
+            const Url = `${Endpoints.getPrivateLodgesbyId + id}/reviews`;
+            const resReviews = await fetch(Url, {
+              method: "GET",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${parseToken}`,
+              },
+            });
+            // these are all the reviews
+            const reviewdata: any = await resReviews.json();
 
-          setRevieweData(reviewdata)
-          } catch (error) {
-            
-          }
+            if (reviewdata.status === "success") {
+              dispatch(setReviews(reviewdata.data.reviews));
+            }
+
+            // setRevieweData(reviewdata)
+          } catch (error) {}
         }
       } catch (error: any) {
         if (error.name === "AbortError") {
@@ -148,7 +162,7 @@ console.log
           console.error("Error fetching data:", error.message);
         }
       }
-
+      setisLoading(false);
       return () => {
         abortController.abort(); // Cleanup on unmount
       };
@@ -157,17 +171,15 @@ console.log
     fetchData();
   }, []);
 
-  const handleOpenWriteReview = () => {
-    setIsWriteReviewOpen(true);
-  };
-
   const handleOpenCallAgent = () => {
     setIsCallAgentOpen(true);
   };
   const handleOpenLodgeSaved = () => {
     setIsLodgeSavedOpen(true);
   };
-
+  const handleOpenWriteReview = () => {
+    setIsWriteReviewOpen(true);
+  };
   const handleCloseWriteReview = () => {
     setIsWriteReviewOpen(false);
   };
@@ -178,8 +190,20 @@ console.log
     setIsLodgeSavedOpen(false);
   };
 
+  if (isLoading) {
+    return (
+      <>
+        <LoadingSkeleton />
+      </>
+    );
+  }
   if (!LodgeData) {
-    return <div>Product not found</div>;
+    return (
+      <div className='h-fit'>
+        {/* <NotFoundPage/> */}
+        Searching....
+      </div>
+    );
   }
 
   // Ensure LodgeData.features is defined and of correct type
@@ -202,49 +226,51 @@ console.log
     }
   };
 
-  const handleReview= async(param: any)=>{
-    console.log("resReviews")
+  const handleReview = async (param: any) => {
     const localStorageToken = localStorage.getItem("token");
-    const parseToken =localStorageToken && JSON.parse(localStorageToken)
+    const parseToken = localStorageToken && JSON.parse(localStorageToken);
     const Url = `${Endpoints.getPrivateLodgesbyId}${id}/reviews`;
-    console.log(Url)
     const resReviews = await fetch(Url, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${parseToken}`
+        Authorization: `Bearer ${parseToken}`,
       },
-      body: JSON.stringify(param)
+      body: JSON.stringify(param),
     });
-    console.log(resReviews)
-    console.log(await resReviews.json())
-  }
- console.log(RevieweData)
- console.log(commentsOrReplies)
-
- const handleReplies=(data:any)=>{
-  setwritereply(true)
-  setcommentsOrReplies(data)
- }
- const handleViewReplies=(data:any)=>{
-  setshowReplies(true)
-  setcommentsOrReplies(data)
- }
+    const parsedRes = await resReviews.json();
+    if (parsedRes.status === "success") {
+      await reFetchReviews();
+      setIsWriteReviewOpen(false);
+    } else {
+      console.log("failed");
+    }
+  };
+  const handleReplies = (data: any) => {
+    setwritereply(true);
+    setcommentsOrReplies(data);
+  };
+  const handleViewReplies = (data: any) => {
+    setshowReplies(true);
+    setcommentsOrReplies(data);
+  };
   return (
     <div>
       <div className='sm:px-[100px] sm:mt-[51px]'>
         {/* modals render */}
-        <DeleteModal/>
+        <DeleteModal />
         <WriteReview
           show={isWriteReviewOpen}
           onClose={handleCloseWriteReview}
           handlePost={handleReview}
+          data={currentUserData}
         />
         <ReviewComments
           show={writereply}
           onClose={() => setwritereply(false)}
           data={commentsOrReplies}
           currentLodge={LodgeData}
+          userData={currentUserData}
         />
         <CallAgent
           show={isCallAgentOpen}
@@ -550,11 +576,11 @@ console.log
                 {/* /v1/lodges/reviews/:id */}
                 <div className=' gap-10 text-[15px]'>
                   {/* use maping here too for the reviwes */}
-                  {RevieweData?.data?.reviews && (
+                  {RevieweData && (
                     <LodgeReviews
-                    LodgeData={LodgeData}
+                      LodgeData={LodgeData}
                       currentUserData={currentUserData}
-                      data={RevieweData?.data.reviews}
+                      data={RevieweData}
                       showReplies={handleViewReplies}
                       replycomment={handleReplies}
                     />
@@ -661,11 +687,11 @@ console.log
               <div>
                 <div className='gap-10  text-[15px]'>
                   {/* use maping here too for the reviwes */}
-                  {RevieweData?.data?.reviews && (
+                  {RevieweData && (
                     <LodgeReviews
-                    LodgeData={LodgeData}
+                      LodgeData={LodgeData}
                       currentUserData={currentUserData}
-                      data={RevieweData?.data?.reviews}
+                      data={RevieweData}
                       showReplies={handleViewReplies}
                       replycomment={handleReplies}
                     />

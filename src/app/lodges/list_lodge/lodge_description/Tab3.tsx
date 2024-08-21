@@ -103,15 +103,7 @@ const Tab3Content: React.FC = () => {
        let updatedArr = [...selectedBox, text];
        setSelectedBox(updatedArr);
       dispatch(appendStateItem({ key: "lodgeFeatures[]", value: text }));
-
-      // let updatedArr = [...selectedBox, text];
-      // setSelectedBox(updatedArr);
-      // updatedArr.forEach((element: string) => {
-      //   dispatch(appendStateItem({ key: "lodgeFeatures[]", value: element }));
-      //   });
-    }
-    
-    }
+    }}
 
   // make an array
   // in the function create a shallow arr"

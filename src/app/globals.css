@@ -28,6 +28,7 @@
 
 /* Custom styles for react-select */
 .react-select__control {
+  
   display: flex;
   height: auto;
   padding: 0;
@@ -208,3 +209,44 @@
  }
  
  /* This is the end of the smallLoader  */
+
+ /* circular loader */
+ .circularLoader {
+  border: 2px solid #f3f3f3; /* Light grey */
+  border-top: 2px solid #3498db; /* Blue */
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  animation: circularLoaderspin 2s linear infinite;
+}
+
+@keyframes circularLoaderspin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+
+.pac-container {
+  background-color: #ffffff; /* Background color for the suggestions dropdown */
+  border-radius: 8px; /* Rounded corners */
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1); /* Custom shadow */
+  z-index: 1000; /* Ensure it's above other elements */
+  position: absolute !important;
+  /* top: 535px !important; */
+}
+
+
+.pac-item {
+  padding: 10px 12px; /* Padding for each suggestion */
+  font-size: 14px; /* Font size for suggestions */
+  color: #333; /* Text color */
+}
+
+.pac-item:hover {
+  background-color: #f3f4f6; /* Background color on hover */
+}
+
+.pac-item-query {
+  font-weight: bold; /* Make the matched query part bold */
+  color: #1a73e8; /* Custom color for the matched text */
+}

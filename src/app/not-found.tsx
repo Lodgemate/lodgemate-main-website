@@ -2,8 +2,11 @@
 
 import React from "react";
 import Link from "next/link";
+import {useRouter } from "next/navigation";
 
 const NotFoundPage: React.FC = () => {
+  const router= useRouter();
+
   return (
     <div className="h-screen flex mt-[50px] items-center justify-center">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -20,7 +23,7 @@ const NotFoundPage: React.FC = () => {
           </p>
           <div className="flex sm:flex-row gap-4 flex-col pa">
             <button
-              //   onClick={() => window.history.back()}
+               onClick={() => router.back()}
               className="bg-white border  text-black sm:font-bold py-2 px-4 rounded"
             >
               Back to previous page

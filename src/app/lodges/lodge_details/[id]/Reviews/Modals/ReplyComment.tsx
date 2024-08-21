@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback, useMemo } from "react";
 import AOS from "aos";
 import { FetchApi } from "@/utils/Fetchdata";
 import { Endpoints } from "@/services/Api/endpoints";
+import { extractDate, getCurrentDate } from "@/utils/utils";
 
 
 interface ReviewCommentsProps {
@@ -9,9 +10,10 @@ interface ReviewCommentsProps {
   onClose: () => void;
   data: any,
   currentLodge:any 
+  userData:any
 }
 
-const ReviewComments: React.FC<ReviewCommentsProps> = React.memo(({data, show, onClose,currentLodge }) => {
+const ReviewComments: React.FC<ReviewCommentsProps> = React.memo(({data, show, onClose,currentLodge, userData }) => {
   const currentlodgeId= currentLodge._id
   const currentReviewId= data?._id
  
@@ -55,30 +57,19 @@ const ReviewComments: React.FC<ReviewCommentsProps> = React.memo(({data, show, o
 
       console.log(Url)
 
-      const res = await FetchApi(Url, body)
-      console.log(await res)
+      const res: any = await FetchApi(Url, body)
+      if (res.status === "success") {
+        onClose()
+      } else {
+        console.log("replies posted successfully")
+      }
     }
     console.log(data)
-    // {
-    //   _id: '66bb622dff82c9f4fa2d85e0',
-    //   postedBy: {
-    //     _id: '669f08b917f07047b9fb6cc6',
-    //     firstName: 'Danielsdsd',
-    //     profilePicture: 'default.png',
-    //     profileLink: 'https://lodgemate.com.ng/p/669f08b917f07047b9fb6cc6',
-    //     id: '669f08b917f07047b9fb6cc6'
-    //   },
-    //   type: 'review',
-    //   rating: 3,
-    //   comment: 'testing this shii lets see if it works.....',
-    //   repliesCount: 0,
-    //   dateCreated: '2024-08-13T13:39:57.293Z'
-    // }
+ 
 
 
     const ReplyFormUi = () => {
   const [Review, setReview] = useState('');
-      console.log(Review)
       return (
         <>
           <div className='ml-5 pt-3 border-t border-t-lblue text-sm'>
@@ -88,8 +79,8 @@ const ReviewComments: React.FC<ReviewCommentsProps> = React.memo(({data, show, o
                 alt=''
               />
               <div>
-                <h1 className='font-semibold'>McGreggor</h1>
-                <p>05/05/23</p>
+                <h1 className='font-semibold'>{userData.data.user.firstName}</h1>
+                <p>{getCurrentDate()}</p>
               </div>
             </div>
           </div>
@@ -133,7 +124,7 @@ const ReviewComments: React.FC<ReviewCommentsProps> = React.memo(({data, show, o
               </div>
               <div>
                 <p className='font-bold'>{data.postedBy.firstName}</p>
-                <p className=' text-gray-600'>{"review.date"}</p>
+                <p className=' text-gray-600'>{extractDate(data.dateCreated)}</p>
                 <div className='flex items-center gap-1 '>
                   <p>{data.rating}.0</p> •
                   {[...Array(data.rating)].map((_, starIndex) => (

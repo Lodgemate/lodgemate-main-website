@@ -15,9 +15,6 @@ const Tab2Content: React.FC = () => {
   const hasKey = data.has('numberOfRooms');
   console.log(hasKey); 
   const extractedData = hasKey && data.get('numberOfRooms') || null
-    console.log(extractedData)
-    console.log(data)
-  console.log(data)
   const [selectedBox, setSelectedBox] = useState<any>(extractedData && Number(extractedData) || null);
 
   const boxes: Box[] = [

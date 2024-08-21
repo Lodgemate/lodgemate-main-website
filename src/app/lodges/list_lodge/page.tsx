@@ -27,6 +27,7 @@ function Listalodge() {
           List your lodge
         </Link>
       </div>
+      
     </div>
   );
 }

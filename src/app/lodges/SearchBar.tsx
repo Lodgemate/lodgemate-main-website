@@ -24,74 +24,68 @@ interface Product {
 
 interface SearchResult {
   // Define SearchResult interface
-  lodges: { id: number| string; name: string }[];
-  cities: { id: number| string; address: string }[];
+  lodges: { id: number | string; name: string }[];
+  cities: { id: number | string; address: string }[];
 }
+
 const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
-const dispatch = useAppDispatch();
-  // Define SearchBar component
+  const dispatch = useAppDispatch();
+  const data = useAppSelector(selectAllFetchLodgesdata);
   const [query, setQuery] = useState<string>(""); // State for query string
   const [results, setResults] = useState<SearchResult>({
-    // State for search results
     lodges: [],
     cities: [],
   });
- const data = useAppSelector(selectAllFetchLodgesdata)
-//  console.log(data.data.lodges)
 
   useEffect(() => {
-    // Effect hook for handling search
     if (query) {
-      const filteredResults = filterResults(query); // Filter results based on query
-      setResults(filteredResults); // Update results state
+      const filteredResults = filterResults(query);
+      setResults(filteredResults);
     } else {
-      setResults({ lodges: [], cities: [] }); // Reset results if query is empty
+      setResults({ lodges: [], cities: [] });
     }
-  }, [query]); // Depend on query state for re-rendering
+  }, [query]);
 
   const filterResults = (query: string): SearchResult => {
     // Function to filter results
     const lowercaseQuery = query.toLowerCase(); // Convert query to lowercase
-    const lodges: { id: number| string; name: string }[]= [];
-    const cities: { id: number| string; address: string }[] = [];
-if (!data) {
-  return  { lodges, cities };
-}
+    const lodges: { id: number | string; name: string }[] = [];
+    const cities: { id: number | string; address: string }[] = [];
+    if (!data) {
+      return { lodges, cities };
+    }
     data.data.lodges.forEach((product: any) => {
       // Iterate through products data
-        // Check if product type is lodge
-        if (
-          product.lodgeName.toLowerCase().includes(lowercaseQuery) && // Filter by lodge name
-          lodges.length < 3
-        ) {
-          lodges.push(
-            {
-              name: product.lodgeName,
-              id: product._id
-            }
-           ); // Add lodge to lodges array
-        }
-        if (
-          product.address_text.toLowerCase().includes(lowercaseQuery) && // Filter by address
-          cities.length < 3
-        ) {
-          cities.push({
-            id: product._id,
-            address: product.address_text.split(",")[1].trim(), // Extract city from address
-          });
-        }
+      // Check if product type is lodge
+      if (
+        product.lodgeName.toLowerCase().includes(lowercaseQuery) && // Filter by lodge name
+        lodges.length < 3
+      ) {
+        lodges.push({
+          name: product.lodgeName,
+          id: product._id,
+        }); // Add lodge to lodges array
       }
-    );
+      if (
+        product.address_text.toLowerCase().includes(lowercaseQuery) && // Filter by address
+        cities.length < 3
+      ) {
+        cities.push({
+          id: product._id,
+          address: product.address_text.split(",")[1].trim(), // Extract city from address
+        });
+      }
+    });
 
     return { lodges, cities }; // Return filtered results
   };
-console.log(results)
-  const handleSearchClick = async() => {
+
+  const handleSearchClick = async () => {
     if (query) {
-      dispatch(setSearchQuery(query))
-       // Function to handle search button click
-    onSearch(query); // Execute onSearch callback with query
-    setQuery(""); // Clear query after search
+      dispatch(setSearchQuery(query));
+      // Function to handle search button click
+      onSearch(query); // Execute onSearch callback with query
+      setQuery(""); // Clear query after search
     }
   };
 
@@ -124,7 +118,7 @@ console.log(results)
             <h3 className='bg-[#F5F5F5] py-[7px] px-4 text-dgray font-bold'>
               Lodges
             </h3>
-            {results.lodges.length > 0 ? ( // Render lodges if found
+            {results.lodges.length > 0 ? (
               results.lodges.map((lodge) => (
                 <Link
                   key={lodge.id}
@@ -147,7 +141,7 @@ console.log(results)
             <h3 className='bg-[#F5F5F5] py-[7px] px-4 text-dgray font-bold'>
               Cities
             </h3>
-            {results.cities.length > 0 ? ( // Render cities if found
+            {results.cities.length > 0 ? (
               results.cities.map((city) => (
                 <Link
                   key={city.id}
@@ -165,33 +159,10 @@ console.log(results)
               <p className='px-4'>No similar cities found.</p>
             )}
           </div>
-
-          {/* <div>
-            <h3 className='bg-[#F5F5F5] py-[7px] px-4 text-dgray font-bold'>
-              Schools
-            </h3>
-            {/* {results.schools.length > 0 ? ( // Render schools if found
-              results.schools.map((school) => (
-                <Link
-                  key={school.id}
-                  href={`/lodges/lodge_details/${school.id}`}
-                  className="flex items-center gap-2 py-[7px]  px-4"
-                >
-                  <img
-                    src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1717527777/utilities/webspirre/Group_r16ctp.svg"
-                    alt={school.university}
-                  />
-                  <p>{school.university}</p>
-                </Link>
-              ))
-            ) : (
-              <p className="px-4">No similar schools found.</p>
-            )} */}
-          {/* </div> */}
         </div>
       )}
     </div>
   );
 };
 
-export default SearchBar; // Export SearchBar component
+export default SearchBar;

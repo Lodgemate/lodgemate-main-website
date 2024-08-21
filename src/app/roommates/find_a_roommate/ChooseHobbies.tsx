@@ -1,3 +1,5 @@
+import { appendStateItem, selectAllList_Listingdata } from "@/lib/features/Listing/ListingSlice";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import React, { useState } from "react";
 
 const hobbyIcons: { [key: string]: string } = {
@@ -39,17 +41,32 @@ const hobbyIcons: { [key: string]: string } = {
 };
 
 function ChooseHobbies() {
-  const [selectedHobbies, setSelectedHobbies] = useState<string[]>([]);
-
+  const dispatch = useAppDispatch();
+  const data =useAppSelector(selectAllList_Listingdata)
+  const hasKey = data.has('hobbiesAndTraits[]');
+  console.log(hasKey); 
+  const extractedData: any = hasKey && data.getAll('hobbiesAndTraits[]') || null
+    console.log(extractedData)
+  const [selectedHobbies, setSelectedHobbies] = useState<any>(extractedData && extractedData ||[]);
+  console.log(selectedHobbies)
   const toggleHobby = (hobby: string) => {
+
     if (selectedHobbies.includes(hobby)) {
-      setSelectedHobbies(selectedHobbies.filter((h) => h !== hobby));
+      let updatedArr = selectedHobbies.filter((h:string) => h !== hobby)
+      setSelectedHobbies(updatedArr);
+      data.delete("hobbiesAndTraits[]")
+      updatedArr.forEach((element: string) => {
+      dispatch(appendStateItem({ key: "hobbiesAndTraits[]", value: element }));
+      })
     } else {
-      setSelectedHobbies([...selectedHobbies, hobby]);
+
+      let updatedArr = [...selectedHobbies, hobby];
+      setSelectedHobbies(updatedArr);
+     dispatch(appendStateItem({ key: "hobbiesAndTraits[]", value: hobby}));
     }
   };
 
-  const isHobbySelected = (hobby: string) => selectedHobbies.includes(hobby);
+  const isHobbySelected = (hobby: string) => selectedHobbies.some((selectedHobby: any) => selectedHobby.toLowerCase() === hobby.toLowerCase());
 
   return (
     <div>
@@ -66,7 +83,7 @@ function ChooseHobbies() {
                 ? "bg-blue-500 text-white"
                 : "bg-white text-black"
             }`}
-            onClick={() => toggleHobby(hobby)}
+            onClick={() => toggleHobby(hobby.toLowerCase())}
           >
             <img src={hobbyIcons[hobby]} alt={hobby} />
             <p>{hobby}</p>

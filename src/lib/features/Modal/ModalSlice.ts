@@ -30,7 +30,6 @@ const ModalSlice = createSlice({
                 state.emailOtpModal= action.payload
             },
             showDeleteModal:(state, action)=>{
-                console.log(action.payload)
                 state.delteModal= action.payload
             },
     }

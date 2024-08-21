@@ -8,7 +8,17 @@ import LodgeSaved from "../../modals/LodgeSaved";
 import { Endpoints } from "@/services/Api/endpoints";
 import { useParams } from "next/navigation";
 import {  Service } from "@/lib/Types";
-
+import { LoadingSkeleton } from "@/components/Skeletons/DetalsSkeleton";
+import DeleteYourReview from "../../modals/DeleteYourReview";
+import { Lodge } from "@/lib/Types";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
+import { selectAllUsersdata } from "@/lib/features/Users/usersSlice";
+import DeleteModal from "@/components/modals/DeleteModal";
+import NotFoundPage from "@/app/not-found";
+import {
+  selectAllReviews,
+  setReviews,
+} from "@/lib/features/Reviews/ReviewsSlice";
 // location: Coordinates;
 // ratings: Ratings;
 // _id: string;
@@ -35,77 +45,144 @@ import {  Service } from "@/lib/Types";
 function ServicesDetails() {
   const params = useParams();
   const { id } = params || {};
+  const dispatch = useAppDispatch();
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [ServiceData, setServiceData]= useState<Service | null>(null);
+
+  const currentUserData = useAppSelector(selectAllUsersdata);
+  const RevieweData: any = useAppSelector(selectAllReviews);
+  const [showReplies, setshowReplies] = useState(false);
+  const [writereply, setwritereply] = useState(false);
   const [isWriteReviewOpen, setIsWriteReviewOpen] = useState(false);
   const [isCallAgentOpen, setIsCallAgentOpen] = useState(false);
   const [isServiceSavedOpen, setIsServiceSavedOpen] = useState(false);
-  const scrollContainerRef = useRef<HTMLDivElement>(null);
-console.log(id)
+  const [isLoading, setisLoading] = useState(false);
+  const [commentsOrReplies, setcommentsOrReplies] = useState(null);
 
-    useEffect(() => {
-      const fetchData = async () => {
-        const fetchUrl = `${Endpoints.getPublicServicesbyId + id}`;
-        const abortController = new AbortController();
-        console.log(fetchUrl)
-        try {
-          const res =await fetch(fetchUrl, {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-            },
-          });
-    
-const parsedRes = await res.json()
-console.log(parsedRes)
-
-if (parsedRes.status === 'success') {
-
-  setServiceData(parsedRes.data.services)
-}
-         
-         
-        } catch (error: any) {
-          if (error.name === "AbortError") {
-            console.log("Request aborted");
-          } else {
-            console.error("Error fetching data:", error.message);
-          }
-        }
-        
-        return () => {
-          abortController.abort(); // Cleanup on unmount
-        };
-      };
-  
-      fetchData();
-    }, [id]);
-
-
-   const handleOpenWriteReview = () => {
-     setIsWriteReviewOpen(true);
+  const reFetchReviews = async () => {
+    const localStorageToken = localStorage.getItem("token");
+    const parseToken = localStorageToken && JSON.parse(localStorageToken);
+    try {
+      // getting reviews
+      const Url = `${Endpoints.getPrivateLodgesbyId + id}/reviews`;
+      const resReviews = await fetch(Url, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${parseToken}`,
+        },
+      });
+      // these are all the reviews
+      const reviewdata: any = await resReviews.json();
+      if (reviewdata.status === "success") {
+        dispatch(setReviews(reviewdata.data.reviews));
+      }
+      // setRevieweData(reviewdata)
+    } catch (error) {}
   };
-  
+
+  useEffect(() => {
+    const fetchData = async () => {
+      setisLoading(true);
+      const fetchUrl = `${Endpoints.getPrivateServicesbyId + id}`;
+      const abortController = new AbortController();
+      const localStorageToken = localStorage.getItem("token");
+      const parseToken = localStorageToken && JSON.parse(localStorageToken);
+      console.log(fetchUrl)
+      try {
+        const res = await fetch(fetchUrl, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${parseToken}`
+          },
+        });
+        const parsedRes = await res.json();
+        console.log(parsedRes)
+        if (parsedRes.status === "success") {
+          setisLoading(false);
+          setServiceData(parsedRes.data.services)
+          try {
+            // getting reviews
+            const Url = `${Endpoints.getPublicServicesbyId + id}/reviews`;
+            const resReviews = await fetch(Url, {
+              method: "GET",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${parseToken}`,
+              },
+            });
+            // these are all the reviews
+            const reviewdata: any = await resReviews.json();
+
+            if (reviewdata.status === "success") {
+              dispatch(setReviews(reviewdata.data.reviews));
+            }
+
+            // setRevieweData(reviewdata)
+          } catch (error) {}
+        }
+      } catch (error: any) {
+        if (error.name === "AbortError") {
+          console.log("Request aborted");
+        } else {
+          console.error("Error fetching data:", error.message);
+        }
+      }
+      setisLoading(false);
+      return () => {
+        abortController.abort(); // Cleanup on unmount
+      };
+    };
+
+    fetchData();
+  }, []);
+
   const handleOpenCallAgent = () => {
     setIsCallAgentOpen(true);
   };
   const handleOpenLodgeSaved = () => {
     setIsServiceSavedOpen(true);
   };
-
-   const handleCloseWriteReview = () => {
-     setIsWriteReviewOpen(false);
+  const handleOpenWriteReview = () => {
+    setIsWriteReviewOpen(true);
   };
-   const handleCloseCallAgent = () => {
-     setIsCallAgentOpen(false);
+  const handleCloseWriteReview = () => {
+    setIsWriteReviewOpen(false);
+  };
+  const handleCloseCallAgent = () => {
+    setIsCallAgentOpen(false);
   };
   const handleCloseLodgeSaved = () => {
     setIsServiceSavedOpen(false);
   };
 
+  if (isLoading) {
+    return (
+      <>
+        <LoadingSkeleton />
+      </>
+    );
+  }
   if (!ServiceData) {
-    return <div>Product not found</div>;
+    return (
+      <div className='h-fit'>
+        {/* <NotFoundPage/> */}
+        Searching....
+      </div>
+    );
   }
 
+  // Ensure LodgeData.features is defined and of correct type
+  // const lodgeFeatures = ServiceData. || [];
+
+  // Function to get icon URL based on feature name
+  // const getFeatureIcon = (featureName: string) => {
+  //   const feature = features.find(
+  //     (f) => f.name.toLowerCase() === featureName.toLowerCase()
+  //   );
+  //   return feature ? feature.icon : "";
+  // };
 
   const scroll = (scrollOffset: number) => {
     if (scrollContainerRef.current) {
@@ -116,6 +193,34 @@ if (parsedRes.status === 'success') {
     }
   };
 
+  const handleReview = async (param: any) => {
+    const localStorageToken = localStorage.getItem("token");
+    const parseToken = localStorageToken && JSON.parse(localStorageToken);
+    const Url = `${Endpoints.getPrivateLodgesbyId}${id}/reviews`;
+    const resReviews = await fetch(Url, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${parseToken}`,
+      },
+      body: JSON.stringify(param),
+    });
+    const parsedRes = await resReviews.json();
+    if (parsedRes.status === "success") {
+      await reFetchReviews();
+      setIsWriteReviewOpen(false);
+    } else {
+      console.log("failed");
+    }
+  };
+  const handleReplies = (data: any) => {
+    setwritereply(true);
+    setcommentsOrReplies(data);
+  };
+  const handleViewReplies = (data: any) => {
+    setshowReplies(true);
+    setcommentsOrReplies(data);
+  };
   return (
     <div>
       <div className="sm:px-[100px] sm:mt-[51px]">

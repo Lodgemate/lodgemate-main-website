@@ -19,6 +19,8 @@ import {
 } from "@/lib/features/Filters/filterSlice";
 import { selectAllAuthenticated } from "@/lib/features/Login/signinSlice";
 import GallerySkeleton from "@/components/Skeletons/cardsSkeleton";
+import AOS from "aos";
+
 function BrowseRoommates() {
 
   const cache = new Map<string, any>();
@@ -58,8 +60,14 @@ function BrowseRoommates() {
    * @returns None
    */
   console.log(RoommatesData)
+
+  React.useEffect(() => {
+    AOS.init({
+      duration: 1000,
+    });
+  },[]); 
   useEffect(() => {
-    setisLoading(true);
+   
     const fetchData = async () => {
       const token = await GetToken();
       let fetchUrl;
@@ -158,28 +166,20 @@ function BrowseRoommates() {
     //   // setFilteredProducts(filtered);
     //   setShowFiltersModal(false); // Close modal after applying filters
   };
-  const MappedRoommates=()=>{
-    
-    return(
-      <>
-       {RoommatesData &&
-          RoommatesData.data?.roommates
-            .slice(0, showMore ? RoommatesData.data.roommates.length : 2)
-            .map((roommate, index) => (
-              <Card
-              {...roommate}
-              key={index}
-              imageUrl={roommate.postedBy.profilePicture}
-              name={roommate.postedBy.firstName}
-              location={roommate.address_text}
-              nearbyUniversity={roommate.subAdministrativeArea}
-              onClick={() => handleCardClick(roommate)}
-              sex={roommate.postedBy.gender}
-            />
-            ))}
-      </>
-    )
-  }
+  const MappedRoommates = useMemo(() => (
+    RoommatesData?.data?.roommates.slice(0, showMore ? RoommatesData.data.roommates.length : 2).map((roommate, index) => (
+      <Card
+        {...roommate}
+        key={index}
+        imageUrl={roommate.postedBy.profilePicture}
+        name={roommate.postedBy.firstName}
+        location={roommate.address_text}
+        nearbyUniversity={roommate.subAdministrativeArea}
+        onClick={() => handleCardClick(roommate)}
+        sex={roommate.postedBy.gender}
+      />
+    ))
+  ), [RoommatesData, showMore, handleCardClick]);
   return (
     <div className="px-4 sm:px-[100px] mt-[50px] text-[14px] sm:text-[16px]">
       {selectedRoommate && (
@@ -213,9 +213,9 @@ function BrowseRoommates() {
       <div className='grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4'>
       
       {
-              isLoading?
+              !RoommatesData?
               <GallerySkeleton/>
-             : <MappedRoommates/>
+             : MappedRoommates
             } 
       </div>
       {!showMore && (

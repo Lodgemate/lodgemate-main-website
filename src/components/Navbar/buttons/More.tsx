@@ -2,12 +2,14 @@
 
 import NotificationModal from "@/components/modals/NotificationModal";
 import { Logout, selectAllAuthenticated } from "@/lib/features/Login/signinSlice";
+import { selectAllUsersdata } from "@/lib/features/Users/usersSlice";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useState } from "react";
 
 function More() {
+  const currentUser= useAppSelector(selectAllUsersdata)
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isNotificationOpen, setIsNotificationOpen] = useState(false);
 const dispatch = useAppDispatch();
@@ -22,6 +24,7 @@ const dispatch = useAppDispatch();
   if (!isAuthenticated) {
     return null;
   }
+  console.log(currentUser)
   return (
     <div className="">
       {/* desktop */}
@@ -109,7 +112,7 @@ const dispatch = useAppDispatch();
               )}
 
               <Link
-                href="/user_profile/my_profile"
+                href={`/profile/${currentUser?.data.user._id}`}
                 className="text-gray-700 py-[5px]"
               >
                 View profile
@@ -222,7 +225,7 @@ const dispatch = useAppDispatch();
                 </span>
               </Link>
               <Link
-                href="/user_profile/my_profile"
+                href={`/profile/${currentUser?.data.user._id}`}
                 className="text-gray-700 py-[5px]"
               >
                 View profile

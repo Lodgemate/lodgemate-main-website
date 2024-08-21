@@ -90,8 +90,8 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
   };
 
   return (
-    <div className='flex relative  justify-center w-full items-center mt-[20px]'>
-      <div className='border-2 pl-[24px] p-1 flex justify-between border-stroke rounded-full w-full sm:w-[510px] text-[16px] h-[63px] shadow-lg'>
+    <div className='flex relative  justify-center w-full items-center mt-[20px] '>
+      <div className='  border-2 pl-[24px] p-1 flex justify-between border-stroke rounded-full w-full sm:w-[510px] text-[16px] h-[63px] shadow-lg'>
         <input
           type='text'
           placeholder='Enter name of lodge, city or school'
@@ -113,9 +113,9 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
         </button>
       </div>
       {query && ( // Render results if query is not empty
-        <div className='absolute w-full text-[16px] z-[999] top-20 sm:w-[510px] bg-white border border-stroke shadow-lg rounded-lg'>
-          <div>
-            <h3 className='bg-[#F5F5F5] py-[7px] px-4 text-dgray font-bold'>
+        <div className='absolute w-full text-[16px]  top-20 sm:w-[510px] bg-white border border-stroke shadow-lg rounded-lg '>
+          <div className="">
+            <h3 className='bg-[#F5F5F5] py-[7px] px-4 text-dgray font-bold '>
               Lodges
             </h3>
             {results.lodges.length > 0 ? (

@@ -3,12 +3,20 @@
 import React, { useState } from "react";
 import Tab1Content from "./Tab1";
 import Tab2Content from "./Tab2";
-import { useAppSelector } from "@/lib/hooks";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { selectAllList_Listingdata } from "@/lib/features/Listing/ListingSlice";
 import { FetchApi } from "@/utils/Fetchdata";
 import { Endpoints } from "@/services/Api/endpoints";
+import {
+  showFailedModal,
+  showLoadingModal,
+  showSuccessfulModal,
+} from "@/lib/features/Modal/ModalSlice";
+import { useRouter } from "next/navigation";
 
 const LodgeDescription = () => {
+  const router = useRouter();
+  const dispatch = useAppDispatch();
   const [activeTab, setActiveTab] = useState(0);
   const formData =useAppSelector(selectAllList_Listingdata)
 
@@ -29,6 +37,7 @@ const LodgeDescription = () => {
     }
   };
   const handleListServices= async()=>{
+    dispatch(showLoadingModal("Posting Service"));
     const localStorageToken = localStorage.getItem("token");
     const parseToken =localStorageToken && JSON.parse(localStorageToken)
     console.log(parseToken)
@@ -49,7 +58,18 @@ const body = {
 
      try {
        const res = FetchApi(Endpoints.getPrivateServices,body)
-       console.log (await res)
+       const parsedRes: any = await res;
+      if (parsedRes.status === "success") {
+        dispatch(showLoadingModal(null));
+        dispatch(showSuccessfulModal(parsedRes.message));
+        setTimeout(() => {
+          dispatch(showSuccessfulModal(null));
+          router.push("/");
+        }, 500);
+       } else {
+        dispatch(showLoadingModal(null));
+        dispatch(showFailedModal(parsedRes.message));
+      }
      } catch (error) {
       console.log (await error)
      }
@@ -96,7 +116,7 @@ const body = {
             // disabled={activeTab === tabs.length - 1}
             className="bg-primary text-white w-1/2 sm:w-[300px] h-[48px] rounded-[8px]"
           >
-            {activeTab === 1 ? "List your lodge" : "Next"}
+            {activeTab === 1 ? "List your service" : "Next"}
           </button>
         </div>
       </div>

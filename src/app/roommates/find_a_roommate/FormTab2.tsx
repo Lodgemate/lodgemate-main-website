@@ -8,6 +8,7 @@ import {
 } from "@/lib/features/Listing/ListingSlice";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import React, { useState } from "react";
+import { calculateCenterLatLng } from "@/utils/utils";
 
 function FormTab2() {
   const dispatch = useAppDispatch();
@@ -39,25 +40,29 @@ function FormTab2() {
     setAccomodationPrefrence(param);
     dispatch(setStateItem({ key: "preferredLivingArrangement", value: param }));
   };
-  const locationOnchange = (data: Result[]) => {
+  
+  const locationOnchange = (data: Result) => {
+    const long = calculateCenterLatLng(data.geometry.viewport).lng;
+    const lat = calculateCenterLatLng(data.geometry.viewport).lat;
+    console.log(lat , long)
     dispatch(
       setStateItem({
         // its long Ik :)
         key: "location[administrativeArea]",
-        value: data[0].address_components.filter(
+        value: data.address_components.filter(
           (each) => each.types[0] === "administrative_area_level_1"
         )[0].long_name,
       })
     );
 
-    const filterdArr = data[0].address_components.filter(
+    const filterdArr = data.address_components.filter(
       (each) => each.types[0] === "locality" || "administrative_area_level_1"
     );
     if (filterdArr) {
       dispatch(
         setStateItem({
           key: "location[subAdministrativeArea]",
-          value: data[0].address_components.filter(
+          value: data.address_components.filter(
             (each) =>
               each.types[0] === "locality" || "administrative_area_level_1"
           )[0].long_name,
@@ -68,7 +73,7 @@ function FormTab2() {
     dispatch(
       setStateItem({
         key: "location[country]",
-        value: data[0].address_components.filter(
+        value: data.address_components.filter(
           (each) => each.types[0] === "country"
         )[0].long_name,
       })
@@ -76,19 +81,19 @@ function FormTab2() {
     dispatch(
       setStateItem({
         key: "location[address_text]",
-        value: data[0].formatted_address,
+        value: data.formatted_address,
       })
     );
     dispatch(
       setStateItem({
         key: "location[latitude]",
-        value: data[0].geometry.location.lat,
+        value: lat,
       })
     );
     dispatch(
       setStateItem({
         key: "location[longitude]",
-        value: data[0].geometry.location.lng,
+        value: long,
       })
     );
   };

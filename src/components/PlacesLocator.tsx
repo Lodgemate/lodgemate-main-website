@@ -70,7 +70,7 @@ const GooglePlacesAutocomplete: React.FC<props> = ( {handleLocation} ) => {
           type="text"
           value={inputValue}
           onChange={handleChange}
-          placeholder="Enter the location of lodge"
+          placeholder="Enter location "
           className="w-full p-2 border border-gray-300 rounded"
           style={{
             width: '100%',

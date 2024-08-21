@@ -14,8 +14,6 @@ import React, { useState } from "react";
 
 const Tab4Content: React.FC = () => {
   const dispatch = useAppDispatch();
-  const [loacation, setloacation] = useState("");
-  const [onFocus, setonFocus] = useState(false);
   const data = useAppSelector(selectAllList_Listingdata);
   const ExtractDataFromFormData = (name: string) => {
     const hasKey = data.has(name);
@@ -36,7 +34,6 @@ const Tab4Content: React.FC = () => {
   const locationOnchange = (data: Result) => {
     const long = calculateCenterLatLng(data.geometry.viewport).lng;
     const lat = calculateCenterLatLng(data.geometry.viewport).lat;
-    console.log(data);
     console.log(data.address_components);
     dispatch(
       setStateItem({

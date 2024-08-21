@@ -1,8 +1,10 @@
 "use client";
 
+import GooglePlacesAutocomplete from "@/components/PlacesLocator";
 import LocationSuggestion, { Result } from "@/components/Shared/locationSuggestion";
 import { selectAllList_Listingdata, setStateItem } from "@/lib/features/Listing/ListingSlice";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
+import { calculateCenterLatLng } from "@/utils/utils";
 import React, { useCallback, useState } from "react";
 
 const Tab2Content: React.FC = () => {
@@ -25,31 +27,33 @@ const Tab2Content: React.FC = () => {
   // const [otherServiceCategories, setotherServiceCategories] = useState(ExtractDataFromFormData('otherServiceCategories'))
 
 
-  const locationOnchange =(data : Result[])=>{
+  const locationOnchange =(data : Result)=>{
+    const long = calculateCenterLatLng(data.geometry.viewport).lng;
+    const lat = calculateCenterLatLng(data.geometry.viewport).lat;
     dispatch(setStateItem({ 
       
       // its long Ik :)
       key: "location[administrativeArea]",
-       value: data[0].address_components.filter((each) => each.types[0] === 'administrative_area_level_1')[0].long_name
+       value: data.address_components.filter((each) => each.types[0] === 'administrative_area_level_1')[0].long_name
        }));
   
-       const filterdArr = data[0].address_components.filter((each) => each.types[0] === 'locality' || 'administrative_area_level_1')
+       const filterdArr = data.address_components.filter((each) => each.types[0] === 'locality' || 'administrative_area_level_1')
        if (filterdArr) {
         dispatch(
       setStateItem({ 
         key: "location[subAdministrativeArea]",
-         value:  data[0].address_components.filter((each) => each.types[0] === 'locality' || 'administrative_area_level_1')[0].long_name
+         value:  data.address_components.filter((each) => each.types[0] === 'locality' || 'administrative_area_level_1')[0].long_name
         })); 
        }
    
     dispatch(
       setStateItem({ 
         key: "location[country]",
-         value:  data[0].address_components.filter((each) => each.types[0] === 'country')[0].long_name
+         value:  data.address_components.filter((each) => each.types[0] === 'country')[0].long_name
         }));
-    dispatch(setStateItem({ key: "location[address_text]", value: data[0].formatted_address }));
-    dispatch(setStateItem({ key: "location[latitude]", value: data[0].geometry.location.lat }));
-    dispatch(setStateItem({ key: "location[longitude]", value: data[0].geometry.location.lng }));
+    dispatch(setStateItem({ key: "location[address_text]", value: data.formatted_address }));
+    dispatch(setStateItem({ key: "location[latitude]", value: lat }));
+    dispatch(setStateItem({ key: "location[longitude]", value: long }));
     }
   return (
     <div className='flex flex-col items-center text-dgray'>
@@ -99,20 +103,7 @@ const Tab2Content: React.FC = () => {
             }}
           />
         </div> */}
-        {/* location */}
-        <div className=' relative'>
-          <label htmlFor='lodgeLocation'>Select location you deliver to</label>
-          <input
-            type='text'
-            id='lodgeLocation'
-            placeholder='e.g. Okigwe, aba-owerri road'
-            className='w-full p-2 border border-gray-300 rounded'
-            onChange={(e)=>setloacation(e.target.value)}
-          onFocus={()=>setonFocus(true)}
-          onBlur={() => setonFocus(false)}
-          />
-          {onFocus && <LocationSuggestion handleLocation={locationOnchange} input={loacation} setInput={setloacation}/>}
-        </div>
+
         {/* min price */}
         <div className='flex flex-col gap-1'>
           <label htmlFor='price'>Set a min-price for your service</label>
@@ -164,6 +155,8 @@ const Tab2Content: React.FC = () => {
             }}
           />
         </div>
+        <GooglePlacesAutocomplete handleLocation={locationOnchange} />
+
       </form>
     </div>
   );

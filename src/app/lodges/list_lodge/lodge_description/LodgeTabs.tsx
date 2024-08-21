@@ -70,7 +70,7 @@ const LodgeTabs = () => {
           dispatch(showSuccessfulModal(null));
           router.push("/");
         }, 500);
-      } else {
+       } else {
         dispatch(showLoadingModal(null));
         dispatch(showFailedModal(parsedRes.message));
       }

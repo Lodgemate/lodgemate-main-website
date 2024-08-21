@@ -18,6 +18,7 @@ import {
   selectAllQueryFilter,
 } from "@/lib/features/Filters/filterSlice";
 import { selectAllAuthenticated } from "@/lib/features/Login/signinSlice";
+import GallerySkeleton from "@/components/Skeletons/cardsSkeleton";
 function BrowseRoommates() {
 
   const cache = new Map<string, any>();
@@ -25,6 +26,7 @@ function BrowseRoommates() {
   const [showFiltersModal, setShowFiltersModal] = useState(false);
   //  (useless for now) const [filters, setFilters] = useState({});
   const [showMore, setShowMore] = useState(false);
+  const [isLoading, setisLoading] = useState(false);
   const RoommatesData = useAppSelector(selectAllFetchroommatedata);
   const dispatch = useAppDispatch();
   const storequery = useAppSelector(selectAllQueryFilter);
@@ -50,14 +52,13 @@ function BrowseRoommates() {
   const handleCardClick = (roommate: any) => {
     setSelectedRoommate(roommate);
   };
-  console.log(storequery)
   // fetching Services data
   /**
    * useEffect hook that fetches data based on authentication status and token availability.
    * @returns None
    */
-  console.log(RoommatesData)
   useEffect(() => {
+    setisLoading(true);
     const fetchData = async () => {
       const token = await GetToken();
       let fetchUrl;
@@ -79,6 +80,7 @@ function BrowseRoommates() {
         // console.log('Using cached data');
         const cacheData = cache.get(fetchUrl);
         dispatch(setroommateData(cacheData.payload));
+        setisLoading(false);
         return;
       }
       const abortController = new AbortController();
@@ -90,6 +92,7 @@ function BrowseRoommates() {
           console.error("Error fetching data:", error);
         }
       } finally {
+        setisLoading(false);
         return () => abortController.abort();
       }
     };
@@ -154,7 +157,28 @@ function BrowseRoommates() {
     //   // setFilteredProducts(filtered);
     //   setShowFiltersModal(false); // Close modal after applying filters
   };
-
+  const MappedRoommates=()=>{
+    
+    return(
+      <>
+       {RoommatesData &&
+          RoommatesData.data?.roommates
+            .slice(0, showMore ? RoommatesData.data.roommates.length : 2)
+            .map((roommate, index) => (
+              <Card
+              {...roommate}
+              key={index}
+              imageUrl={roommate.postedBy.profilePicture}
+              name={roommate.postedBy.firstName}
+              location={roommate.address_text}
+              nearbyUniversity={roommate.subAdministrativeArea}
+              onClick={() => handleCardClick(roommate)}
+              sex={roommate.postedBy.gender}
+            />
+            ))}
+      </>
+    )
+  }
   return (
     <div className='px-4 sm:px-[100px] mt-[50px]'>
           {selectedRoommate && (
@@ -186,21 +210,12 @@ function BrowseRoommates() {
         </button>
       </div>
       <div className='grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4'>
-        {RoommatesData &&
-          RoommatesData.data?.roommates
-            .slice(0, showMore ? RoommatesData.data.roommates.length : 2)
-            .map((roommate, index) => (
-              <Card
-              {...roommate}
-              key={index}
-              imageUrl={roommate.postedBy.profilePicture}
-              name={roommate.postedBy.firstName}
-              location={roommate.address_text}
-              nearbyUniversity={roommate.subAdministrativeArea}
-              onClick={() => handleCardClick(roommate)}
-              sex={roommate.postedBy.gender}
-            />
-            ))}
+      
+      {
+              isLoading?
+              <GallerySkeleton/>
+             : <MappedRoommates/>
+            } 
       </div>
       {!showMore && (
         <div className='mt-10 flex flex-col justify-center items-center text-lgray font-medium pb-[200px]'>

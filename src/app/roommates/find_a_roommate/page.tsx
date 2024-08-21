@@ -1,16 +1,23 @@
 "use client"
 
 import React, { useState } from "react";
+import { useRouter } from "next/navigation";
 import FormTab1 from "./FormTab1";
 import FormTab2 from "./FormTab2";
 import FormTab3 from "./FormTab3";
 import Link from "next/link";
 import { Endpoints } from "@/services/Api/endpoints";
 import { FetchApi } from "@/utils/Fetchdata";
-import { useAppSelector } from "@/lib/hooks";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { selectAllList_Listingdata } from "@/lib/features/Listing/ListingSlice";
-
+import {
+  showFailedModal,
+  showLoadingModal,
+  showSuccessfulModal,
+} from "@/lib/features/Modal/ModalSlice";
 function FindRoommate() {
+  const router = useRouter();
+  const dispatch = useAppDispatch();
   const [currentTab, setCurrentTab] = useState(1);
   const formData =useAppSelector(selectAllList_Listingdata)
 
@@ -30,6 +37,7 @@ function FindRoommate() {
 
 
   const handleListRoommates = async () => {
+    dispatch(showLoadingModal("Posting Roommates"));
     const localStorageToken = localStorage.getItem("token");
     const parseToken = localStorageToken && JSON.parse(localStorageToken);
   
@@ -44,7 +52,7 @@ function FindRoommate() {
     }
   
     const url = Endpoints.getPrivateRoommates;
-  
+  console.log(url)
     // When sending FormData, do not manually set the 'Content-Type' header
     const options = {
       method: "POST",
@@ -60,7 +68,20 @@ function FindRoommate() {
   
     try {
       const res = await FetchApi(url, options);
-      console.log(await res);
+      const parsedRes: any = await res;
+      console.log(parsedRes);
+      
+      if (parsedRes.status === "success") {
+        dispatch(showLoadingModal(null));
+        dispatch(showSuccessfulModal(parsedRes.message));
+        setTimeout(() => {
+          dispatch(showSuccessfulModal(null));
+          router.push("/");
+        }, 500);
+       } else {
+        dispatch(showLoadingModal(null));
+        dispatch(showFailedModal(parsedRes.message));
+      }
     } catch (error) {
       console.log(error);
     }
@@ -133,14 +154,6 @@ function FindRoommate() {
               </div>
 
               <div className="px-4 flex gap-2 text-white">
-                {currentTab > 2 && (
-                  <button
-                    onClick={handleBack}
-                    className=" border text-lgray w-full py-[12px] mb-[24px] rounded-[8px]"
-                  >
-                    Undo request
-                  </button>
-                )}
 
                 <button
                   className="bg-primary w-full py-[12px] mb-[24px] rounded-[8px]"

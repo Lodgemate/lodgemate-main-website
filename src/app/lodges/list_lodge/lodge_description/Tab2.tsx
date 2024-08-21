@@ -78,7 +78,11 @@ const Tab2Content: React.FC = () => {
             onClick={() => handleBoxClick(box.id)}
           >
             <img
-              src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1718337642/utilities/LodgeMate_File/House_1_fpt0yj.svg"
+              src={
+                selectedBox === box.id
+                  ? "/icons/house1_white.svg"
+                  : "/icons/house1.svg"
+              }
               alt=""
               className="w-[28px] h-[28px]"
             />

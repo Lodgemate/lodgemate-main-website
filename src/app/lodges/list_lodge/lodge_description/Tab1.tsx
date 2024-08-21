@@ -10,6 +10,7 @@ import React, { useState } from "react";
 interface Box {
   id: number;
   imgSrc: string;
+  imgSrc2: string;
   text: string;
 }
 
@@ -24,26 +25,26 @@ const Tab1Content: React.FC = () => {
   const boxes: Box[] = [
     {
       id: 1,
-      imgSrc:
-        "https://res.cloudinary.com/dcb4ilgmr/image/upload/v1719880287/utilities/LodgeMate_File/fluent_building-multiple-20-regular_mbdur2.svg",
+      imgSrc: "/icons/building1.svg",
+      imgSrc2: "/icons/building1_white.svg",
       text: "apartment",
     },
     {
       id: 2,
-      imgSrc:
-        "https://res.cloudinary.com/dcb4ilgmr/image/upload/v1718408373/utilities/LodgeMate_File/covid_quarantine-place-self-lockdown-2_s4rvvo.svg",
+      imgSrc: "/icons/building2.svg",
+      imgSrc2: "/icons/building2_white.svg",
       text: "self-contained",
     },
     {
       id: 3,
-      imgSrc:
-        "https://res.cloudinary.com/dcb4ilgmr/image/upload/v1718408373/utilities/LodgeMate_File/covid_quarantine-place-self-lockdown-2_s4rvvo.svg",
+      imgSrc: "/icons/building2.svg",
+      imgSrc2: "/icons/building2_white.svg",
       text: "flat",
     },
     {
       id: 4,
-      imgSrc:
-        "https://res.cloudinary.com/dcb4ilgmr/image/upload/v1718337642/utilities/LodgeMate_File/House_1_fpt0yj.svg",
+      imgSrc: "/icons/house1.svg",
+      imgSrc2: "/icons/house1_white.svg",
       text: "single-room",
     },
   ];
@@ -54,8 +55,8 @@ const Tab1Content: React.FC = () => {
   };
 
   return (
-    <div className='flex flex-col items-center'>
-      <form className='flex flex-wrap justify-center gap-5 mt-5'>
+    <div className="flex flex-col items-center">
+      <form className="flex flex-wrap justify-center gap-5 mt-5">
         {boxes.map((box) => (
           <div
             key={box.id}
@@ -65,11 +66,11 @@ const Tab1Content: React.FC = () => {
             onClick={() => handleBoxClick(box.text)}
           >
             <img
-              src={box.imgSrc}
+              src={selectedBox === box.text ? box.imgSrc2 : box.imgSrc}
               alt={box.text}
-              className='w-[28px] h-[28px]'
+              className="w-[28px] h-[28px]"
             />
-            <p className='mt-2'>{box.text}</p>
+            <p className="mt-2">{box.text}</p>
           </div>
         ))}
       </form>

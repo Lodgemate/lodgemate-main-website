@@ -17,7 +17,10 @@ import { selectAllUsersdata } from "@/lib/features/Users/usersSlice";
 import DeleteModal from "@/components/modals/DeleteModal";
 import { LoadingSkeleton } from "../../../../components/Skeletons/DetalsSkeleton";
 import NotFoundPage from "@/app/not-found";
-import { selectAllReviews, setReviews } from "@/lib/features/Reviews/ReviewsSlice";
+import {
+  selectAllReviews,
+  setReviews,
+} from "@/lib/features/Reviews/ReviewsSlice";
 
 interface LodgeInfoProps {
   id: string;
@@ -74,7 +77,6 @@ const features: Feature[] = [
     icon: "https://res.cloudinary.com/dcb4ilgmr/image/upload/v1717201086/utilities/LodgeMate_File/Vector_3_uyvtoc.svg",
   },
 ];
- 
 
 function LodgeInfo() {
   const params = useParams();
@@ -92,7 +94,6 @@ function LodgeInfo() {
   const [isLodgeSavedOpen, setIsLodgeSavedOpen] = useState(false);
   const [isLoading, setisLoading] = useState(false);
   const [commentsOrReplies, setcommentsOrReplies] = useState(null);
-  console.log(RevieweData);
 
   const reFetchReviews = async () => {
     const localStorageToken = localStorage.getItem("token");
@@ -109,7 +110,6 @@ function LodgeInfo() {
       });
       // these are all the reviews
       const reviewdata: any = await resReviews.json();
-      console.log(reviewdata);
       if (reviewdata.status === "success") {
         dispatch(setReviews(reviewdata.data.reviews));
       }
@@ -263,12 +263,14 @@ function LodgeInfo() {
           show={isWriteReviewOpen}
           onClose={handleCloseWriteReview}
           handlePost={handleReview}
+          data={currentUserData}
         />
         <ReviewComments
           show={writereply}
           onClose={() => setwritereply(false)}
           data={commentsOrReplies}
           currentLodge={LodgeData}
+          userData={currentUserData}
         />
         <CallAgent
           show={isCallAgentOpen}

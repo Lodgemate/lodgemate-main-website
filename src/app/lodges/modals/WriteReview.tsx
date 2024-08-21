@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
 import AOS from "aos";
+import { getCurrentDate } from "@/utils/utils";
 
 
 interface WriteReviewProps {
@@ -9,7 +10,7 @@ interface WriteReviewProps {
   handlePost:(param: any)=>void
 }
 
-const WriteReview: React.FC<WriteReviewProps> = React.memo(({ show, onClose, handlePost }) => {
+const WriteReview: React.FC<WriteReviewProps> = React.memo(({ show, onClose, handlePost,data }) => {
   const [starSources, setStarSources] = useState<string[]>([
     "/icons/star_black.svg",
     "/icons/star_black.svg",
@@ -67,7 +68,6 @@ const WriteReview: React.FC<WriteReviewProps> = React.memo(({ show, onClose, han
     return null;
     }
   
-
   return (
     <div
       className="fixed inset-0 bg-black bg-opacity-50 flex items-start pt-[100px]  justify-center"
@@ -87,12 +87,13 @@ const WriteReview: React.FC<WriteReviewProps> = React.memo(({ show, onClose, han
         <div className="mb-4">
           <div className="flex gap-2">
             <img
-              src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1720745689/utilities/LodgeMate_File/Img_jccfin.svg"
+              src={data.data.user.profilePicture}
               alt=""
+              className="w-10 h-10 rounded-full border border-lblue"
             />
             <div>
-              <h1 className="font-semibold">McGreggor</h1>
-              <p>05/05/23</p>
+              <h1 className="font-semibold">{data.data.user.firstName}</h1>
+              <p>{getCurrentDate()}</p> 
             </div>
           </div>
         </div>

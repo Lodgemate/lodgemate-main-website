@@ -6,6 +6,7 @@ import EditReviewBtn from "./ReviewActions/EditReviewBtn";
 import DeleteReviewbtn from "./ReviewActions/DeleteReviewbtn";
 import WriteReview from "../../../modals/WriteReview";
 import { Endpoints } from "@/services/Api/endpoints";
+import { extractDate } from "@/utils/utils";
 interface Review {
   id: number;
   profilePicture: string;
@@ -24,34 +25,35 @@ interface LodgeReviewsProps {
 }
 const LodgeReviews: React.FC<LodgeReviewsProps> = React.memo(
   ({ data, showReplies, replycomment, currentUserData, LodgeData }) => {
+
     const [isWriteReviewOpen, setIsWriteReviewOpen] = useState(false);
-    console.log(LodgeData.id);
+
     const handleOpenWriteReview = () => {
       setIsWriteReviewOpen(true);
     };
     const handleCloseWriteReview = () => {
       setIsWriteReviewOpen(false);
     };
-
-    console.log(data);
     return (
       <div className=' w-full grid md:grid-cols-2 gap-10'>
         {data.map((review: any, index: number) => {
           return (
             <div className=' bg-slate-50 p-3 rounded'>
               <div className='flex justify-between items-start'>
-                <div key={index} className='flex items-start gap-4 mb-[24px]'>
+                <div key={index} className='flex items-start gap-4 mb-[15px]'>
                   <div>
                     <img
-                      src={review.profilePicture}
-                      alt={review.firstName}
+                      src={review.postedBy.profilePicture}
+                      alt={review.postedBy.firstName}
                       className='w-10 h-10 rounded-full border border-lblue'
                     />
                   </div>
                   <div>
-                    <p className='font-bold'>{review.firstName}</p>
-                    <p className=' text-gray-600'>{"review.date"}</p>
-                    <div className='flex items-center gap-1 mt-'>
+                    <p className='font-medium z-10'>{review.postedBy.firstName}</p>
+                    <p className=' text-gray-600 text-sm'>
+                      {extractDate(review.dateCreated)}
+                    </p>
+                    <div className='flex items-center gap-1 mt- text-sm '>
                       <p>{review.rating}.0</p> •
                       {[...Array(review.rating)].map((_, starIndex) => (
                         <img
@@ -76,7 +78,7 @@ const LodgeReviews: React.FC<LodgeReviewsProps> = React.memo(
                 )}
               </div>
               <div className=' flex justify-between'>
-                <div className=''>
+                <div className='text-sm font-medium'>
                   <p>{review.comment}</p>
                 </div>
 

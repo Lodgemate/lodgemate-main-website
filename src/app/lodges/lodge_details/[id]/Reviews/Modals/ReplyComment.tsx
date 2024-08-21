@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback, useMemo } from "react";
 import AOS from "aos";
 import { FetchApi } from "@/utils/Fetchdata";
 import { Endpoints } from "@/services/Api/endpoints";
+import { extractDate, getCurrentDate } from "@/utils/utils";
 
 
 interface ReviewCommentsProps {
@@ -9,9 +10,10 @@ interface ReviewCommentsProps {
   onClose: () => void;
   data: any,
   currentLodge:any 
+  userData:any
 }
 
-const ReviewComments: React.FC<ReviewCommentsProps> = React.memo(({data, show, onClose,currentLodge }) => {
+const ReviewComments: React.FC<ReviewCommentsProps> = React.memo(({data, show, onClose,currentLodge, userData }) => {
   const currentlodgeId= currentLodge._id
   const currentReviewId= data?._id
  
@@ -68,7 +70,6 @@ const ReviewComments: React.FC<ReviewCommentsProps> = React.memo(({data, show, o
 
     const ReplyFormUi = () => {
   const [Review, setReview] = useState('');
-      console.log(Review)
       return (
         <>
           <div className='ml-5 pt-3 border-t border-t-lblue text-sm'>
@@ -78,8 +79,8 @@ const ReviewComments: React.FC<ReviewCommentsProps> = React.memo(({data, show, o
                 alt=''
               />
               <div>
-                <h1 className='font-semibold'>McGreggor</h1>
-                <p>05/05/23</p>
+                <h1 className='font-semibold'>{userData.data.user.firstName}</h1>
+                <p>{getCurrentDate()}</p>
               </div>
             </div>
           </div>
@@ -123,7 +124,7 @@ const ReviewComments: React.FC<ReviewCommentsProps> = React.memo(({data, show, o
               </div>
               <div>
                 <p className='font-bold'>{data.postedBy.firstName}</p>
-                <p className=' text-gray-600'>{"review.date"}</p>
+                <p className=' text-gray-600'>{extractDate(data.dateCreated)}</p>
                 <div className='flex items-center gap-1 '>
                   <p>{data.rating}.0</p> •
                   {[...Array(data.rating)].map((_, starIndex) => (

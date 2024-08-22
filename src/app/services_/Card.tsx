@@ -28,7 +28,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
   });
 
   return (
-    <div className="max-w-sm rounded overflow-hidden -z-10 " data-aos="fade-up">
+    <div className="max-w-sm rounded overflow-hidden " data-aos="fade-up">
       <Link 
       href={`/services_/service_details/${id}`} passHref>
      

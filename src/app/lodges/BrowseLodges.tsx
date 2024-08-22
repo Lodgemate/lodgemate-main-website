@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import Card from "./Card";
 import FilterOptions from "./FilterOptions";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
@@ -174,8 +174,7 @@ const BrowseLodges: React.FC<BrowseLodgesProps> = ({
       setShowFiltersModal(false);
     }
   };
-  const MappedLodges=()=>{
-    
+  const MappedLodges=useMemo(()=>{
     return(
       <>
       {LodgesData &&
@@ -195,9 +194,9 @@ const BrowseLodges: React.FC<BrowseLodgesProps> = ({
               ))}
       </>
     )
-  }
+  },[LodgesData,showMore])
   return (
-    <div className="px-4 sm:px-[100px] mt-[50px] text-[14px] sm:text-[16px]">
+    <div className="px-4 sm:px-[100px] mt-[50px] text-[14px] sm:text-[16px] -z-0 ">
       <div className="flex justify-between gap-8 items-center text-lgray mb-[24px]">
         <h1 className=" flex flex-wrap  text-lgray ">
           {isSearchTriggered
@@ -225,7 +224,7 @@ const BrowseLodges: React.FC<BrowseLodgesProps> = ({
             {
               isLoading?
               <GallerySkeleton/>
-             : <MappedLodges/>
+             : MappedLodges
             }      
         </div>
 

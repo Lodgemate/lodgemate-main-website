@@ -595,10 +595,10 @@ function LodgeInfo() {
                 <h2 className='text-[20px] font-bold mb-[18px]'>
                   Contact owner
                 </h2>
-
-                <button className='w-full border-2 rounded-lg border-opacity-[20px] py-[12px] mb-[18px]'>
+                    <Link href={`/profile/${LodgeData.postedBy._id}`} className='w-full text-center cursor-pointer border-2 rounded-lg border-opacity-[20px] py-[12px] mb-[18px]'>
                   View profile
-                </button>
+                    </Link>
+            
 
                 <div className='h-[3px] w-full mb-[18px] bg-black opacity-[10%] '></div>
                 <button

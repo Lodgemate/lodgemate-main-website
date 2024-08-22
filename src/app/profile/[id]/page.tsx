@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import React, { useEffect, useState } from "react";
 import UserDetailas from "./UserDetaile";
 import LodgeListed from "./LodgesListed";
@@ -9,53 +9,83 @@ import { useAppSelector } from "@/lib/hooks";
 import { selectAllUsersdata } from "@/lib/features/Users/usersSlice";
 import { FetchApi } from "@/utils/Fetchdata";
 import { Endpoints } from "@/services/Api/endpoints";
+import { useParams } from "next/navigation";
+const cache = new Map<string, any>();
 
 const MyProfile = () => {
+  // const data= useAppSelector(selectAllUsersdata)
+  const [currentUserData, setcurrentUserData] = useState<any>(null);
+  const params = useParams();
+  const { id } = params || {};
   const [activeTab, setActiveTab] = useState("Lodges listed");
-    const [tabData, setTabData] = useState({
-      lodgesdata:"" as any,
-      Servicesdata:""as any,
-    })
-  const data= useAppSelector(selectAllUsersdata)
-console.log(data)
-console.log("data")
+  const [isLoading, setIsLoading] = useState(false);
+  const [tabData, setTabData] = useState({
+    lodgesdata: "" as any,
+    Servicesdata: "" as any,
+  });
+  //  console.log(currentUserData?.data.user._id)
 
-
- useEffect(() => {
-   const localStorageToken = localStorage.getItem("token");
-   const parseToken = localStorageToken && JSON.parse(localStorageToken);
-   const body = {
-     headers: {
-       "content-type": "Application-json",
-       Authorization: `Bearer ${parseToken}`,
-     },
-   };
-   const fetchData = async () => {
-     try {
-      // p-ut a cache here
-      if (activeTab ==="Lodges listed") {
-        const res = await FetchApi(
-          `${Endpoints.getPrivateLodges}postedBy=${data?.data.user._id}`,
-          body
-        );
+  useEffect(() => {
+    const localStorageToken = localStorage.getItem("token");
+    const parseToken = localStorageToken && JSON.parse(localStorageToken);
+    const url = `${Endpoints.getUserById}${id}`;
+    const body = {
+      headers: {
+        "content-type": "Application-json",
+        Authorization: `Bearer ${parseToken}`,
+      },
+    };
+    console.log(url);
+    const fetchUserData = async () => {
+      setIsLoading(true);
+      const res: any = await FetchApi(url, body);
+      console.log(res);
+      if (res.status === "success") {
+        setIsLoading(false);
+        setcurrentUserData(res);
+      } else {
+        setIsLoading(false);
         console.log(res);
-        setTabData({ ...tabData, lodgesdata: res });
-      } else if (activeTab ==="Services listed") {
-        const res = await FetchApi(
-          `${Endpoints.getPrivateServices}vendor=${data?.data.user._id}`,
-          body
-        );
-        console.log(res);
-        setTabData({ ...tabData, Servicesdata: res });
       }
-      
-     } catch (error) {}
-   };
-   if (data) {
-     fetchData();
-   }
- }, [data, activeTab]);
- console.log(tabData.lodgesdata)
+    };
+    fetchUserData();
+  }, [id]);
+
+  useEffect(() => {
+    const localStorageToken = localStorage.getItem("token");
+    const parseToken = localStorageToken && JSON.parse(localStorageToken);
+    const body = {
+      headers: {
+        "content-type": "Application-json",
+        Authorization: `Bearer ${parseToken}`,
+      },
+    };
+
+    const fetchData = async () => {
+      try {
+        // p-ut a cache here
+        if (activeTab === "Lodges listed") {
+          const res = await FetchApi(
+            `${Endpoints.getPrivateLodges}postedBy=${currentUserData?.data.user._id}`,
+            body
+          );
+          console.log(res);
+          setTabData({ ...tabData, lodgesdata: res });
+        } else if (activeTab === "Services listed") {
+          const res = await FetchApi(
+            `${Endpoints.getPrivateServices}vendor=${currentUserData?.data.user._id}`,
+            body
+          );
+          console.log(res);
+          setTabData({ ...tabData, Servicesdata: res });
+        }
+      } catch (error) {}
+    };
+    if (currentUserData) {
+      fetchData();
+    }
+  }, [currentUserData, activeTab]);
+  console.log(tabData.lodgesdata);
   return (
     <div className=' min-h-[1000px] p-'>
       <div className='w-full h-[270px] hidden sm:block border-b bg-[#F9F9F9]'></div>
@@ -65,7 +95,7 @@ console.log("data")
           <div className='sm:relative p-4 bg- rounded border- bg-[CCCCCC]'>
             <p className='hidden sm:flex'>user</p>
             <div className='flex w-full sm:absolute -top-10'>
-              <UserDetailas data={data}/>
+              <UserDetailas data={currentUserData} />
             </div>
           </div>
         </div>
@@ -99,7 +129,7 @@ console.log("data")
               )}
               {activeTab === "Services listed" && (
                 <div>
-                   {tabData.Servicesdata && (
+                  {tabData.Servicesdata && (
                     <ServicesListed data={tabData.Servicesdata} />
                   )}
                 </div>
@@ -112,7 +142,7 @@ console.log("data")
         </div>
       </div>
       <EditProfileModal />
-      <DeleteModal /> 
+      <DeleteModal />
     </div>
   );
 };

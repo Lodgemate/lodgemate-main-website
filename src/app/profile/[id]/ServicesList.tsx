@@ -125,7 +125,7 @@ const ServicesListed: React.FC<serviceListedProps> = ({data}) => {
   return (
     <div className="container mx-auto p-4">
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
-        {data?.data.services.slice(0, 9).map((service) => (
+        {data?.status === 'success' && data?.data.services.slice(0, 9).map((service) => (
           <ServiceCard
             key={String(service._id)}
             id={Number(service._id)}

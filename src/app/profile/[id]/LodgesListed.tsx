@@ -6,6 +6,7 @@ import React, { useMemo } from "react";
 import { useAppSelector } from '@/lib/hooks';
 import { selectAllUsersdata } from '@/lib/features/Users/usersSlice';
 import { LodgesApiResponse } from '@/lib/Types';
+import GallerySkeleton from '@/components/Skeletons/cardsSkeleton';
 
 // Sample data
 const products = [
@@ -102,10 +103,13 @@ interface LodgeListedProps{
 
 const LodgeListed: React.FC<LodgeListedProps> = React.memo(({data}) => {
   console.log(data)
-  return (
-    <div className="container mx-auto p-4">
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        {data?.data.lodges.slice(0, 9).map((product) => (
+ if (!data) {
+  <>Loading.....</>
+ }
+  const MappedLodges=()=>{
+    return(
+        <>
+        {data?.status === 'success' && data?.data.lodges.slice(0, 9).map((product) => (
           <ProductCard
             key={product._id}
             id={product._id }
@@ -120,6 +124,16 @@ const LodgeListed: React.FC<LodgeListedProps> = React.memo(({data}) => {
             // nearbyUniversity={product.nearbyUniversity}
           />
         ))}
+        </>
+    )
+  }
+  return (
+
+    <div className="container mx-auto p-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        {!data?<>Loading.....</>:
+          <MappedLodges/>
+        }
       </div>
     </div>
   );

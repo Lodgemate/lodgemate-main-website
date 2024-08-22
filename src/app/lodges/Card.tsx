@@ -44,13 +44,13 @@ const ProductCard: React.FC<ProductCardProps> = ({
     <Link
       href={`/lodges/lodge_details/${id}`}
       passHref
-      className="max-w-sm rounded overflow-hidden -z-10   "
+      className="max-w-sm rounded overflow-hidden    "
       data-aos="fade-up"
     >
       <Link
         href={`/lodges/lodge_details/${id}`}
         passHref
-        className="relative z-0"
+        className="relative "
       >
         <img
           className="w-full h-[144px] sm:h-[299px] object-cover rounded-[12px]"

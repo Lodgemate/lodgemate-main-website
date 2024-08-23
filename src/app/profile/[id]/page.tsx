@@ -26,13 +26,10 @@ const MyProfile = () => {
   //  console.log(currentUserData?.data.user._id)
 
   useEffect(() => {
-    const localStorageToken = localStorage.getItem("token");
-    const parseToken = localStorageToken && JSON.parse(localStorageToken);
     const url = `${Endpoints.getUserById}${id}`;
     const body = {
       headers: {
         "content-type": "Application-json",
-        Authorization: `Bearer ${parseToken}`,
       },
     };
     console.log(url);

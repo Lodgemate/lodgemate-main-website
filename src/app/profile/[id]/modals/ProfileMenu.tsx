@@ -1,14 +1,18 @@
+import { handlyCopy } from "@/utils/utils";
 import React, { useState, useRef, useEffect } from "react";
 
 interface ProfileMenuModalProps {
   isOpen: boolean;
   toggleDropdown: () => void;
+  link?: string
 }
 
 const ProfileMenuModal: React.FC<ProfileMenuModalProps> = ({
   isOpen,
   toggleDropdown,
+  link
 }) => {
+  const [isClicked, setIsClicked] = useState('Copy profile link');
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   const handleClickOutside = (event: MouseEvent) => {
@@ -34,6 +38,11 @@ const ProfileMenuModal: React.FC<ProfileMenuModalProps> = ({
 
   if (!isOpen) return null;
 
+  const handleCopy = async () => {
+    const CopiedStatus: any = await handlyCopy(link);
+      setIsClicked(CopiedStatus);
+  };
+  console.log(isClicked)
   return (
     <div
       ref={dropdownRef}
@@ -50,14 +59,14 @@ const ProfileMenuModal: React.FC<ProfileMenuModalProps> = ({
           <img src="/icons/pen_gray.svg" alt="" />
           Edit
         </button>
-        <button className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 -hover:bg-gray-100">
+        <button onClick={()=>handleCopy()} className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 -hover:bg-gray-100">
           <img src="/icons/copy_gray.svg" alt="" />
-          Copy profile link
+          {isClicked}
         </button>
-        <button className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 -hover:bg-gray-100">
+        {/* <button className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 -hover:bg-gray-100">
           <img src="/icons/eye_gray.svg" alt="" />
           View as
-        </button>
+        </button> */}
       </div>
     </div>
   );

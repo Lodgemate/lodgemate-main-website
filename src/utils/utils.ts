@@ -40,3 +40,14 @@ export function calculateCenterLatLng(viewport: any) {
     lng: longitude
   };
 }
+
+export const handlyCopy=async(copyTxt: any)=>{
+  let res;
+  await navigator.clipboard.writeText(copyTxt).then(()=>{
+    res= 'Copied'
+  }).catch(()=>{
+    res= 'Could not copy'
+  })
+  console.log(res)
+  return res
+}

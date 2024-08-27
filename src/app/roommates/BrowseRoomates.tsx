@@ -181,7 +181,7 @@ function BrowseRoommates() {
     ))
   ), [RoommatesData, showMore, handleCardClick]);
   return (
-    <div className="px-4 sm:px-[100px] mt-[50px] text-[14px] sm:text-[16px]">
+    <div className="px-4 sm:px-[100px] mt-[50px] text-[14px] sm:text-[14px]">
       {selectedRoommate && (
         <div>
           <ProfileDetails
@@ -190,7 +190,7 @@ function BrowseRoommates() {
           />
         </div>
       )}
-      <div className="flex justify-between gap-8 items-center text-lgray mb-[24px]">
+      <div className="flex justify-between gap-8 text-[14px] items-center text-lgray mb-[24px]">
         <h1 className=" flex flex-wrap  text-lgray ">
           {isSearchTriggered
             ? `Showing results for "${storequery}"`
@@ -210,17 +210,12 @@ function BrowseRoommates() {
           Filter
         </button>
       </div>
-      <div className='grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4'>
-      
-      {
-              !RoommatesData?
-              <GallerySkeleton/>
-             : MappedRoommates
-            } 
+      <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        {!RoommatesData ? <GallerySkeleton /> : MappedRoommates}
       </div>
       {!showMore && (
-        <div className="mt-10 flex flex-col justify-center items-center text-lgray font-medium pb-[200px]">
-          <p className="text-[16px] pb-[16px] ">Continue exploring Services</p>
+        <div className="mt-10 text-[12px] flex flex-col justify-center items-center text-lgray font-medium pb-[200px]">
+          <p className=" pb-[16px] ">Continue exploring Services</p>
           <button
             className="border px-4 py-2 rounded-[12px]"
             onClick={handleShowMore}

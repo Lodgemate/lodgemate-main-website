@@ -98,7 +98,7 @@ const SearchBar: React.FC = () => {
           />
         </div>
       )}
-      <div className='border-2 pl-[24px] p-1 flex justify-between border-stroke rounded-full w-full sm:w-[510px] text-[16px] h-[63px] shadow-lg'>
+      <div className='border-2 pl-[24px] p-1 flex justify-between border-stroke rounded-full w-full sm:w-[510px] text-[14px] h-[53px] shadow-md'>
         <input
           type='text'
           placeholder='Where do you want to live...?'
@@ -120,7 +120,7 @@ const SearchBar: React.FC = () => {
         </button>
       </div>
       <div className='flex mt-6 sm:gap-2 '>
-        <p className='text-[14px]'>
+        <p className='text-[12px]'>
           Your location is set to "Owerri".{" "}
           <span>
             {" "}
@@ -135,7 +135,7 @@ const SearchBar: React.FC = () => {
         </p>{" "}
       </div>
       {query && ( // Render results if query is not empty
-        <div className='absolute w-full text-[16px] z-20 top-20 sm:w-[510px] bg-white border border-stroke shadow-lg rounded-lg'>
+        <div className='absolute w-full text-[14px] z-20 top-20 sm:w-[510px] bg-white border border-stroke shadow-lg rounded-lg'>
           <div>
             <h3 className='bg-[#F5F5F5] py-[7px] px-4 text-dgray font-bold'>
               roommates

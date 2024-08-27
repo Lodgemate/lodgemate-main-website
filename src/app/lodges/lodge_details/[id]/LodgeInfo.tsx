@@ -96,6 +96,7 @@ function LodgeInfo() {
   const [commentsOrReplies, setcommentsOrReplies] = useState(null);
 const [isOpen, setIsOpen] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
+
   
 
   const reFetchReviews = async () => {
@@ -223,6 +224,7 @@ const [isOpen, setIsOpen] = useState(false);
   const scroll = (scrollOffset: number) => {
     if (scrollContainerRef.current) {
       scrollContainerRef.current.scrollBy({
+
         left: scrollOffset,
         behavior: "smooth",
       });
@@ -285,12 +287,14 @@ const [isOpen, setIsOpen] = useState(false);
     );
   };
 
+  
+
 
   return (
     <div className="text-[14px] capitalize">
       <div className="flex justify-center w-full ">
         <div className="w-full flex max-w-[1200px]">
-          <div className="flex w-full flex-col px-[10px sm:mt-[51px]">
+          <div className="flex w-full flex-col sm:px-[20px] sm:mt-[51px]">
             {/* modals render */}
             <DeleteModal />
             <WriteReview
@@ -426,6 +430,7 @@ const [isOpen, setIsOpen] = useState(false);
         <div className="flex sm:h-[300px] h-[260px] gap-1 sm:rounded-l-[20px] overflow-hidden sm:ml-[100px]">
           {/* maping can be used to dispay the images */}
           <div
+            ref={scrollContainerRef}
             className="flex gap-4 overflow-x-scroll scroll-smooth no-scrollbar"
             style={{ scrollBehavior: "smooth" }}
           >

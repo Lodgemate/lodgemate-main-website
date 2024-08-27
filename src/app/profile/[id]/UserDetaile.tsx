@@ -99,11 +99,11 @@ const UserDetailas: React.FC<UserDetailasProps> = React.memo(({data}) => {
 
       {/* User name and status */}
       <div className="flex items-center mb-4">
-        <h1 className="text-[24px] font-bold mr-2">{data?.data.user.lastName + " " + data?.data.user.firstName}</h1>
+        <h1 className="text-[16px] font-bold mr-2">{data?.data.user.lastName + " " + data?.data.user.firstName}</h1>
         <img
           src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1716223406/utilities/LodgeMate_File/Vector_aflwdv.png"
           alt="Status"
-          className="w-4 h-4"
+          className="w-4 h-4 hidden"
         />
       </div>
 

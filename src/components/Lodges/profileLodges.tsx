@@ -55,13 +55,16 @@ const ProductCard: React.FC<ProductCardProps> = React.memo(({
     }
   
     return (
-      <div className="max-w-sm rounded overflow-hidden ">
+      <div className="flex w-full flex-col rounded overflow-hidden ">
         <button className="relative">
-          <img
-            className="w-full h-[244px] sm:h-[200px] object-cover rounded-[12px]"
-            src={imageUrl}
-            alt={name}
-          />
+          <div className="w-full h-[244px] sm:h-[200px] rounded-[12px]">
+            <img
+              className="w-full h-[244px] sm:h-[200px] rounded-[12px] object-cover"
+              src={imageUrl}
+              alt={name}
+            />
+          </div>
+
           <img
             src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1716223406/utilities/LodgeMate_File/Vector_aflwdv.png"
             alt="lodgemate"
@@ -78,15 +81,15 @@ const ProductCard: React.FC<ProductCardProps> = React.memo(({
             className="absolute bottom-4 right-[40%]  text-xl"
           />
           <div className="absolute bottom-4 flex justify-between items-center w-full px-5 ">
-          <IoPencil className=' bg-slate-800 p-1 rounded-full text-slate-50 z-20 text-2xl font-bold hover:text-slate-100 cursor-pointer' />
-          <RiDeleteBinLine onClick={()=> dispatch(showDeleteModal(deleteProps))} className='  bg-slate-800 p-1 rounded-full text-slate-50 z-20 text-2xl font-bold hover:text-slate-100 cursor-pointer'  />
+            <IoPencil className=" bg-slate-800 p-1 rounded-full text-slate-50 z-20 text-2xl font-bold hover:text-slate-100 cursor-pointer" />
+            <RiDeleteBinLine
+              onClick={() => dispatch(showDeleteModal(deleteProps))}
+              className="  bg-slate-800 p-1 rounded-full text-slate-50 z-20 text-2xl font-bold hover:text-slate-100 cursor-pointer"
+            />
           </div>
         </button>
         <div className="py-[15px] gap-y-2 flex flex-col justify-between ">
-          <div className="font-bold text-[14px] flex items-start">
-            {name}
-            
-          </div>
+          <div className="font-bold text-[14px] flex items-start">{name}</div>
           <p className="text-lgray text-[13px]">{location}</p>
           <div className="flex items-center mt-[4px] text-gray-600">
             <img
@@ -101,7 +104,6 @@ const ProductCard: React.FC<ProductCardProps> = React.memo(({
           <p className="text-dgray text-[15px] font-semibold mt-2">
             {formattedPrice}/yr
           </p>
-          
         </div>
       </div>
     );

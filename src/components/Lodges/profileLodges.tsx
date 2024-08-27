@@ -89,19 +89,19 @@ const ProductCard: React.FC<ProductCardProps> = React.memo(({
           </div>
         </button>
         <div className="py-[15px] gap-y-2 flex flex-col justify-between ">
-          <div className="font-bold text-[14px] flex items-start">{name}</div>
-          <p className="text-lgray text-[13px]">{location}</p>
-          <div className="flex items-center mt-[4px] text-gray-600">
+          <div className="font-bold tflex items-start">{name}</div>
+          <p className="text-lgray text-[12px]">{location}</p>
+          <div className="flex items-center mt-[4px text-gray-600">
             <img
               src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1716223199/utilities/LodgeMate_File/home_pin_mimpts.svg"
               alt=""
               className="mr-2"
             />
-            <p className="text-[13px]">
+            <p className="text-[12px]">
               <span>{nearbyUniversity}</span>
             </p>
           </div>
-          <p className="text-dgray text-[15px] font-semibold mt-2">
+          <p className="text-dgray text-[14px] font-semibold mt-1">
             {formattedPrice}/yr
           </p>
         </div>

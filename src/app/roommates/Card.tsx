@@ -52,7 +52,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
           <img
             src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1716223406/utilities/LodgeMate_File/Vector_aflwdv.png"
             alt="verified"
-            className=" ml-2"
+            className=" ml-2 hidden"
           />
         </div>
         <div className="flex items-center mt-[4px] text-gray-600">

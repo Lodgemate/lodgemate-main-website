@@ -254,9 +254,15 @@ function LodgeInfo() {
     setshowReplies(true);
     setcommentsOrReplies(data);
   };
+
+   const formattedPrice = new Intl.NumberFormat("en-NG", {
+     style: "currency",
+     currency: "NGN",
+     minimumFractionDigits: 0,
+   }).format(LodgeData.price);
   return (
-    <div>
-      <div className='sm:px-[100px] sm:mt-[51px]'>
+    <div className="text-[14px] capitalize">
+      <div className="sm:px-[100px] sm:mt-[51px]">
         {/* modals render */}
         <DeleteModal />
         <WriteReview
@@ -285,56 +291,56 @@ function LodgeInfo() {
         />
         <LodgeSaved show={isLodgeSavedOpen} onClose={handleCloseLodgeSaved} />
         {/* the Name of the Product */}
-        <h1 className='sm:text-[24px] text-[20px] sm:block hidden font-semibold text-dgray'>
+        <h1 className="sm:text-[18px] text-[16px] sm:block hidden font-semibold text-dgray">
           {LodgeData.lodgeName}
         </h1>
-        <div className='sm:flex justify-between hidden'>
-          <div className='flex gap-[24px] items-center'>
-            <div className=''>
-              <div className='flex gap-2 items-center'>
+        <div className="sm:flex justify-between hidden">
+          <div className="flex gap-[24px] items-center">
+            <div className="">
+              <div className="flex gap-2 items-center">
                 <div>
                   <img
-                    src='https://res.cloudinary.com/dcb4ilgmr/image/upload/v1716223199/utilities/LodgeMate_File/home_pin_mimpts.svg'
-                    alt=''
+                    src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1716223199/utilities/LodgeMate_File/home_pin_mimpts.svg"
+                    alt=""
                   />
                 </div>
 
                 {/* the address should be in this paragraph */}
-                <p>{LodgeData.address_text}</p>
+                <p className=" capitalize">{LodgeData.address_text}</p>
               </div>
 
-              <div className='flex gap-2 items-center'>
+              <div className="flex gap-2 items-center mt-2">
                 <div>
                   <img
-                    src='https://res.cloudinary.com/dcb4ilgmr/image/upload/v1716817967/utilities/LodgeMate_File/Star_1_n1ombt.svg'
-                    alt=''
+                    src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1716817967/utilities/LodgeMate_File/Star_1_n1ombt.svg"
+                    alt=""
                   />
                 </div>
 
                 {/* the avrage review and the number of reviews is suppused to be displayed in this paragraph */}
-                <p>
+                <p className=" capitalize">
                   {LodgeData.ratings.avgRating} •{" "}
                   {LodgeData.ratings.totalRatings} reviews
                 </p>
               </div>
             </div>
 
-            <div className='h-[76px] w-[1px] bg-lgray opacity-[20%]'></div>
+            <div className="h-[76px] w-[1px] bg-lgray opacity-[20%]"></div>
 
-            <div className='flex items-start gap-4'>
+            <div className="flex items-start gap-4">
               <div>
                 <img
-                  src='https://res.cloudinary.com/dcb4ilgmr/image/upload/v1716818031/utilities/LodgeMate_File/entypo_price-tag_qrxul2.svg'
-                  alt=''
+                  src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1716818031/utilities/LodgeMate_File/entypo_price-tag_qrxul2.svg"
+                  alt=""
                 />
               </div>
 
               {/* the p tag displays the price of each product  */}
-              <p className='text-[22px] text-dgray border-b pb-2 '>
-                ₦{LodgeData.price} /yr
+              <p className="text-[16px] text-dgray border-b pb-2 ">
+                {formattedPrice} /yr
               </p>
               {LodgeData.negotiable && (
-                <div className='bg-lskyblue px-2 mt-2 font-bold text-lblue rounded-lg text-[15px]'>
+                <div className="bg-lskyblue px-2 mt-2 font-bold text-lblue rounded-lg ">
                   {/* this only displays when the product is Negotiable */}
                   <p>Negotiable</p>
                 </div>
@@ -345,11 +351,11 @@ function LodgeInfo() {
           <div>
             <button
               onClick={handleOpenLodgeSaved}
-              className='border- border-opacity-[8%] border-2 flex rounded-lg py-[10px] gap-2 px-[16px]'
+              className="border- border-opacity-[8%] border-2 flex rounded-lg py-[10px] gap-2 px-[16px]"
             >
               <img
-                src='https://res.cloudinary.com/dcb4ilgmr/image/upload/v1716817967/utilities/LodgeMate_File/ph_heart-fill_cidon6.svg'
-                alt=''
+                src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1716817967/utilities/LodgeMate_File/ph_heart-fill_cidon6.svg"
+                alt=""
               />
               <p>Save</p>
             </button>
@@ -357,46 +363,46 @@ function LodgeInfo() {
         </div>
       </div>
 
-      <div className='sm:mt-[24px] relative'>
-        <div className='w-full absolute bottom-[50%]'>
-          <div className='flex justify-between sm:px-[20px]'>
+      <div className="sm:mt-[24px] relative">
+        <div className="w-full absolute bottom-[50%]">
+          <div className="flex justify-between sm:px-[20px]">
             {/* scroll forward and backward buttons */}
             <button
-              className='absolute left-4 transform -translate-y-1/2 p-4 border-lgray border-2 border-opacity-[10%] rounded-full bg-white shadow-lg'
+              className="absolute left-4 transform -translate-y-1/2 p-4 border-lgray border-2 border-opacity-[10%] rounded-full bg-white shadow-lg"
               onClick={() => scroll(-500)}
             >
               {" "}
               <img
-                src='https://res.cloudinary.com/dcb4ilgmr/image/upload/v1716822310/utilities/LodgeMate_File/Polygon_1_1_qouf70.svg'
-                alt='back'
+                src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1716822310/utilities/LodgeMate_File/Polygon_1_1_qouf70.svg"
+                alt="back"
               />
             </button>
             <button
-              className='absolute right-4  transform -translate-y-1/2 p-4 border-lgray border-2 border-opacity-[10%] rounded-full bg-white shadow-lg'
+              className="absolute right-4  transform -translate-y-1/2 p-4 border-lgray border-2 border-opacity-[10%] rounded-full bg-white shadow-lg"
               onClick={() => scroll(500)}
             >
               {" "}
               <img
-                src='https://res.cloudinary.com/dcb4ilgmr/image/upload/v1716822310/utilities/LodgeMate_File/Polygon_1_tmzlwn.svg'
-                alt='next'
+                src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1716822310/utilities/LodgeMate_File/Polygon_1_tmzlwn.svg"
+                alt="next"
               />
             </button>
           </div>
         </div>
 
         {/* horizontal scroll div for displayiing the images horizolaly on one line the  */}
-        <div className='flex sm:h-[400px] h-[360px] gap-1 sm:rounded-l-[20px] overflow-hidden sm:ml-[100px]'>
+        <div className="flex sm:h-[300px] h-[260px] gap-1 sm:rounded-l-[20px] overflow-hidden sm:ml-[100px]">
           {/* maping can be used to dispay the images */}
           <div
-            className='flex gap-4 overflow-x-scroll scroll-smooth no-scrollbar'
+            className="flex gap-4 overflow-x-scroll scroll-smooth no-scrollbar"
             style={{ scrollBehavior: "smooth" }}
           >
             {LodgeData.photos.map((image, index) => (
-              <div key={index} className='flex-none'>
+              <div key={index} className="flex-none">
                 <img
                   src={image}
                   alt={`image ${index + 1}`}
-                  className='sm:h-[400px] h-[360px] w-[500px]'
+                  className="sm:h-[300px] h-[260px] w-[300px]"
                 />
               </div>
             ))}
@@ -404,18 +410,18 @@ function LodgeInfo() {
         </div>
       </div>
 
-      <h1 className='text-[20px] mt-[24px] mb-[20px] px-4 sm:hidden font-semibold text-dgray'>
+      <h1 className="text-[20px] mt-[24px] mb-[20px] px-4 sm:hidden font-semibold text-dgray">
         {LodgeData.lodgeName}
       </h1>
 
-      <div className='  sm:hidden'>
-        <div className='flex flex-col gap-[14px] px-4'>
-          <div className=''>
-            <div className='flex gap-2 pb-2 items-center'>
+      <div className="  sm:hidden">
+        <div className="flex flex-col gap-[14px] px-4">
+          <div className="">
+            <div className="flex gap-2 pb-2 items-center">
               <div>
                 <img
-                  src='https://res.cloudinary.com/dcb4ilgmr/image/upload/v1716223199/utilities/LodgeMate_File/home_pin_mimpts.svg'
-                  alt=''
+                  src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1716223199/utilities/LodgeMate_File/home_pin_mimpts.svg"
+                  alt=""
                 />
               </div>
 
@@ -423,11 +429,11 @@ function LodgeInfo() {
               <p>{LodgeData.address_text}</p>
             </div>
 
-            <div className='flex gap-2 items-center'>
+            <div className="flex gap-2 items-center">
               <div>
                 <img
-                  src='https://res.cloudinary.com/dcb4ilgmr/image/upload/v1716817967/utilities/LodgeMate_File/Star_1_n1ombt.svg'
-                  alt=''
+                  src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1716817967/utilities/LodgeMate_File/Star_1_n1ombt.svg"
+                  alt=""
                 />
               </div>
 
@@ -441,20 +447,20 @@ function LodgeInfo() {
 
           {/* <div className="h-[76px] w-[1px] bg-lgray opacity-[20%]"></div> */}
 
-          <div className='flex items-start gap-1 '>
+          <div className="flex items-start gap-1 ">
             <div>
               <img
-                src='https://res.cloudinary.com/dcb4ilgmr/image/upload/v1716818031/utilities/LodgeMate_File/entypo_price-tag_qrxul2.svg'
-                alt=''
+                src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1716818031/utilities/LodgeMate_File/entypo_price-tag_qrxul2.svg"
+                alt=""
               />
             </div>
 
             {/* the p tag displays the price of each product  */}
-            <p className='text-[18px] text-dgray font-semibold border-b pb-2 '>
+            <p className="text-[18px] text-dgray font-semibold border-b pb-2 ">
               ₦{LodgeData.price} /yr
             </p>
             {LodgeData.negotiable && (
-              <div className='bg-lskyblue px-2 ml-2 font-bold mt-3 text-lblue rounded-lg text-[15px]'>
+              <div className="bg-lskyblue px-2 ml-2 font-bold mt-3 text-lblue rounded-lg text-[15px]">
                 {/* this only displays when the product is Negotiable */}
                 <p>Negotiable</p>
               </div>
@@ -463,11 +469,11 @@ function LodgeInfo() {
         </div>
       </div>
 
-      <div className='sm:mt-[70px] mt-[24px] px-4 sm:px-[100px]'>
-        <div className=' justify-start grid grid-cols-1 sm:grid-cols-3 sm:gap-[100px]'>
-          <div className='col-span-2'>
-            <div className='py-[18px]  mb-[18px]- border-lgray border-t-2 border-b-2 border-opacity-[10%]'>
-              <h2 className='pb-[28-px] text-[20px] mb-[2px] sm:mb-[28px]'>
+      <div className="sm:mt-[70px] mt-[24px] px-4 sm:px-[100px]">
+        <div className=" justify-start grid grid-cols-1 sm:grid-cols-3 sm:gap-[100px]">
+          <div className="col-span-2">
+            <div className="py-[18px]  mb-[18px]- border-lgray border-t-2 border-b-2 border-opacity-[10%]">
+              <h2 className="pb-[28-px] text-[20px] mb-[2px] sm:mb-[28px]">
                 Description
               </h2>
 
@@ -475,18 +481,18 @@ function LodgeInfo() {
               <p>{LodgeData.lodgeDescription}</p>
             </div>
 
-            <div className='py-[18px] mb-[18px]- border-lgray border-b-2 border-opacity-[10%]'>
-              <h2 className='pb-2 sm:pb-[28px]  text-[20px] text-dgray font-semibold'>
+            <div className="py-[18px] mb-[18px]- border-lgray border-b-2 border-opacity-[10%]">
+              <h2 className="pb-2 sm:pb-[28px]  text-[20px] text-dgray font-semibold">
                 Accommodation features
               </h2>
 
               {/* this div should use mapping to display all the Accommodation features  of the product */}
-              <div className='flex flex-wrap gap-4'>
+              <div className="flex flex-wrap gap-4">
                 {" "}
                 {lodgeFeatures.map((feature, index) => (
                   <div
                     key={index}
-                    className='flex gap-2 items-center px-4 py-2 border-lgray border-2 border-opacity-[10%] rounded-lg'
+                    className="flex gap-2 items-center px-4 py-2 border-lgray border-2 border-opacity-[10%] rounded-lg"
                   >
                     <img
                       src={getFeatureIcon(
@@ -500,36 +506,36 @@ function LodgeInfo() {
               </div>
             </div>
 
-            <div className='pb-[40px] mb-[40px] border-lgray border-b-2 border-opacity-[10%]'>
-              <div className='grid grid-cols-1 sm:grid-cols-2 '>
-                <div className='col-span-1 sm:border-r border-b sm:border-b-0 pb-6 mb-4 border-lgray border-opacity-[20%]'>
+            <div className="pb-[40px] mb-[40px] border-lgray border-b-2 border-opacity-[10%]">
+              <div className="grid grid-cols-1 sm:grid-cols-2 ">
+                <div className="col-span-1 sm:border-r border-b sm:border-b-0 pb-6 mb-4 border-lgray border-opacity-[20%]">
                   <div>
-                    <h2 className='text-[20px] font-semibold text-dgray pb-2 sm:pb-[28px]'>
+                    <h2 className="text-[20px] font-semibold text-dgray pb-2 sm:pb-[28px]">
                       Accommodation type
                     </h2>
-                    <div className='flex justify-start '>
-                      <div className='flex w-fit flex-col justify-center items-center px-[24px] py-[10px] border-2 rounded-lg'>
+                    <div className="flex justify-start ">
+                      <div className="flex w-fit flex-col justify-center items-center px-[24px] py-[10px] border-2 rounded-lg">
                         <img
-                          src='https://res.cloudinary.com/dcb4ilgmr/image/upload/v1716924895/utilities/LodgeMate_File/House_ovdfkw.svg'
-                          alt=''
+                          src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1716924895/utilities/LodgeMate_File/House_ovdfkw.svg"
+                          alt=""
                         />
-                        <p className='pt-[8px]'>{LodgeData.type}</p>
+                        <p className="pt-[8px]">{LodgeData.type}</p>
                       </div>{" "}
                     </div>
                   </div>
                 </div>
-                <div className='col-span-1  '>
+                <div className="col-span-1  ">
                   <div>
-                    <h2 className='text-[20px] font-semibold sm:text-end text-dgray pb-2 sm:pb-[28px]'>
+                    <h2 className="text-[20px] font-semibold sm:text-end text-dgray pb-2 sm:pb-[28px]">
                       Number of rooms
                     </h2>
-                    <div className='flex justify-start sm:justify-end '>
-                      <div className='flex w-fit flex-col justify-center items-center px-[24px] py-[10px] border-2 rounded-lg'>
+                    <div className="flex justify-start sm:justify-end ">
+                      <div className="flex w-fit flex-col justify-center items-center px-[24px] py-[10px] border-2 rounded-lg">
                         <img
-                          src='https://res.cloudinary.com/dcb4ilgmr/image/upload/v1716924895/utilities/LodgeMate_File/House_ovdfkw.svg'
-                          alt=''
+                          src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1716924895/utilities/LodgeMate_File/House_ovdfkw.svg"
+                          alt=""
                         />
-                        <p className='pt-[8px]'>
+                        <p className="pt-[8px]">
                           {LodgeData.numberOfRooms} bedroom
                         </p>
                       </div>{" "}
@@ -539,16 +545,16 @@ function LodgeInfo() {
               </div>
             </div>
 
-            <div className='pb-[40px] sm:block hidden mb-[40px] border-lgray border-b-2 border-opacity-[10%]'>
-              <div className='mb-[32px]'>
-                <div className='flex w-full justify-between'>
-                  <div className='flex w-fit items-center gap-4'>
-                    <h2 className='text-[24px]'>Ratings & Reviews</h2>
-                    <div className='h-[24px] w-[2px] bg-black opacity-[30%]'></div>
-                    <div className='flex items-center '>
+            <div className="pb-[40px] sm:block hidden mb-[40px] border-lgray border-b-2 border-opacity-[10%]">
+              <div className="mb-[32px]">
+                <div className="flex w-full justify-between">
+                  <div className="flex w-fit items-center gap-4">
+                    <h2 className="text-[24px]">Ratings & Reviews</h2>
+                    <div className="h-[24px] w-[2px] bg-black opacity-[30%]"></div>
+                    <div className="flex items-center ">
                       <img
-                        src='https://res.cloudinary.com/dcb4ilgmr/image/upload/v1716926291/utilities/LodgeMate_File/home_pin_v3bj7d.svg'
-                        alt=''
+                        src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1716926291/utilities/LodgeMate_File/home_pin_v3bj7d.svg"
+                        alt=""
                       />
                       <p>
                         {LodgeData.ratings.avgRating} •{" "}
@@ -560,11 +566,11 @@ function LodgeInfo() {
                   <div>
                     <button
                       onClick={handleOpenWriteReview}
-                      className='flex items-center gap-2 px-[24px] py-[12px] border-2 rounded-lg border-opacity-[30%] '
+                      className="flex items-center gap-2 px-[24px] py-[12px] border-2 rounded-lg border-opacity-[30%] "
                     >
                       <img
-                        src='https://res.cloudinary.com/dcb4ilgmr/image/upload/v1716926488/utilities/LodgeMate_File/fluent_pen-28-regular_miqhhk.svg'
-                        alt=''
+                        src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1716926488/utilities/LodgeMate_File/fluent_pen-28-regular_miqhhk.svg"
+                        alt=""
                       />
                       Write a review
                     </button>
@@ -574,7 +580,7 @@ function LodgeInfo() {
 
               <div>
                 {/* /v1/lodges/reviews/:id */}
-                <div className=' gap-10 text-[15px]'>
+                <div className=" gap-10 text-[15px]">
                   {/* use maping here too for the reviwes */}
                   {RevieweData && (
                     <LodgeReviews
@@ -589,78 +595,80 @@ function LodgeInfo() {
               </div>
             </div>
           </div>
-          <div className='col-span-1'>
-            <div className='flex sm:w-[300px] flex-col justify-center items-center'>
-              <div className='flex flex-col justify-center items-center w-full p-[20px] border-2 border-opacity-[40%] rounded-[20px] py-[28px] shadow-lg'>
-                <h2 className='text-[20px] font-bold mb-[18px]'>
+          <div className="col-span-1">
+            <div className="flex sm:w-[300px] flex-col justify-center items-center">
+              <div className="flex flex-col justify-center items-center w-full p-[20px] border-2 border-opacity-[40%] rounded-[20px] py-[28px] shadow-lg">
+                <h2 className="text-[20px] font-bold mb-[18px]">
                   Contact owner
                 </h2>
-                    <Link href={`/profile/${LodgeData.postedBy._id}`} className='w-full text-center cursor-pointer border-2 rounded-lg border-opacity-[20px] py-[12px] mb-[18px]'>
+                <Link
+                  href={`/profile/${LodgeData.postedBy._id}`}
+                  className="w-full text-center cursor-pointer border-2 rounded-lg border-opacity-[20px] py-[12px] mb-[18px]"
+                >
                   View profile
-                    </Link>
-            
+                </Link>
 
-                <div className='h-[3px] w-full mb-[18px] bg-black opacity-[10%] '></div>
+                <div className="h-[3px] w-full mb-[18px] bg-black opacity-[10%] "></div>
                 <button
                   onClick={handleOpenCallAgent}
-                  className='w-full border-2 rounded-lg border-opacity-[20px] py-[12px] mb-[18px]'
+                  className="w-full border-2 rounded-lg border-opacity-[20px] py-[12px] mb-[18px]"
                 >
                   Call
                 </button>
 
-                <button className='bg-pri w-full border-2 rounded-lg border-opacity-[20px] py-[12px] mb-[18px] bg-primary text-white'>
+                <button className="bg-pri w-full border-2 rounded-lg border-opacity-[20px] py-[12px] mb-[18px] bg-primary text-white">
                   Chat
                 </button>
-                <div className='flex items-center gap-4'>
+                <div className="flex items-center gap-4">
                   {" "}
-                  <Link href='/'>
+                  <Link href="/">
                     <img
-                      src='https://res.cloudinary.com/dcb4ilgmr/image/upload/v1716939370/utilities/LodgeMate_File/Facebook_ryntge.svg'
-                      alt=''
+                      src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1716939370/utilities/LodgeMate_File/Facebook_ryntge.svg"
+                      alt=""
                     />
                   </Link>{" "}
-                  <Link href='/'>
+                  <Link href="/">
                     <img
-                      src='https://res.cloudinary.com/dcb4ilgmr/image/upload/v1716939370/utilities/LodgeMate_File/Instagram_vwhjji.svg'
-                      alt=''
+                      src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1716939370/utilities/LodgeMate_File/Instagram_vwhjji.svg"
+                      alt=""
                     />
                   </Link>{" "}
-                  <Link href='/'>
+                  <Link href="/">
                     <img
-                      src='https://res.cloudinary.com/dcb4ilgmr/image/upload/v1716939370/utilities/LodgeMate_File/Twitter_ffgjak.svg'
-                      alt=''
+                      src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1716939370/utilities/LodgeMate_File/Twitter_ffgjak.svg"
+                      alt=""
                     />
                   </Link>{" "}
-                  <Link href='/'>
+                  <Link href="/">
                     <img
-                      src='https://res.cloudinary.com/dcb4ilgmr/image/upload/v1716939370/utilities/LodgeMate_File/LinkedIn_a3gtp7.svg'
-                      alt=''
+                      src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1716939370/utilities/LodgeMate_File/LinkedIn_a3gtp7.svg"
+                      alt=""
                     />
                   </Link>
                 </div>
               </div>
-              <div className='my-[40px] flex w-full'>
+              <div className="my-[40px] flex w-full">
                 <button
                   onClick={handleOpenLodgeSaved}
-                  className='flex justify-center rounded-lg py-[12px] items-center gap-4 bg-primary text-white w-full '
+                  className="flex justify-center rounded-lg py-[12px] items-center gap-4 bg-primary text-white w-full "
                 >
                   <img
-                    src='https://res.cloudinary.com/dcb4ilgmr/image/upload/v1716939371/utilities/LodgeMate_File/Vector_iozdjc.svg'
-                    alt=''
+                    src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1716939371/utilities/LodgeMate_File/Vector_iozdjc.svg"
+                    alt=""
                   />
                   Save lodge for visit
                 </button>
               </div>
             </div>
-            <div className='pb-[40px]  sm:hidden mb-[40px] border-lgray border-b-2 border-opacity-[10%]'>
-              <div className='mb-[32px]'>
-                <div className='flex flex-col w-full gap-4 justify-between'>
-                  <div className='flex flex-col w-fit  gap-2'>
-                    <h2 className='text-[24px]'>Ratings & Reviews</h2>
-                    <div className='flex items-center  '>
+            <div className="pb-[40px]  sm:hidden mb-[40px] border-lgray border-b-2 border-opacity-[10%]">
+              <div className="mb-[32px]">
+                <div className="flex flex-col w-full gap-4 justify-between">
+                  <div className="flex flex-col w-fit  gap-2">
+                    <h2 className="text-[24px]">Ratings & Reviews</h2>
+                    <div className="flex items-center  ">
                       <img
-                        src='https://res.cloudinary.com/dcb4ilgmr/image/upload/v1716926291/utilities/LodgeMate_File/home_pin_v3bj7d.svg'
-                        alt=''
+                        src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1716926291/utilities/LodgeMate_File/home_pin_v3bj7d.svg"
+                        alt=""
                       />
                       <p>
                         {LodgeData.ratings.avgRating} •{" "}
@@ -672,11 +680,11 @@ function LodgeInfo() {
                   <div>
                     <button
                       onClick={handleOpenWriteReview}
-                      className='flex w-full justify-center items-center gap-2 px-[24px] py-[12px] border-2 rounded-lg border-opacity-[30%] '
+                      className="flex w-full justify-center items-center gap-2 px-[24px] py-[12px] border-2 rounded-lg border-opacity-[30%] "
                     >
                       <img
-                        src='https://res.cloudinary.com/dcb4ilgmr/image/upload/v1716926488/utilities/LodgeMate_File/fluent_pen-28-regular_miqhhk.svg'
-                        alt=''
+                        src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1716926488/utilities/LodgeMate_File/fluent_pen-28-regular_miqhhk.svg"
+                        alt=""
                       />
                       Write a review
                     </button>
@@ -685,7 +693,7 @@ function LodgeInfo() {
               </div>
 
               <div>
-                <div className='gap-10  text-[15px]'>
+                <div className="gap-10  text-[15px]">
                   {/* use maping here too for the reviwes */}
                   {RevieweData && (
                     <LodgeReviews

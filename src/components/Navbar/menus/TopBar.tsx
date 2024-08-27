@@ -10,7 +10,7 @@ function TopBar() {
     const pathname = usePathname();
 
   return (
-    <div className="flex items-center text-[16px] text-dgray gap-8">
+    <div className="flex items-center text-[14px] text-dgray gap-8">
       <Link href="/" className="flex-col  flex justify-center items-center">
         <Image
           src={

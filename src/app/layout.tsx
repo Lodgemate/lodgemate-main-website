@@ -24,19 +24,18 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang='en'>
+    <html lang="en">
       <StoreProvider>
         <Navbar />
         <body className={`  relative  ${inter.className}`}>
-          <div className=' min-h-screen'>{children}</div>
+          <div className=" min-h-screen">{children}</div>
           <LogoLoader />
           <Aproved />
           <Failed />
         </body>
         <Footer />
         <BottomNavbar />
-      <EmailModal/>
-
+        <EmailModal />
       </StoreProvider>
     </html>
   );

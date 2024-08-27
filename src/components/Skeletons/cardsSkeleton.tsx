@@ -7,7 +7,7 @@ const GallerySkeleton = () => {
       {arrayEmpty.map((_, index) => (
         <div key={index} className='max-w-sm rounded overflow-hidden' data-aos='fade-up'>
           <div className='relative'>
-            <div className='w-full animate-pulse bg-gray-300 h-[144px] sm:h-[299px] object-cover rounded-[12px]' />
+            <div className='w-full animate-pulse bg-gray-300 h-[144px] sm:h-[200px] object-cover rounded-[12px]' />
           </div>
           <div className='py-[15px]'>
             <div className='font-bold space-x-3 text-[16px] flex items-start'>

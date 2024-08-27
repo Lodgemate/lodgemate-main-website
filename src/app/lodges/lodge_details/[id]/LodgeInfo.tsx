@@ -404,17 +404,18 @@ const [isOpen, setIsOpen] = useState(false);
           <div className="flex justify-between sm:px-[20px]">
             {/* scroll forward and backward buttons */}
             <button
-              className="absolute left-4 transform -translate-y-1/2 p-4 border-lgray border-2 border-opacity-[10%] rounded-full bg-white shadow-lg"
+              className="absolute left-4 transform -translate-y-1/2 p-1  border-lgray border-2 border-opacity-[10%] rounded-full bg-white shadow-lg"
               onClick={() => scroll(-500)}
             >
               {" "}
               <img
                 src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1716822310/utilities/LodgeMate_File/Polygon_1_1_qouf70.svg"
                 alt="back"
+                className=" h-"
               />
             </button>
             <button
-              className="absolute right-4  transform -translate-y-1/2 p-4 border-lgray border-2 border-opacity-[10%] rounded-full bg-white shadow-lg"
+              className="absolute right-4  transform -translate-y-1/2 p-1 px-2 border-lgray border-2 border-opacity-[10%] rounded-full bg-white shadow-lg"
               onClick={() => scroll(500)}
             >
               {" "}
@@ -667,7 +668,7 @@ const [isOpen, setIsOpen] = useState(false);
             <div className="col-span-1">
               <div className="flex sm:w-[300px] flex-col justify-center items-center">
                 <div className="flex flex-col justify-center items-center w-full p-[20px] border-2 border-opacity-[40%] rounded-[20px] py-[28px] shadow-lg">
-                  <h2 className="text-[20px] font-bold mb-[18px]">
+                  <h2 className="text-[16px] font-bold mb-[18px]">
                     Contact owner
                   </h2>
                   <Link

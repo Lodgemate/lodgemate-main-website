@@ -46,7 +46,7 @@ const LodgeTabs = () => {
     dispatch(showLoadingModal("Posting Lodge"));
     const localStorageToken = localStorage.getItem("token");
     const parseToken = localStorageToken && JSON.parse(localStorageToken);
-    // console.log(Object.fromEntries(formData));
+     console.log(Object.fromEntries(formData));
     if (!(formData instanceof FormData)) {
       console.error("FormData is not available or is not of type FormData");
       return;

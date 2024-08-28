@@ -32,9 +32,11 @@ const Tab4Content: React.FC = () => {
   );
 
   const locationOnchange = (data: Result) => {
+    console.log(data);
+
     const long = calculateCenterLatLng(data.geometry.viewport).lng;
     const lat = calculateCenterLatLng(data.geometry.viewport).lat;
-    console.log(data.address_components);
+    console.log(data);
     dispatch(
       setStateItem({
         // its long Ik :)

@@ -13,7 +13,7 @@ const UserDetailas: React.FC<UserDetailasProps> = React.memo(({data}) => {
     const toggleDropdown = () => {
       setIsOpen(!isOpen);
     };
- 
+  console.log(data)
     const UserSkeleton=()=>{
       return(
         <div className="w-full sm:max-w-430px sm:shadow sm:border pt-[100px]  sm:pt-[65px] text-[14px] rounded-[12px] sm:p-4 bg-white">

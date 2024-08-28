@@ -64,7 +64,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
             <span>{nearbyUniversity}</span>
           </p>
         </div>
-        <p className="text-dgray text-[14px] font-semibold mt-4">
+        <p className="text-dgray text-[14px] font-semibold mt-2">
           {formattedPrice}/yr
         </p>
       </div>

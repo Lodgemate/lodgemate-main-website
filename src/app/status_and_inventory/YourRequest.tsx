@@ -52,7 +52,9 @@ function YourRequest() {
             <button
               key={tab}
               className={`px-4 py-2 rounded font-semibold ${
-                activeTab === tab ? "text-primary bg-white border-b-2 border-primary" : " text-lblack"
+                activeTab === tab
+                  ? "text-primary bg-white border-b-2 border-primary"
+                  : " text-lblack"
               }`}
               onClick={() => setActiveTab(tab)}
             >

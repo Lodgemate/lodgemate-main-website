@@ -161,7 +161,7 @@ const dispatch = useAppDispatch();
               <Link href="/help_and_support" className="text-gray-700 py-[5px]">
                 Help & Support
               </Link>
-              <Link href="/settings" className="text-gray-700 py-[5px]">
+              <Link href="/settings" className="text-gray-700 py-[5px] hidden">
                 Settings
               </Link>
               <Link href="/" onClick={()=>{dispatch(Logout())}} className="text-gray-700 py-[5px]">

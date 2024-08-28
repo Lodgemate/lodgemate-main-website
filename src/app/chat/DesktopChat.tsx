@@ -109,11 +109,11 @@ const DesktopChat: React.FC = () => {
   };
 
   return (
-    <div className="flex h-screen pt-[70px] text-[16px] text-lblack">
+    <div className="flex h-screen pt-[70px] text-lblack">
       {/* First Column */}
       <div className="w-1/4 border-r border-gray-300">
         <div className="p-4 border-b border-gray-300">
-          <h1 className="text-lg font-bold">Your chats</h1>
+          <h1 className="text-[16px] font-bold">Your chats</h1>
         </div>
         <div>
           {chats.map((chat) => (
@@ -132,7 +132,7 @@ const DesktopChat: React.FC = () => {
                 />
                 <div className="ml-4">
                   <div className="font-semibold">{chat.name}</div>
-                  <div className="w-[150px] truncate text-[15px]">
+                  <div className="w-[150px] truncate text-[12px]">
                     {chat.message}
                   </div>
                 </div>

@@ -11,7 +11,7 @@ function index() {
         <Image
           src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1715961632/utilities/LodgeMate_File/Vector_15_oyrjmn.svg"
           height={28}
-          width={160}
+          width={120}
           alt="account"
         />
         <div className="hidden lg:flex">

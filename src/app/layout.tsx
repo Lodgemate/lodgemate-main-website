@@ -1,3 +1,4 @@
+
 import "./globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
@@ -10,6 +11,8 @@ import LogoLoader from "@/Ui/shared/logoLoader";
 import Aproved from "@/Ui/shared/Aproved";
 import Failed from "@/Ui/shared/Failed";
 import EmailModal from "@/Ui/shared/EmailModal";
+import GetApp from "./GetApp";
+
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -22,21 +25,24 @@ export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
-}) {
+  }) {
+  
+  
+  
   return (
-    <html lang='en'>
+    <html lang="en">
       <StoreProvider>
         <Navbar />
         <body className={`  relative  ${inter.className}`}>
-          <div className=' min-h-screen'>{children}</div>
+          <div className=" min-h-screen">{children}</div>
           <LogoLoader />
           <Aproved />
           <Failed />
+          <GetApp />
         </body>
         <Footer />
         <BottomNavbar />
-      <EmailModal/>
-
+        <EmailModal />
       </StoreProvider>
     </html>
   );

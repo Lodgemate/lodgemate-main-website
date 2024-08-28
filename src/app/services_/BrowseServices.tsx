@@ -141,8 +141,8 @@ function BrowseServices() {
   console.log(ServicesData);
   return (
     <div className="px-4 sm:px-[100px] mt-[50px]">
-      <div className='flex justify-between gap-8 items-center text-lgray mb-[24px]'>
-        <h1 className='text-[18px] flex flex-wrap sm:text-[24px] text-lgray '>
+      <div className="flex justify-between gap-8 items-center text-lgray mb-[24px]">
+        <h1 className="text-[12px] flex flex-wrap sm:text-[14px] text-lgray ">
           {isSearchTriggered
             ? `Showing results for "${query}"`
             : "Showing Services based on your location"}
@@ -161,7 +161,7 @@ function BrowseServices() {
           Filter
         </button>
       </div>
-      <div className='grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4'>
+      <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {ServicesData &&
           ServicesData.data?.services
             .slice(0, showMore ? ServicesData.data.services.length : 2)
@@ -178,18 +178,18 @@ function BrowseServices() {
             ))}
       </div>
       {!showMore && (
-          <div className='mt-10 flex flex-col justify-center items-center text-lgray font-medium pb-[200px]'>
-            <p className='text-[16px] pb-[16px] '>Continue exploring Services</p>
-            <button
-              className='border px-4 py-2 rounded-[12px]'
-              onClick={handleShowMore}
-            >
-              Show more
-            </button>
-          </div>
-        )}
-       {/* Filters Modal */}
-       {showFiltersModal && (
+        <div className="mt-10 text-[12px]  flex flex-col justify-center items-center text-lgray font-medium pb-[200px]">
+          <p className="pb-[16px] ">Continue exploring Services</p>
+          <button
+            className="border px-4 py-2 rounded-[12px]"
+            onClick={handleShowMore}
+          >
+            Show more
+          </button>
+        </div>
+      )}
+      {/* Filters Modal */}
+      {showFiltersModal && (
         <div
           className="fixed top-0 left-0 right-0 bottom-0 px-1 bg-black bg-opacity-25 flex justify-center z-50"
           onClick={handleModalClick}

@@ -4,7 +4,7 @@ import Link from "next/link";
 import React, { useEffect, useRef, useState } from "react";
 import WriteReview from "../../modals/WriteReview";
 import CallAgent from "../../modals/CallAgent";
-import LodgeSaved from "../../modals/LodgeSaved";
+import LodgeSaved from "../../modals/ServicesSaved";
 import { Endpoints } from "@/services/Api/endpoints";
 import { useParams } from "next/navigation";
 import {  Service } from "@/lib/Types";

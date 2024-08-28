@@ -59,7 +59,7 @@ const Tab1Content: React.FC = () => {
   // };
 
   return (
-    <div className="flex flex-col items-center mt-[20px]">
+    <div className="flex flex-col items-center mt-[20px] text-[14px]">
       <form className="flex flex-wrap justify-center max-w-[500px] gap-5 mt-5">
         {placeholders.map((placeholder, index) => (
           <div

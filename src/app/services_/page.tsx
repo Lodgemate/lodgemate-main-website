@@ -13,8 +13,8 @@ function Services() {
     });
   });
   return (
-    <div>
-      <div data-aos="zoom-in-up">
+    <div data-aos="zoom-in-up">
+      <div>
         <HeroSection />
         <div className="px-4">
           <SearchBar />

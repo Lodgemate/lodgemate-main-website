@@ -6,22 +6,22 @@ import More from "./buttons/More";
 
 function index() {
   return (
-    <nav className="fixed z-50 top-0 w-full">
-      <div className="bg-white flex justify-between px-4 lg:px-[100px] pt-4 pb-2 lg:pb-0 border-b border-stroke  items-center">
+    <div className="fixed z-50 top-0 w-full bg-white border-b border-stroke justify-center flex ">
+      <div className=" flex justify-between px-4 lg:px-[100px]- pt-4 pb-2 lg:pb-0 max-w-[1200px] w-full  items-center">
         <Image
           src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1715961632/utilities/LodgeMate_File/Vector_15_oyrjmn.svg"
           height={28}
-          width={160}
+          width={120}
           alt="account"
         />
         <div className="hidden lg:flex">
           <TopBar />
         </div>
-          <Account />
+        <Account />
         {/* this is the more button that should only be visible when the user login*/}
-          <More />
+        <More />
       </div>
-    </nav>
+    </div>
   );
 }
 

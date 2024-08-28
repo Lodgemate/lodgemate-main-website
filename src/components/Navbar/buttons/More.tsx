@@ -29,10 +29,10 @@ const dispatch = useAppDispatch();
     <div className="">
       {/* desktop */}
       <div className="relative sm:block hidden">
-        <div className="px-[13px] py-2 sm:block hidden rounded-[8px] bg-primary">
+        <div className="px-[13px] py-2 sm:block hidden rounded-[8px] mb-2 bg-primary">
           <button
             onClick={toggleDropdown}
-            className="flex relative text-[16px] text-white font-medium items-center gap-2"
+            className="flex relative text-[14px] text-white font-medium items-center gap-2"
           >
             <Image
               src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1719578480/utilities/LodgeMate_File/menu_ladlro.svg"
@@ -48,7 +48,7 @@ const dispatch = useAppDispatch();
               alt="account"
             />
             <p className="bg-[red] absolute  -top-6 -right-5 rounded-[4px] px-[4px] text-white">
-              3
+              0
             </p>{" "}
           </button>
         </div>
@@ -73,16 +73,16 @@ const dispatch = useAppDispatch();
                 </svg>
               </button>
             </div>
-            <div className="flex flex-col gap-2 text-[16px] p-2">
-              <button
+            <div className="flex flex-col gap-2 text-[12px] p-2">
+              <div
                 onClick={NotificationShow}
-                className="flex text-gray-700  "
+                className="flex- text-gray-700   "
               >
                 Notification{" "}
                 <span className="bg-[red] rounded-[4px] px-[4px] text-white">
-                  3
+                  0
                 </span>
-              </button>
+              </div>
               {isNotificationOpen && (
                 <div className="fixed top-[100px] right-[100px] bg-white z-50 border-b border-gray-200 rounded-[12px] py-[16px] shadow-lg">
                   <div className="flex relative justify-center pb-3 border-b  ">
@@ -141,13 +141,13 @@ const dispatch = useAppDispatch();
               <Link href="/chat" className="text-gray-700 py-[5px]">
                 Chats{" "}
                 <span className="bg-[red] rounded-[4px] px-[4px] text-white">
-                  1
+                  0
                 </span>
               </Link>
               <Link href="/wishlist" className="text-gray-700 py-[5px]">
                 Wishlist{" "}
                 <span className="bg-[red] rounded-[4px] px-[4px] text-white">
-                  1
+                  0
                 </span>
               </Link>
               <Link
@@ -161,7 +161,7 @@ const dispatch = useAppDispatch();
               <Link href="/help_and_support" className="text-gray-700 py-[5px]">
                 Help & Support
               </Link>
-              <Link href="/settings" className="text-gray-700 py-[5px]">
+              <Link href="/settings" className="text-gray-700 py-[5px] hidden">
                 Settings
               </Link>
               <Link href="/" onClick={()=>{dispatch(Logout())}} className="text-gray-700 py-[5px]">
@@ -173,10 +173,10 @@ const dispatch = useAppDispatch();
       </div>
       {/* Mobile */}
       <div className="relative sm:hidden ">
-        <div className="p-[13px] sm:hidden rounded-[8px] bg-white border-2 border-stroke">
+        <div className="p-[6px] sm:hidden rounded-[8px] bg-white border-2 border-stroke">
           <button
             onClick={toggleDropdown}
-            className=" relative flex text-[16px] text-dgr font-medium items-center gap-2"
+            className=" relative flex text-[14px] text-dgr font-medium items-center gap-2"
           >
             <Image
               src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1719579104/utilities/LodgeMate_File/menu_1_kngbsl.png"
@@ -191,8 +191,8 @@ const dispatch = useAppDispatch();
               width={8}
               alt="account"
             />
-            <p className="bg-[red] absolute  -top-4 -right-6 rounded-[4px] px-[4px] text-white">
-              3
+            <p className="bg-[red] absolute  -top-4 -right-3 rounded-[4px] px-[4px] text-white">
+              0
             </p>{" "}
           </button>
         </div>
@@ -217,8 +217,8 @@ const dispatch = useAppDispatch();
                 </svg>
               </button>
             </div>
-            <div className="flex flex-col gap-2 text-[16px] p-2">
-              <Link href="/" className="text-gray-700  ">
+            <div className="flex flex-col gap-2 text-[12px] p-2">
+              <Link href="/" className="text-gray-700 hidden ">
                 Notification{" "}
                 <span className="bg-[red] rounded-[4px] px-[4px] text-white">
                   3

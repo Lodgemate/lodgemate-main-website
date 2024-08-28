@@ -64,7 +64,7 @@ let statusStyles = {
       <Link href={`/serivices/lodge_details/${id}`} passHref>
         <div className="relative">
           <img
-            className="w-full h-[144px] sm:h-[299px] object-cover rounded-[12px]"
+            className="w-full h-[144px] sm:h-[200px] object-cover rounded-[12px]"
             src={imageUrl}
             alt={name}
           />
@@ -83,7 +83,7 @@ let statusStyles = {
         </div>
       </Link>
       <div className="py-[15px]">
-        <div className="font-bold text-[16px] flex justify-between items-start">
+        <div className="font-bold text-[14px] flex justify-between items-start">
           {name}{" "}
           <img
             src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1719975673/utilities/LodgeMate_File/tabler_home-check_ngykht.svg"
@@ -97,7 +97,7 @@ let statusStyles = {
             alt=""
             className=""
           />
-          <p className="text-[13px]">
+          <p className="text-[12px]">
             {" "}
             <span>Near {nearbyUniversity}</span>
           </p>
@@ -105,9 +105,10 @@ let statusStyles = {
         <div className="flex gap-2 items-center">
           <img
             src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1718337642/utilities/LodgeMate_File/iconamoon_profile-thin_hkgtcv.svg"
-            alt="sex -ml-2"
+            alt="sex "
+            className="-ml-1"
           />
-          <p className="text-dgray text-[15px]">{sex}</p>
+          <p className="text-dgray text-[12px]">{sex}</p>
         </div>
       </div>
     </div>

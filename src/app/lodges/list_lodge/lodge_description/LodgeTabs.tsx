@@ -80,8 +80,8 @@ const LodgeTabs = () => {
   };
   // make an unorderd list for err
   return (
-    <div className='flex w-full flex-col'>
-      <div className=' mt-[100px] justify-center flex items-center w-full'>
+    <div className="flex w-full flex-col">
+      <div className=" mt-[100px] justify-center flex items-center w-full">
         {tabs.map((tab, index) => (
           <button
             key={index}
@@ -95,30 +95,30 @@ const LodgeTabs = () => {
       <button
         onClick={prevTab}
         disabled={activeTab === 0}
-        className='mt-[40px] mb-[20px] w-fit'
+        className="mt-[40px] mb-[20px] w-fit"
       >
         <img
-          src='https://res.cloudinary.com/dcb4ilgmr/image/upload/v1719102154/utilities/LodgeMate_File/lucide_move-up_zjmfel.svg'
-          alt=''
+          src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1719102154/utilities/LodgeMate_File/lucide_move-up_zjmfel.svg"
+          alt=""
         />
       </button>
-      <div className='tab-content mb-[100px]'>{tabs[activeTab].content}</div>
-      <div className='flex sm:justify-center justify-between items-center'>
+      <div className="tab-content mb-[100px]">{tabs[activeTab].content}</div>
+      <div className="flex sm:justify-center justify-between items-center">
         <button
           onClick={prevTab}
           disabled={activeTab === 0}
-          className='sm:hidden flex items-center gap-2  '
+          className="sm:hidden flex items-center gap-2 text-[14px]"
         >
           <img
-            src='https://res.cloudinary.com/dcb4ilgmr/image/upload/v1719102154/utilities/LodgeMate_File/lucide_move-up_zjmfel.svg'
-            alt='back'
+            src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1719102154/utilities/LodgeMate_File/lucide_move-up_zjmfel.svg"
+            alt="back"
           />
           Back
         </button>
         <button
           onClick={activeTab === 4 ? handleListLodges : nextTab}
           // disabled={activeTab ===  1 || activeTab > 4}
-          className='bg-primary text-white w-1/2 sm:w-[300px] h-[48px] rounded-[8px]'
+          className="bg-primary text-white text-[14px] w-1/2 sm:w-[300px] h-[48px] rounded-[8px]"
         >
           {activeTab === 4 ? "List your lodge" : "Next"}
         </button>
@@ -129,7 +129,7 @@ const LodgeTabs = () => {
 
 const Tab1 = () => (
   <div>
-    <h2 className=' text-[24px] text-lblack'>
+    <h2 className=' text-[16px] text-lblack'>
       Which of this best describes the accommodation?
     </h2>
     <form>
@@ -140,7 +140,7 @@ const Tab1 = () => (
 
 const Tab2 = () => (
   <div>
-    <h2 className=' text-[24px] text-lblack'>How many room are has it?</h2>
+    <h2 className=' text-[16px] text-lblack'>How many room are has it?</h2>
     <form>
       <Tab2Content />
     </form>
@@ -149,7 +149,7 @@ const Tab2 = () => (
 
 const Tab3 = () => (
   <div>
-    <h2 className=' text-[24px] text-lblack'>
+    <h2 className=' text-[16px] text-lblack'>
       Please select only the features your accommodation has.
     </h2>
     <form>
@@ -160,7 +160,7 @@ const Tab3 = () => (
 
 const Tab4 = () => (
   <div>
-    <h2 className=' text-[24px] text-lblack'>
+    <h2 className=' text-[16px] text-lblack'>
       Let people see what your lodge looks like. <br /> Upload a minimum of (5)
       image
     </h2>
@@ -172,7 +172,7 @@ const Tab4 = () => (
 
 const Tab5 = () => (
   <div>
-    <h2 className=' text-[24px] text-lblack'>
+    <h2 className=' text-[16px] text-lblack'>
       Almost done. Fill in these details.
     </h2>
     <form>

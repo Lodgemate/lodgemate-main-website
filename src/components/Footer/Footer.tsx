@@ -3,7 +3,7 @@ import React from "react";
 
 function Footer() {
   return (
-    <div className="border border-t flex w-full  sm:pb-[20px]  pb-[100px]  py-[12px] sm:bg-white bg-[#F8F8F8] text-lgray">
+    <div className="border text-[12px] border-t flex w-full  sm:pb-[20px]  pb-[100px]  py-[12px] sm:bg-white bg-[#F8F8F8] text-lgray">
       <div className="flex justify-between items-center flex-col sm:flex-row w-full px-2 sm:px-[100px]">
         <div className="flex w-full flex-col sm:flex-row items-center gap-4">
           <p className="sm:block hidden">© 2023 LodgeMate</p>

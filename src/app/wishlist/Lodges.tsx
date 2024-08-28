@@ -33,7 +33,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
       <Link href={`/lodges/lodge_details/${id}`} passHref>
         <div className="relative">
           <img
-            className="w-full h-[144px] sm:h-[299px] object-cover rounded-[12px]"
+            className="w-full h-[144px] sm:h-[200px] object-cover rounded-[12px]"
             src={imageUrl}
             alt={name}
           />
@@ -51,20 +51,20 @@ const ProductCard: React.FC<ProductCardProps> = ({
         </div>
       </Link>
       <div className="py-[15px]">
-        <div className="font-bold text-[16px] flex items-start">{name} </div>
-        <p className="text-lgray text-[16px]">{location}</p>
+        <div className="font-bold text-[14px] flex items-start">{name} </div>
+        <p className="text-lgray text-[12px]">{location}</p>
         <div className="flex items-center mt-[4px] text-gray-600">
           <img
             src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1716223199/utilities/LodgeMate_File/home_pin_mimpts.svg"
             alt=""
             className="mr-2"
           />
-          <p className="text-[13px]">
+          <p className="text-[12px]">
             {" "}
             <span>{nearbyUniversity}</span>
           </p>
         </div>
-        <p className="text-dgray text-[15px] font-semibold mt-4">
+        <p className="text-dgray text-[14px] font-semibold mt-4">
           {formattedPrice}/yr
         </p>
       </div>

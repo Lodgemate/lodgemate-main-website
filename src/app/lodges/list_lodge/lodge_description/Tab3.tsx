@@ -112,7 +112,7 @@ const Tab3Content: React.FC = () => {
   // from there use store to revalidate component
 
   return (
-    <div className="flex flex-col items-center">
+    <div className="flex flex-col items-center text-[14px]">
       <form className="flex flex-wrap  gap-5 mt-5">
         {boxes.map((box) => (
           <div

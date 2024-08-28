@@ -110,7 +110,7 @@ const MobileChat: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col h-screen bg-white mt-[100px]">
+    <div className="flex flex-col h-screen bg-white mt-[80px]">
       {!activeChat ? (
         <div className="p-4">
           <h1 className="text-xl font-bold mb-4">Your chats</h1>
@@ -145,7 +145,7 @@ const MobileChat: React.FC = () => {
               className="mr-4 text-gray-500"
             >
               <img
-                src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1719952823/utilities/LodgeMate_File/arrow_back_hviyes.svg"
+                src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1719102154/utilities/LodgeMate_File/lucide_move-up_zjmfel.svg"
                 alt="Back"
                 className="w-6 h-6"
               />
@@ -183,11 +183,11 @@ const MobileChat: React.FC = () => {
           {activeChat && (
             <div className="flex items-center p-4 border-t border-gray-300">
               <div className="flex items-center p-1 bg-[#30a2ff28] h-[48px] w-full rounded-full pl-2 pr-4">
-                <button className="mr-1 text-gray-500">
+                <button className="mr-1 text-gray-500 sm:flex hidden">
                   <img
                     src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1719952823/utilities/LodgeMate_File/Add_kdegc6.svg"
-                      alt="add"
-                      className=""
+                    alt="add"
+                    className=""
                   />
                 </button>
                 <input

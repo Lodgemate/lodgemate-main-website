@@ -40,13 +40,17 @@ const ListingSlice = createSlice({
     },  
     setImagesUrl: (state, action: PayloadAction<string[]| []>) => {
       state.imagesUrl= action.payload;
-      
     },
+    resetFormData: (state)=>{
+      state.formData =  new FormData()
+      state.imagesUrl = []
+      console.log(state)
+    }
     
   }
 });
 export const selectAllList_Listingdata = (state: RootState) => state.List_Logdes.formData;
 export const selectAllList_imagesUrl = (state: RootState) => state.List_Logdes.imagesUrl;
 
-export const { setStateItem,appendStateItem, imagesSetStateItem, setImagesUrl } = ListingSlice.actions;
+export const { setStateItem,appendStateItem, imagesSetStateItem, setImagesUrl, resetFormData } = ListingSlice.actions;
 export default ListingSlice.reducer;

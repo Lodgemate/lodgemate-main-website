@@ -1,10 +1,10 @@
  "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Tab1Content from "./Tab1";
 import Tab2Content from "./Tab2";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
-import { selectAllList_Listingdata } from "@/lib/features/Listing/ListingSlice";
+import { resetFormData, selectAllList_Listingdata } from "@/lib/features/Listing/ListingSlice";
 import { FetchApi } from "@/utils/Fetchdata";
 import { Endpoints } from "@/services/Api/endpoints";
 import {
@@ -25,6 +25,11 @@ const LodgeDescription = () => {
     { title: "Tab 2", content: <Tab2 /> },
   ];
 
+  
+  useEffect(() => {
+    dispatch(resetFormData());
+  }, []);
+  
   const nextTab = () => {
     if (activeTab < tabs.length - 1) {
       setActiveTab(activeTab + 1);

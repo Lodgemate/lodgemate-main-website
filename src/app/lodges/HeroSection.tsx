@@ -14,7 +14,7 @@ function HeroSection() {
       <div
         className="flex w-full justify-center sm:mt-[129px] mt-[100px] "
       >
-        <h1 className="sm:text-[24px] text-[20px] text-center text-lblack">
+        <h1 className="sm:text-[20px] text-[16px] text-center text-lblack">
           Enter a location below. <br /> Let’s show you some nice logdes..
         </h1>
       </div>

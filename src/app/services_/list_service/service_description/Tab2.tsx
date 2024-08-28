@@ -28,8 +28,11 @@ const Tab2Content: React.FC = () => {
 
 
   const locationOnchange =(data : Result)=>{
-    const long = calculateCenterLatLng(data.geometry.viewport).lng;
-    const lat = calculateCenterLatLng(data.geometry.viewport).lat;
+    // const long = calculateCenterLatLng(data.geometry.viewport).lng;
+    // const lat = calculateCenterLatLng(data.geometry.viewport).lat;
+    const locate=data.geometry.location
+    const long =locate.lng();
+    const lat = locate.lat();
     dispatch(setStateItem({ 
       
       // its long Ik :)
@@ -110,7 +113,7 @@ const Tab2Content: React.FC = () => {
           <input
             type='number'
             id='minPrice'
-            placeholder='e.g. ₦10,000, ₦8,000 - ₦9,000'
+            placeholder='e.g. 100000'
             className='w-full p-2 border border-gray-300 rounded'
              value={minPrice}
             onChange={(e)=>{
@@ -125,7 +128,7 @@ const Tab2Content: React.FC = () => {
           <input
             type='number'
             id='maxPrice'
-            placeholder='e.g. ₦10,000, ₦8,000 - ₦9,000'
+            placeholder='e.g. 90000'
             className='w-full p-2 border border-gray-300 rounded'
                 value={maxPrice}
             onChange={(e)=>{

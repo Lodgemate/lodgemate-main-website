@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useCallback } from "react";
 import AOS from "aos";
 import { getCurrentDate } from "@/utils/utils";
+import { useAppSelector } from "@/lib/hooks";
+import { selectAllUsersdata } from "@/lib/features/Users/usersSlice";
 
 
 interface WriteReviewProps {
@@ -10,7 +12,9 @@ interface WriteReviewProps {
   handlePost:(param: any)=>void
 }
 
-const WriteReview: React.FC<WriteReviewProps> = React.memo(({ show, onClose, handlePost,data }) => {
+const WriteReview: React.FC<WriteReviewProps> = ({ show, onClose, handlePost,data }) => {
+  const currentUserData = useAppSelector(selectAllUsersdata);
+
   const [starSources, setStarSources] = useState<string[]>([
     "/icons/star_black.svg",
     "/icons/star_black.svg",
@@ -18,6 +22,8 @@ const WriteReview: React.FC<WriteReviewProps> = React.memo(({ show, onClose, han
     "/icons/star_black.svg",
     "/icons/star_black.svg",
   ]);
+  console.log(currentUserData)
+
   const [Clicked, setClicked] = useState(false)
   const GetStars= useCallback(()=>{
    const newArr =starSources.filter((ent)=> ent === "/icons/star_gold.svg")
@@ -87,12 +93,12 @@ const WriteReview: React.FC<WriteReviewProps> = React.memo(({ show, onClose, han
         <div className="mb-4">
           <div className="flex gap-2">
             <img
-              src={data.data.user.profilePicture}
+              src={currentUserData?.data.user.profilePicture}
               alt=""
               className="w-10 h-10 rounded-full border border-lblue"
             />
             <div>
-              <h1 className="font-semibold">{data.data.user.firstName}</h1>
+              <h1 className="font-semibold">{currentUserData?.data.user.firstName}</h1>
               <p>{getCurrentDate()}</p> 
             </div>
           </div>
@@ -130,6 +136,6 @@ const WriteReview: React.FC<WriteReviewProps> = React.memo(({ show, onClose, han
       </div>
     </div>
   );
-});
+};
 
 export default WriteReview;

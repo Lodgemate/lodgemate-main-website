@@ -42,8 +42,9 @@ function FormTab2() {
   };
   
   const locationOnchange = (data: Result) => {
-    const long = calculateCenterLatLng(data.geometry.viewport).lng;
-    const lat = calculateCenterLatLng(data.geometry.viewport).lat;
+    const locate=data.geometry.location
+    const long =locate.lng();
+    const lat = locate.lat();
     console.log(lat , long)
     dispatch(
       setStateItem({
@@ -99,11 +100,7 @@ function FormTab2() {
   };
   return (
     <div className='mb-[100px]'>
-      <div className='pb-[16px] border-b'>
-        <label htmlFor='describeyou' className='font-bold mt-[32px]'>
-          Location
-        </label>
-      </div>
+     
       {/* <div className="pb-[16px] border-b">
         <label htmlFor="describeyou" className="font-bold mt-[32px]">
           Which best describes you?
@@ -142,8 +139,8 @@ function FormTab2() {
             <input
               type='radio'
               className=''
-              value={"Flat"}
-              checked={AccomodationTypes === "Flat"}
+              value={"flat"}
+              checked={AccomodationTypes === "flat"}
               onChange={(e) => handlechangeAccomodationTypes(e.target.value)}
             />
           </div>
@@ -166,12 +163,12 @@ function FormTab2() {
             <input
               type='radio'
               className=''
-              value={"Apartment"}
-              checked={AccomodationTypes === "Apartment"}
+              value={"duplex"}
+              checked={AccomodationTypes === "duplex"}
               onChange={(e) => handlechangeAccomodationTypes(e.target.value)}
             />
           </div>
-          <p>Apartment</p>{" "}
+          <p>Duplex</p>{" "}
         </div>
         {/* <div className="flex mt-[15px] gap-2 items-center">
           <div className=" rounded border h-[18px] w-[18px] flex justify-center items-center">
@@ -227,9 +224,6 @@ function FormTab2() {
       </div>
       {/* Location*/}
       <div className=' '>
-        <label htmlFor='describeyou' className='font-bold mt-[32px]'>
-          How do you want to live?{" "}
-        </label>
         {/* <div className='relative'>
           <input
             type='text'
@@ -247,6 +241,11 @@ function FormTab2() {
             />
           )}
         </div> */}
+         <div className='pb-[16px] border-b'>
+        <label htmlFor='describeyou' className='font-bold mt-[32px]'>
+          Location
+        </label>
+      </div>
       <GooglePlacesAutocomplete handleLocation={locationOnchange}/>
       </div>
     </div>

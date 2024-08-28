@@ -4,13 +4,12 @@ import Link from "next/link";
 import React, { useEffect, useRef, useState } from "react";
 import WriteReview from "../../modals/WriteReview";
 import CallAgent from "../../modals/CallAgent";
-import LodgeSaved from "../../modals/LodgeSaved";
+import LodgeSaved from "../../modals/ServicesSaved";
 import { Endpoints } from "@/services/Api/endpoints";
 import { useParams } from "next/navigation";
 import {  Service } from "@/lib/Types";
 import { LoadingSkeleton } from "@/components/Skeletons/DetalsSkeleton";
 import DeleteYourReview from "../../modals/DeleteYourReview";
-import { Lodge } from "@/lib/Types";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { selectAllUsersdata } from "@/lib/features/Users/usersSlice";
 import DeleteModal from "@/components/modals/DeleteModal";
@@ -19,28 +18,11 @@ import {
   selectAllReviews,
   setReviews,
 } from "@/lib/features/Reviews/ReviewsSlice";
-// location: Coordinates;
-// ratings: Ratings;
-// _id: string;
-// verifiedService: boolean;
-// vendor: string;
-// coverphoto: string;
-// photos: string[];
-// serviceName: string;
-// serviceCategories: string[];
-// otherServiceCategories: string[];
-// address_text: string;
-// latitude: number;
-// longitude: number;
-// country: string;
-// administrativeArea: string;
-// subAdministrativeArea: string;
-// minPrice: number;
-// maxPrice: number;
-// contactForPrice: boolean;
-// description: string;
-// dateCreated: string;
-// id: string;
+import ReviewComments from "./Reviews/Modals/ReplyComment";
+import Replies from "./Reviews/Modals/RepliesModal";
+import { showFailedModal } from "@/lib/features/Modal/ModalSlice";
+import ServicesReviews from "./Reviews/ServicesReviews";
+
 
 function ServicesDetails() {
   const params = useParams();
@@ -58,13 +40,14 @@ function ServicesDetails() {
   const [isServiceSavedOpen, setIsServiceSavedOpen] = useState(false);
   const [isLoading, setisLoading] = useState(false);
   const [commentsOrReplies, setcommentsOrReplies] = useState(null);
+  console.log(currentUserData)
 
   const reFetchReviews = async () => {
     const localStorageToken = localStorage.getItem("token");
     const parseToken = localStorageToken && JSON.parse(localStorageToken);
     try {
       // getting reviews
-      const Url = `${Endpoints.getPrivateLodgesbyId + id}/reviews`;
+      const Url = `${Endpoints.getPrivateServicesbyId + id}/reviews`;
       const resReviews = await fetch(Url, {
         method: "GET",
         headers: {
@@ -74,7 +57,10 @@ function ServicesDetails() {
       });
       // these are all the reviews
       const reviewdata: any = await resReviews.json();
+      console.log(reviewdata)
+
       if (reviewdata.status === "success") {
+        console.log(reviewdata.data.reviews)
         dispatch(setReviews(reviewdata.data.reviews));
       }
       // setRevieweData(reviewdata)
@@ -101,10 +87,12 @@ function ServicesDetails() {
         console.log(parsedRes)
         if (parsedRes.status === "success") {
           setisLoading(false);
-          setServiceData(parsedRes.data.services)
+          setServiceData(parsedRes.data.service)
           try {
             // getting reviews
-            const Url = `${Endpoints.getPublicServicesbyId + id}/reviews`;
+            const Url = `${Endpoints.getPrivateServicesbyId + id}/reviews`;
+      console.log(Url)
+
             const resReviews = await fetch(Url, {
               method: "GET",
               headers: {
@@ -114,6 +102,7 @@ function ServicesDetails() {
             });
             // these are all the reviews
             const reviewdata: any = await resReviews.json();
+      console.log(reviewdata)
 
             if (reviewdata.status === "success") {
               dispatch(setReviews(reviewdata.data.reviews));
@@ -141,7 +130,7 @@ function ServicesDetails() {
   const handleOpenCallAgent = () => {
     setIsCallAgentOpen(true);
   };
-  const handleOpenLodgeSaved = () => {
+  const handleOpenServicesSaved = () => {
     setIsServiceSavedOpen(true);
   };
   const handleOpenWriteReview = () => {
@@ -173,7 +162,7 @@ function ServicesDetails() {
     );
   }
 
-  // Ensure LodgeData.features is defined and of correct type
+  // Ensure ServiceData.features is defined and of correct type
   // const lodgeFeatures = ServiceData. || [];
 
   // Function to get icon URL based on feature name
@@ -196,7 +185,7 @@ function ServicesDetails() {
   const handleReview = async (param: any) => {
     const localStorageToken = localStorage.getItem("token");
     const parseToken = localStorageToken && JSON.parse(localStorageToken);
-    const Url = `${Endpoints.getPrivateLodgesbyId}${id}/reviews`;
+    const Url = `${Endpoints.getPrivateServicesbyId}${id}/reviews`;
     const resReviews = await fetch(Url, {
       method: "PUT",
       headers: {
@@ -206,13 +195,18 @@ function ServicesDetails() {
       body: JSON.stringify(param),
     });
     const parsedRes = await resReviews.json();
+    console.log(parsedRes)
     if (parsedRes.status === "success") {
       await reFetchReviews();
       setIsWriteReviewOpen(false);
     } else {
+      parsedRes?
+      dispatch(showFailedModal(parsedRes.message)):
+      dispatch(showFailedModal("failed"))
       console.log("failed");
     }
   };
+
   const handleReplies = (data: any) => {
     setwritereply(true);
     setcommentsOrReplies(data);
@@ -221,16 +215,41 @@ function ServicesDetails() {
     setshowReplies(true);
     setcommentsOrReplies(data);
   };
+
   return (
     <div>
-      <div className="sm:px-[100px] sm:mt-[51px]">
+      <div className="sm:px-[100px]  sm:mt-[100px]">
         {/* modals render */}
-        <WriteReview
-          show={isWriteReviewOpen}
-          onClose={handleCloseWriteReview}
-        />
-        {/* <CallAgent show={isCallAgentOpen} phoneNo={ServiceData.} onClose={handleCloseCallAgent} />{" "} */}
-        <LodgeSaved show={isServiceSavedOpen} onClose={handleCloseLodgeSaved} />
+
+        <DeleteModal />
+            <WriteReview
+              show={isWriteReviewOpen}
+              onClose={handleCloseWriteReview}
+              handlePost={handleReview}
+              data={currentUserData}
+            />
+            <ReviewComments
+              show={writereply}
+              onClose={() => setwritereply(false)}
+              data={commentsOrReplies}
+              currentLodge={ServiceData}
+              userData={currentUserData}
+            />
+            <CallAgent
+              show={isCallAgentOpen}
+               phoneNo={ServiceData.vendor.phoneNumber}
+              onClose={handleCloseCallAgent}
+            />{" "}
+            <Replies
+              show={showReplies}
+              onClose={() => setshowReplies(false)}
+              data={commentsOrReplies}
+              currentLodge={ServiceData}
+            />
+            <LodgeSaved
+              show={isServiceSavedOpen}
+              onClose={handleCloseLodgeSaved}
+            />
         {/* the Name of the Product */}
         <h1 className="sm:text-[24px] text-[20px] sm:block hidden font-semibold text-dgray">
           {ServiceData.serviceName}
@@ -284,7 +303,7 @@ function ServicesDetails() {
 
           <div>
             <button
-              onClick={handleOpenLodgeSaved}
+              onClick={handleOpenServicesSaved}
               className="border- border-opacity-[8%] border-2 flex rounded-lg py-[10px] gap-2 px-[16px]"
             >
               <img
@@ -529,7 +548,7 @@ function ServicesDetails() {
               </div>
               <div className="my-[40px] flex w-full">
                 <button
-                  onClick={handleOpenLodgeSaved}
+                  onClick={handleOpenServicesSaved}
                   className="flex justify-center rounded-lg py-[12px] items-center gap-4 bg-primary text-white w-full "
                 >
                   <img
@@ -569,6 +588,20 @@ function ServicesDetails() {
                       Write a review
                     </button>
                   </div>
+                  <div>
+                  <div className="gap-10  text-[15px]">
+                    {/* use maping here too for the reviwes */}
+                    {RevieweData && (
+                      <ServicesReviews
+                        ServicesData={ServiceData}
+                        currentUserData={currentUserData}
+                        data={RevieweData}
+                        showReplies={handleViewReplies}
+                        replycomment={handleReplies}
+                      />
+                    )}
+                  </div>
+                </div>
                 </div>
               </div>
             </div>

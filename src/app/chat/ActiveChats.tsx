@@ -4,7 +4,7 @@ import { extractDate } from '@/utils/utils'
 import React, { useEffect, useState } from 'react'
 
 const ActiveChats = ({activeChat, setActiveChat}) => {
-    const [data, seData] = useState(null)
+    const [data, seData] = useState<any[] | null>(null)
 
     useEffect(()=>{
       const localStorageToken = localStorage.getItem("token");
@@ -19,7 +19,7 @@ const ActiveChats = ({activeChat, setActiveChat}) => {
         const fetchData=async()=>{
         
             try {
-                const res= await FetchApi(url, body)
+                const res: any= await FetchApi(url, body)
                  seData(res.data.latestRoomsMessage)
                 console.log(res)
             } catch (error) {

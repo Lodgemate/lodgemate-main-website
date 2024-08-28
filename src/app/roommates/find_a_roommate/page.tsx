@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import FormTab1 from "./FormTab1";
 import FormTab2 from "./FormTab2";
@@ -9,18 +9,23 @@ import Link from "next/link";
 import { Endpoints } from "@/services/Api/endpoints";
 import { FetchApi } from "@/utils/Fetchdata";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
-import { selectAllList_Listingdata } from "@/lib/features/Listing/ListingSlice";
+import { resetFormData, selectAllList_Listingdata } from "@/lib/features/Listing/ListingSlice";
 import {
   showFailedModal,
   showLoadingModal,
   showSuccessfulModal,
 } from "@/lib/features/Modal/ModalSlice";
+
 function FindRoommate() {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const [currentTab, setCurrentTab] = useState(1);
   const formData =useAppSelector(selectAllList_Listingdata)
 
+  useEffect(() => {
+    dispatch(resetFormData());
+  }, []);
+  
   const handleNext = () => {
     if (currentTab < 3) setCurrentTab(currentTab + 1);
   };
@@ -40,10 +45,7 @@ function FindRoommate() {
     dispatch(showLoadingModal("Posting Roommates"));
     const localStorageToken = localStorage.getItem("token");
     const parseToken = localStorageToken && JSON.parse(localStorageToken);
-  
-    console.log(parseToken);
-    console.log(formData);
-    console.log(Object.fromEntries(formData));
+    // console.log(Object.fromEntries(formData));
   
     // Ensure formData is of the correct type
     if (!(formData instanceof FormData)) {

@@ -10,6 +10,7 @@ import LogoLoader from "@/Ui/shared/logoLoader";
 import Aproved from "@/Ui/shared/Aproved";
 import Failed from "@/Ui/shared/Failed";
 import EmailModal from "@/Ui/shared/EmailModal";
+import { Providers } from "@/components/ProgressBarProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -24,19 +25,20 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang='en'>
+    <html lang="en">
       <StoreProvider>
         <Navbar />
         <body className={`  relative  ${inter.className}`}>
-          <div className=' min-h-screen'>{children}</div>
+          <Providers>
+          <div className=" min-h-screen">{children}</div>
           <LogoLoader />
           <Aproved />
           <Failed />
+          </Providers>
         </body>
         <Footer />
         <BottomNavbar />
-      <EmailModal/>
-
+        <EmailModal />
       </StoreProvider>
     </html>
   );

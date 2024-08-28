@@ -23,7 +23,7 @@ function Account() {
         <div className="p-[13px] lg:block hidden rounded-[8px] bg-primary">
           <button
             onClick={toggleDropdown}
-            className="flex text-[16px] text-white font-medium items-center gap-2"
+            className="flex text-[14px] text-white font-medium items-center gap-2"
           >
             <Image
               src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1715963878/utilities/LodgeMate_File/account_circle_2_sury28.svg"
@@ -61,7 +61,7 @@ function Account() {
                 </svg>
               </button>
             </div>
-            <div className="flex flex-col gap-2 text-[16px] p-2">
+            <div className="flex flex-col gap-2 text-[14px] p-2">
             <Link href="/auth/signup" onClick={()=>toggleDropdown()} className="text-gray-700 py-[5px] ">
                 Create account
               </Link>
@@ -77,7 +77,7 @@ function Account() {
         <div className="p-[13px] lg:hidden rounded-[8px] bg-white border-2 border-stroke">
           <button
             onClick={toggleDropdown}
-            className="flex text-[16px] text-dgr font-medium items-center gap-2"
+            className="flex text-[14px] text-dgr font-medium items-center gap-2"
           >
             <Image
               src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1715964579/utilities/LodgeMate_File/account_circle_3_lyjkcy.svg"
@@ -115,7 +115,7 @@ function Account() {
                 </svg>
               </button>
             </div>
-            <div className="flex flex-col gap-2 text-[16px] p-2">
+            <div className="flex flex-col gap-2 text-[14px] p-2">
               <Link href="/auth/signup" onClick={()=>toggleDropdown()} className="text-gray-700 py-[5px] ">
                 Create account
               </Link>

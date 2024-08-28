@@ -196,7 +196,7 @@ const BrowseLodges: React.FC<BrowseLodgesProps> = ({
     )
   },[LodgesData,showMore])
   return (
-    <div className="px-4 sm:px-[100px] mt-[50px] text-[14px] sm:text-[16px] -z-0 ">
+    <div className="px-4 sm:px-[100px] mt-[50px] text-[12px] sm:text-[14px] -z-0 ">
       <div className="flex justify-between gap-8 items-center text-lgray mb-[24px]">
         <h1 className=" flex flex-wrap  text-lgray ">
           {isSearchTriggered
@@ -220,17 +220,13 @@ const BrowseLodges: React.FC<BrowseLodgesProps> = ({
 
       <div>
         {/* Move to another component and laxzy load it with suspense */}
-        <div className='grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 '>
-            {
-              isLoading?
-              <GallerySkeleton/>
-             : MappedLodges
-            }      
+        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 ">
+          {isLoading ? <GallerySkeleton /> : MappedLodges}
         </div>
 
         {!showMore && (
-          <div className="mt-10 flex flex-col justify-center items-center text-lgray font-medium pb-[200px]">
-            <p className="text-[16px] pb-[16px] ">Continue exploring lodges</p>
+          <div className="mt-10 text-[12px] flex flex-col justify-center items-center text-lgray font-medium pb-[200px]">
+            <p className=" pb-[16px] ">Continue exploring lodges</p>
             <button
               className="border px-4 py-2 rounded-[12px]"
               onClick={handleShowMore}

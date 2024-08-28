@@ -35,7 +35,9 @@ function LodgesPage() {
         </div>
       </div>
 
-      <BrowseLodges isSearchTriggered={isSearchTriggered} />
+      <div className="">
+        <BrowseLodges isSearchTriggered={isSearchTriggered} />
+      </div>
     </div>
   );
 }

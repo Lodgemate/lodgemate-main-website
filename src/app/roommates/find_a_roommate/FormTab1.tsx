@@ -33,7 +33,7 @@ function FormTab1() {
 
 
   return (
-    <form className='flex flex-col items-center justify-center w-full text-[16px]'>
+    <form className='flex flex-col items-center justify-center w-full text-[14px]'>
       <div className=''>
         <p>This information will help us match you with a roommate</p>{" "}
       </div>
@@ -67,7 +67,7 @@ function FormTab1() {
               )}
             </label>
       </div>{" "}
-      <div className='flex gap-2 text-[16px]'>
+      <div className='flex gap-2 text-[14px]'>
         <input type='checkbox' name='usepicture' id='' />
         <label htmlFor='usepicture'>Use my picture</label>
       </div>

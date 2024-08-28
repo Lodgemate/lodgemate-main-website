@@ -297,12 +297,12 @@ const [isOpen, setIsOpen] = useState(false);
           <div className="flex w-full flex-col sm:px-[20px] sm:mt-[51px]">
             {/* modals render */}
             <DeleteModal />
-            <WriteReview
+            {/* <WriteReview
               show={isWriteReviewOpen}
               onClose={handleCloseWriteReview}
               handlePost={handleReview}
               data={currentUserData}
-            />
+            /> */}
             <ReviewComments
               show={writereply}
               onClose={() => setwritereply(false)}
@@ -310,11 +310,11 @@ const [isOpen, setIsOpen] = useState(false);
               currentLodge={LodgeData}
               userData={currentUserData}
             />
-            <CallAgent
+            {/* <CallAgent
               show={isCallAgentOpen}
               phoneNo={LodgeData.postedBy.phoneNumber}
               onClose={handleCloseCallAgent}
-            />{" "}
+            />{" "} */}
             <Replies
               show={showReplies}
               onClose={() => setshowReplies(false)}

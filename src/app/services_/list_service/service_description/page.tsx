@@ -75,7 +75,7 @@ const body = {
      }
   }
   return (
-    <div className="flex w-full px-4 sm:px-[150px] min-h-screen mb-[50px] ">
+    <div className="flex w-full px-4 sm:px-[150px] min-h-screen text-[14px] mb-[50px] ">
       <div className="flex w-full flex-col">
         <div className=" mt-[100px] justify-center flex items-center w-full">
           {tabs.map((tab, index) => (
@@ -128,7 +128,7 @@ const body = {
 
 const Tab1 = () => (
   <div>
-    <h2 className=" text-[24px] text-lblack">
+    <h2 className=" text-[16px] text-lblack">
       Upload quality images of your service. <br /> A minimum of (5) images is
       required.
     </h2>
@@ -140,7 +140,7 @@ const Tab1 = () => (
 
 const Tab2 = () => (
   <div>
-    <h2 className=" text-[24px] text-lblack">
+    <h2 className=" text-[16px] text-lblack">
       Almost done. Fill in these details.
     </h2>
     <form>

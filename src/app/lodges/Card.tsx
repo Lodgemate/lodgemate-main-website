@@ -41,7 +41,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
     <div
       // href={`/lodges/lodge_details/${id}`}
       // passHref
-      className="max-w-sm rounded overflow-hidden    "
+      className="max-w-sm rounded overflow-hidden z-[9]"
       data-aos="fade-up"
     >
       <div className="relative ">

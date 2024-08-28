@@ -80,7 +80,7 @@ const SearchBar: React.FC = () => {
   };
 
   return (
-    <div className='flex flex-col relative justify-center w-full items-center mt-[20px]'>
+    <div className='flex flex-col relative justify-center w-full items-center mt-[20px] z-[990]'>
       <div className='border-2 pl-[24px] p-1 flex justify-between border-stroke rounded-full w-full sm:w-[510px] text-[14px] h-[53px] shadow-md'>
         <input
           type='text'

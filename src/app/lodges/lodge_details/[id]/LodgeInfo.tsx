@@ -450,9 +450,9 @@ const [isOpen, setIsOpen] = useState(false);
       </div>
 
       {isOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-85">
+        <div className="fixed inset-0 z-[999] flex items-center justify-center bg-black bg-opacity-85">
           <button
-            className=" absolute sm:top-[80px] top-12 right-6 text-white text-3xl"
+            className=" absolute sm:top-[80px] top-4 right-4 text-white text-3xl"
             onClick={closeModal}
           >
             &times;
@@ -463,11 +463,11 @@ const [isOpen, setIsOpen] = useState(false);
           >
             &#10094;
           </button>
-          <div className="max-w-4xl">
+          <div className="max-w-4xl  object-contain">
             <img
               src={LodgeData.photos[currentIndex]}
               alt={`image ${currentIndex + 1}`}
-              className="w-full h-auto"
+              className="w-auto h-screen"
             />
           </div>
           <button

@@ -32,7 +32,7 @@ const dispatch = useAppDispatch();
         <div className="px-[13px] py-2 sm:block hidden rounded-[8px] mb-2 bg-primary">
           <button
             onClick={toggleDropdown}
-            className="flex relative text-[14px] text-white font-medium items-center gap-2"
+            className="flex relative text-[14px] text-white font- items-center gap-2"
           >
             <Image
               src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1719578480/utilities/LodgeMate_File/menu_ladlro.svg"

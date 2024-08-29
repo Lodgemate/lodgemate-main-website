@@ -463,11 +463,11 @@ const [isOpen, setIsOpen] = useState(false);
           >
             &#10094;
           </button>
-          <div className="max-w-4xl  object-contain">
+          <div className="max-w-4xl  ">
             <img
               src={LodgeData.photos[currentIndex]}
               alt={`image ${currentIndex + 1}`}
-              className="w-auto h-screen"
+              className="w-auto sm:h-screen"
             />
           </div>
           <button

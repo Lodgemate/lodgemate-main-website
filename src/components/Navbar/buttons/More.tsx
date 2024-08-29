@@ -176,7 +176,7 @@ const dispatch = useAppDispatch();
         <div className="p-[6px] sm:hidden rounded-[8px] bg-white border-2 border-stroke">
           <button
             onClick={toggleDropdown}
-            className=" relative flex text-[14px] text-dgr font-medium items-center gap-2"
+            className=" relative flex text-[12px] text-dgr font-medium items-center gap-2"
           >
             <Image
               src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1719579104/utilities/LodgeMate_File/menu_1_kngbsl.png"

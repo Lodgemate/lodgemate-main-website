@@ -196,7 +196,7 @@ const BrowseLodges: React.FC<BrowseLodgesProps> = ({
     )
   },[LodgesData,showMore])
   return (
-    <div className="px-4 sm:px-[100px] mt-[50px] text-[12px] sm:text-[14px] -z-0 ">
+    <div className="px-4 sm:px-[100px] mt-[50px] text-[12px] sm:text-[14px] -z-99 ">
       <div className="flex justify-between gap-8 items-center text-lgray mb-[24px]">
         <h1 className=" flex flex-wrap  text-lgray ">
           {isSearchTriggered

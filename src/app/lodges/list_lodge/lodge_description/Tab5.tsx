@@ -88,7 +88,7 @@ const locate=data.geometry.location
   //  console.log(Object.fromEntries(data))
 
   return (
-    <div className='flex flex-col items-center text-dgray'>
+    <div className='flex flex-col items-center text-dgray text-[14px]'>
       <form className='w-full max-w-lg flex flex-col gap-4 mt-5'>
         <input
           type='text'

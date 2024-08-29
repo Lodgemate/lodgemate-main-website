@@ -55,7 +55,7 @@ const Tab1Content: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col items-center">
+    <div className="flex flex-col items-center text-[14px]">
       <form className="flex flex-wrap justify-center gap-5 mt-5">
         {boxes.map((box) => (
           <div
@@ -70,7 +70,7 @@ const Tab1Content: React.FC = () => {
               alt={box.text}
               className="w-[28px] h-[28px]"
             />
-            <p className="mt-2">{box.text}</p>
+            <p className="mt-2 ">{box.text}</p>
           </div>
         ))}
       </form>

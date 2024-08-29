@@ -34,7 +34,7 @@ const Tab4Content: React.FC = () => {
   },[])
 
   return (
-    <div className="flex flex-col items-center mt-[20px]">
+    <div className="flex flex-col items-center mt-[20px] text-[14px]">
       <form className="flex flex-wrap max-w-[500px] justify-center sm:gap-5 gap-2 mt-5">
         {placeholders.map((placeholder, index) => (
           <div

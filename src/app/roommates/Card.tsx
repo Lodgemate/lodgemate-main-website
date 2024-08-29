@@ -40,11 +40,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
         </div>
 
         <HeartIcon />
-        <img
-          src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1716223205/utilities/LodgeMate_File/Indicators_psmeyv.svg"
-          alt=""
-          className="absolute bottom-4 right-[40%]  text-xl"
-        />
+        
       </div>
       <div className=" py-[15px]">
         <div className="font-bold text-[14px] flex items-start">

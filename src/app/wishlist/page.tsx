@@ -42,9 +42,9 @@ function Wishlist() {
   };
 
   return (
-    <div className="p-4 mt-[100px] min-h-screen sm:px-[100px] text-lblack ">
+    <div className="p-4 mt-[100px] min-h-screen sm:px-[100px] text-[14px] text-lblack ">
       <div className="flex justify-between items-center">
-        <h1 className="text-[24px]">{tabData[activeTab].message}</h1>
+        <h1 className="text-[16px]">{tabData[activeTab].message}</h1>
         <div className="flex  bg-[#F8F8F8] p-1 rounded-[8px]">
           {Object.keys(tabData).map((tab) => (
             <button

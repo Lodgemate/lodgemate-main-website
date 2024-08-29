@@ -66,7 +66,7 @@ const Help: React.FC = () => {
   };
 
   return (
-    <div className="flex h-screen pt-[70px] text-[16px] text-lblack">
+    <div className="flex h-screen pt-[70px] text-[14px] text-lblack">
       {/* First Column */}
       <div className="w-1/4 border-r border-gray-300">
         <div className=" border-b pb-[80px]"></div>

@@ -91,11 +91,11 @@ function FindRoommate() {
   
 
   return (
-    <div className="mt-[50px]">
+    <div className="mt-[50px] text-[14px]">
       <div className="sm:grid sm:grid-cols-2">
         <div className="col-span-1 pt-[80px] bg-[#FAFAFA] hidden sm:block">
           <div className="flex justify-center items-center flex-col">
-            <h1 className="text-[20px] text-primary font-bold pb-[50px]">
+            <h1 className="text-[18px] text-primary font-bold pb-[50px]">
               Couldn't find a roommate? No worries!
             </h1>
             <img
@@ -126,7 +126,7 @@ function FindRoommate() {
                     />
                   </button>
                 )}
-                <h2 className="text-[20px] font-semibold text-center p-[10px]">
+                <h2 className="text-[16px] font-semibold text-center p-[10px]">
                   {tabHeadings[currentTab - 1]}
                 </h2>
               </div>

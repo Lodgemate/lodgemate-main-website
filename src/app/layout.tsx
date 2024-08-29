@@ -11,6 +11,8 @@ import Aproved from "@/Ui/shared/Aproved";
 import Failed from "@/Ui/shared/Failed";
 import EmailModal from "@/Ui/shared/EmailModal";
 import { Providers } from "@/components/ProgressBarProvider";
+import GetApp from "./GetApp";
+
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -23,7 +25,10 @@ export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
-}) {
+  }) {
+  
+  
+  
   return (
     <html lang="en">
       <StoreProvider>
@@ -35,6 +40,7 @@ export default function RootLayout({
           <Aproved />
           <Failed />
           </Providers>
+          <GetApp />
         </body>
         <Footer />
         <BottomNavbar />

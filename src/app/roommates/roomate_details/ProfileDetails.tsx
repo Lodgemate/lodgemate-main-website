@@ -54,7 +54,7 @@ const ProfileDetails: React.FC<ProfileDetailsProps> = ({
 }) => {
   return (
     <div className="">
-      <div className=' flex fixed justify-center w-full bg- left-0 top-[100px] overflow-y-auto text-dgray text-[16px] z-50 '>
+      <div className=' flex fixed justify-center w-full bg- left-0 top-[10px] text-[14px] overflow-y-auto text-dgray  z-[999] '>
         <div className='w-[500px] h-[400px] bg-white border shadow-lg rounded-[20px] overflow-y-auto no-scrollbar '>
           <div className='relative flex justify-center items-center p-4 border-b'>
             <p>Profile details</p>

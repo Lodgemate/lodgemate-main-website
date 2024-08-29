@@ -89,7 +89,7 @@ const SearchBar: React.FC = () => {
   };
 
   return (
-    <div className='flex flex-col relative justify-center w-full items-center mt-[20px]'>
+    <div className='flex flex-col relative justify-center w-full items-center mt-[20px] z-[990]'>
        {selectedRoommate && (
         <div>
           <ProfileDetails

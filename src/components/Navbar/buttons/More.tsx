@@ -74,15 +74,15 @@ const dispatch = useAppDispatch();
               </button>
             </div>
             <div className="flex flex-col gap-2 text-[12px] p-2">
-              <button
+              <div
                 onClick={NotificationShow}
-                className="flex- text-gray-700 hidden  "
+                className="flex- text-gray-700   "
               >
                 Notification{" "}
                 <span className="bg-[red] rounded-[4px] px-[4px] text-white">
                   0
                 </span>
-              </button>
+              </div>
               {isNotificationOpen && (
                 <div className="fixed top-[100px] right-[100px] bg-white z-50 border-b border-gray-200 rounded-[12px] py-[16px] shadow-lg">
                   <div className="flex relative justify-center pb-3 border-b  ">
@@ -161,7 +161,7 @@ const dispatch = useAppDispatch();
               <Link href="/help_and_support" className="text-gray-700 py-[5px]">
                 Help & Support
               </Link>
-              <Link href="/settings" className="text-gray-700 py-[5px]">
+              <Link href="/settings" className="text-gray-700 py-[5px] hidden">
                 Settings
               </Link>
               <Link href="/" onClick={()=>{dispatch(Logout())}} className="text-gray-700 py-[5px]">

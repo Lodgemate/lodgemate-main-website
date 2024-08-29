@@ -27,7 +27,7 @@ const loadingStatus= useAppSelector(selectAllloadingModalMssg)
             alt='account'
             className='animate-pulse '
           />
-          <p className=' text-center font-medium text-slate-800'>{loadingStatus}</p>
+          <p className=' text-center text-[14px] text-slate-800'>{loadingStatus}</p>
         </div>
       </Blurbg>
       )

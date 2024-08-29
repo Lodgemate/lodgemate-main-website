@@ -74,7 +74,7 @@ const VerifyEmailForm: React.FC = () => {
   }, [showPopup, router]);
 
   return (
-    <div className="sm:w-[500px] w-full mx-auto py-4 bg-white text-lgray text-[16px] rounded-2xl shadow-md border mt-[100px]">
+    <div className="sm:w-[500px] w-full mx-auto py-4 bg-white text-lgray text-[ rounded-2xl shadow-md border mt-[100px]">
       <div className="flex w-full items-center justify-center border-b">
         <h2 className="font-bold mb-4 text-center">Verify your phone number</h2>
       </div>
@@ -96,7 +96,7 @@ const VerifyEmailForm: React.FC = () => {
                 maxLength={1}
                 // @ts-ignore
                 ref={(el) => (inputsRef.current[index] = el)}
-                className="w-[50px] h-[50px] text-center text-lg border border-gray-300 rounded-md shadow-sm focus:outline-none"
+                className="w-[50px] h-[50px] text-center text- border border-gray-300 rounded-md shadow-sm focus:outline-none"
               />
             ))}
           </div>
@@ -134,7 +134,7 @@ const VerifyEmailForm: React.FC = () => {
               src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1719540118/utilities/LodgeMate_File/simple-line-icons_check_ikhsin.svg"
               alt="welcome"
             />
-            <h1 className="text-2xl font-bold mb-2">All done</h1>
+            <h1 className="text- font-bold mb-2">All done</h1>
             <p>
               Your sign up is now complete. You may <br /> proceed to our home screen
             </p>

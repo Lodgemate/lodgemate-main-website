@@ -218,7 +218,7 @@ const dispatch = useAppDispatch();
               </button>
             </div>
             <div className="flex flex-col gap-2 text-[12px] p-2">
-              <Link href="/" className="text-gray-700 hidden ">
+              <Link href="/" className="text-gray-700  ">
                 Notification{" "}
                 <span className="bg-[red] rounded-[4px] px-[4px] text-white">
                   3

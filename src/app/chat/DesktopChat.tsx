@@ -10,12 +10,13 @@ import { useAppSelector } from "@/lib/hooks";
 import { selectAllUsersdata } from "@/lib/features/Users/usersSlice";
 
 const DesktopChat: React.FC = () => {
+  const searchParams = useSearchParams();
+
   const currentUser = useAppSelector(selectAllUsersdata);
   const [activeChat, setActiveChat] = useState<MainObject | null>(null);
   const [messages, setMessages] = useState<any[]>([]);
 
   useEffect(() => {
-  const searchParams = useSearchParams();
     
     if (searchParams.get("roomId")) {
       const Data = {

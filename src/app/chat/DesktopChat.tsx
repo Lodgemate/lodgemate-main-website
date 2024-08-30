@@ -125,8 +125,7 @@ const DesktopChat: React.FC = () => {
           <div className='flex flex-col justify-center items-center w-full'>
             <img
               src={
-                reciversData(activeChat?.latestMessage.participants)
-                  .profilePicture
+                reciversData(activeChat?.latestMessage.participants).profilePicture
               }
               alt={`${
                 reciversData(activeChat?.latestMessage.participants).firstName

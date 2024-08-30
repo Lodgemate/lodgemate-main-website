@@ -158,6 +158,7 @@ export interface Ratings {
     description: string;
     dateCreated: string;
     id: string;
+    phoneNumber:any
   }
   
  export interface ServiceData {

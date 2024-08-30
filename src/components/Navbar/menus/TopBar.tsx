@@ -4,6 +4,8 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 import { usePathname } from "next/navigation";
+import WebSocketComponent from "@/services/webSocketApi";
+import ActiveChats from "@/app/chat/ActiveChats";
 
 
 function TopBar() {
@@ -80,6 +82,8 @@ function TopBar() {
           Services
         </p>
       </Link>
+      {/* <WebSocketComponent/> */}
+{/* <ActiveChats/>  */}
     </div>
   );
 }

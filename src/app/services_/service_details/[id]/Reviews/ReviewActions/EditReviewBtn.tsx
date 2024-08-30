@@ -7,7 +7,7 @@ import React, { useCallback } from "react";
 import { IoPencil } from "react-icons/io5";
 interface DeleteReviewbtProps {
   data: any;
-  LodgeDataId: any;
+  ServicesDataId: any;
   isWriteReviewOpen: any;
   handleCloseWriteReview: any;
 }
@@ -16,7 +16,7 @@ const EditReviewBtn: React.FC<DeleteReviewbtProps> = ({
   isWriteReviewOpen,
   handleCloseWriteReview,
   data,
-  LodgeDataId,
+  ServicesDataId,
 }) => {
   const dispatch = useAppDispatch();
 
@@ -25,7 +25,7 @@ const EditReviewBtn: React.FC<DeleteReviewbtProps> = ({
     const parseToken = localStorageToken && JSON.parse(localStorageToken);
     try {
       // getting reviews
-      const Url = `${Endpoints.getPrivateLodgesbyId + LodgeDataId}/reviews`;
+      const Url = `${Endpoints.getPrivateServicesbyId + ServicesDataId}/reviews`;
       const resReviews = await fetch(Url, {
         method: "GET",
         headers: {
@@ -44,7 +44,7 @@ const EditReviewBtn: React.FC<DeleteReviewbtProps> = ({
   const handleEditReview = async (param: any) => {
     const localStorageToken = localStorage.getItem("token");
     const parseToken = localStorageToken && JSON.parse(localStorageToken);
-    const Url = `${Endpoints.getPrivateLodgesbyId}${LodgeDataId}/reviews/${data._id}`;
+    const Url = `${Endpoints.getPrivateServicesbyId}${ServicesDataId}/reviews/${data._id}`;
     const body = {
       method: "PATCH",
       headers: {

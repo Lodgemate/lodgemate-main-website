@@ -10,7 +10,7 @@ import { Endpoints } from "@/services/Api/endpoints";
 import { useParams } from "next/navigation";
 import { Lodge } from "@/lib/Types";
 import Replies from "./Reviews/Modals/RepliesModal";
-import LodgeReviews from "./Reviews/ServicesReviews";
+import ServicesReviews from "./Reviews/ServicesReviews";
 import ReviewComments from "./Reviews/Modals/ReplyComment";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { selectAllUsersdata } from "@/lib/features/Users/usersSlice";
@@ -86,7 +86,7 @@ function ServicesInfo() {
 
   const currentUserData = useAppSelector(selectAllUsersdata);
   const RevieweData: any = useAppSelector(selectAllReviews);
-  const [LodgeData, setLodgeData] = useState<Lodge | null>(null);
+  const [ServiceData, setServiceData] = useState<Lodge | null>(null);
   const [showReplies, setshowReplies] = useState(false);
   const [writereply, setwritereply] = useState(false);
   const [isWriteReviewOpen, setIsWriteReviewOpen] = useState(false);
@@ -138,7 +138,7 @@ const [isOpen, setIsOpen] = useState(false);
         const parsedRes = await res.json();
         if (parsedRes.status === "success") {
           setisLoading(false);
-          setLodgeData(parsedRes.data.lodge);
+          setServiceData(parsedRes.data.lodge);
           try {
             // getting reviews
             const Url = `${Endpoints.getPrivateServicesbyId + id}/reviews`;
@@ -201,7 +201,7 @@ const [isOpen, setIsOpen] = useState(false);
       </>
     );
   }
-  if (!LodgeData) {
+  if (!ServiceData) {
     return (
       <div className='h-fit'>
         {/* <NotFoundPage/> */}
@@ -210,8 +210,8 @@ const [isOpen, setIsOpen] = useState(false);
     );
   }
 
-  // Ensure LodgeData.features is defined and of correct type
-  const lodgeFeatures = LodgeData.lodgeFeatures || [];
+  // Ensure ServiceData.features is defined and of correct type
+  const lodgeFeatures = ServiceData.lodgeFeatures || [];
 
   // Function to get icon URL based on feature name
   const getFeatureIcon = (featureName: string) => {
@@ -264,7 +264,7 @@ const [isOpen, setIsOpen] = useState(false);
      style: "currency",
      currency: "NGN",
      minimumFractionDigits: 0,
-   }).format(LodgeData.price);
+   }).format(ServiceData.price);
   
   
   const openModal = (index: number) => {
@@ -277,13 +277,13 @@ const [isOpen, setIsOpen] = useState(false);
   };
 
   const goToNext = () => {
-    setCurrentIndex((prevIndex) => (prevIndex + 1) % LodgeData.photos.length);
+    setCurrentIndex((prevIndex) => (prevIndex + 1) % ServiceData.photos.length);
   };
 
   const goToPrevious = () => {
     setCurrentIndex(
       (prevIndex) =>
-        (prevIndex - 1 + LodgeData.photos.length) % LodgeData.photos.length
+        (prevIndex - 1 + ServiceData.photos.length) % ServiceData.photos.length
     );
   };
 
@@ -307,19 +307,19 @@ const [isOpen, setIsOpen] = useState(false);
               show={writereply}
               onClose={() => setwritereply(false)}
               data={commentsOrReplies}
-              currentLodge={LodgeData}
+              currentLodge={ServiceData}
               userData={currentUserData}
             />
             {/* <CallAgent
               show={isCallAgentOpen}
-              phoneNo={LodgeData.postedBy.phoneNumber}
+              phoneNo={ServiceData.postedBy.phoneNumber}
               onClose={handleCloseCallAgent}
             />{" "} */}
             <Replies
               show={showReplies}
               onClose={() => setshowReplies(false)}
               data={commentsOrReplies}
-              currentLodge={LodgeData}
+              currentLodge={ServiceData}
             />
             <Servicesaved
               show={isServicesavedOpen}
@@ -327,7 +327,7 @@ const [isOpen, setIsOpen] = useState(false);
             />
             {/* the Name of the Product */}
             <h1 className="sm:text-[18px] text-[16px] sm:block hidden font-semibold text-dgray">
-              {LodgeData.lodgeName}
+              {ServiceData.lodgeName}
             </h1>
             <div className="sm:flex justify-between w-full hidden">
               <div className="flex gap-[24px] items-center">
@@ -341,7 +341,7 @@ const [isOpen, setIsOpen] = useState(false);
                     </div>
 
                     {/* the address should be in this paragraph */}
-                    <p className=" capitalize">{LodgeData.address_text}</p>
+                    <p className=" capitalize">{ServiceData.address_text}</p>
                   </div>
 
                   <div className="flex gap-2 items-center mt-2">
@@ -354,8 +354,8 @@ const [isOpen, setIsOpen] = useState(false);
 
                     {/* the avrage review and the number of reviews is suppused to be displayed in this paragraph */}
                     <p className=" capitalize">
-                      {LodgeData.ratings.avgRating} •{" "}
-                      {LodgeData.ratings.totalRatings} reviews
+                      {ServiceData.ratings.avgRating} •{" "}
+                      {ServiceData.ratings.totalRatings} reviews
                     </p>
                   </div>
                 </div>
@@ -374,7 +374,7 @@ const [isOpen, setIsOpen] = useState(false);
                   <p className="text-[16px] text-dgray border-b pb-2 ">
                     {formattedPrice} /yr
                   </p>
-                  {LodgeData.negotiable && (
+                  {ServiceData.negotiable && (
                     <div className="bg-lskyblue px-2 mt-2 font-bold text-lblue rounded-lg ">
                       {/* this only displays when the product is Negotiable */}
                       <p>Negotiable</p>
@@ -435,7 +435,7 @@ const [isOpen, setIsOpen] = useState(false);
             className="flex gap-4 overflow-x-scroll scroll-smooth no-scrollbar"
             style={{ scrollBehavior: "smooth" }}
           >
-            {LodgeData.photos.map((image, index) => (
+            {ServiceData.photos.map((image, index) => (
               <div key={index} className="flex-none">
                 <img
                   src={image}
@@ -465,7 +465,7 @@ const [isOpen, setIsOpen] = useState(false);
           </button>
           <div className="max-w-4xl">
             <img
-              src={LodgeData.photos[currentIndex]}
+              src={ServiceData.photos[currentIndex]}
               alt={`image ${currentIndex + 1}`}
               className="w-full h-auto"
             />
@@ -480,7 +480,7 @@ const [isOpen, setIsOpen] = useState(false);
       )}
 
       <h1 className="text-[16px] mt-[24px] mb-[20px] px-4 sm:hidden font-semibold text-dgray">
-        {LodgeData.lodgeName}
+        {ServiceData.lodgeName}
       </h1>
 
       <div className="  sm:hidden">
@@ -495,7 +495,7 @@ const [isOpen, setIsOpen] = useState(false);
               </div>
 
               {/* the address should be in this paragraph */}
-              <p>{LodgeData.address_text}</p>
+              <p>{ServiceData.address_text}</p>
             </div>
 
             <div className="flex gap-2 items-center">
@@ -508,7 +508,7 @@ const [isOpen, setIsOpen] = useState(false);
 
               {/* the avrage review and the number of reviews is suppused to be displayed in this paragraph */}
               <p>
-                {LodgeData.ratings.avgRating} • {LodgeData.ratings.userCount}{" "}
+                {ServiceData.ratings.avgRating} • {ServiceData.ratings.userCount}{" "}
                 reviews
               </p>
             </div>
@@ -526,9 +526,9 @@ const [isOpen, setIsOpen] = useState(false);
 
             {/* the p tag displays the price of each product  */}
             <p className="text-[18px] text-dgray font-semibold border-b pb-2 ">
-              ₦{LodgeData.price} /yr
+              ₦{ServiceData.price} /yr
             </p>
-            {LodgeData.negotiable && (
+            {ServiceData.negotiable && (
               <div className="bg-lskyblue px-2 ml-2 font-bold mt-3 text-lblue rounded-lg text-[15px]">
                 {/* this only displays when the product is Negotiable */}
                 <p>Negotiable</p>
@@ -548,7 +548,7 @@ const [isOpen, setIsOpen] = useState(false);
                 </h2>
 
                 {/* this p tag should display the description of the product */}
-                <p>{LodgeData.lodgeDescription}</p>
+                <p>{ServiceData.lodgeDescription}</p>
               </div>
 
               <div className="py-[18px] mb-[18px]- border-lgray border-b-2 border-opacity-[10%]">
@@ -589,7 +589,7 @@ const [isOpen, setIsOpen] = useState(false);
                             src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1716924895/utilities/LodgeMate_File/House_ovdfkw.svg"
                             alt=""
                           />
-                          <p className="pt-[8px]">{LodgeData.type}</p>
+                          <p className="pt-[8px]">{ServiceData.type}</p>
                         </div>{" "}
                       </div>
                     </div>
@@ -606,7 +606,7 @@ const [isOpen, setIsOpen] = useState(false);
                             alt=""
                           />
                           <p className="pt-[8px]">
-                            {LodgeData.numberOfRooms} bedroom
+                            {ServiceData.numberOfRooms} bedroom
                           </p>
                         </div>{" "}
                       </div>
@@ -627,8 +627,8 @@ const [isOpen, setIsOpen] = useState(false);
                           alt=""
                         />
                         <p className="text-[12px]">
-                          {LodgeData.ratings.avgRating} •{" "}
-                          {LodgeData.ratings.userCount} reviews
+                          {ServiceData.ratings.avgRating} •{" "}
+                          {ServiceData.ratings.userCount} reviews
                         </p>
                       </div>
                     </div>
@@ -653,8 +653,8 @@ const [isOpen, setIsOpen] = useState(false);
                   <div className=" gap-10 text-[15px]">
                     {/* use maping here too for the reviwes */}
                     {RevieweData && (
-                      <LodgeReviews
-                        LodgeData={LodgeData}
+                      <ServicesReviews
+                      ServicesData={ServiceData}
                         currentUserData={currentUserData}
                         data={RevieweData}
                         showReplies={handleViewReplies}
@@ -672,7 +672,7 @@ const [isOpen, setIsOpen] = useState(false);
                     Contact owner
                   </h2>
                   <Link
-                    href={`/profile/${LodgeData.postedBy._id}`}
+                    href={`/profile/${ServiceData.postedBy._id}`}
                     className="w-full text-center cursor-pointer border-2 rounded-lg border-opacity-[20px] py-[12px] mb-[18px]"
                   >
                     View profile
@@ -741,8 +741,8 @@ const [isOpen, setIsOpen] = useState(false);
                           alt=""
                         />
                         <p>
-                          {LodgeData.ratings.avgRating} •{" "}
-                          {LodgeData.ratings.userCount} reviews
+                          {ServiceData.ratings.avgRating} •{" "}
+                          {ServiceData.ratings.userCount} reviews
                         </p>
                       </div>
                     </div>
@@ -766,8 +766,8 @@ const [isOpen, setIsOpen] = useState(false);
                   <div className="gap-10  text-[15px]">
                     {/* use maping here too for the reviwes */}
                     {RevieweData && (
-                      <LodgeReviews
-                        LodgeData={LodgeData}
+                      <ServicesReviews
+                      ServicesData={ServiceData}
                         currentUserData={currentUserData}
                         data={RevieweData}
                         showReplies={handleViewReplies}

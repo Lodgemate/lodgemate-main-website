@@ -27,7 +27,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
   });
   return (
     <button
-      className="max-w-sm rounded overflow-hidden z-[9]  "
+      className="max-w-sm rounded overflow-hidden  "
       data-aos="fade-up"
     >
       <div className="relative">

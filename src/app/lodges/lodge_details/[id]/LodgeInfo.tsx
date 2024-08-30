@@ -21,6 +21,7 @@ import {
   selectAllReviews,
   setReviews,
 } from "@/lib/features/Reviews/ReviewsSlice";
+import ChatBtn from "@/components/Shared/chatBtn";
 
 interface LodgeInfoProps {
   id: string;
@@ -94,8 +95,9 @@ function LodgeInfo() {
   const [isLodgeSavedOpen, setIsLodgeSavedOpen] = useState(false);
   const [isLoading, setisLoading] = useState(false);
   const [commentsOrReplies, setcommentsOrReplies] = useState(null);
-const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
+  console.log(currentUserData)
 
   
 
@@ -286,7 +288,16 @@ const [isOpen, setIsOpen] = useState(false);
         (prevIndex - 1 + LodgeData.photos.length) % LodgeData.photos.length
     );
   };
-
+ const chatDetails = {
+   firstName: LodgeData.postedBy.firstName,
+   lastName: LodgeData.postedBy.lastName,
+   gender: LodgeData.postedBy.gender,
+   sender: currentUserData?.data.user._id,
+   reciver: LodgeData.postedBy._id,
+   roomId: `${currentUserData?.data.user._id}-${LodgeData.postedBy._id}`,
+   profilePicture: LodgeData.postedBy.profilePicture,
+   area: LodgeData.postedBy.administrativeArea,
+ };
   
 
 
@@ -686,9 +697,7 @@ const [isOpen, setIsOpen] = useState(false);
                     Call
                   </button>
 
-                  <button className="bg-pri w-full border-2 rounded-lg border-opacity-[20px] py-[12px] mb-[18px] bg-primary text-white">
-                    Chat
-                  </button>
+                  <ChatBtn details={chatDetails}/>
                   <div className="flex items-center gap-4">
                     {" "}
                     <Link href="/">

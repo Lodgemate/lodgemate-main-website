@@ -10,70 +10,71 @@ import { useAppSelector } from "@/lib/hooks";
 import { selectAllUsersdata } from "@/lib/features/Users/usersSlice";
 
 const DesktopChat: React.FC = () => {
-  const searchParams = useSearchParams();
   const currentUser = useAppSelector(selectAllUsersdata);
   const [activeChat, setActiveChat] = useState<MainObject | null>(null);
   const [messages, setMessages] = useState<any[]>([]);
 
   useEffect(() => {
-    const Data = {
-      _id: searchParams.get("roomId"),
-      latestMessage: {
-        _id: null,
-        roomId: searchParams.get("roomId"),
-        participants: [
-          {
-            _id: searchParams.get("sender"),
-            firstName: searchParams.get("firstName"),
-            lastName: searchParams.get("lastName"),
-            verifiedUser: null,
-            email: null,
-            emailVerified: false,
-            profilePicture: searchParams.get("profilePicture"),
-            phoneNumber: null,
-            gender: searchParams.get("gender"),
-            role: null,
-            lookingForRoomate: false,
-            totalLodges: null,
-            totalServices: null,
-            signupMethod: "email",
-            location: null,
-            address_text: null,
-            latitude: null,
-            longitude: null,
-            country: null,
-            administrativeArea: searchParams.get("area"),
-            subAdministrativeArea: null,
-          },
-          {
-            _id: searchParams.get("reciver"),
-
-            firstName: searchParams.get("firstName"),
-            lastName: searchParams.get("lastName"),
-            verifiedUser: null,
-            email: null,
-            emailVerified: false,
-            profilePicture: searchParams.get("profilePicture"),
-            phoneNumber: null,
-            gender: searchParams.get("gender"),
-            role: null,
-            lookingForRoomate: false,
-            totalLodges: null,
-            totalServices: null,
-            signupMethod: "email",
-            location: null,
-            address_text: null,
-            latitude: null,
-            longitude: null,
-            country: null,
-            administrativeArea: searchParams.get("area"),
-            subAdministrativeArea: null,
-          },
-        ],
-        sentBy: searchParams.get("sender"),
-      },
-    };
+  const searchParams = useSearchParams();
+    
     if (searchParams.get("roomId")) {
+      const Data = {
+        _id: searchParams.get("roomId"),
+        latestMessage: {
+          _id: null,
+          roomId: searchParams.get("roomId"),
+          participants: [
+            {
+              _id: searchParams.get("sender"),
+              firstName: searchParams.get("firstName"),
+              lastName: searchParams.get("lastName"),
+              verifiedUser: null,
+              email: null,
+              emailVerified: false,
+              profilePicture: searchParams.get("profilePicture"),
+              phoneNumber: null,
+              gender: searchParams.get("gender"),
+              role: null,
+              lookingForRoomate: false,
+              totalLodges: null,
+              totalServices: null,
+              signupMethod: "email",
+              location: null,
+              address_text: null,
+              latitude: null,
+              longitude: null,
+              country: null,
+              administrativeArea: searchParams.get("area"),
+              subAdministrativeArea: null,
+            },
+            {
+              _id: searchParams.get("reciver"),
+  
+              firstName: searchParams.get("firstName"),
+              lastName: searchParams.get("lastName"),
+              verifiedUser: null,
+              email: null,
+              emailVerified: false,
+              profilePicture: searchParams.get("profilePicture"),
+              phoneNumber: null,
+              gender: searchParams.get("gender"),
+              role: null,
+              lookingForRoomate: false,
+              totalLodges: null,
+              totalServices: null,
+              signupMethod: "email",
+              location: null,
+              address_text: null,
+              latitude: null,
+              longitude: null,
+              country: null,
+              administrativeArea: searchParams.get("area"),
+              subAdministrativeArea: null,
+            },
+          ],
+          sentBy: searchParams.get("sender"),
+        },
+      };
       //@ts-ignore
       setActiveChat(Data);
     }

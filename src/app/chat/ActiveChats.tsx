@@ -1,3 +1,4 @@
+"use client"
 import { Endpoints } from '@/services/Api/endpoints'
 import { FetchApi } from '@/utils/Fetchdata'
 import { extractDate } from '@/utils/utils'

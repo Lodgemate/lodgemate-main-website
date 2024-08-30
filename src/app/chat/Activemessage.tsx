@@ -1,3 +1,4 @@
+"use client"
 import { selectAllUsersdata } from '@/lib/features/Users/usersSlice';
 import { useAppSelector } from '@/lib/hooks';
 import { Endpoints } from '@/services/Api/endpoints';

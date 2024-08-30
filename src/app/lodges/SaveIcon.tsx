@@ -1,11 +1,41 @@
-import { useState } from "react";
+import { Endpoints } from "@/services/Api/endpoints";
+import { FetchApi } from "@/utils/Fetchdata";
+import { useEffect, useState } from "react";
 
-function HeartIcon() {
+function HeartIcon({type, id}:any) {
   const [isRed, setIsRed] = useState(false);
 
   const handleClick = () => {
     setIsRed(!isRed);
   };
+  useEffect(()=>{
+    const localStorageToken = localStorage.getItem("token");
+    const parseToken = localStorageToken && JSON.parse(localStorageToken);
+    const AddToWhishlist = async () => {
+      const url = Endpoints.addToWishlist;
+
+      const options = {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${parseToken}`,
+        },
+        body: {
+          type: "lodge",
+          id: "66c244a951815292833c97f4",
+        },
+      };
+
+      console.log(url);
+      console.log(type)
+      // const res= await fetch(url,options)
+        // const response = await FetchApi(url, options);
+         console.log(await FetchApi(url, options));
+    };
+    AddToWhishlist()
+
+
+  },[isRed])
 
   return (
     <img

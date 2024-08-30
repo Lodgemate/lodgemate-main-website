@@ -12,6 +12,9 @@ interface ActiveChatsProps {
 
 const ActiveChats:React.FC<ActiveChatsProps> = ({currentUser, activeChat, setActiveChat}) => {
     const [data, seData] = useState<any[] | null>(null)
+    if (data === null) {
+      return
+    }
 
     useEffect(()=>{
       const localStorageToken = localStorage.getItem("token");
@@ -53,12 +56,12 @@ const ActiveChats:React.FC<ActiveChatsProps> = ({currentUser, activeChat, setAct
       >
         <div className="flex items-center ">
           <img
-            src={     reciversData(chat.latestMessage.participants).profilePicture}
-            alt={`${     reciversData(chat.latestMessage.participants).firstName}'s profile`}
+            src={ reciversData(chat.latestMessage.participants)?.profilePicture}
+            alt={`${reciversData(chat.latestMessage.participants)?.firstName}'s profile`}
             className="w-[45px] h-[45px]  rounded-full"
           />
           <div className="ml-4">
-            <div className="font-semibold">{     reciversData(chat.latestMessage.participants).firstName}</div>
+            <div className="font-semibold">{reciversData(chat.latestMessage.participants)?.firstName}</div>
             <div className="w-[150px] truncate text-[15px]">
               {chat.latestMessage.message}
             </div>

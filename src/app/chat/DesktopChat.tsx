@@ -18,7 +18,7 @@ const DesktopChat: React.FC = () => {
 
   useEffect(() => {
     
-    if (searchParams.get("roomId")) {
+    if (searchParams.get("roomId"), searchParams.get("sender"),searchParams.get("profilePicture")) {
       const Data = {
         _id: searchParams.get("roomId"),
         latestMessage: {
@@ -76,6 +76,7 @@ const DesktopChat: React.FC = () => {
           sentBy: searchParams.get("sender"),
         },
       };
+      console.log('ran')
       //@ts-ignore
       setActiveChat(Data);
     }
@@ -125,15 +126,15 @@ const DesktopChat: React.FC = () => {
           <div className='flex flex-col justify-center items-center w-full'>
             <img
               src={
-                reciversData(activeChat?.latestMessage.participants).profilePicture
+                reciversData(activeChat?.latestMessage.participants)?.profilePicture
               }
               alt={`${
-                reciversData(activeChat?.latestMessage.participants).firstName
+                reciversData(activeChat?.latestMessage.participants)?.firstName
               }'s profile`}
               className='w-24 h-24 rounded-full mb-4'
             />
             <div className='text-lg font-semibold'>
-              {reciversData(activeChat?.latestMessage.participants).firstName}
+              {reciversData(activeChat?.latestMessage.participants)?.firstName}
             </div>
             <div className='flex items-center gap-2'>
               <div className='flex items-center border px-[20px] py-[8px] gap-2 rounded-[8px]'>
@@ -142,7 +143,7 @@ const DesktopChat: React.FC = () => {
                   alt='gender'
                 />
                 <p>
-                  {reciversData(activeChat?.latestMessage.participants).gender}
+                  {reciversData(activeChat?.latestMessage.participants)?.gender}
                 </p>
               </div>
               <div className='flex items-center border px-[20px] py-[8px] gap-2 rounded-[8px]'>
@@ -152,8 +153,7 @@ const DesktopChat: React.FC = () => {
                 />
                 <p>
                   {
-                    reciversData(activeChat?.latestMessage.participants)
-                      .administrativeArea
+                    reciversData(activeChat?.latestMessage.participants)?.administrativeArea
                   }
                 </p>
               </div>

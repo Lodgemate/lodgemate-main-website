@@ -2,7 +2,7 @@ import { Endpoints } from "@/services/Api/endpoints";
 import { FetchApi } from "@/utils/Fetchdata";
 import { useEffect, useState } from "react";
 
-function HeartIcon({type,id}) {
+function HeartIcon({type, id}:any) {
   const [isRed, setIsRed] = useState(false);
 
   const handleClick = () => {

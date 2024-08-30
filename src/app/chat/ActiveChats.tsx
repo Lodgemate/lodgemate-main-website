@@ -3,14 +3,19 @@ import { FetchApi } from '@/utils/Fetchdata'
 import { extractDate } from '@/utils/utils'
 import React, { useEffect, useState } from 'react'
 
-const ActiveChats = ({activeChat, setActiveChat}) => {
+interface ActiveChatsProps {
+  currentUser: any;
+  activeChat: any;
+  setActiveChat: any;
+}
+
+const ActiveChats:React.FC<ActiveChatsProps> = ({currentUser, activeChat, setActiveChat}) => {
     const [data, seData] = useState<any[] | null>(null)
 
     useEffect(()=>{
       const localStorageToken = localStorage.getItem("token");
       const parseToken = localStorageToken && JSON.parse(localStorageToken);
         const url=Endpoints.getAllMessages 
-        console.log(parseToken)
        const body = {
          headers: {
            Authorization: `Bearer ${parseToken}`,
@@ -21,16 +26,22 @@ const ActiveChats = ({activeChat, setActiveChat}) => {
             try {
                 const res: any= await FetchApi(url, body)
                  seData(res.data.latestRoomsMessage)
-                console.log(res)
             } catch (error) {
                 
             }
         }
         fetchData()
     },[activeChat])
+
+    const reciversData=(data :any[])=>{
+      const newArr = data.filter((ent: any)=>ent?._id !== currentUser?.data.user._id )
+      return newArr[0]
+    }
+
   return (
     <>
     {data &&  data.map((chat)=>{
+ 
       return (
         <div
         key={chat.latestMessage._id}
@@ -41,12 +52,12 @@ const ActiveChats = ({activeChat, setActiveChat}) => {
       >
         <div className="flex items-center ">
           <img
-            src={chat.latestMessage.participants[0].profilePicture}
-            alt={`${chat.latestMessage.participants[0].firstName}'s profile`}
-            className="w-[45px] h-[45px] rounded-full"
+            src={     reciversData(chat.latestMessage.participants).profilePicture}
+            alt={`${     reciversData(chat.latestMessage.participants).firstName}'s profile`}
+            className="w-[45px] h-[45px]  rounded-full"
           />
           <div className="ml-4">
-            <div className="font-semibold">{chat.latestMessage.participants[0].firstName}</div>
+            <div className="font-semibold">{     reciversData(chat.latestMessage.participants).firstName}</div>
             <div className="w-[150px] truncate text-[15px]">
               {chat.latestMessage.message}
             </div>

@@ -9,11 +9,9 @@ import { Endpoints } from "@/services/Api/endpoints";
 import { useParams } from "next/navigation";
 import {  Service } from "@/lib/Types";
 import { LoadingSkeleton } from "@/components/Skeletons/DetalsSkeleton";
-import DeleteYourReview from "../../modals/DeleteYourReview";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { selectAllUsersdata } from "@/lib/features/Users/usersSlice";
 import DeleteModal from "@/components/modals/DeleteModal";
-import NotFoundPage from "@/app/not-found";
 import {
   selectAllReviews,
   setReviews,
@@ -237,6 +235,7 @@ function ServicesDetails() {
             />
             <CallAgent
               show={isCallAgentOpen}
+              //@ts-ignore
                phoneNo={ServiceData.vendor.phoneNumber}
               onClose={handleCloseCallAgent}
             />{" "}

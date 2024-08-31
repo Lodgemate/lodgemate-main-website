@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Tab1Content from "./Tab1";
 import Tab2Content from "./Tab2";
@@ -9,7 +9,7 @@ import Tab4Content from "./Tab4";
 import Tab5Content from "./Tab5";
 import { FetchApi } from "@/utils/Fetchdata";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
-import { selectAllList_Listingdata } from "@/lib/features/Listing/ListingSlice";
+import { resetFormData, selectAllList_Listingdata } from "@/lib/features/Listing/ListingSlice";
 import { Endpoints } from "@/services/Api/endpoints";
 import {
   showFailedModal,
@@ -30,6 +30,10 @@ const LodgeTabs = () => {
     { title: "Tab 5", content: <Tab5 /> },
   ];
 
+  useEffect(() => {
+    dispatch(resetFormData());
+  }, []);
+
   const nextTab = () => {
     if (activeTab < tabs.length - 1) {
       setActiveTab(activeTab + 1);
@@ -46,7 +50,7 @@ const LodgeTabs = () => {
     dispatch(showLoadingModal("Posting Lodge"));
     const localStorageToken = localStorage.getItem("token");
     const parseToken = localStorageToken && JSON.parse(localStorageToken);
-    // console.log(Object.fromEntries(formData));
+     console.log(Object.fromEntries(formData));
     if (!(formData instanceof FormData)) {
       console.error("FormData is not available or is not of type FormData");
       return;

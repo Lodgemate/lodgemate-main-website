@@ -36,11 +36,13 @@ const GooglePlacesAutocomplete: React.FC<props> = ( {handleLocation} ) => {
 
   // Handle place selection
   const onPlaceChanged = () => {
+    
     if (autocomplete) {
       const place = autocomplete.getPlace();
-      console.log(place.formatted_address)
-      setInputValue(place.formatted_address);
       handleLocation(place)
+      console.log(place)
+      setInputValue(place.formatted_address);
+      
       console.log('Selected Place:', place);
     }
   };

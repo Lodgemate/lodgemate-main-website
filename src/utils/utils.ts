@@ -22,7 +22,9 @@ export const getCurrentDate = () => {
 };
 
 export function calculateCenterLatLng(viewport: any) {
+  console.log(viewport)
   // Extract latitude bounds from the viewport
+  console.log(viewport.ci.lo )
   const latLo = viewport.Yh.lo;
   const latHi = viewport.Yh.hi;
 
@@ -33,6 +35,10 @@ export function calculateCenterLatLng(viewport: any) {
   // Calculate the center latitude and longitude
   const latitude = (latLo + latHi) / 2;
   const longitude = (lngLo + lngHi) / 2;
+  console.log( {
+    lat: latitude,
+    lng: longitude
+  })
 
   // Return an object with the latitude and longitude
   return {

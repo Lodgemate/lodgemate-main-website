@@ -21,11 +21,10 @@ interface ServicesReviewsProps {
   showReplies: (param: any) => {} | any;
   replycomment: (param: any) => {} | any;
   currentUserData: ApiResponse | null;
-  LodgeData: any;
+  ServicesData: any;
 }
 const ServicesReviews: React.FC<ServicesReviewsProps> = React.memo(
-  ({ data, showReplies, replycomment, currentUserData, LodgeData }) => {
-
+  ({ data, showReplies, replycomment, currentUserData, ServicesData }) => {
     const [isWriteReviewOpen, setIsWriteReviewOpen] = useState(false);
 
     const handleOpenWriteReview = () => {
@@ -49,7 +48,9 @@ const ServicesReviews: React.FC<ServicesReviewsProps> = React.memo(
                     />
                   </div>
                   <div>
-                    <p className='font-medium z-10'>{review.postedBy.firstName}</p>
+                    <p className='font-medium z-10'>
+                      {review.postedBy.firstName}
+                    </p>
                     <p className=' text-gray-600 text-sm'>
                       {extractDate(review.dateCreated)}
                     </p>
@@ -70,7 +71,7 @@ const ServicesReviews: React.FC<ServicesReviewsProps> = React.memo(
                   <div>
                     <button>
                       <DeleteReviewbtn
-                        LodgeDataId={LodgeData.id}
+                        ServicesDataId={ServicesData.id}
                         data={review}
                       />
                     </button>
@@ -88,7 +89,7 @@ const ServicesReviews: React.FC<ServicesReviewsProps> = React.memo(
                       <EditReviewBtn
                         isWriteReviewOpen={isWriteReviewOpen}
                         handleCloseWriteReview={handleCloseWriteReview}
-                        LodgeDataId={LodgeData.id}
+                        ServicesDataId={ServicesData.id}
                         data={review}
                       />
                     </button>

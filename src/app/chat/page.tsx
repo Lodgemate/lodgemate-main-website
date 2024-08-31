@@ -1,12 +1,16 @@
-import React from "react";
+"use client"
+import React, { Suspense } from "react";
 import DesktopChat from "./DesktopChat";
 import MobileChat from "./MobileChat";
 
-function Chat() {
+
+const Chat=()=> {
   return (
     <div className=" flex justify-center  text-[14px]">
       <div className="lg:block hidden w-full max-w-[1200px] border">
-        <DesktopChat />
+      <Suspense fallback={<>Loading.....</>}>
+       <DesktopChat />
+      </Suspense>
       </div>
       <div className="lg:hidden w-full max-w-[1200px] border block">
         {" "}

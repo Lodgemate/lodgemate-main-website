@@ -9,10 +9,10 @@ import { FaTrashCan } from 'react-icons/fa6'
 
 interface DeleteReviewbtProps{
   data: any,
-   LodgeDataId: any
+   ServicesDataId: any
 }
 
-const DeleteReviewbtn: React.FC<DeleteReviewbtProps> = ({data, LodgeDataId}) => {
+const DeleteReviewbtn: React.FC<DeleteReviewbtProps> = ({data, ServicesDataId}) => {
   const dispatch= useAppDispatch()
 
   const fetchData =useCallback(async () => {
@@ -20,7 +20,7 @@ const DeleteReviewbtn: React.FC<DeleteReviewbtProps> = ({data, LodgeDataId}) => 
     const parseToken = localStorageToken && JSON.parse(localStorageToken);
     try {
       // getting reviews
-      const Url = `${Endpoints.getPrivateLodgesbyId + LodgeDataId}/reviews`;
+      const Url = `${Endpoints.getPrivateServicesbyId + ServicesDataId}/reviews`;
       const resReviews = await fetch(Url, {
         method: "GET",
         headers: {
@@ -43,7 +43,7 @@ const DeleteReviewbtn: React.FC<DeleteReviewbtProps> = ({data, LodgeDataId}) => 
    const handleDelete=async()=>{
     const localStorageToken = localStorage.getItem("token");
     const parseToken =localStorageToken && JSON.parse(localStorageToken)
-    const Url = `${Endpoints.getPrivateLodgesbyId}${LodgeDataId}/reviews/${data._id}`;
+    const Url = `${Endpoints.getPrivateServicesbyId}${ServicesDataId}/reviews/${data._id}`;
     console.log(Url)
     const body={
       method: "DELETE",

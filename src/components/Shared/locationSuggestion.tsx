@@ -13,7 +13,10 @@ interface LatLng {
   lat: number;
   lng: number;
 }
-
+interface LatLngFunc {
+  lat: ()=>void;
+  lng: ()=>void;
+}
 interface Bounds {
   northeast: LatLng;
   southwest: LatLng;
@@ -21,7 +24,7 @@ interface Bounds {
 
 interface Geometry {
   bounds: Bounds;
-  location: LatLng;
+  location: LatLng | LatLngFunc;
   location_type: string;
   viewport: Bounds;
 }

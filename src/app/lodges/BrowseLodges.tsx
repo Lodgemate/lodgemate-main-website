@@ -129,7 +129,7 @@ const BrowseLodges: React.FC<BrowseLodgesProps> = ({
       let fetchUrl;
       if (isAuth && token) {
         // this will be uncommented when db is updated
-        // fetchUrl= Endpoints.getPrivateLodges + urlGenerator(param);
+        //  fetchUrl= Endpoints.getPrivateLodges + urlGenerator(param);
         // this will be deleted when db is updated
         fetchUrl = Endpoints.getPublicLodges + urlGenerator(param);
       } else if (!token) {
@@ -180,7 +180,9 @@ const BrowseLodges: React.FC<BrowseLodgesProps> = ({
       {LodgesData &&
             LodgesData.data?.lodges
               .slice(0, showMore ? LodgesData.data.lodges.length : LodgesData.data.lodges.length/2)
-              .map((product: any) => (
+              .map((product: any) => {
+                console.log(product)
+                return(
                 ///@ts-ignore
                 <Card
                   {...product}
@@ -191,7 +193,7 @@ const BrowseLodges: React.FC<BrowseLodgesProps> = ({
                   nearbyUniversity={product.administrativeArea}
                   price={product.price || 0}
                 />
-              ))}
+              )})}
       </>
     )
   },[LodgesData,showMore])

@@ -1,4 +1,3 @@
-
 import "./globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
@@ -11,6 +10,7 @@ import LogoLoader from "@/Ui/shared/logoLoader";
 import Aproved from "@/Ui/shared/Aproved";
 import Failed from "@/Ui/shared/Failed";
 import EmailModal from "@/Ui/shared/EmailModal";
+import { Providers } from "@/components/ProgressBarProvider";
 import GetApp from "./GetApp";
 
 
@@ -34,10 +34,12 @@ export default function RootLayout({
       <StoreProvider>
         <Navbar />
         <body className={`  relative  ${inter.className}`}>
+          <Providers>
           <div className=" min-h-screen">{children}</div>
           <LogoLoader />
           <Aproved />
           <Failed />
+          </Providers>
           <GetApp />
         </body>
         <Footer />

@@ -135,10 +135,7 @@ const SignUpForm: React.FC = () => {
       dispatch(showLoadingModal(null));
     }
   };
-  console.log(data);
-  console.log(Error);
-  // console.log(data.json())
-  console.log(Status);
+
   useEffect(() => {
     const worker =async()=>{
     if (Error) {
@@ -149,24 +146,19 @@ const SignUpForm: React.FC = () => {
     if (signedInData === null) {
       return;
     }
+
     console.log(signedInData.status);
     if (signedInData.status === "success" && signedInData.token) {
       console.log(signedInData.token);
       localStorage.setItem("token", JSON.stringify(signedInData.token));
       dispatch(setAuthenticated());
-      // dispatch(showLoadingModal(null));
-      // dispatch(showSuccessfulModal("login Successful"));
-      // dispatch(showSuccessfulModal(null));
       const res = await verifyEmail({email :formData.email});
       console.log(res)
       if (res.status === "success") {
         hidemail(formData.email)
-       
         router.push("/auth/signup/verify_your_email");
       } else if (res.status === "fail") {
   }
-
-     
       // router.back()
     } else if (!signedInData.status) {
       dispatch(showLoadingModal(null));

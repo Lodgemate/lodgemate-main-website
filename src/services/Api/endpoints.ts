@@ -20,4 +20,7 @@ export const Endpoints ={
     getPublicRoommatesbyId:`${process.env.NEXT_PUBLIC_BASE_URL}/v1/roommate-requests/p/`,
     getPrivateRoommates:`${process.env.NEXT_PUBLIC_BASE_URL}/v1/roommate-requests?`,
     getPrivateRoommatesbyId:`${process.env.NEXT_PUBLIC_BASE_URL}/v1/roommate-requests/`,
+    getAllMessages:`${process.env.NEXT_PUBLIC_BASE_URL}/v1/rooms/messages`,
+    getAllRecentMessages:`${process.env.NEXT_PUBLIC_BASE_URL}/v1/rooms/`,
+    addToWishlist:`${process.env.NEXT_PUBLIC_BASE_URL}/v1/wishlists`,
 }

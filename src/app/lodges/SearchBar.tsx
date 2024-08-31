@@ -113,7 +113,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
         </button>
       </div>
       {query && ( // Render results if query is not empty
-        <div className='absolute w-full text-[12px]  top-20 sm:w-[510px] bg-white border border-stroke shadow-lg rounded-lg '>
+        <div className='absolute w-full text-[12px] z-20 top-20 sm:w-[510px] bg-white border border-stroke shadow-lg rounded-lg '>
           <div className="">
             <h3 className='bg-[#F5F5F5] py-[7px] px-4 text-dgray font-bold '>
               Lodges

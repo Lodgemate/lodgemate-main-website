@@ -253,7 +253,7 @@ function ServicesDetails() {
 
   return (
     <div>
-      <div className="sm:px-[100px] text-[14px] sm:mt-[100px]">
+      <div className="sm:px-[100px] text-[14px] capitalize sm:mt-[100px]">
         {/* modals render */}
         <DeleteModal />
         <WriteReview
@@ -283,7 +283,7 @@ function ServicesDetails() {
         />
         <LodgeSaved show={isServiceSavedOpen} onClose={handleCloseLodgeSaved} />
         {/* the Name of the Product */}
-        <h1 className="sm:text-[16px] text-[16px] sm:block hidden font-semibold text-dgray">
+        <h1 className="sm:text-[16px] text-[16px]  sm:block hidden font-semibold text-dgray">
           {ServiceData.serviceName}
         </h1>
         <div className="sm:flex justify-between hidden">
@@ -427,11 +427,11 @@ function ServicesDetails() {
           </button>
         </div>
       )}
-      <h1 className="text-[15px] mt-[24px] mb-[20px] px-4 sm:hidden font-semibold text-dgray">
+      <h1 className="text-[16px] capitalize mt-[24px] mb-[20px] px-4 sm:hidden font-semibold text-dgray">
         {ServiceData.serviceName}
       </h1>
 
-      <div className="  sm:hidden">
+      <div className="  sm:hidden text-[14px]">
         <div className="flex flex-col gap-[14px] px-4">
           <div className="">
             <div className="flex gap-2 pb-2 items-center">
@@ -473,8 +473,8 @@ function ServicesDetails() {
             </div>
 
             {/* the p tag displays the price of each product  */}
-            <p className="text-[18px] text-dgray font-semibold border-b pb-2 ">
-              ₦{ServiceData.minPrice} /yr
+            <p className="text-[16px] text-dgray font-semibold border-b pb-2 ">
+              {formattedPriceMin} - {formattedPriceMax}
             </p>
           </div>
         </div>
@@ -486,7 +486,7 @@ function ServicesDetails() {
       <div className="sm:mt-[70px] mt-[24px] px-4 sm:px-[100px]">
         <div className=" justify-start grid grid-cols-1 sm:grid-cols-3 sm:gap-[100px]">
           <div className="col-span-2">
-            <div className="py-[18px]  mb-[18px]- border-lgray border-t-2 border-b-2 border-opacity-[10%]">
+            <div className="py-[18px] text-[14px] mb-[18px]- border-lgray border-t-2 border-b-2 border-opacity-[10%]">
               <h2 className="pb-[28-px] text-[16px] mb-[2px] sm:mb-[28px]">
                 Description
               </h2>
@@ -531,10 +531,10 @@ function ServicesDetails() {
               <div></div>
             </div>
           </div>
-          <div className="col-span-1">
+          <div className="col-span-1 text-[14px]">
             <div className="flex sm:w-[300px] flex-col justify-center items-center">
               <div className="flex flex-col justify-center items-center w-full p-[20px] border-2 border-opacity-[40%] rounded-[20px] py-[28px] shadow-lg">
-                <h2 className="text-[20px] font-bold mb-[18px]">
+                <h2 className="text-[16px] font-bold mb-[18px]">
                   Contact owner
                 </h2>
 
@@ -594,11 +594,11 @@ function ServicesDetails() {
                 </button>
               </div>
             </div>
-            <div className="pb-[40px]  sm:hidden mb-[40px] border-lgray border-b-2 border-opacity-[10%]">
+            <div className="pb-[40px] capitalize sm:hidden mb-[40px] border-lgray border-b-2 border-opacity-[10%]">
               <div className="mb-[32px]">
                 <div className="flex flex-col w-full gap-4 justify-between">
                   <div className="flex flex-col w-fit  gap-2">
-                    <h2 className="text-[24px]">Ratings & Reviews</h2>
+                    <h2 className="text-[16px]">Ratings & Reviews</h2>
                     <div className="flex items-center  ">
                       <img
                         src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1716926291/utilities/LodgeMate_File/home_pin_v3bj7d.svg"

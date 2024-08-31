@@ -12,9 +12,6 @@ interface ActiveChatsProps {
 
 const ActiveChats:React.FC<ActiveChatsProps> = ({currentUser, activeChat, setActiveChat}) => {
     const [data, seData] = useState<any[] | null>(null)
-    if (data === null) {
-      return
-    }
 
     useEffect(()=>{
       const localStorageToken = localStorage.getItem("token");
@@ -25,15 +22,12 @@ const ActiveChats:React.FC<ActiveChatsProps> = ({currentUser, activeChat, setAct
            Authorization: `Bearer ${parseToken}`,
          },
        };
-        const fetchData=async()=>{
-        
-            try {
-                const res: any= await FetchApi(url, body)
-                 seData(res.data.latestRoomsMessage)
-            } catch (error) {
-                
-            }
-        }
+        const fetchData = async () => {
+          try {
+            const res: any = await FetchApi(url, body);
+            seData(res.data.latestRoomsMessage);
+          } catch (error) {}
+        };
         fetchData()
     },[activeChat])
 

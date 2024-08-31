@@ -57,3 +57,26 @@ export const handlyCopy=async(copyTxt: any)=>{
   console.log(res)
   return res
 }
+
+export const calculateCombinedRating = (
+  category1: any,
+  people1: any,
+  category2: any,
+  people2: any
+) => {
+  // Calculate average rating for each category
+  const averageRating1 = category1 / people1;
+  const averageRating2 = category2 / people2;
+
+  // Normalize each average rating to a scale of 5
+  // Assuming the maximum possible rating for category 1 is 15 and for category 2 is 5
+  const normalizedRating1 = (averageRating1 / 15) * 5;
+  const normalizedRating2 = (averageRating2 / 5) * 5;
+
+  // Combine the normalized ratings
+  // Average the ratings for the final combined rating
+  const finalRating = (normalizedRating1 + normalizedRating2) / 2;
+
+  // Return the final rating rounded to one decimal place
+  return finalRating.toFixed(1);
+};

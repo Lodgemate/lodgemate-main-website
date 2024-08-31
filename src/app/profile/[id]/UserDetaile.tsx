@@ -4,91 +4,23 @@ import Link from "next/link";
 import React, { useState } from "react";
 import ProfileMenuModal from "./modals/ProfileMenu";
 import { ApiResponse } from "@/lib/Types";
+import UserSkeleton from "./UserSkeleton";
+import { calculateCombinedRating } from "@/utils/utils";
+import EditProfileModal from "./modals/ProfileEditModal";
 interface UserDetailasProps {
   data: ApiResponse | null;
 }
-const calculateCombinedRating = (
-  category1: any,
-  people1: any,
-  category2: any,
-  people2: any
-) => {
-  // Calculate average rating for each category
-  const averageRating1 = category1 / people1;
-  const averageRating2 = category2 / people2;
 
-  // Normalize each average rating to a scale of 5
-  // Assuming the maximum possible rating for category 1 is 15 and for category 2 is 5
-  const normalizedRating1 = (averageRating1 / 15) * 5;
-  const normalizedRating2 = (averageRating2 / 5) * 5;
-
-  // Combine the normalized ratings
-  // Average the ratings for the final combined rating
-  const finalRating = (normalizedRating1 + normalizedRating2) / 2;
-
-  // Return the final rating rounded to one decimal place
-  return finalRating.toFixed(1);
-};
 const UserDetailas: React.FC<UserDetailasProps> = React.memo(({ data }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [editProfileModal, setEditProfileModal] = useState(false);
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
   };
-  console.log(data);
-  const UserSkeleton = () => {
-    return (
-      <div className='w-full sm:max-w-430px sm:shadow sm:border pt-[100px]  sm:pt-[65px] text-[14px] rounded-[12px] sm:p-4 bg-white'>
-        {/* User image and menu button */}
-        <div className='flex w-full justify-between items-center mb-4'>
-          <div className='flex items-center'>
-            <div className='w-16 h-16 rounded-full animate-pulse bg-gray-300 ' />
-          </div>
-        </div>
 
-        {/* User name and status */}
-        <div className='flex items-center mb-4'>
-          <p className='animate-pulse bg-gray-300 w-32 rounded h-2'></p>
-        </div>
-
-        {/* Rating and reviews */}
-        <div className='flex items-center mb-4'>
-          <p className='animate-pulse bg-gray-300 w-32 rounded h-2'></p>
-        </div>
-
-        {/* User description */}
-        <div className='mb-4'>
-          <p className='animate-pulse bg-gray-300 w-32 rounded h-2'></p>
-        </div>
-
-        <div className='flex mb-4 gap-2 items-center'>
-          <p className='animate-pulse bg-gray-300 w-7  h-7 rounded-full'></p>
-          <p className='animate-pulse bg-gray-300 w-7  h-7 rounded-full'></p>
-          <p className='animate-pulse bg-gray-300 w-7  h-7 rounded-full'></p>
-          <p className='animate-pulse bg-gray-300 w-7  h-7 rounded-full'></p>
-        </div>
-
-        {/* User stats */}
-        <div className='flex justify-between mb-2'>
-          <p className='animate-pulse bg-gray-300 w-32 rounded h-2'></p>
-          <p className='animate-pulse bg-gray-300 w-5 rounded-full h-5'></p>
-        </div>
-        <div className='flex justify-between mb-2'>
-          <p className='animate-pulse bg-gray-300 w-32 rounded h-2'></p>
-          <p className='animate-pulse bg-gray-300 w-5 rounded-full h-5'></p>
-        </div>
-        <div className='flex justify-between mb-2'>
-          <p className='animate-pulse bg-gray-300 w-32 rounded h-2'></p>
-          <p className='animate-pulse bg-gray-300 w-5 rounded-full h-5'></p>
-        </div>
-        <div className='flex justify-between mb-2'>
-          <p className='animate-pulse bg-gray-300 w-32 rounded h-2'></p>
-          <p className='animate-pulse bg-gray-300 w-5 rounded-full h-5'></p>
-        </div>
-      </div>
-    );
-  };
   return (
     <>
+   {editProfileModal && <EditProfileModal onClose={()=>setEditProfileModal(false)}/>}
       {!data ? (
         <UserSkeleton />
       ) : (
@@ -112,6 +44,7 @@ const UserDetailas: React.FC<UserDetailasProps> = React.memo(({ data }) => {
               </button>
               <div className=' absolute bottom-0 right-0'>
                 <ProfileMenuModal
+                editProfile= {()=>setEditProfileModal(true)}
                   isOpen={isOpen}
                   toggleDropdown={toggleDropdown}
                   link={window.location.href}

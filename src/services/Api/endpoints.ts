@@ -23,4 +23,5 @@ export const Endpoints ={
     getAllMessages:`${process.env.NEXT_PUBLIC_BASE_URL}/v1/rooms/messages`,
     getAllRecentMessages:`${process.env.NEXT_PUBLIC_BASE_URL}/v1/rooms/`,
     addToWishlist:`${process.env.NEXT_PUBLIC_BASE_URL}/v1/wishlists`,
+    getNotification:`${process.env.NEXT_PUBLIC_BASE_URL}/v1/notifications`,
 }

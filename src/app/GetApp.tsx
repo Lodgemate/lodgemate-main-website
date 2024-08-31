@@ -22,27 +22,27 @@ function GetApp() {
       {" "}
       {showPopup && (
         <div className=" flex justify-center ">
-          <div className="popup max-w-[500px]  flex flex-col sm:flex-row sm:items-center py-1 px-4 border  rounded-md items-start justify-center gap-2 fixed bottom-[100px] sm:bottom-4 z-10 w-full bg-white">
-            <button onClick={closePopup} className=" text-end w-full flex ">
-              <p>x</p>
+          <div className="popup max-w-[550px]  flex  flex-col sm:flex-row sm:items-center  p-4 border  rounded-md items-start justify-center gap-2 fixed bottom-[100px] sm:bottom-4 z-10 w-full bg-white shadow-lg">
+            <button onClick={closePopup} className=" text-end w-full flex justify-end sm:justify-center sm:w-fit ">
+              <p className=" border- px-2 rounded-full- mr-[1px] font-bold flex text-end">x</p>
             </button>
-            <div className=" flex gap-2">
+            <div className=" flex items-center gap-2">
               {" "}
               <Image
                 src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1715961598/utilities/LodgeMate_File/Lodge_icon_pptxxh.svg"
-                width={40}
+                width={60}
                 height={20}
                 alt=""
                 className="border rounded-lg"
               />
-              <p className="text-[10px] w-[200px]">
-                Install our app now for easy access and the full experience.{" "}
+              <p className="text-[12px] w-[200px]">
+                Install our app now for easier access and the full experience.{" "}
               </p>
             </div>{" "}
-            <div className="flex space-x-4 items-center w-full text-[8px]">
+            <div className="flex space-x-4 items-center w-full text-[10px]">
               <a
                 href="https://www.apple.com/app-store/"
-                className="flex items-center px-2 min-w-[110px] py-2 border border-black rounded-md bg-black text-white"
+                className="flex items-center px-2 min-w-[130px] py-2 border border-black rounded-md bg-black text-white"
                 target="_blank"
                 rel="noopener noreferrer"
               >
@@ -58,7 +58,7 @@ function GetApp() {
               </a>
               <a
                 href="https://play.google.com/store"
-                className="flex items-center px-4 py-2 border min-w-[120px] border-black rounded-md bg-black text-white"
+                className="flex items-center px-4 py-2 border min-w-[130px] border-black rounded-md bg-black text-white"
                 target="_blank"
                 rel="noopener noreferrer"
               >

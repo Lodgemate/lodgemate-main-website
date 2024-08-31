@@ -268,6 +268,8 @@ function LodgeInfo() {
      minimumFractionDigits: 0,
    }).format(LodgeData.price);
   
+    const photosWithCover = [LodgeData.coverphoto, ...LodgeData.photos];
+
   
   const openModal = (index: number) => {
     setCurrentIndex(index);
@@ -279,13 +281,16 @@ function LodgeInfo() {
   };
 
   const goToNext = () => {
-    setCurrentIndex((prevIndex) => (prevIndex + 1) % LodgeData.photos.length);
+    setCurrentIndex(
+      (prevIndex) => (prevIndex + 1) % photosWithCover.length
+    );
   };
 
   const goToPrevious = () => {
     setCurrentIndex(
       (prevIndex) =>
-        (prevIndex - 1 + LodgeData.photos.length) % LodgeData.photos.length
+        (prevIndex - 1 + photosWithCover.length) %
+        photosWithCover.length
     );
   };
  const chatDetails = {
@@ -439,19 +444,19 @@ function LodgeInfo() {
         </div>
 
         {/* horizontal scroll div for displayiing the images horizolaly on one line the  */}
-        <div className="flex sm:h-[450px] h-[400px] gap-1 sm:rounded-l-[20px] overflow-hidden sm:ml-[100px]">
+        <div className="flex sm:h-[400px] h-[400px] gap-1 sm:rounded-l-[20px] overflow-hidden sm:ml-[100px]">
           {/* maping can be used to dispay the images */}
           <div
             ref={scrollContainerRef}
             className="flex gap-4 overflow-x-scroll scroll-smooth no-scrollbar"
             style={{ scrollBehavior: "smooth" }}
           >
-            {LodgeData.photos.map((image, index) => (
-              <div key={index} className="flex-none">
+            {photosWithCover.map((image, index) => (
+              <div key={index} className="flex-none w-[500px] overflow-hidden">
                 <img
                   src={image}
                   alt={`image ${index + 1}`}
-                  className="sm:h-[450px] h-[400px] w-[500px]"
+                  className="sm:h-[400px] cursor-pointer h-[400px] w-[500px]"
                   onClick={() => openModal(index)}
                 />
               </div>
@@ -476,7 +481,7 @@ function LodgeInfo() {
           </button>
           <div className="max-w-4xl  ">
             <img
-              src={LodgeData.photos[currentIndex]}
+              src={photosWithCover[currentIndex]}
               alt={`image ${currentIndex + 1}`}
               className="w-auto sm:h-screen"
             />
@@ -697,7 +702,7 @@ function LodgeInfo() {
                     Call
                   </button>
 
-                  <ChatBtn details={chatDetails}/>
+                  <ChatBtn details={chatDetails} />
                   <div className="flex items-center gap-4">
                     {" "}
                     <Link href="/">

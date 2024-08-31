@@ -7,7 +7,7 @@ import CallAgent from "../../modals/CallAgent";
 import LodgeSaved from "../../modals/ServicesSaved";
 import { Endpoints } from "@/services/Api/endpoints";
 import { useParams } from "next/navigation";
-import {  Service } from "@/lib/Types";
+import { Service } from "@/lib/Types";
 import { LoadingSkeleton } from "@/components/Skeletons/DetalsSkeleton";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { selectAllUsersdata } from "@/lib/features/Users/usersSlice";
@@ -21,13 +21,12 @@ import Replies from "./Reviews/Modals/RepliesModal";
 import { showFailedModal } from "@/lib/features/Modal/ModalSlice";
 import ServicesReviews from "./Reviews/ServicesReviews";
 
-
 function ServicesDetails() {
   const params = useParams();
   const { id } = params || {};
   const dispatch = useAppDispatch();
   const scrollContainerRef = useRef<HTMLDivElement>(null);
-  const [ServiceData, setServiceData]= useState<Service | null>(null);
+  const [ServiceData, setServiceData] = useState<Service | null>(null);
 
   const currentUserData = useAppSelector(selectAllUsersdata);
   const RevieweData: any = useAppSelector(selectAllReviews);
@@ -38,7 +37,10 @@ function ServicesDetails() {
   const [isServiceSavedOpen, setIsServiceSavedOpen] = useState(false);
   const [isLoading, setisLoading] = useState(false);
   const [commentsOrReplies, setcommentsOrReplies] = useState(null);
-  console.log(currentUserData)
+  const [isOpen, setIsOpen] = useState(false);
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  console.log(currentUserData);
 
   const reFetchReviews = async () => {
     const localStorageToken = localStorage.getItem("token");
@@ -55,10 +57,10 @@ function ServicesDetails() {
       });
       // these are all the reviews
       const reviewdata: any = await resReviews.json();
-      console.log(reviewdata)
+      console.log(reviewdata);
 
       if (reviewdata.status === "success") {
-        console.log(reviewdata.data.reviews)
+        console.log(reviewdata.data.reviews);
         dispatch(setReviews(reviewdata.data.reviews));
       }
       // setRevieweData(reviewdata)
@@ -72,24 +74,24 @@ function ServicesDetails() {
       const abortController = new AbortController();
       const localStorageToken = localStorage.getItem("token");
       const parseToken = localStorageToken && JSON.parse(localStorageToken);
-      console.log(fetchUrl)
+      console.log(fetchUrl);
       try {
         const res = await fetch(fetchUrl, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${parseToken}`
+            Authorization: `Bearer ${parseToken}`,
           },
         });
         const parsedRes = await res.json();
-        console.log(parsedRes)
+        console.log(parsedRes);
         if (parsedRes.status === "success") {
           setisLoading(false);
-          setServiceData(parsedRes.data.service)
+          setServiceData(parsedRes.data.service);
           try {
             // getting reviews
             const Url = `${Endpoints.getPrivateServicesbyId + id}/reviews`;
-      console.log(Url)
+            console.log(Url);
 
             const resReviews = await fetch(Url, {
               method: "GET",
@@ -100,7 +102,7 @@ function ServicesDetails() {
             });
             // these are all the reviews
             const reviewdata: any = await resReviews.json();
-      console.log(reviewdata)
+            console.log(reviewdata);
 
             if (reviewdata.status === "success") {
               dispatch(setReviews(reviewdata.data.reviews));
@@ -153,7 +155,7 @@ function ServicesDetails() {
   }
   if (!ServiceData) {
     return (
-      <div className='h-fit'>
+      <div className="h-fit">
         {/* <NotFoundPage/> */}
         Searching....
       </div>
@@ -193,14 +195,14 @@ function ServicesDetails() {
       body: JSON.stringify(param),
     });
     const parsedRes = await resReviews.json();
-    console.log(parsedRes)
+    console.log(parsedRes);
     if (parsedRes.status === "success") {
       await reFetchReviews();
       setIsWriteReviewOpen(false);
     } else {
-      parsedRes?
-      dispatch(showFailedModal(parsedRes.message)):
-      dispatch(showFailedModal("failed"))
+      parsedRes
+        ? dispatch(showFailedModal(parsedRes.message))
+        : dispatch(showFailedModal("failed"));
       console.log("failed");
     }
   };
@@ -214,43 +216,74 @@ function ServicesDetails() {
     setcommentsOrReplies(data);
   };
 
+  const formattedPriceMin = new Intl.NumberFormat("en-NG", {
+    style: "currency",
+    currency: "NGN",
+    minimumFractionDigits: 0,
+  }).format(ServiceData.minPrice);
+
+  const formattedPriceMax = new Intl.NumberFormat("en-NG", {
+    style: "currency",
+    currency: "NGN",
+    minimumFractionDigits: 0,
+  }).format(ServiceData.maxPrice);
+
+  const photosWithCover = [ServiceData.coverphoto, ...ServiceData.photos];
+
+
+  const openModal = (index: number) => {
+    setCurrentIndex(index);
+    setIsOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsOpen(false);
+  };
+
+ const goToNext = () => {
+   setCurrentIndex((prevIndex) => (prevIndex + 1) % photosWithCover.length);
+ };
+
+ const goToPrevious = () => {
+   setCurrentIndex(
+     (prevIndex) =>
+       (prevIndex - 1 + photosWithCover.length) % photosWithCover.length
+   );
+ };
+
   return (
     <div>
-      <div className="sm:px-[100px]  sm:mt-[100px]">
+      <div className="sm:px-[100px] text-[14px] sm:mt-[100px]">
         {/* modals render */}
-
         <DeleteModal />
-            <WriteReview
-              show={isWriteReviewOpen}
-              onClose={handleCloseWriteReview}
-              handlePost={handleReview}
-              data={currentUserData}
-            />
-            <ReviewComments
-              show={writereply}
-              onClose={() => setwritereply(false)}
-              data={commentsOrReplies}
-              currentLodge={ServiceData}
-              userData={currentUserData}
-            />
-            <CallAgent
-              show={isCallAgentOpen}
-              //@ts-ignore
-               phoneNo={ServiceData.vendor.phoneNumber}
-              onClose={handleCloseCallAgent}
-            />{" "}
-            <Replies
-              show={showReplies}
-              onClose={() => setshowReplies(false)}
-              data={commentsOrReplies}
-              currentLodge={ServiceData}
-            />
-            <LodgeSaved
-              show={isServiceSavedOpen}
-              onClose={handleCloseLodgeSaved}
-            />
+        <WriteReview
+          show={isWriteReviewOpen}
+          onClose={handleCloseWriteReview}
+          handlePost={handleReview}
+          data={currentUserData}
+        />
+        <ReviewComments
+          show={writereply}
+          onClose={() => setwritereply(false)}
+          data={commentsOrReplies}
+          currentLodge={ServiceData}
+          userData={currentUserData}
+        />
+        <CallAgent
+          show={isCallAgentOpen}
+          //@ts-ignore
+          phoneNo={ServiceData.vendor.phoneNumber}
+          onClose={handleCloseCallAgent}
+        />{" "}
+        <Replies
+          show={showReplies}
+          onClose={() => setshowReplies(false)}
+          data={commentsOrReplies}
+          currentLodge={ServiceData}
+        />
+        <LodgeSaved show={isServiceSavedOpen} onClose={handleCloseLodgeSaved} />
         {/* the Name of the Product */}
-        <h1 className="sm:text-[24px] text-[20px] sm:block hidden font-semibold text-dgray">
+        <h1 className="sm:text-[16px] text-[16px] sm:block hidden font-semibold text-dgray">
           {ServiceData.serviceName}
         </h1>
         <div className="sm:flex justify-between hidden">
@@ -278,7 +311,8 @@ function ServicesDetails() {
 
                 {/* the avrage review and the number of reviews is suppused to be displayed in this paragraph */}
                 <p>
-                  {ServiceData.ratings.avgRating} • {ServiceData.ratings.totalRatings} reviews
+                  {ServiceData.ratings.avgRating} •{" "}
+                  {ServiceData.ratings.totalRatings} reviews
                 </p>
               </div>
             </div>
@@ -294,8 +328,8 @@ function ServicesDetails() {
               </div>
 
               {/* the p tag displays the price of each product  */}
-              <p className="text-[22px] text-dgray border-b pb-2 ">
-                ₦{ServiceData.minPrice} /yr
+              <p className="text-[16px] text-dgray border-b pb-2 ">
+                {formattedPriceMin} - {formattedPriceMax}
               </p>
             </div>
           </div>
@@ -343,26 +377,57 @@ function ServicesDetails() {
         </div>
 
         {/* horizontal scroll div for displayiing the images horizolaly on one line the  */}
-        <div className="flex sm:h-[400px] h-[360px] gap-1 sm:rounded-l-[20px] overflow-hidden sm:ml-[100px]">
+        <div className="flex sm:h-[400px] h-[400px] gap-1 sm:rounded-l-[20px] overflow-hidden sm:ml-[100px]">
           {/* maping can be used to dispay the images */}
           <div
+            ref={scrollContainerRef}
             className="flex gap-4 overflow-x-scroll scroll-smooth no-scrollbar"
             style={{ scrollBehavior: "smooth" }}
           >
-            {ServiceData.photos.map((image, index) => (
-              <div key={index} className="flex-none">
+            {photosWithCover.map((image, index) => (
+              <div key={index} className="flex-none w-[500px] overflow-hidden">
                 <img
                   src={image}
                   alt={`image ${index + 1}`}
-                  className="sm:h-[400px] h-[360px] w-[500px]"
+                  className="object-cover sm:h-[400px] h-[400px] cursor-pointer"
+                  // className="sm:h-[450px] h-[400px] bg-black w-[500px] cursor-pointer"
+                  onClick={() => openModal(index)}
                 />
               </div>
             ))}
           </div>
         </div>
       </div>
-
-      <h1 className="text-[20px] mt-[24px] mb-[20px] px-4 sm:hidden font-semibold text-dgray">
+      {isOpen && (
+        <div className="fixed inset-0 z-[999] flex items-center justify-center bg-black bg-opacity-85">
+          <button
+            className=" absolute sm:top-[80px] top-4 right-4 text-white text-3xl"
+            onClick={closeModal}
+          >
+            &times;
+          </button>
+          <button
+            className="absolute left-4 text-white text-2xl"
+            onClick={goToPrevious}
+          >
+            &#10094;
+          </button>
+          <div className="max-w-4xl  ">
+            <img
+              src={photosWithCover[currentIndex]}
+              alt={`image ${currentIndex + 1}`}
+              className="w-auto sm:h-screen"
+            />
+          </div>
+          <button
+            className="absolute right-4 text-white text-2xl"
+            onClick={goToNext}
+          >
+            &#10095;
+          </button>
+        </div>
+      )}
+      <h1 className="text-[15px] mt-[24px] mb-[20px] px-4 sm:hidden font-semibold text-dgray">
         {ServiceData.serviceName}
       </h1>
 
@@ -391,7 +456,8 @@ function ServicesDetails() {
 
               {/* the avrage review and the number of reviews is suppused to be displayed in this paragraph */}
               <p>
-                {ServiceData.ratings.avgRating} • {ServiceData.ratings.userCount} reviews
+                {ServiceData.ratings.avgRating} •{" "}
+                {ServiceData.ratings.userCount} reviews
               </p>
             </div>
           </div>
@@ -421,7 +487,7 @@ function ServicesDetails() {
         <div className=" justify-start grid grid-cols-1 sm:grid-cols-3 sm:gap-[100px]">
           <div className="col-span-2">
             <div className="py-[18px]  mb-[18px]- border-lgray border-t-2 border-b-2 border-opacity-[10%]">
-              <h2 className="pb-[28-px] text-[20px] mb-[2px] sm:mb-[28px]">
+              <h2 className="pb-[28-px] text-[16px] mb-[2px] sm:mb-[28px]">
                 Description
               </h2>
 
@@ -429,40 +495,11 @@ function ServicesDetails() {
               <p>{ServiceData.description}</p>
             </div>
 
-            <div className="py-[18px] mb-[18px]- border-lgray border-b-2 border-opacity-[10%]">
-              <h2 className="pb-2 sm:pb-[28px]  text-[20px] text-dgray font-semibold">
-                Accommodation features
-              </h2>
-            </div>
-
-            <div className="pb-[40px] mb-[40px] border-lgray border-b-2 border-opacity-[10%]">
-              <div className="grid grid-cols-1 sm:grid-cols-2 ">
-                <div className="col-span-1 sm:border-r border-b sm:border-b-0 pb-6 mb-4 border-lgray border-opacity-[20%]">
-                  <div>
-                    <h2 className="text-[20px] font-semibold text-dgray pb-2 sm:pb-[28px]">
-                      Accommodation type
-                    </h2>
-                    <div className="flex justify-start ">
-                      <div className="flex w-fit flex-col justify-center items-center px-[24px] py-[10px] border-2 rounded-lg">
-                        <img
-                          src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1716924895/utilities/LodgeMate_File/House_ovdfkw.svg"
-                          alt=""
-                        />
-                        <p className="pt-[8px]">
-                          {/* {ServiceData.} */}
-                        </p>
-                      </div>{" "}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
             <div className="pb-[40px] sm:block hidden mb-[40px] border-lgray border-b-2 border-opacity-[10%]">
               <div className="mb-[32px]">
-                <div className="flex w-full justify-between">
+                <div className="flex w-full justify-between pt-4">
                   <div className="flex w-fit items-center gap-4">
-                    <h2 className="text-[24px]">Ratings & Reviews</h2>
+                    <h2 className="text-[16px]">Ratings & Reviews</h2>
                     <div className="h-[24px] w-[2px] bg-black opacity-[30%]"></div>
                     <div className="flex items-center ">
                       <img
@@ -470,8 +507,8 @@ function ServicesDetails() {
                         alt=""
                       />
                       <p>
-                        {ServiceData.ratings.avgRating} • {ServiceData.ratings.userCount}{" "}
-                        reviews
+                        {ServiceData.ratings.avgRating} •{" "}
+                        {ServiceData.ratings.userCount} reviews
                       </p>
                     </div>
                   </div>
@@ -491,8 +528,7 @@ function ServicesDetails() {
                 </div>
               </div>
 
-              <div>
-              </div>
+              <div></div>
             </div>
           </div>
           <div className="col-span-1">
@@ -569,8 +605,8 @@ function ServicesDetails() {
                         alt=""
                       />
                       <p>
-                        {ServiceData.ratings.avgRating} • {ServiceData.ratings.userCount}{" "}
-                        reviews
+                        {ServiceData.ratings.avgRating} •{" "}
+                        {ServiceData.ratings.userCount} reviews
                       </p>
                     </div>
                   </div>
@@ -588,19 +624,19 @@ function ServicesDetails() {
                     </button>
                   </div>
                   <div>
-                  <div className="gap-10  text-[15px]">
-                    {/* use maping here too for the reviwes */}
-                    {RevieweData && (
-                      <ServicesReviews
-                        ServicesData={ServiceData}
-                        currentUserData={currentUserData}
-                        data={RevieweData}
-                        showReplies={handleViewReplies}
-                        replycomment={handleReplies}
-                      />
-                    )}
+                    <div className="gap-10  text-[15px]">
+                      {/* use maping here too for the reviwes */}
+                      {RevieweData && (
+                        <ServicesReviews
+                          ServicesData={ServiceData}
+                          currentUserData={currentUserData}
+                          data={RevieweData}
+                          showReplies={handleViewReplies}
+                          replycomment={handleReplies}
+                        />
+                      )}
+                    </div>
                   </div>
-                </div>
                 </div>
               </div>
             </div>
@@ -610,7 +646,5 @@ function ServicesDetails() {
     </div>
   );
 }
-
-
 
 export default ServicesDetails;

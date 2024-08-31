@@ -4,13 +4,15 @@ import React, { useState, useRef, useEffect } from "react";
 interface ProfileMenuModalProps {
   isOpen: boolean;
   toggleDropdown: () => void;
+  editProfile: () => void;
   link?: string
 }
 
 const ProfileMenuModal: React.FC<ProfileMenuModalProps> = ({
   isOpen,
   toggleDropdown,
-  link
+  link,
+  editProfile
 }) => {
   const [isClicked, setIsClicked] = useState('Copy profile link');
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -55,7 +57,7 @@ const ProfileMenuModal: React.FC<ProfileMenuModalProps> = ({
         <img src="/icons/close.svg" alt="" />
       </button>
       <div className="py-1">
-        <button className=" px-4 py-2 text-sm text-gray-700 hover:bg-gray-100- flex items-center gap-2 ">
+        <button onClick={editProfile} className=" px-4 py-2 text-sm text-gray-700 hover:bg-gray-100- flex items-center gap-2 ">
           <img src="/icons/pen_gray.svg" alt="" />
           Edit
         </button>

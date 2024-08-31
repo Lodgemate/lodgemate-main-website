@@ -28,8 +28,6 @@ function HeartIcon({type, id}:any) {
 
       console.log(url);
       console.log(type)
-      // const res= await fetch(url,options)
-        // const response = await FetchApi(url, options);
          console.log(await FetchApi(url, options));
     };
     AddToWhishlist()

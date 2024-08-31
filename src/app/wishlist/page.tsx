@@ -1,18 +1,41 @@
 "use client"
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Lodges from "./Lodges";
 import Roommates from "./Roommates";
 import Services from "./Services";
 import TourCart from "./TourCart";
+import { Endpoints } from "@/services/Api/endpoints";
+import { FetchApi } from "@/utils/Fetchdata";
 
 interface TabData {
   message: string;
   content: JSX.Element;
 }
 
+
 function Wishlist() {
   const [activeTab, setActiveTab] = useState<string>("Lodges");
+  useEffect(()=>{
+    const localStorageToken = localStorage.getItem("token");
+    const parseToken = localStorageToken && JSON.parse(localStorageToken);
+    const AddToWhishlist = async () => {
+      const url = Endpoints.addToWishlist;
+
+      const options = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${parseToken}`,
+        },
+      };
+
+      console.log(url);
+         console.log(await FetchApi(url, options));
+    };
+    AddToWhishlist()
+
+
+  },[])
 
   const tabData: { [key: string]: TabData } = {
     Lodges: {

@@ -428,7 +428,7 @@ const [isOpen, setIsOpen] = useState(false);
         </div>
 
         {/* horizontal scroll div for displayiing the images horizolaly on one line the  */}
-        <div className="flex sm:h-[300px] h-[260px] gap-1 sm:rounded-l-[20px] overflow-hidden sm:ml-[100px]">
+        <div className="flex sm:h-[450px] h-[400px] gap-1 sm:rounded-l-[20px] overflow-hidden sm:ml-[100px]">
           {/* maping can be used to dispay the images */}
           <div
             ref={scrollContainerRef}
@@ -440,7 +440,7 @@ const [isOpen, setIsOpen] = useState(false);
                 <img
                   src={image}
                   alt={`image ${index + 1}`}
-                  className="sm:h-[300px] h-[260px] w-[300px]"
+                  className="sm:h-[450px] h-[400px] w-[500px]"
                   onClick={() => openModal(index)}
                 />
               </div>

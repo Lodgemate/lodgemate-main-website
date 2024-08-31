@@ -74,15 +74,15 @@ const dispatch = useAppDispatch();
               </button>
             </div>
             <div className="flex flex-col gap-2 text-[12px] p-2">
-              <div
+              <button
                 onClick={NotificationShow}
-                className="flex- text-gray-700   "
+                className="flex- text-gray-700 flex   "
               >
                 Notification{" "}
                 <span className="bg-[red] rounded-[4px] px-[4px] text-white">
                   0
                 </span>
-              </div>
+              </button>
               {isNotificationOpen && (
                 <div className="fixed top-[100px] right-[100px] bg-white z-50 border-b border-gray-200 rounded-[12px] py-[16px] shadow-lg">
                   <div className="flex relative justify-center pb-3 border-b  ">
@@ -164,7 +164,13 @@ const dispatch = useAppDispatch();
               <Link href="/settings" className="text-gray-700 py-[5px] hidden">
                 Settings
               </Link>
-              <Link href="/" onClick={()=>{dispatch(Logout())}} className="text-gray-700 py-[5px]">
+              <Link
+                href="/"
+                onClick={() => {
+                  dispatch(Logout());
+                }}
+                className="text-gray-700 py-[5px]"
+              >
                 Logout
               </Link>
             </div>
@@ -198,7 +204,7 @@ const dispatch = useAppDispatch();
         </div>
         {/* Dropdown modal */}
         {isDropdownOpen && (
-          <div className="absolute right-0 w-[197px] mt-2 bg-white border border-gray-200 rounded-[12px] p-[16px] shadow-lg z-10">
+          <div className="absolute -right-3 w-[197px] mt-2 bg-white border border-gray-200 rounded-[12px] p-[16px] shadow-lg z-10">
             <div className="absolute right-5 ">
               <button className="text-gray-500" onClick={toggleDropdown}>
                 <svg
@@ -218,12 +224,42 @@ const dispatch = useAppDispatch();
               </button>
             </div>
             <div className="flex flex-col gap-2 text-[12px] p-2">
-              <Link href="/" className="text-gray-700  ">
+              <button
+                onClick={NotificationShow}
+                className="flex- text-gray-700 flex   "
+              >
                 Notification{" "}
                 <span className="bg-[red] rounded-[4px] px-[4px] text-white">
-                  3
+                  0
                 </span>
-              </Link>
+              </button>
+              {isNotificationOpen && (
+                <div className="fixed top-[100px] right-[10px] bg-white z-50 border-b border-gray-200 rounded-[12px] py-[16px] shadow-lg">
+                  <div className="flex relative justify-center pb-3 border-b  ">
+                    <h1>Notifications</h1>
+                    <button
+                      className="text-gray-500 absolute right-4 top-0"
+                      onClick={NotificationShow}
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-6 w-6"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M6 18L18 6M6 6l12 12"
+                        />
+                      </svg>
+                    </button>
+                  </div>
+                  <NotificationModal />{" "}
+                </div>
+              )}
               <Link
                 href={`/profile/${currentUser?.data.user._id}`}
                 className="text-gray-700 py-[5px]"
@@ -277,7 +313,13 @@ const dispatch = useAppDispatch();
               <Link href="/settings" className="text-gray-700 py-[5px]">
                 Settings
               </Link>
-              <Link href="/" onClick={()=>{dispatch(Logout())}} className="text-gray-700 py-[5px]">
+              <Link
+                href="/"
+                onClick={() => {
+                  dispatch(Logout());
+                }}
+                className="text-gray-700 py-[5px]"
+              >
                 Logout
               </Link>
             </div>

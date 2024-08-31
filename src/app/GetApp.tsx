@@ -22,7 +22,7 @@ function GetApp() {
       {" "}
       {showPopup && (
         <div className=" flex justify-center ">
-          <div className="popup max-w-[500px]  flex flex-col sm:flex-row sm:items-center py-1 px-2 border  rounded-md items-start justify-center gap-2 fixed bottom-[100px] sm:bottom-4 z-10 w-full bg-white">
+          <div className="popup max-w-[500px]  flex flex-col sm:flex-row sm:items-center py-1 px-4 border  rounded-md items-start justify-center gap-2 fixed bottom-[100px] sm:bottom-4 z-10 w-full bg-white">
             <button onClick={closePopup} className=" text-end w-full flex ">
               <p>x</p>
             </button>

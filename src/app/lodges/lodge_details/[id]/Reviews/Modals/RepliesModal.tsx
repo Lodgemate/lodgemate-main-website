@@ -150,7 +150,7 @@ const Replies: React.FC<WriteRepliesProps> = React.memo(
 
     return (
       <div
-        className='fixed inset-0 bg-black bg-opacity-50 flex items-start pt-[100px] z-20 justify-center'
+        className='fixed inset-0 z-[99] bg-black bg-opacity-50 flex items-start pt-[100px]  justify-center'
         onClick={onClose}
       >
         <div
@@ -165,7 +165,7 @@ const Replies: React.FC<WriteRepliesProps> = React.memo(
             ×
           </button>
           {/* replies are her */}
-          <div className='main_container min-w-[300px] max-h-[400px] overflow-y-scroll  h-full w-full  '>
+          <div className='main_container min-w-[300px] max-h-[400px] overflow-y-scroll no-scrollbar h-full w-full  '>
             <MainComment content={data} />
             {/* @ts-ignore */}
             {replies && replies.data.replies.map((data: any, index) => {

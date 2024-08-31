@@ -44,7 +44,7 @@ const CallAgent: React.FC<CallAgentProps> = ({
 
   return (
     <div
-      className='fixed inset-0 bg-black bg-opacity-50 flex pt-[100px] items-start justify-center'
+      className='fixed inset-0 z-[99] bg-black bg-opacity-50 flex pt-[100px] items-start justify-center'
       onClick={onClose}
     >
       <div

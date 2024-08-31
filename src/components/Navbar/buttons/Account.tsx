@@ -74,15 +74,15 @@ function Account() {
       </div>
       {/* Mobile */}
       <div className="relative lg:hidden ">
-        <div className="p-[13px] lg:hidden rounded-[8px] bg-white border-2 border-stroke">
+        <div className="p-[6px] lg:hidden rounded-[8px] bg-white border-2 border-stroke">
           <button
             onClick={toggleDropdown}
-            className="flex text-[14px] text-dgr font-medium items-center gap-2"
+            className="flex text-[12px] text-dgr font-medium items-center gap-2"
           >
             <Image
               src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1715964579/utilities/LodgeMate_File/account_circle_3_lyjkcy.svg"
-              height={24}
-              width={24}
+              height={20}
+              width={20}
               alt="account"
             />
             Account
@@ -96,7 +96,7 @@ function Account() {
         </div>
         {/* Dropdown modal */}
         {isDropdownOpen && (
-          <div className="absolute right-0 w-[197px] mt-2 bg-white border border-gray-200 rounded-[12px] p-[16px] shadow-lg z-10">
+          <div className="absolute right-0 w-[130px] mt-2 bg-white border border-gray-200 rounded-[12px] p-[6px] shadow-lg z-10">
             <div className="flex justify-end ">
               <button className="text-gray-500" onClick={toggleDropdown}>
                 <svg
@@ -115,11 +115,11 @@ function Account() {
                 </svg>
               </button>
             </div>
-            <div className="flex flex-col gap-2 text-[14px] p-2">
-              <Link href="/auth/signup" onClick={()=>toggleDropdown()} className="text-gray-700 py-[5px] ">
+            <div className="flex flex-col gap-2 text-[12px] px-2">
+              <Link href="/auth/signup" onClick={()=>toggleDropdown()} className="text-gray-700 pb-[px] ">
                 Create account
               </Link>
-              <Link href="/auth/login" onClick={()=>toggleDropdown()}  className="text-gray-700 py-[5px]">
+              <Link href="/auth/login" onClick={()=>toggleDropdown()}  className="text-gray-700 pb-[5px]">
                 Login
               </Link>
             </div>

@@ -152,7 +152,7 @@ function More() {
               </button>
             </div>
             <div className='flex flex-col gap-2 text-[12px] p-2'>
-              <div
+              <button
                 onClick={NotificationShow}
                 className='flex- text-gray-700   '
               >
@@ -160,7 +160,7 @@ function More() {
                 <span className='bg-[red] rounded-[4px] px-[4px] text-white'>
                 {unreadMssgLength(notifications?.data.notifications)}
                 </span>
-              </div>
+              </button>
               {isNotificationOpen && (
                 <div className='fixed top-[100px] right-[100px] bg-white z-50 border-b border-gray-200 rounded-[12px] py-[16px] shadow-lg'>
                   <div className='flex relative justify-center pb-3 border-b  '>

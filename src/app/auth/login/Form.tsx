@@ -43,7 +43,7 @@ const LoginForm: React.FC = () => {
   //  form waning mssg
   const FormWarning = ({ prop }: any) => {
     if (prop !== null) {
-      return <div className='text-red-500 text-xs'>{prop}</div>;
+      return <div className='text-red-500 text-'>{prop}</div>;
     }
   };
   // handle submit of dorm
@@ -115,7 +115,7 @@ const LoginForm: React.FC = () => {
     }
   }, [data, Status, Error]);
   return (
-    <div className='sm:w-[500px] w-full m-auto py-4 bg-white text-lgray text-[16px] rounded-2xl shadow-md border mt-[100px]'>
+    <div className='sm:w-[500px] w-full m-auto py-4 bg-white text-lgray text- rounded-2xl shadow-md border mt-[100px]'>
       <div className='flex w-full items-center justify-center border-b'>
         <h2 className='font-bold mb-4 text-center'>Sign In</h2>
       </div>
@@ -150,7 +150,7 @@ const LoginForm: React.FC = () => {
             />
           )}
         </div>
-        <p className=' mt-3 hover:text-primary'>
+        <p className=' mt-3 hover:text-primary text-[12px]'>
           <Link href='/auth/forgotpassword'>Forgot Password</Link>
         </p>
         <button
@@ -161,7 +161,7 @@ const LoginForm: React.FC = () => {
         </button>
       </form>
       <div>
-        <p className=' text-center mt-[12px]'>
+        <p className=' text-center text-[12px] mt-[12px]'>
           Don’t have an account?{" "}
           <span>
             <Link
@@ -180,7 +180,7 @@ const LoginForm: React.FC = () => {
           <p>OR</p>
           <div className='bg-lgray w-[210px] h-[1px]'></div>
         </div>
-        <button className='flex gap-2 w-full border py-3 justify-center items-center rounded-[8px] mt-[32px]'>
+        <button className='flex gap-2 w-full text-[14px] border py-3 justify-center items-center rounded-[8px] mt-[32px]'>
           <a
           href='https://api.lodgemate.com.ng/v1/user/auth/google'
           target='_blank'

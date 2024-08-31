@@ -63,7 +63,7 @@ const SignUpForm: React.FC = () => {
 
   const FormWarning = ({ prop }: any) => {
     if (prop !== null) {
-      return <div className='text-red-500 text-xs'>{prop}</div>;
+      return <div className='text-red-500 text-'>{prop}</div>;
     }
   };
   const confirmPwCheck = () => {
@@ -170,7 +170,7 @@ const SignUpForm: React.FC = () => {
   }, [signedInData, Status, Error]);
 
   return (
-    <div className='sm:w-[500px] w-full m-auto py-4 bg-white text-lgray text-[16px] rounded-2xl shadow-md border mt-[100px]'>
+    <div className='sm:w-[500px] w-full m-auto py-4 bg-white text-lgray text-[ rounded-2xl shadow-md border mt-[100px]'>
       <div className='flex w-full items-center justify-center border-b'>
         <h2 className='font-bold mb-4 text-center'>Sign Up</h2>
       </div>

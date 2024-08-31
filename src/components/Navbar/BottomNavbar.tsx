@@ -11,7 +11,7 @@ function BottomNavbar() {
   return (
     <div className="fixed lg:hidden flex w-full bottom-0 z-50">
       <div className="flex w-full justify-center border-stroke bg-white border-t p-2">
-        <div className="flex items-center text-[16px] text-dgray gap-12">
+        <div className="flex items-center text-[12px] text-dgray gap-12">
           <Link href="/" className="flex-col  flex justify-center items-center">
             <Image
               src={
@@ -26,8 +26,8 @@ function BottomNavbar() {
             <p
               className={
                 pathname === "/" || pathname.includes("/lodges")
-                  ? "text-primary border-b-4 pb-2 border-primary"
-                  : "pb-2"
+                  ? "text-primary border-b-2 pb-1 border-primary"
+                  : "pb-"
               }
             >
               Lodge
@@ -50,8 +50,8 @@ function BottomNavbar() {
             <p
               className={
                 pathname === "/roommates" || pathname.includes("/roommates")
-                  ? "text-primary pb-2 border-b-4 border-primary"
-                  : "pb-2"
+                  ? "text-primary pb-1 border-b-2 border-primary"
+                  : "pb-1"
               }
             >
               Roommates
@@ -74,8 +74,8 @@ function BottomNavbar() {
             <p
               className={
                 pathname === "/services_" || pathname.includes("/services_")
-                  ? "text-primary pb-2 border-b-4 border-primary"
-                  : "pb-2"
+                  ? "text-primary pb-1 border-b-2 border-primary"
+                  : "pb-1"
               }
             >
               Services

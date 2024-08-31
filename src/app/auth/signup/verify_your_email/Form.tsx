@@ -94,7 +94,7 @@ useEffect(()=>{
 // warning mssg
   const FormWarning = ({ prop }: any) => {
     if (prop !== null) {
-      return <div className='text-red-500 text-xs'>{prop}</div>;
+      return <div className='text-red-500 text-'>{prop}</div>;
     }
   };
 
@@ -140,7 +140,7 @@ useEffect(()=>{
     // clean up sessionStorage
   };
   return (
-    <div className="sm:w-[500px] w-full mx-auto py-4 bg-white text-lgray text-[16px] rounded-2xl shadow-md border mt-[100px]">
+    <div className="sm:w-[500px] w-full mx-auto py-4 bg-white text-lgray text] rounded-2xl shadow-md border mt-[100px]">
       <div className="flex w-full items-center justify-center border-b">
         <h2 className="font-bold mb-4 text-center">Verify Email </h2>
       </div>
@@ -163,7 +163,7 @@ useEffect(()=>{
                 maxLength={1}
                 // @ts-ignore
                 ref={(el) => (inputsRef.current[index] = el)}
-                className="w-[40px] h-[40px] sm:w-[50px] sm:h-[50px] text-center text-lg border border-gray-300 rounded-md shadow-sm focus:outline-none"
+                className="w-[40px] h-[40px] sm:w-[50px] sm:h-[50px] text-center tex border border-gray-300 rounded-md shadow-sm focus:outline-none"
               />
             ))}
             

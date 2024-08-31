@@ -1,8 +1,8 @@
-import React from 'react'
+import React from "react";
 
 function Settings() {
   return (
-    <div className="my-[100px] border rounded-lg mx-[100px] min-h-screen text-[16px] text-[#666666]">
+    <div className="my-[100px] border rounded-lg px-4 sm:mx-[100px] min-h-screen text-[16px] text-[#666666]">
       <div className="py-4 border-b px-4">
         <h1 className="text-[24px] font-semibold text-primary">Settings</h1>{" "}
       </div>
@@ -22,4 +22,4 @@ function Settings() {
   );
 }
 
-export default Settings
+export default Settings;

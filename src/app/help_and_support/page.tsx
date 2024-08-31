@@ -68,12 +68,12 @@ const Help: React.FC = () => {
   return (
     <div className="flex h-screen pt-[70px] text-[14px] text-lblack">
       {/* First Column */}
-      <div className="w-1/4 border-r border-gray-300">
+      <div className="w-1/4 border-r border-gray-300 hidden sm:block">
         <div className=" border-b pb-[80px]"></div>
       </div>
 
       {/* Second Column */}
-      <div className="w-2/4 flex flex-col justify-between p-4">
+      <div className="sm:w-2/4  flex flex-col justify-between p-4">
         <div className="flex-grow overflow-y-auto">
           {activeChat?.messages.map((msg) => (
             <div
@@ -139,7 +139,7 @@ const Help: React.FC = () => {
       </div>
 
       {/* Third Column */}
-      <div className="w-1/4 border-l border-gray-300">
+      <div className="w-1/4 border-l border-gray-300 hidden sm:block">
         <div className=" border-b pb-[80px]"></div>
       </div>
     </div>

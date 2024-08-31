@@ -43,7 +43,7 @@ function Wishlist() {
 
   return (
     <div className="p-4 mt-[100px] min-h-screen sm:px-[100px] text-[14px] text-lblack ">
-      <h1 className="text-[16px] pb-4 sm:hidden block">
+      <h1 className="text-[14px] pb-4 sm:hidden block">
         {tabData[activeTab].message}
       </h1>
 

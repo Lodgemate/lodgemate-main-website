@@ -26,7 +26,7 @@ const dispatch = useAppDispatch();
   }
   console.log(currentUser)
   return (
-    <div className="">
+    <div className=" text-[14px]">
       {/* desktop */}
       <div className="relative sm:block hidden">
         <div className="px-[13px] py-2 sm:block hidden rounded-[8px] mb-2 bg-primary">
@@ -73,7 +73,7 @@ const dispatch = useAppDispatch();
                 </svg>
               </button>
             </div>
-            <div className="flex flex-col gap-2 text-[12px] p-2">
+            <div className="flex flex-col gap-2  p-2">
               <button
                 onClick={NotificationShow}
                 className="flex- text-gray-700 flex   "
@@ -152,7 +152,7 @@ const dispatch = useAppDispatch();
               </Link>
               <Link
                 href="/status_and_inventory"
-                className="text-gray-700 py-[5px]"
+                className="text-gray-700 py-[5px] hidden"
               >
                 Status & inventory
               </Link>
@@ -182,7 +182,7 @@ const dispatch = useAppDispatch();
         <div className="p-[6px] sm:hidden rounded-[8px] bg-white border-2 border-stroke">
           <button
             onClick={toggleDropdown}
-            className=" relative flex text-[12px] text-dgr font-medium items-center gap-2"
+            className=" relative flex text-[14px] text-dgr font-medium items-center gap-2"
           >
             <Image
               src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1719579104/utilities/LodgeMate_File/menu_1_kngbsl.png"
@@ -223,7 +223,7 @@ const dispatch = useAppDispatch();
                 </svg>
               </button>
             </div>
-            <div className="flex flex-col gap-2 text-[12px] p-2">
+            <div className="flex flex-col gap-2 text-[14px] p-2">
               <button
                 onClick={NotificationShow}
                 className="flex- text-gray-700 flex   "
@@ -301,7 +301,7 @@ const dispatch = useAppDispatch();
               </Link>
               <Link
                 href="/status_and_inventory"
-                className="text-gray-700 py-[5px]"
+                className="text-gray-700 py-[5px] hidden"
               >
                 Status & inventory
               </Link>

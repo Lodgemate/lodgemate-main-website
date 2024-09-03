@@ -1,6 +1,10 @@
+import ChatBtn from "@/components/Shared/chatBtn";
+import { selectAllUsersdata } from "@/lib/features/Users/usersSlice";
+import { useAppSelector } from "@/lib/hooks";
 import { Roommate } from "@/lib/Types";
 import Link from "next/link";
-import React from "react";
+import React, { useState } from "react";
+import ReportProfile from "../modals/ReportProfile";
 
 
 interface ProfileDetailsProps {
@@ -52,9 +56,22 @@ const ProfileDetails: React.FC<ProfileDetailsProps> = ({
   roommate,
   onClose,
 }) => {
+  const [openreport, setopenreport] = useState(false)
+  const currentUserData = useAppSelector(selectAllUsersdata)
+  const chatDetails = {
+    firstName: roommate.postedBy.firstName,
+    lastName: roommate.postedBy.lastName,
+    gender: roommate.postedBy.gender,
+    sender: currentUserData?.data.user._id,
+    reciver: roommate.postedBy._id,
+    roomId: `${roommate.postedBy._id}-${currentUserData?.data.user._id}`,
+    profilePicture: roommate.postedBy.profilePicture,
+    area: roommate.postedBy.administrativeArea,
+  };
   return (
     <div className="">
-      <div className=' flex fixed justify-center w-full bg- left-0 top-[10px] text-[14px] overflow-y-auto text-dgray  z-[999] '>
+      <ReportProfile roommateId={roommate.postedBy._id} type={'user'} show={openreport} onClose={()=>setopenreport(false)}/>
+      <div className=' flex fixed justify-center w-full bg- left-0 top-[10px] text-[14px] overflow-y-auto text-dgray  z-[990] '>
         <div className='w-[500px] h-[400px] bg-white border shadow-lg rounded-[20px] overflow-y-auto no-scrollbar '>
           <div className='relative flex justify-center items-center p-4 border-b'>
             <p>Profile details</p>
@@ -137,34 +154,31 @@ const ProfileDetails: React.FC<ProfileDetailsProps> = ({
               </div>
 
               <div className=''>
-                <h2 className='text-center pt-8 text-[20px] font-semibold'>
+               {roommate.contact && <h2 className='text-center pt-8 text-[20px] font-semibold'>
                   Contact details
-                </h2>{" "}
-                <div className='flex items-center gap-4 py-4'>
-                  <Link href={"/"}>
-                    <img
-                      src='https://res.cloudinary.com/dcb4ilgmr/image/upload/v1716939370/utilities/LodgeMate_File/Facebook_ryntge.svg'
-                      alt=''
-                    />
-                  </Link>{" "}
-                  <Link href={"/"}>
+                </h2>}{" "}
+                <div className='flex items-center justify-center gap-4 py-4'>
+                  {
+                    roommate.contact?.instagram && <Link href={roommate.contact.instagram } target="blank_">
                     <img
                       src='https://res.cloudinary.com/dcb4ilgmr/image/upload/v1716939370/utilities/LodgeMate_File/Instagram_vwhjji.svg'
                       alt=''
                     />
-                  </Link>{" "}
-                  <Link href={"/"}>
+                  </Link>}{" "}
+                  {
+                    roommate.contact?.instagram && <Link href={roommate.contact.instagram } target="blank_">
                     <img
                       src='https://res.cloudinary.com/dcb4ilgmr/image/upload/v1716939370/utilities/LodgeMate_File/Twitter_ffgjak.svg'
                       alt=''
                     />
-                  </Link>{" "}
-                  <Link href={"/"}>
+                  </Link>}{" "}
+                  {
+                    roommate.contact?.instagram && <Link href={roommate.contact.instagram } target="blank_">
                     <img
                       src='https://res.cloudinary.com/dcb4ilgmr/image/upload/v1716939370/utilities/LodgeMate_File/LinkedIn_a3gtp7.svg'
                       alt=''
                     />
-                  </Link>
+                  </Link>}
                 </div>
                 <div className='py-4 flex gap-2 items-center'>
                   <img
@@ -172,13 +186,12 @@ const ProfileDetails: React.FC<ProfileDetailsProps> = ({
                     alt=''
                   />
                   <Link href=''>
-                    <p className='text-lred underline'>Report profile</p>
+                    <p className='text-lred underline' onClick={()=>setopenreport(true)}>Report profile</p>
                   </Link>
                 </div>
               </div>
-              <button className='py-4 w-full flex justify-center bg-primary font-medium text-white rounded-[8px] mb-4'>
-                Chat with Jude
-              </button>
+              <ChatBtn details={chatDetails} />
+
             </div>
           </div>
         </div>

@@ -19,7 +19,7 @@ export interface user {
       lastName: string;
       email: string;
       emailVerified: boolean;
-      profilePicture: string;
+      profilePicture: any;
       phoneNumber: string;
       gender: string;
       role: string;
@@ -34,6 +34,12 @@ export interface user {
       administrativeArea: string;
       subAdministrativeArea: string;
       lastChangedPassword: string;
+      contact: {
+        linkedin: string | undefined,
+        whatsapp: string | undefined,
+        instagram: string | undefined,
+        facebook: string | undefined,
+      },
       __v: number;
       id: string;
       bio: string;
@@ -135,12 +141,39 @@ export interface Ratings {
     data: Data;
   }
 
+  interface ServiceDataVendor {
+    ratings: Ratings;
+    location: Location;
+    flags: number;
+    _id: string;
+    firstName: string;
+    lastName: string;
+    verifiedUser: boolean;
+    email: string;
+    emailVerified: boolean;
+    profilePicture: string;
+    phoneNumber: string;
+    gender: string;
+    role: string;
+    lookingForRoomate: boolean;
+    totalLodges: number;
+    totalServices: number;
+    signupMethod: string;
+    address_text: string;
+    latitude: number;
+    longitude: number;
+    country: string;
+    administrativeArea: string;
+    subAdministrativeArea: string;
+    profileLink: string;
+    id: string;
+  }
  export interface Service {
     location: Coordinates;
     ratings: Ratings;
     _id: string;
     verifiedService: boolean;
-    vendor: string;
+    vendor:ServiceDataVendor ;
     coverphoto: string;
     photos: string[];
     serviceName: string;
@@ -194,6 +227,12 @@ export interface Roommate {
   latitude: number;
   longitude: number;
   country: string;
+  contact: {
+    linkedin: string | undefined,
+    whatsapp: string | undefined,
+    instagram: string | undefined,
+    facebook: string | undefined,
+  },
   administrativeArea: string;
   subAdministrativeArea: string;
   preferredRoommateDescription: string;

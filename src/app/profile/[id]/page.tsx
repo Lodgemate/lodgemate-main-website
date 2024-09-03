@@ -3,13 +3,13 @@ import React, { useEffect, useState } from "react";
 import UserDetailas from "./UserDetaile";
 import LodgeListed from "./LodgesListed";
 import ServicesListed from "./ServicesList";
-import EditProfileModal from "./modals/EditProfileModal";
 import DeleteModal from "@/components/modals/DeleteModal";
 import { useAppSelector } from "@/lib/hooks";
 import { selectAllUsersdata } from "@/lib/features/Users/usersSlice";
 import { FetchApi } from "@/utils/Fetchdata";
 import { Endpoints } from "@/services/Api/endpoints";
 import { useParams } from "next/navigation";
+import EditLodgeModal from "./modals/EditLodgeModal";
 import ReviewsListed from "./ReviewsListed";
 
 
@@ -35,7 +35,6 @@ const MyProfile = () => {
         "content-type": "Application-json",
       },
     };
-    console.log(url);
     const fetchUserData = async () => {
       setIsLoading(true);
       const res: any = await FetchApi(url, body);
@@ -143,8 +142,8 @@ const MyProfile = () => {
           </div>
         </div>
       </div>
-      <EditProfileModal />
       <DeleteModal />
+
     </div>
   );
 };

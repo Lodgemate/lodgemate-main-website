@@ -298,7 +298,7 @@ function LodgeInfo() {
    gender: LodgeData.postedBy.gender,
    sender: currentUserData?.data.user._id,
    reciver: LodgeData.postedBy._id,
-   roomId: `${currentUserData?.data.user._id}-${LodgeData.postedBy._id}`,
+   roomId: `${LodgeData.postedBy._id}-${currentUserData?.data.user._id}`,
    profilePicture: LodgeData.postedBy.profilePicture,
    area: LodgeData.postedBy.administrativeArea,
  };

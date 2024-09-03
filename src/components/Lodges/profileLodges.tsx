@@ -1,10 +1,12 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { RiDeleteBinLine } from "react-icons/ri";
 import { IoPencil } from "react-icons/io5";
 import { useAppDispatch } from '@/lib/hooks';
-import { showDeleteModal } from '@/lib/features/Modal/ModalSlice';
+import { showDeleteModal, showFailedModal } from '@/lib/features/Modal/ModalSlice';
 import { FetchApi } from '@/utils/Fetchdata';
 import { Endpoints } from '@/services/Api/endpoints';
+import EditLodgeModal from '@/app/profile/[id]/modals/EditLodgeModal';
+import { Lodge } from '@/lib/Types';
 interface ProductCardProps {
     id: any;
     type: string;
@@ -16,6 +18,7 @@ interface ProductCardProps {
     imageUrl: string;
     location: string;
     nearbyUniversity?: string;
+    product?: Lodge;
   }
 
 const ProductCard: React.FC<ProductCardProps> = React.memo(({
@@ -25,14 +28,22 @@ const ProductCard: React.FC<ProductCardProps> = React.memo(({
     location,
     nearbyUniversity,
     price,
+    product
   }) => {
+  const [isDeleted, setIsDeleted] = useState(false)
+  const [OpenEditLodges, setOpenEditLodges] = useState(false)
+
+    const reset = {
+      deleteFunction: null,
+      message: "",
+    };
     const formattedPrice = new Intl.NumberFormat("en-NG", {
       style: "currency",
       currency: "NGN",
       minimumFractionDigits: 0,
     }).format(price);
     const dispatch = useAppDispatch();
-    console.log(id)
+
     const handleDelete = async () => {
       const localStorageToken = localStorage.getItem("token");
       const parseToken = localStorageToken && JSON.parse(localStorageToken);
@@ -44,18 +55,38 @@ const ProductCard: React.FC<ProductCardProps> = React.memo(({
         },
       };
       try {
-        const res = FetchApi(Endpoints.getPrivateLodgesbyId + id, body);
-        console.log(await res);
-      } catch (error) {}
-    };
+        const res: any = await FetchApi(
+          Endpoints.getPrivateLodgesbyId + id,
+          body
+        );
 
+        console.log(res);
+        if (res.status === "success") {
+          dispatch(showDeleteModal(reset));
+          setIsDeleted(true)
+        } else {
+          throw res;
+        }
+      } catch (error: any) {
+        dispatch(showFailedModal(error.message));
+      }
+    };
+ const handleIpenlodgeedit=()=>{
+  setOpenEditLodges(true)
+ }
     const deleteProps ={
       deleteFunction: handleDelete,
       message: "Do you want to delete this Lodge"
     }
-  
+
+  if (isDeleted) {
+    return;
+  }
+  console.log(OpenEditLodges)
     return (
       <div className="flex w-full flex-col rounded overflow-hidden ">
+    {OpenEditLodges && <EditLodgeModal product ={product} onClose={()=>setOpenEditLodges(false)}/>}
+
         <button className="relative">
           <div className="w-full h-[244px] sm:h-[200px] rounded-[12px]">
             <img
@@ -81,7 +112,7 @@ const ProductCard: React.FC<ProductCardProps> = React.memo(({
             className="absolute bottom-4 right-[40%]  text-xl"
           />
           <div className="absolute bottom-4 flex justify-between items-center w-full px-5 ">
-            <IoPencil className=" bg-slate-800 p-1 rounded-full text-slate-50 z-20 text-2xl font-bold hover:text-slate-100 cursor-pointer" />
+            <IoPencil onClick={handleIpenlodgeedit} className=" bg-slate-800 p-1 rounded-full text-slate-50 z-20 text-2xl font-bold hover:text-slate-100 cursor-pointer" />
             <RiDeleteBinLine
               onClick={() => dispatch(showDeleteModal(deleteProps))}
               className="  bg-slate-800 p-1 rounded-full text-slate-50 z-20 text-2xl font-bold hover:text-slate-100 cursor-pointer"

@@ -76,7 +76,6 @@ const DesktopChat: React.FC = () => {
           sentBy: searchParams.get("sender"),
         },
       };
-      console.log('ran')
       //@ts-ignore
       setActiveChat(Data);
     }
@@ -89,7 +88,7 @@ const DesktopChat: React.FC = () => {
     return newArr[0];
   };
 
-
+console.log(activeChat)
   return (
     <div className='flex h-screen pt-[70px] text-[16px] text-lblack'>
       {/* First Column */}

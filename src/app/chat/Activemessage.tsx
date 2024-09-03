@@ -14,7 +14,7 @@ const cache = new Map<string,any>();
 const Activemessage:React.FC<ActivemessageProps> = ({setMessages, roomId, messages}) => {
     const currentUser = useAppSelector(selectAllUsersdata)
     const messagesEndRef = useRef(null);
-
+console.log(roomId)
     useEffect(() => {
       if (messagesEndRef.current) {
         //@ts-ignore

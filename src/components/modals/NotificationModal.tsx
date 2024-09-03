@@ -41,7 +41,7 @@ const  NotificationModal: React.FC<props> = ({ notifications }) => {
 
   return (
     <div className='flex w-full'>
-      <div className='sm:w-[362px] mt-2 bg-white '>
+      <div className='sm:w-[362px] p-4 mt-2 bg-white '>
         {notifications &&
         notifications.data &&
         notifications.data.notifications.length >= 1

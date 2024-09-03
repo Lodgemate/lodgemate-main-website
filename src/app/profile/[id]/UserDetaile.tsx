@@ -75,12 +75,12 @@ const UserDetailas: React.FC<UserDetailasProps> = React.memo(({ data }) => {
             />
             <p className='text-gray-600 text-[12px]'>
               {" "}
-              {calculateCombinedRating(
+              {/* {calculateCombinedRating(
                 data?.data.user.ratings.lodgeRatings.totalRatings,
                 data?.data.user.ratings.lodgeRatings.userCount,
                 data?.data.user.ratings.serviceRatings.totalRatings,
                 data?.data.user.ratings.serviceRatings.userCount
-              )}{" "}
+              )}{" "} */}
               (
               {data?.data.user.ratings.lodgeRatings.userCount +
                 data?.data.user.ratings.serviceRatings.userCount}

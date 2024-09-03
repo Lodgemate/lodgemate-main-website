@@ -59,7 +59,7 @@ const EditProfileModal: React.FC<EditProfileModalProps> = ({ onClose }) => {
         dispatch(setUserData(res));
         setIsLoading(false);
         onClose();
-      } else {
+      } else {  
         throw res;
       }
     } catch (error: any) {
@@ -69,8 +69,8 @@ const EditProfileModal: React.FC<EditProfileModalProps> = ({ onClose }) => {
   };
   // console.log(currentUser?.data.user.profilePicture)
   return (
-    <div className='fixed inset-0 flex items-center justify-center z-50'>
-      <div className='bg-white rounded-lg shadow-lg w-full max-w-md mx-auto relative'>
+    <div className="fixed bg-black bg-opacity-60  inset-0 flex items-center justify-center z-[990]">
+      <div className="bg-white rounded-lg shadow-lg w-full max-w-md mx-auto relative">
         {/* Close Button */}
         <button
           onClick={onClose}

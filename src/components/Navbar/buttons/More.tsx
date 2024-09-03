@@ -155,7 +155,7 @@ function More() {
             <div className='flex flex-col gap-2 text-[12px] p-2'>
               <button
                 onClick={NotificationShow}
-                className='flex- text-gray-700   '
+                className='flex text-gray-700   '
               >
                 Notification{" "}
                 <span className='bg-[red] rounded-[4px] px-[4px] text-white'>

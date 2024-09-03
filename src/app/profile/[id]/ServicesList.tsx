@@ -116,30 +116,31 @@ const ServiceCard: React.FC<ServiceCardProps> = ({
     </div>
   );
 };
-interface serviceListedProps{
-  data: ServiceApiResponse | null
+interface serviceListedProps {
+  data: ServiceApiResponse | null;
 }
 
-const ServicesListed: React.FC<serviceListedProps> = ({data}) => {
-  console.log(data)
+const ServicesListed: React.FC<serviceListedProps> = ({ data }) => {
+  console.log(data);
   return (
     <div className="container mx-auto p-4">
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
-        {data?.status === 'success' && data?.data.services.slice(0, 9).map((service) => (
-          <ServiceCard
-            key={String(service._id)}
-            id={Number(service._id)}
-            // type={service.t}
-            name={service.serviceName}
-            address={service.address_text}
-            // category={service.serviceCategories}
-            images={service.photos}
-            price={service.maxPrice}
-            imageUrl={service.coverphoto}
-            location={service.address_text}
-            // nearbyCategory={service.nearbyCategory}
-          />
-        ))}
+        {data?.status === "success" &&
+          data?.data.services.slice(0, 9).map((service) => (
+            <ServiceCard
+              key={String(service._id)}
+              id={Number(service._id)}
+              // type={service.t}
+              name={service.serviceName}
+              address={service.address_text}
+              // category={service.serviceCategories}
+              images={service.photos}
+              price={service.maxPrice}
+              imageUrl={service.coverphoto}
+              location={service.address_text}
+              // nearbyCategory={service.nearbyCategory}
+            />
+          ))}
       </div>
     </div>
   );

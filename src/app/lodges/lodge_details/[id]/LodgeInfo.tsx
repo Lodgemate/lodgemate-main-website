@@ -205,10 +205,9 @@ function LodgeInfo() {
   }
   if (!LodgeData) {
     return (
-      <div className='h-fit'>
-        {/* <NotFoundPage/> */}
-        Searching....
-      </div>
+      <>
+        <LoadingSkeleton />
+      </>
     );
   }
 
@@ -448,15 +447,15 @@ function LodgeInfo() {
           {/* maping can be used to dispay the images */}
           <div
             ref={scrollContainerRef}
-            className="flex gap-4 overflow-x-scroll scroll-smooth no-scrollbar"
+            className="flex gap-2 overflow-x-scroll scroll-smooth no-scrollbar"
             style={{ scrollBehavior: "smooth" }}
           >
             {photosWithCover.map((image, index) => (
-              <div key={index} className="flex-none w-[500px] overflow-hidden">
+              <div key={index} className="flex-none w-[400px] overflow-hidden">
                 <img
                   src={image}
                   alt={`image ${index + 1}`}
-                  className="sm:h-[400px] cursor-pointer h-[400px] w-[500px]"
+                  className="object-cover sm:min-h-[400px] min-h-[400px] cursor-pointer"
                   onClick={() => openModal(index)}
                 />
               </div>

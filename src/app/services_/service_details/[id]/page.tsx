@@ -149,9 +149,9 @@ function ServicesDetails() {
 
   if (isLoading) {
     return (
-      <>
+      <div className="mt-[150px]">
         <LoadingSkeleton />
-      </>
+      </div>
     );
   }
   if (!ServiceData) {
@@ -391,16 +391,15 @@ function ServicesDetails() {
           {/* maping can be used to dispay the images */}
           <div
             ref={scrollContainerRef}
-            className='flex gap-4 overflow-x-scroll scroll-smooth no-scrollbar'
+            className="flex gap-2 overflow-x-scroll scroll-smooth no-scrollbar"
             style={{ scrollBehavior: "smooth" }}
           >
             {photosWithCover.map((image, index) => (
-              <div key={index} className='flex-none w-[500px] overflow-hidden'>
+              <div key={index} className="flex-none w-[400px] overflow-hidden">
                 <img
                   src={image}
                   alt={`image ${index + 1}`}
-                  className='object-cover sm:h-[400px] h-[400px] cursor-pointer'
-                  // className="sm:h-[450px] h-[400px] bg-black w-[500px] cursor-pointer"
+                  className="object-cover sm:min-h-[400px] min-h-[400px] cursor-pointer"
                   onClick={() => openModal(index)}
                 />
               </div>

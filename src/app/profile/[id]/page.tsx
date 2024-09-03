@@ -10,6 +10,9 @@ import { FetchApi } from "@/utils/Fetchdata";
 import { Endpoints } from "@/services/Api/endpoints";
 import { useParams } from "next/navigation";
 import EditLodgeModal from "./modals/EditLodgeModal";
+import ReviewsListed from "./ReviewsListed";
+
+
 const cache = new Map<string, any>();
 
 const MyProfile = () => {
@@ -83,22 +86,22 @@ const MyProfile = () => {
   }, [currentUserData, activeTab]);
   console.log(tabData.lodgesdata);
   return (
-    <div className=' min-h-[1000px] p-'>
-      <div className='w-full h-[270px] hidden sm:block border-b bg-[#F9F9F9]'></div>
-      <div className='grid grid-cols-1 sm:grid-cols-4 sm:-mt-[55px]  sm:px-[80px]  gap-4 sm:gap-4'>
+    <div className=" min-h-[1000px] p-">
+      <div className="w-full h-[270px] hidden sm:block border-b bg-[#F9F9F9]"></div>
+      <div className="grid grid-cols-1 sm:grid-cols-4 sm:-mt-[55px]  sm:px-[80px]  gap-4 sm:gap-4">
         {/* User Detail Column */}
-        <div className='col-span-1'>
-          <div className='sm:relative p-4 bg- rounded border- bg-[CCCCCC]'>
-            <p className='hidden sm:flex'>user</p>
-            <div className='flex w-full sm:absolute -top-10'>
+        <div className="col-span-1">
+          <div className="sm:relative p-4 bg- rounded border- bg-[CCCCCC]">
+            <p className="hidden sm:flex">user</p>
+            <div className="flex w-full sm:absolute -top-10">
               <UserDetailas data={currentUserData} />
             </div>
           </div>
         </div>
         {/* Tab Header and Content Column */}
-        <div className='sm:col-span-3'>
-          <div className='py-4 bg- rounded'>
-            <div className='flex sm:space-x-4 space-x-2 sm:border-b-0 overflow-x-auto whitespace-nowrap'>
+        <div className="sm:col-span-3">
+          <div className="py-4 bg- rounded">
+            <div className="flex sm:space-x-4 space-x-2 sm:border-b-0 overflow-x-auto whitespace-nowrap">
               {["Lodges listed", "Services listed", "Ratings & reviews"].map(
                 (tab) => (
                   <div
@@ -115,7 +118,7 @@ const MyProfile = () => {
                 )
               )}
             </div>
-            <div className='mt-4'>
+            <div className="mt-4">
               {activeTab === "Lodges listed" && (
                 <div>
                   {tabData.lodgesdata && (
@@ -131,7 +134,9 @@ const MyProfile = () => {
                 </div>
               )}
               {activeTab === "Ratings & reviews" && (
-                <div>Ratings & reviews content</div>
+                <div>
+                  <ReviewsListed />
+                </div>
               )}
             </div>
           </div>

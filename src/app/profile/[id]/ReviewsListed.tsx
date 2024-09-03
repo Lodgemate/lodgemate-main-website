@@ -63,11 +63,11 @@ const ReviewCard: React.FC<ReviewCardProps> = ({
           <div className="font-bold">{reviewerName}</div>
           <div className="text-gray-500 text-sm">{date}</div>
         </div>
-        <div className="ml-auto">
+        {/* <div className="ml-auto">
           <button>
             <span>•••</span>
           </button>
-        </div>
+        </div> */}
       </div>
       <div className="flex items-center mb-2">
         <span className="font-semibold text-yellow-500">{rating}</span>

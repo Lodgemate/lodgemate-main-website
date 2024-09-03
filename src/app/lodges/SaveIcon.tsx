@@ -23,8 +23,8 @@ function HeartIcon({type, id}:any) {
           Authorization: `Bearer ${parseToken}`,
         },
         body:JSON.stringify ({
-          type: "lodge",
-          id: "66c244a951815292833c97f4",
+          type: type,
+          id: id,
         }),
       };
 

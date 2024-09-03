@@ -199,6 +199,44 @@ const BrowseLodges: React.FC<BrowseLodgesProps> = ({
   },[LodgesData,showMore])
   return (
     <div className="px-4 sm:px-[100px] mt-[50px] text-[12px] sm:text-[14px] -z-99 ">
+      {/* Filters Modal */}
+      {showFiltersModal && (
+        <div
+          className="fixed text-[14px] inset-0  h-screen -top-[50px] bottom-0 px-1 items-center bg-black bg-opacity-25 flex justify-center z-[999]"
+          onClick={handleModalClick}
+        >
+          <div className="bg-white border shadow-lg  rounded-[20px]  w-[768px] mt-6 max-h-[80vh] no-scrollbar overflow-y-auto">
+            {/* Header */}
+            <div className="flex relative justify-center p-2 items-center mb- border-b bor">
+              <h2 className="text-[16px] font-bold">Filters</h2>
+              <button
+                onClick={() => setShowFiltersModal(false)}
+                className="text-gray-500  absolute right-4 top-2 hover:text-gray-800"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-6 w-6"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                </svg>
+              </button>
+            </div>
+            <FilterOptions
+              onResetFilters={handleResetFilters}
+              onApplyFilters={handleApplyFilters}
+              onClose={() => setShowFiltersModal(false)}
+            />
+          </div>
+        </div>
+      )}
       <div className="flex justify-between gap-8 items-center text-lgray mb-[24px]">
         <h1 className=" flex flex-wrap  text-lgray ">
           {isSearchTriggered
@@ -238,45 +276,6 @@ const BrowseLodges: React.FC<BrowseLodgesProps> = ({
           </div>
         )}
       </div>
-
-      {/* Filters Modal */}
-      {showFiltersModal && (
-        <div
-          className="fixed top-0 left-0 right-0 bottom-0 px-1 bg-black bg-opacity-25 flex justify-center z-[999"
-          onClick={handleModalClick}
-        >
-          <div className="bg-white  rounded-[20px]  w-[768px] mt-6 max-h-[80vh] no-scrollbar overflow-y-auto">
-            {/* Header */}
-            <div className="flex relative justify-center p-2 items-center mb- border-b bor">
-              <h2 className="text-xl font-bold">Filters</h2>
-              <button
-                onClick={() => setShowFiltersModal(false)}
-                className="text-gray-500  absolute right-4 top-2 hover:text-gray-800"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-6 w-6"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M6 18L18 6M6 6l12 12"
-                  />
-                </svg>
-              </button>
-            </div>
-            <FilterOptions
-              onResetFilters={handleResetFilters}
-              onApplyFilters={handleApplyFilters}
-              onClose={() => setShowFiltersModal(false)}
-            />
-          </div>
-        </div>
-      )}
     </div>
   );
 };

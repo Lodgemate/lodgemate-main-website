@@ -252,7 +252,7 @@ function ServicesDetails() {
 
   return (
     <div>
-      <div className="sm:px-[100px] text-[14px] capitalize sm:mt-[100px]">
+      <div className="sm:px-[100px] text-[14px] capitalize  mt-[80px] sm:mt-[120px]">
         {/* modals render */}
         <DeleteModal />
         <WriteReview

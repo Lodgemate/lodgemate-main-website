@@ -130,9 +130,9 @@ const FilterOptions: React.FC<FilterOptionsProps> = ({
 
   return (
     <div ref={modalRef}>
-      <div className="text-[16px] p-4 sm:p-8">
+      <div className="text-[14px] bg-white  p-4 sm:p-8">
         <div className="border-b pb-4 mb-4">
-          <p className="text-[20px] mb-4 font-medium text-dgray">
+          <p className="text-[16px] mb-4 font-medium text-dgray">
             Price range (per year)
           </p>
           <div className="mb-4">
@@ -177,7 +177,7 @@ const FilterOptions: React.FC<FilterOptionsProps> = ({
         </div>
 
         <div className="border-b pb-4 mb-4">
-          <p className="text-[20px] mb-4 font-medium text-dgray">
+          <p className="text-[16px] mb-4 font-medium text-dgray">
             Accommodation type{" "}
           </p>
           <div className="flex flex-wrap justify-center sm:justify-between gap-2">
@@ -213,7 +213,7 @@ const FilterOptions: React.FC<FilterOptionsProps> = ({
         </div>
 
         <div className="border-b pb-4 mb-4">
-          <p className="text-[20px] mb-4 font-medium text-dgray">
+          <p className="text-[16px] mb-4 font-medium text-dgray">
             Number of rooms{" "}
           </p>
           <div className="flex flex-wrap items-center justify-center sm:justify-between gap-2">
@@ -234,7 +234,7 @@ const FilterOptions: React.FC<FilterOptionsProps> = ({
         </div>
 
         <div className="border-b pb-4 mb-4">
-          <p className="text-[20px] mb-4 font-medium text-dgray">
+          <p className="text-[16px] mb-4 font-medium text-dgray">
             Number of occupants{" "}
           </p>
           <div className="flex flex-wrap items-center justify-center sm:justify-between gap-2">
@@ -261,7 +261,7 @@ const FilterOptions: React.FC<FilterOptionsProps> = ({
         </div>
 
         <div className="border- pb-4 mb-4">
-          <p className="text-[20px] mb-4 font-medium text-dgray">
+          <p className="text-[16px] mb-4 font-medium text-dgray">
             Accommodation features{" "}
           </p>
           <div className="flex items-center justify-center sm:justify-normal flex-wrap gap-3">

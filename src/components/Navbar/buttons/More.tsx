@@ -230,7 +230,7 @@ function More() {
               </Link>
               <Link
                 href='/status_and_inventory'
-                className='text-gray-700 py-[5px]'
+                className='text-gray-700 py-[5px] hidden'
               >
                 Status & inventory
               </Link>
@@ -349,7 +349,7 @@ function More() {
               </Link>
               <Link
                 href='/status_and_inventory'
-                className='text-gray-700 py-[5px]'
+                className='text-gray-700 py-[5px] hidden'
               >
                 Status & inventory
               </Link>

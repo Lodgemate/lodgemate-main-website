@@ -12,6 +12,7 @@ import Failed from "@/Ui/shared/Failed";
 import EmailModal from "@/Ui/shared/EmailModal";
 import { Providers } from "@/components/ProgressBarProvider";
 import GetApp from "./GetApp";
+import EditLodgeModal from "./profile/[id]/modals/EditLodgeModal";
 
 
 const inter = Inter({ subsets: ["latin"] });
@@ -41,6 +42,7 @@ export default function RootLayout({
           <Failed />
           </Providers>
           <GetApp />
+
         </body>
         <Footer />
         <BottomNavbar />

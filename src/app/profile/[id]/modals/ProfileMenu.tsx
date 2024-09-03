@@ -1,3 +1,4 @@
+import { ApiResponse } from "@/lib/Types";
 import { handlyCopy } from "@/utils/utils";
 import React, { useState, useRef, useEffect } from "react";
 
@@ -5,14 +6,14 @@ interface ProfileMenuModalProps {
   isOpen: boolean;
   toggleDropdown: () => void;
   editProfile: () => void;
-  link?: string
+  link?: string;
 }
 
 const ProfileMenuModal: React.FC<ProfileMenuModalProps> = ({
   isOpen,
   toggleDropdown,
   link,
-  editProfile
+  editProfile,
 }) => {
   const [isClicked, setIsClicked] = useState('Copy profile link');
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -44,7 +45,6 @@ const ProfileMenuModal: React.FC<ProfileMenuModalProps> = ({
     const CopiedStatus: any = await handlyCopy(link);
       setIsClicked(CopiedStatus);
   };
-  console.log(isClicked)
   return (
     <div
       ref={dropdownRef}

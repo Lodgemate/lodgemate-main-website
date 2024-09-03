@@ -17,6 +17,7 @@ const DeleteModal:React.FC= () => {
         setClicked(false);
       }
     }, []);
+    
   return (
     <>
       {deleteData.deleteFunction && (

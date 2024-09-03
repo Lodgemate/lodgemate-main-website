@@ -2,12 +2,13 @@ import React, { useEffect, useState } from "react";
 import { NotificationData, NotificationResponse } from "../Navbar/buttons/More";
 import { Endpoints } from "@/services/Api/endpoints";
 import { FetchApi } from "@/utils/Fetchdata";
+import Link from "next/link";
 
 interface props {
   notifications: NotificationResponse | undefined;
 }
 
-const NotificationModal: React.FC<props> = ({ notifications }) => {
+const  NotificationModal: React.FC<props> = ({ notifications }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const toggleDropdown = () => {
@@ -47,11 +48,16 @@ const NotificationModal: React.FC<props> = ({ notifications }) => {
           ? notifications.data.notifications.map((ent) => {
               return (
                 <div className='border-b pb-2 mb-2'>
-                  <p className=' px-4  '>
-                    {ent.body}
-                    <span>......</span>{" "}
-                  </p>
-                </div>
+                <p className="px-3 py-1 font-bold">
+                {ent.title}
+                </p>
+                <p className=' px-4 line-clamp-1 '>
+                  {ent.body}
+                </p>
+                {ent.resource === 'chat' && 
+                <Link className="px-4 hover:underline text-xs text-lblue" href={'/chats'}>Show Message</Link>
+              }
+              </div>
               );
             })
           : "No Notifications yet"}

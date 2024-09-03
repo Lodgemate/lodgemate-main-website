@@ -4,9 +4,11 @@ import { useEffect, useState } from "react";
 
 function HeartIcon({type, id}:any) {
   const [isRed, setIsRed] = useState(false);
+  const [clicked, setclicked] = useState(false);
 
   const handleClick = () => {
     setIsRed(!isRed);
+    setclicked(true)
   };
   useEffect(()=>{
     const localStorageToken = localStorage.getItem("token");
@@ -17,20 +19,23 @@ function HeartIcon({type, id}:any) {
       const options = {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
           Authorization: `Bearer ${parseToken}`,
         },
-        body: {
+        body:JSON.stringify ({
           type: "lodge",
           id: "66c244a951815292833c97f4",
-        },
+        }),
       };
 
       console.log(url);
       console.log(type)
          console.log(await FetchApi(url, options));
+         setclicked(false)
     };
-    AddToWhishlist()
+    if (clicked) {
+          AddToWhishlist()
+    }
 
 
   },[isRed])

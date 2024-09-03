@@ -30,7 +30,6 @@ const ActiveChats:React.FC<ActiveChatsProps> = ({currentUser, activeChat, setAct
         };
         fetchData()
     },[activeChat])
-
     const reciversData=(data :any[])=>{
       const newArr = data.filter((ent: any)=>ent?._id !== currentUser?.data.user._id )
       return newArr[0]

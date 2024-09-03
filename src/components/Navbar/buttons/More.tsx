@@ -95,7 +95,8 @@ function More() {
   }
 
   const unreadMssgLength=(Arr: Notification[]| undefined)=>{
-    if (Arr?.length !>= 1 ) {
+    console.log(Arr)
+    if (Arr && Arr?.length < 1 ) {
       return 0
     }
     const newArr= Arr?.filter((ent:Notification)=>ent.read === false)

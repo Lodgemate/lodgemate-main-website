@@ -419,10 +419,9 @@ function LodgeInfo() {
           <div className="flex justify-between sm:px-[20px]">
             {/* scroll forward and backward buttons */}
             <button
-              className="absolute left-4 transform -translate-y-1/2 p-1  border-lgray border-2 border-opacity-[10%] rounded-full bg-white shadow-lg"
+              className="absolute left-4 transform -translate-y-1/2 p-1 px-2 border-lgray border-2 border-opacity-[10%] rounded-full bg-white shadow-lg"
               onClick={() => scroll(-500)}
             >
-              {" "}
               <img
                 src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1716822310/utilities/LodgeMate_File/Polygon_1_1_qouf70.svg"
                 alt="back"

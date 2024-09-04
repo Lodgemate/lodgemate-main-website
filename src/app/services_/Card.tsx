@@ -63,7 +63,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
             <img
               src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1716223406/utilities/LodgeMate_File/Vector_aflwdv.png"
               alt="verified"
-              className=" ml-2"
+              className=" ml-2 hidden"
             />
           </div>
           <p className="text-lgray text-[12px] capitalize">{location}</p>

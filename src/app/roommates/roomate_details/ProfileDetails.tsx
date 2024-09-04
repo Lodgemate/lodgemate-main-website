@@ -87,11 +87,11 @@ const ProfileDetails: React.FC<ProfileDetailsProps> = ({
           </div>
 
           <div className='flex justify-center items-center flex-col gap-4 px-4 '>
-            <div className='w-[150px] h-[150px]  overflow-hidden items-center mt-[24px] mb-[16px flex'>
+            <div className='w-[150px] h-[150px]  border rounded-full overflow-hidden items-center mt-[24px] mb-[16px flex'>
               <img
                 src={roommate.postedBy.profilePicture}
                 alt={roommate.postedBy.firstName}
-                className='rounded-full w-[150px] h-[150px]'
+                className='rounded-full w-[150px]- h-[150px]-'
               />
             </div>
             <p className='text-[20px] font-semibold'>

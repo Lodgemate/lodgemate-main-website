@@ -1,0 +1,14 @@
+[
+    {
+        "relation": [
+            "delegate_permission/common.handle_all_urls"
+        ],
+        "target": {
+            "namespace": "android_app",
+            "package_name": "ng.com.lodgemate",
+            "sha256_cert_fingerprints": [
+                "BF:F0:0F:DA:AD:1B:B6:D9:47:FF:1F:74:31:58:FB:A4:7F:E2:79:67:A9:C6:70:3A:88:64:9B:C8:6D:EE:F2:0B"
+            ]
+        }
+    }
+]

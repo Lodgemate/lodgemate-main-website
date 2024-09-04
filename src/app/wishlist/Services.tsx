@@ -75,58 +75,27 @@ const Card: React.FC<CardProps> = ({
   );
 };
 
-const serivices = [
-  {
-    id: 1,
-    imageUrl:
-      "https://res.cloudinary.com/dcb4ilgmr/image/upload/v1716399836/utilities/LodgeMate_File/esdjvcdh_gsgyzy.png",
 
-    name: "Electrical rewiring service",
-    description:
-      "I offer electrical rewiring services with lorem ipsum dolor sit amet, consectetur dolor sit amet, consectetudolor sit amet add",
-    nearbyUniversity: "University One",
-    price: 50000,
-  },
-  {
-    id: 2,
-    imageUrl:
-      "https://res.cloudinary.com/dcb4ilgmr/image/upload/v1716399836/utilities/LodgeMate_File/fsddvgsajh_zcl8xg.png",
 
-    name: "Room refresh & painting",
-    description:
-      "Hello there, we’re a room refresh and painting service with over 3 years of experience in the industry. Contact us for...",
-    nearbyUniversity: "University Two",
-    price: 60000,
-  },
-  {
-    id: 3,
-    imageUrl:
-      "https://res.cloudinary.com/dcb4ilgmr/image/upload/v1716399839/utilities/LodgeMate_File/sddc_yhmgjy.png",
-
-    name: "Chudi furniture making & repair",
-    description:
-      "I offer electrical rewiring services with lorem ipsum dolor sit amet, consectetur dolor sit amet, consectetudolor sit amet add",
-    nearbyUniversity: "University Three",
-    price: 70000,
-  },
-];
-
-function Serivices() {
+interface ServicesProps{
+  services:any []| []
+}
+const Services:React.FC<ServicesProps>=({ services} )=> {
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-      {serivices.map((service) => (
+    <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4'>
+      {services.map((service) => (
         <Card
-          key={service.id}
-          id={service.id}
-          imageUrl={service.imageUrl}
-          name={service.name}
-          description={service.description}
-          nearbyUniversity={service.nearbyUniversity}
-          price={service.price}
+          key={service.service._id}
+          id={service.service._id}
+          imageUrl={service.service.coverphoto}
+          name={service.service.serviceName}
+          description={service.service.description}
+          nearbyUniversity={service.service.administrativeArea}
+          price={service.service.maxPrice}
         />
       ))}
     </div>
   );
 }
 
-export default Serivices;
+export default Services;

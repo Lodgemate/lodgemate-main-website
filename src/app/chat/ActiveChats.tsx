@@ -48,7 +48,7 @@ const ActiveChats:React.FC<ActiveChatsProps> = ({currentUser, activeChat, setAct
       return (
         <div
         key={chat.latestMessage._id}
-        className={`flex justify-between items-start p-4 border-b border-gray-300 cursor-pointer ${
+        className={`flex justify-between items-start p-2 border-b border-gray-300 cursor-pointer ${
           activeChat?.id === chat.id ? "bg-[#F5F5F5]" : "bg-white"
         }`}
         onClick={() => setActiveChat(chat)}
@@ -61,12 +61,12 @@ const ActiveChats:React.FC<ActiveChatsProps> = ({currentUser, activeChat, setAct
           />
           <div className="ml-4">
             <div className="font-semibold">{reciversData(chat.latestMessage.participants)?.firstName}</div>
-            <div className="w-[150px] truncate text-[15px]">
+            <div className="w-[150px] truncate text-[12px]">
               {chat.latestMessage.message}
             </div>
           </div>
         </div>
-        <div className="text-[15px] text-gray-500 ">{extractDate(chat.latestMessage.dateCreated)}</div>
+        <div className="text-[8px] text-gray-500 ">{extractDate(chat.latestMessage.dateCreated)}</div>
       </div>
              )
     })

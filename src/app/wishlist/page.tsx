@@ -7,6 +7,7 @@ import Services from "./Services";
 import TourCart from "./TourCart";
 import { Endpoints } from "@/services/Api/endpoints";
 import { FetchApi } from "@/utils/Fetchdata";
+import { Lodge, Roommate, Service } from "@/lib/Types";
 
 interface TabData {
   message: string;
@@ -16,6 +17,7 @@ interface TabData {
 
 function Wishlist() {
   const [activeTab, setActiveTab] = useState<string>("Lodges");
+  const [wishList, setwishList] = useState<(Service|Lodge| Roommate)[]>([])
   useEffect(()=>{
     const localStorageToken = localStorage.getItem("token");
     const parseToken = localStorageToken && JSON.parse(localStorageToken);
@@ -27,33 +29,44 @@ function Wishlist() {
           Authorization: `Bearer ${parseToken}`,
         },
       };
-
-      console.log(url);
-         console.log(await FetchApi(url, options));
+      try {
+        const res: any= await FetchApi(url, options)
+        if (res.status === 'success') {
+          setwishList(res.data.wishlists)
+        }else{
+          throw res
+        }
+      } catch (error) {
+        
+      }
+      
     };
     AddToWhishlist()
 
 
   },[])
-
+  // console.log(wishList);
+  const filteredLodges: any= wishList.filter(ent=> ent.type === 'lodge')
+  const filteredRoommates: any= wishList.filter(ent=> ent.type === 'roommate')
+  const filteredServices: any= wishList.filter(ent=> ent.type === 'service')
   const tabData: { [key: string]: TabData } = {
     Lodges: {
-      message: "You have 7 lodges in your wishlist",
+      message:`You have ${filteredLodges.length} lodges in your wishlist`,
       content: (
         <div>
-          <Lodges />
+          <Lodges lodges={filteredLodges}/>
         </div>
       ),
     },
     Roommates: {
-      message: "You have 5 roomies in your wishlist",
-      content: <div><Roommates /></div>,
+      message:`You have ${filteredRoommates.length} roomies in your wishlist`,
+      content: <div><Roommates roommates={filteredRoommates}/></div>,
     },
     Serivices: {
-      message: "You have 3 services in your wishlist",
+      message:`You have ${filteredServices.length} services in your wishlist`,
       content: (
         <div>
-          <Services />
+          <Services services={filteredServices}/>
         </div>
       ),
     },

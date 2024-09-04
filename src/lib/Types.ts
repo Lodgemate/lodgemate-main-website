@@ -192,6 +192,7 @@ export interface Ratings {
     dateCreated: string;
     id: string;
     phoneNumber:any
+    type: string
   }
   
  export interface ServiceData {
@@ -219,6 +220,7 @@ export interface Ratings {
   
   // Define the structure of a single roommate object
 export interface Roommate {
+  type: string;
   location: Location;
   _id: string;
   postedBy: PostedBy;

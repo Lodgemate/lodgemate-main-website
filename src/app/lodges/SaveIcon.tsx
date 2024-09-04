@@ -13,6 +13,7 @@ function HeartIcon({type, id}:any) {
   useEffect(()=>{
     const localStorageToken = localStorage.getItem("token");
     const parseToken = localStorageToken && JSON.parse(localStorageToken);
+
     const AddToWhishlist = async () => {
       const url = Endpoints.addToWishlist;
 
@@ -28,13 +29,49 @@ function HeartIcon({type, id}:any) {
         }),
       };
 
-      console.log(url);
-      console.log(type)
-         console.log(await FetchApi(url, options));
-         setclicked(false)
+      try{
+      const res: any= await FetchApi(url, options)
+      if (res.status === 'success') {
+      }else{
+        setIsRed(false)
+
+        throw res
+      }
+    } catch (error:any) {
+      alert(error.message)
+      
+    }finally{
+      setclicked(false)
+    }
+      
+    };
+
+    const DelfromoWhishlist = async () => {
+      const url = `${Endpoints.addToWishlist}${id}`;
+
+      const options = {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${parseToken}`,
+        },
+      };
+
+      try{
+        const res: any= await FetchApi(url, options)
+        if (res.status === 'success') {
+        }else{
+          setIsRed(true)
+
+          throw res
+        }
+      } catch (error:any) {
+        alert(error.message)
+      }finally{
+        setclicked(false)
+      }
     };
     if (clicked) {
-          AddToWhishlist()
+      isRed? AddToWhishlist():DelfromoWhishlist()
     }
 
 

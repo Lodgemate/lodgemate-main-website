@@ -171,6 +171,7 @@ function BrowseRoommates() {
       <Card
         {...roommate}
         key={index}
+        id={roommate._id}
         imageUrl={roommate.postedBy.profilePicture}
         name={roommate.postedBy.firstName}
         location={roommate.address_text}

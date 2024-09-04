@@ -7,15 +7,13 @@ import MobileChat from "./MobileChat";
 const Chat=()=> {
   return (
     <div className=" flex justify-center  text-[14px]">
-      <div className="lg:block hidden w-full max-w-[1200px] border">
       <Suspense fallback={<>Loading.....</>}>
        <DesktopChat />
       </Suspense>
-      </div>
-      <div className="lg:hidden w-full max-w-[1200px] border block">
+      {/* <div className="lg:hidden w-full max-w-[1200px] border block">
         {" "}
         <MobileChat />
-      </div>
+      </div> */}
     </div>
   );
 }

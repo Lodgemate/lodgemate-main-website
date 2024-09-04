@@ -101,7 +101,7 @@ const MyProfile = () => {
         {/* Tab Header and Content Column */}
         <div className="sm:col-span-3">
           <div className="py-4 bg- rounded">
-            <div className="flex sm:space-x-4 space-x-2 sm:border-b-0 overflow-x-auto whitespace-nowrap">
+            <div className="flex sm:space-x-4 space-x-2 sm:border-b-0 overflow-x-auto no-scrollbar whitespace-nowrap">
               {["Lodges listed", "Services listed", "Ratings & reviews"].map(
                 (tab) => (
                   <div

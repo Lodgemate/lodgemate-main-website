@@ -32,8 +32,14 @@ const Tab2Content: React.FC = () => {
   const [description, setdescription] = useState(
     ExtractDataFromFormData("description")
   );
-  const [serviceCategories, setserviceCategories] = useState(
-    ExtractDataFromFormData("serviceCategories")
+  const [otherServiceCategories, setotherServiceCategories] = useState(
+    ExtractDataFromFormData("otherServiceCategories")
+  );
+
+  // Set serviceCategories to "other" by default
+  const serviceCategories = "other";
+  dispatch(
+    setStateItem({ key: "serviceCategories", value: serviceCategories })
   );
 
   const locationOnchange = (data: Result) => {
@@ -86,17 +92,17 @@ const Tab2Content: React.FC = () => {
     dispatch(setStateItem({ key: "location[longitude]", value: long }));
   };
   return (
-    <div className='flex flex-col items-center text-dgray'>
-      <form className='w-full max-w-lg flex flex-col gap-4 mt-5'>
+    <div className="flex flex-col items-center text-dgray">
+      <form className="w-full max-w-lg flex flex-col gap-4 mt-5">
         {/* servicename */}
-        <div className='flex flex-col gap-1'>
-          <label htmlFor='lodgeName'>Enter a name for your service</label>
+        <div className="flex flex-col gap-1">
+          <label htmlFor="serviceName">Enter a name for your service</label>
           <input
-            type='text'
-            id='serviceName'
+            type="text"
+            id="serviceName"
             value={serviceName}
-            placeholder='e.g. electrical rewiring service in kumasa'
-            className='w-full p-2 border border-gray-300 rounded'
+            placeholder="e.g. electrical rewiring service in kumasa"
+            className="w-full p-2 border border-gray-300 rounded"
             onChange={(e) => {
               setserviceName(e.target.value);
               dispatch(
@@ -105,50 +111,34 @@ const Tab2Content: React.FC = () => {
             }}
           />
         </div>
-        {/* category */}
-        <div className='flex flex-col gap-1'>
-          <label htmlFor='lodgeName'>Select a category for your service</label>
+        {/* otherServiceCategories */}
+        <div className="flex flex-col gap-1">
+          <label htmlFor="otherServiceCategories">Enter a category name</label>
           <input
-            type='text'
-            id='serviceCategories'
-            value={serviceCategories}
-            placeholder='e.g. electrical services,'
-            className='w-full p-2 border border-gray-300 rounded'
+            type="text"
+            id="otherServiceCategories"
+            placeholder="e.g. electrical services,"
+            className="w-full p-2 border border-gray-300 rounded"
+            value={otherServiceCategories}
             onChange={(e) => {
-              setserviceCategories(e.target.value);
+              setotherServiceCategories(e.target.value);
               dispatch(
                 setStateItem({
-                  key: "serviceCategories",
+                  key: "otherServiceCategories",
                   value: e.target.value,
                 })
               );
             }}
           />
         </div>
-        {/* otherServiceCategories */}
-        {/* <div className='flex flex-col gap-1'>
-          <label htmlFor='lodgeName'>Select a category for your service</label>
-          <input
-            type='text'
-            id='otherServiceCategories'
-            placeholder='e.g. electrical services,'
-            className='w-full p-2 border border-gray-300 rounded'
-            value={otherServiceCategories}
-            onChange={(e)=>{
-              setotherServiceCategories(e.target.value)
-        dispatch(setStateItem({ key: "otherServiceCategories", value: e.target.value }));
-            }}
-          />
-        </div> */}
-
         {/* min price */}
-        <div className='flex flex-col gap-1'>
-          <label htmlFor='price'>Set a min-price for your service</label>
+        <div className="flex flex-col gap-1">
+          <label htmlFor="minPrice">Set a min-price for your service</label>
           <input
-            type='number'
-            id='minPrice'
-            placeholder='e.g. 100000'
-            className='w-full p-2 border border-gray-300 rounded'
+            type="number"
+            id="minPrice"
+            placeholder="e.g. 100000"
+            className="w-full p-2 border border-gray-300 rounded"
             value={minPrice}
             onChange={(e) => {
               setminPrice(e.target.value);
@@ -159,13 +149,13 @@ const Tab2Content: React.FC = () => {
           />
         </div>
         {/* max price */}
-        <div className='flex flex-col gap-1'>
-          <label htmlFor='price'>Set a max-price for your service</label>
+        <div className="flex flex-col gap-1">
+          <label htmlFor="maxPrice">Set a max-price for your service</label>
           <input
-            type='number'
-            id='maxPrice'
-            placeholder='e.g. 90000'
-            className='w-full p-2 border border-gray-300 rounded'
+            type="number"
+            id="maxPrice"
+            placeholder="e.g. 90000"
+            className="w-full p-2 border border-gray-300 rounded"
             value={maxPrice}
             onChange={(e) => {
               setmaxPrice(e.target.value);
@@ -175,19 +165,13 @@ const Tab2Content: React.FC = () => {
             }}
           />
         </div>
-        {/* <div className='flex items-center text-[15px]'>
-          <input type='checkbox' id='negotiable' className='mr-2' />
-          <label htmlFor='negotiable'>
-            Let people contact for price instead
-          </label>
-        </div> */}
         {/* description */}
-        <div className='flex flex-col gap-1'>
-          <label htmlFor='description'>Describe your service</label>
+        <div className="flex flex-col gap-1">
+          <label htmlFor="description">Describe your service</label>
           <textarea
-            id='description'
-            placeholder='Write a short description about your service'
-            className='w-full p-2 border border-gray-300 rounded'
+            id="description"
+            placeholder="Write a short description about your service"
+            className="w-full p-2 border border-gray-300 rounded"
             rows={4}
             value={description}
             onChange={(e) => {

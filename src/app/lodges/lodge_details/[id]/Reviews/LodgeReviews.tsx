@@ -27,11 +27,11 @@ const LodgeReviews: React.FC<LodgeReviewsProps> = React.memo(
   ({ data, showReplies, replycomment, currentUserData, LodgeData }) => {
     const [isWriteReviewOpen, setIsWriteReviewOpen] = useState(false);
 
-    const [isOpen, setIsOpen] = useState(false);
+  const [openPopupIndex, setOpenPopupIndex] = useState<number | null>(null);
 
-    const togglePopup = () => {
-      setIsOpen(!isOpen);
-    };
+   const togglePopup = (index: number) => {
+     setOpenPopupIndex(openPopupIndex === index ? null : index);
+   };
 
     const handleOpenWriteReview = () => {
       setIsWriteReviewOpen(true);
@@ -75,17 +75,17 @@ const LodgeReviews: React.FC<LodgeReviewsProps> = React.memo(
 
                 <div className="relative">
                   <button
-                    onClick={togglePopup}
-                    className=" text-black px-4 py-2 "
+                    onClick={() => togglePopup(index)}
+                    className="text-black px-4 py-2"
                   >
                     <span>•••</span>
                   </button>
 
-                  {isOpen && (
+                  {openPopupIndex === index && (
                     <div className="absolute -bottom-[60px] -left-8 w-full h-full flex justify-center items-center bg-gray-900 bg-opacity-50">
-                      <div className="bg-white p-2  shadow-lg min-w-[100px] border rounded-[8px]">
+                      <div className="bg-white p-2  shadow-lg min-w-[150px] border rounded-[8px]">
                         <button
-                          onClick={togglePopup}
+                          onClick={() => togglePopup(index)}
                           className=" text-end flex justify-end text-[16px] w-full rounded "
                         >
                           x{" "}
@@ -93,6 +93,8 @@ const LodgeReviews: React.FC<LodgeReviewsProps> = React.memo(
                         {currentUserData?.data.user._id ===
                           review.postedBy._id && (
                           <div>
+                            <hr className="my-2" />
+
                             <button onClick={handleOpenWriteReview}>
                               <EditReviewBtn
                                 isWriteReviewOpen={isWriteReviewOpen}
@@ -102,8 +104,8 @@ const LodgeReviews: React.FC<LodgeReviewsProps> = React.memo(
                               />
                             </button>
                           </div>
-                          )}
-                        <hr className="my-1" />
+                        )}
+                        <hr className="my-2" />
                         {currentUserData?.data.user._id ===
                           review.postedBy._id && (
                           <div>
@@ -113,8 +115,15 @@ const LodgeReviews: React.FC<LodgeReviewsProps> = React.memo(
                                 data={review}
                               />
                             </button>
+                            <hr className="my-2" />
                           </div>
                         )}{" "}
+                        <p
+                          className="text-[12px]  cursor-pointer hover:text-lblue"
+                          onClick={() => replycomment(review)}
+                        >
+                          Reply
+                        </p>
                       </div>
                     </div>
                   )}

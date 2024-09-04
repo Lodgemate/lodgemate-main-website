@@ -167,7 +167,7 @@ function BrowseRoommates() {
     //   setShowFiltersModal(false); // Close modal after applying filters
   };
   const MappedRoommates = useMemo(() => (
-    RoommatesData?.data?.roommates.slice(0, showMore ? RoommatesData.data.roommates.length : 2).map((roommate, index) => (
+    RoommatesData?.data?.roommates.slice(0, showMore ? RoommatesData.data.roommates.length : 12).map((roommate, index) => (
       <Card
         {...roommate}
         key={index}

@@ -164,7 +164,7 @@ function BrowseServices() {
       <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {ServicesData &&
           ServicesData.data?.services
-            .slice(0, showMore ? ServicesData.data.services.length : 2)
+            .slice(0, showMore ? ServicesData.data.services.length : 12)
             .map((product, index) => (
               <Card
                 key={index}

@@ -12,7 +12,7 @@ import Failed from "@/Ui/shared/Failed";
 import EmailModal from "@/Ui/shared/EmailModal";
 import { Providers } from "@/components/ProgressBarProvider";
 import GetApp from "./GetApp";
-import EditLodgeModal from "./profile/[id]/modals/EditLodgeModal";
+import BackToTopButton from "./BackToTopButton";
 
 
 const inter = Inter({ subsets: ["latin"] });
@@ -36,14 +36,15 @@ export default function RootLayout({
         <Navbar />
         <body className={`  relative  ${inter.className}`}>
           <Providers>
-          <div className=" min-h-screen">{children}</div>
-          <LogoLoader />
-          <Aproved />
-          <Failed />
+            <div className=" min-h-screen">{children}</div>
+            <LogoLoader />
+            <Aproved />
+            <Failed />
           </Providers>
           <GetApp />
-
         </body>
+        <BackToTopButton />
+
         <Footer />
         <BottomNavbar />
         <EmailModal />

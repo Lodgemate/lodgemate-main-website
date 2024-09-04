@@ -3,9 +3,9 @@ import LodgeInfo from "./LodgeInfo";
 
 const LodgeDetailPage: React.FC = () => {
   return (
-    <div className="mt-[80px] sm:mt-[120px] text-[16px]">
+    <div className="mt-[80px] sm:mt-[100px] text-[16px]">
       <div className="hidden sm:block">
-        <SearchBar  />
+        {/* <SearchBar  /> */}
       </div>
         <LodgeInfo  />
       

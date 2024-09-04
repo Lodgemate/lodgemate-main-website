@@ -64,13 +64,13 @@ const EditReviewBtn: React.FC<DeleteReviewbtProps> = ({
 
   return (
     <>
+      
       <WriteReview
         show={isWriteReviewOpen}
         onClose={handleCloseWriteReview}
         handlePost={handleEditReview}
       />
-      <IoPencil />
-    </>
+<p className="text-[13px] font-medium">Edit</p>    </>
   );
 };
 

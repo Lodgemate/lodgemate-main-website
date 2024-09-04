@@ -69,9 +69,13 @@ const DeleteReviewbtn: React.FC<DeleteReviewbtProps> = ({data, LodgeDataId}) => 
    };
   return (
     <>
-      <FaTrashCan onClick={()=>dispatch(showDeleteModal(deleteState))}/>
+      <div className='text-[red] font-medium text-[13px] '>
+        <button onClick={() => dispatch(showDeleteModal(deleteState))}>
+          Delete{" "}
+        </button>
+      </div>
     </>
-  )
+  );
 }
 
 export default DeleteReviewbtn

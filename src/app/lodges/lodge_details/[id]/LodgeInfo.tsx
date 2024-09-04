@@ -401,7 +401,7 @@ function LodgeInfo() {
               <div>
                 <button
                   onClick={handleOpenLodgeSaved}
-                  className="border- border-opacity-[8%] border-2 flex rounded-lg py-[10px] gap-2 px-[16px]"
+                  className="border- border-opacity-[8%] border-2 flex rounded-lg py-[4px] gap-2 px-[8px]"
                 >
                   <img
                     src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1716817967/utilities/LodgeMate_File/ph_heart-fill_cidon6.svg"
@@ -540,11 +540,11 @@ function LodgeInfo() {
             </div>
 
             {/* the p tag displays the price of each product  */}
-            <p className="text-[18px] text-dgray font-semibold border-b pb-2 ">
+            <p className="text-[16px] text-dgray font-semibold border-b pb-2 ">
               ₦{LodgeData.price} /yr
             </p>
             {LodgeData.negotiable && (
-              <div className="bg-lskyblue px-2 ml-2 font-bold mt-3 text-lblue rounded-lg text-[15px]">
+              <div className="bg-lskyblue px-2 ml-2 font-bold mt-3 text-lblue rounded-lg text-[12px]">
                 {/* this only displays when the product is Negotiable */}
                 <p>Negotiable</p>
               </div>
@@ -553,7 +553,7 @@ function LodgeInfo() {
         </div>
       </div>
 
-      <div className="flex justify-center w-full ">
+      <div className="flex justify-center w-full text-[14px] ">
         <div className="max-w-[1200px] sm:mt-[70px] mt-[24px] px-4 ">
           <div className=" justify-start grid grid-cols-1 sm:grid-cols-3 sm:gap-[100px]">
             <div className="col-span-2">
@@ -592,7 +592,7 @@ function LodgeInfo() {
               </div>
 
               <div className="pb-[1px] mb-[40px] border-lgray border-b-2 border-opacity-[10%]">
-                <div className="grid grid-cols-1 sm:grid-cols-2 ">
+                <div className="grid grid-cols-1 sm:grid-cols-2 pt-4 ">
                   <div className="col-span-1 sm:border-r border-b sm:border-b-0 pb-6 mb-4 border-lgray border-opacity-[20%]">
                     <div>
                       <h2 className="text-[16px] font-semibold text-dgray pb-2 sm:pb-[12px]">
@@ -609,7 +609,7 @@ function LodgeInfo() {
                       </div>
                     </div>
                   </div>
-                  <div className="col-span-1  ">
+                  <div className="col-span-1 pb-6 ">
                     <div>
                       <h2 className="text-[16px] font-semibold sm:text-end text-dgray pb-2 sm:pb-[12px]">
                         Number of rooms

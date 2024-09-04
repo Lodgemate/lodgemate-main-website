@@ -72,90 +72,21 @@ const ProductCard: React.FC<ProductCardProps> = ({
   );
 };
 
-const lodges = [
-  {
-    id: 1,
-    imageUrl:
-      "https://res.cloudinary.com/dcb4ilgmr/image/upload/v1716821887/utilities/LodgeMate_File/adsas_hbwgl2.png",
-
-    name: "Cozy Mountain Lodge",
-    location: "123 Mountain Rd, Colorado Springs, CO",
-    nearbyUniversity: "University One",
-    price: 50000,
-  },
-  {
-    id: 2,
-    imageUrl:
-      "https://res.cloudinary.com/dcb4ilgmr/image/upload/v1716821883/utilities/LodgeMate_File/sd_v2047z.png",
-
-    name: "Sunny Riverside Lodge",
-    location: "456 River St, Austin, TX",
-    nearbyUniversity: "University Two",
-    price: 60000,
-  },
-  {
-    id: 3,
-    imageUrl:
-      "https://res.cloudinary.com/dcb4ilgmr/image/upload/v1716821887/utilities/LodgeMate_File/adsas_hbwgl2.png",
-
-    name: "Green Valley Lodge",
-    location: "789 Valley Rd, San Francisco, CA",
-    nearbyUniversity: "University Three",
-    price: 70000,
-  },
-  {
-    id: 4,
-    imageUrl:
-      "https://res.cloudinary.com/dcb4ilgmr/image/upload/v1716821887/utilities/LodgeMate_File/adsas_hbwgl2.png",
-
-    name: "Lodge Four",
-    location: "Location Four",
-    nearbyUniversity: "University Four",
-    price: 80000,
-  },
-  {
-    id: 5,
-    imageUrl:
-      "https://res.cloudinary.com/dcb4ilgmr/image/upload/v1716821883/utilities/LodgeMate_File/sd_v2047z.png",
-    name: "Lodge Five",
-    location: "Location Five",
-    nearbyUniversity: "University Five",
-    price: 90000,
-  },
-  {
-    id: 6,
-    imageUrl:
-      "https://res.cloudinary.com/dcb4ilgmr/image/upload/v1716821883/utilities/LodgeMate_File/sd_v2047z.png",
-
-    name: "Lodge Six",
-    location: "Location Six",
-    nearbyUniversity: "University Six",
-    price: 100000,
-  },
-  {
-    id: 7,
-    imageUrl:
-      "https://res.cloudinary.com/dcb4ilgmr/image/upload/v1716821883/utilities/LodgeMate_File/sd_v2047z.png",
-
-    name: "Lodge Seven",
-    location: "Location Seven",
-    nearbyUniversity: "University Seven",
-    price: 110000,
-  },
-];
-
-function Lodges() {
+interface LodgesProps{
+  lodges:any[]| []
+}
+const Lodges:React.FC<LodgesProps>=({ lodges} )=> {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
       {lodges.map((lodge) => (
         <ProductCard
-          key={lodge.id}
-          id={lodge.id}
-          imageUrl={lodge.imageUrl}
-          name={lodge.name}
-          location={lodge.location}
-          nearbyUniversity={lodge.nearbyUniversity}
-          price={lodge.price}
+          key={lodge.lodge._id}
+          id={lodge.lodge._id}
+          imageUrl={lodge.lodge.coverphoto}
+          name={lodge.lodge.lodgeName}
+          location={lodge.lodge.address_text}
+          nearbyUniversity={lodge.lodge.administrativeArea}
+          price={lodge.lodge.price}
         />
       ))}
     </div>

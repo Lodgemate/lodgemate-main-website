@@ -74,65 +74,35 @@ const Card: React.FC<CardProps> = ({
   );
 };
 
-const serivices = [
-  {
-    id: 1,
-    imageUrl:
-      "https://res.cloudinary.com/dcb4ilgmr/image/upload/v1716397589/utilities/LodgeMate_File/Imagewerty_teprzd.png",
 
-    name: "Jeniffer Uba",
-    location: "123 Mountain Rd, Colorado Springs, CO",
-    nearbyUniversity: "University One",
-    sex: "male",
-  },
-  {
-    id: 2,
-    imageUrl:
-      "https://res.cloudinary.com/dcb4ilgmr/image/upload/v1716397590/utilities/LodgeMate_File/Imageertyu_oqeuut.png",
 
-    name: "Sunny Riverside",
-    location: "456 River St, Austin, TX",
-    nearbyUniversity: "University Two",
-    sex: "female",
-  },
-  {
-    id: 3,
-    imageUrl:
-      "https://res.cloudinary.com/dcb4ilgmr/image/upload/v1716397588/utilities/LodgeMate_File/Imagesfdghjk_ofiz6j.png",
-
-    name: "Green Valley",
-    location: "789 Valley Rd, San Francisco, CA",
-    nearbyUniversity: "University Three",
-    sex: "female",
-  },
-  {
-    id: 4,
-    imageUrl:
-      "https://res.cloudinary.com/dcb4ilgmr/image/upload/v1716397589/utilities/LodgeMate_File/Imagegjhk_rtnogl.png",
-
-    name: "Lodge Four",
-    location: "Location Four",
-    nearbyUniversity: "University Four",
-    sex: "female",
-  },
-];
-
-function Serivices() {
+interface RoommatesProps{
+  roommates:any[]| []
+}
+const Roommate:React.FC<RoommatesProps>=({ roommates} )=> {
+  console.log(roommates)
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-      {serivices.map((service) => (
+      {roommates.map((roommate) => (
         <Card
-          key={service.id}
-          id={service.id}
-          imageUrl={service.imageUrl}
-          name={service.name}
-          location={service.location}
-          nearbyUniversity={service.nearbyUniversity}
-          sex={service.sex}
+        //@ts-ignore
+          key={roommate.roommate._id}
+        //@ts-ignore
+          id={roommate.roommate._id}
+        //@ts-ignore
+          imageUrl={roommate.roommate.postedBy.profilePicture}
+        //@ts-ignore
+        name={roommate.roommate.postedBy.firstName}
+        //@ts-ignore
+        location={roommate.roommate.postedBy.address_text}
+        //@ts-ignore
+        nearbyUniversity={roommate.roommate.postedBy.administrativeArea}
+        //@ts-ignore
+        sex={roommate.roommate.postedBy.gender}
         />
       ))}
     </div>
   );
 }
 
-export default Serivices;
+export default Roommate;

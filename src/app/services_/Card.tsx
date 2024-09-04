@@ -50,7 +50,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
           alt="lodgemate"
           className="absolute top-2 left-2 text-xl"
         /> */}
-          <HeartIcon />
+          <HeartIcon type={'service'} id={id}/>
           <img
             src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1716223205/utilities/LodgeMate_File/Indicators_psmeyv.svg"
             alt=""

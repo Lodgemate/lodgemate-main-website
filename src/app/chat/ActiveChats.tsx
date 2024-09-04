@@ -9,11 +9,12 @@ interface ActiveChatsProps {
   activeChat: any;
   setActiveChat: any;
 }
-
+const cache = new Map<string,any>();
 const ActiveChats:React.FC<ActiveChatsProps> = ({currentUser, activeChat, setActiveChat}) => {
     const [data, seData] = useState<any[] | null>(null)
 
     useEffect(()=>{
+    
       const localStorageToken = localStorage.getItem("token");
       const parseToken = localStorageToken && JSON.parse(localStorageToken);
         const url=Endpoints.getAllMessages 
@@ -22,10 +23,15 @@ const ActiveChats:React.FC<ActiveChatsProps> = ({currentUser, activeChat, setAct
            Authorization: `Bearer ${parseToken}`,
          },
        };
+         if (cache.has(url)) {
+        const cachedItem= cache.get(url)
+        seData(cachedItem);
+      }
         const fetchData = async () => {
           try {
             const res: any = await FetchApi(url, body);
             seData(res.data.latestRoomsMessage);
+            cache.set(url, res.data.latestRoomsMessage)
           } catch (error) {}
         };
         fetchData()

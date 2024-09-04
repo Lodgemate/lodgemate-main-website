@@ -10,6 +10,7 @@ interface ProductCardProps {
   location: string;
   nearbyUniversity: string;
   onClick: () => void;
+  id: string | number;
 }
 
 const ProductCard: React.FC<ProductCardProps> = ({
@@ -19,6 +20,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
   location,
   nearbyUniversity,
   onClick,
+  id
 }) => {
   React.useEffect(() => {
     AOS.init({
@@ -39,7 +41,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
           />
         </div>
 
-        <HeartIcon />
+        <HeartIcon type={'roommate'} id={id}/>
         
       </div>
       <div className=" py-[15px]">

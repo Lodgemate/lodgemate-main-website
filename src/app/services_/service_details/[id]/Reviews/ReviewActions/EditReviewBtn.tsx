@@ -61,13 +61,13 @@ const EditReviewBtn: React.FC<DeleteReviewbtProps> = ({
       console.log("failed");
     }
   };
-
   return (
     <>
       <WriteReview
         show={isWriteReviewOpen}
         onClose={handleCloseWriteReview}
         handlePost={handleEditReview}
+        data={data}
       />
       <IoPencil />
     </>

@@ -22,16 +22,15 @@ const WriteReview: React.FC<WriteReviewProps> = ({ show, onClose, handlePost,dat
     "/icons/star_black.svg",
     "/icons/star_black.svg",
   ]);
-  console.log(currentUserData)
-
+ console.log(data)
   const [Clicked, setClicked] = useState(false)
   const GetStars= useCallback(()=>{
    const newArr =starSources.filter((ent)=> ent === "/icons/star_gold.svg")
   return  newArr
   },[starSources])
   const [Review, setReview] = useState({
-    comment:"",
-    rating: 0
+    comment: data.comment,
+    rating: data.rating
    })
 
 

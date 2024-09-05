@@ -225,7 +225,7 @@ function More() {
               </Link>
               <Link href="/wishlist" className="text-gray-700 py-[5px]">
                 Wishlist{" "}
-                <span className="bg-[red] rounded-[4px] px-[4px] text-white">
+                <span className="bg-[red] rounded-[4px] px-[4px] text-white hidden">
                   0
                 </span>
               </Link>
@@ -374,7 +374,7 @@ function More() {
               </Link>
               <Link href="/wishlist" className="text-gray-700 py-[5px]">
                 Wishlist{" "}
-                <span className="bg-[red] rounded-[4px] px-[4px] text-white">
+                <span className="bg-[red] rounded-[4px] px-[4px] hidden text-white">
                   1
                 </span>
               </Link>

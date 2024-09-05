@@ -25,6 +25,7 @@ const EditLodgeModal: React.FC<EditLodgeModalProps> = ({product, onClose }) => {
     accommodationType: 'others',
     roomNumber: product?.numberOfRooms,
     features: product?.lodgeFeatures,
+    previousPhotosUrls:[]
   });
 
   const handlePrev = () => {
@@ -63,10 +64,16 @@ const EditLodgeModal: React.FC<EditLodgeModalProps> = ({product, onClose }) => {
   };
 
   const handleRemoveImage = () => {
+  console.log("imgSrc")
+
     const imgSrc = document.getElementById('myImage')?.src;
+  console.log(imgSrc)
+  const newArr= images?.filter((ent)=>ent !== imgSrc)
+ console.log(newArr)
+   setImages(newArr)
     setFormData({...formData,previousPhotosUrls: [...formData.previousPhotosUrls, imgSrc]})
-    const newArr= images?.filter((ent)=>ent !== imgSrc)
-    setImages(newArr)
+  
+ 
   };
   console.log(formData)
   console.log(product?.id)
@@ -89,12 +96,9 @@ const EditLodgeModal: React.FC<EditLodgeModalProps> = ({product, onClose }) => {
     formData.newImages.forEach((image) => form.append("photos", image));
     formData.previousPhotosUrls && formData.previousPhotosUrls.forEach((image) => form.append("previousPhotosUrls[]", image));
 
-    // Submit the form data to the backend or handle it as needed
-    console.log([...form.entries()]);
-    console.log(formData);
+
     const submitLidge=async()=>{
       const url = `${Endpoints.getPrivateLodgesbyId}${product?._id}`
-      console.log(url)
       const option={
         method:"PATCH",
         headers: {

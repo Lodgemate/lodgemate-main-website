@@ -107,7 +107,7 @@ const UserDetailas: React.FC<UserDetailasProps> = React.memo(({ data }) => {
               />
             </Link> */}
 
-           {data.data.user.contact.instagram && <Link href={data.data.user.contact.instagram } target="blank_">
+           {data.data.user.contact?.instagram && <Link href={data.data.user.contact?.instagram } target="blank_">
               {" "}
               <img
                 src='https://res.cloudinary.com/dcb4ilgmr/image/upload/v1716939370/utilities/LodgeMate_File/Instagram_vwhjji.svg'
@@ -116,11 +116,11 @@ const UserDetailas: React.FC<UserDetailasProps> = React.memo(({ data }) => {
               />
             </Link>}
 {           
- data.data.user.contact.whatsapp && <Link href={data.data.user.contact.whatsapp } target="blank_">
+ data.data.user.contact?.whatsapp && <Link href={data.data.user.contact?.whatsapp } target="blank_">
               <FaWhatsapp  className='w-[24px] h-[24px] text-gray-500'/>
             </Link>}
            { 
-           data.data.user.contact.linkedin && <Link href={data.data.user.contact.linkedin } target="blank_">
+           data.data.user.contact?.linkedin && <Link href={data.data.user.contact?.linkedin } target="blank_">
               {" "}
               <img
                 src='https://res.cloudinary.com/dcb4ilgmr/image/upload/v1716939370/utilities/LodgeMate_File/LinkedIn_a3gtp7.svg'

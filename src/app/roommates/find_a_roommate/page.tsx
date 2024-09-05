@@ -45,7 +45,7 @@ function FindRoommate() {
     dispatch(showLoadingModal("Posting Roommates"));
     const localStorageToken = localStorage.getItem("token");
     const parseToken = localStorageToken && JSON.parse(localStorageToken);
-    // console.log(Object.fromEntries(formData));
+     console.log(Object.fromEntries(formData));
   
     // Ensure formData is of the correct type
     if (!(formData instanceof FormData)) {
@@ -69,22 +69,23 @@ function FindRoommate() {
     console.log(url);
   
     try {
-      const res = await FetchApi(url, options);
-      const parsedRes: any = await res;
-      console.log(parsedRes);
+      const res: any  = await FetchApi(url, options);
+      console.log(res);
       
-      if (parsedRes.status === "success") {
+      if (res.status === "success") {
         dispatch(showLoadingModal(null));
-        dispatch(showSuccessfulModal(parsedRes.message));
+        dispatch(showSuccessfulModal(res.message));
         setTimeout(() => {
           dispatch(showSuccessfulModal(null));
           router.push("/");
         }, 500);
        } else {
         dispatch(showLoadingModal(null));
-        dispatch(showFailedModal(parsedRes.message));
+        throw res;
       }
-    } catch (error) {
+    } catch (error: any) {
+      dispatch(showLoadingModal(null));
+      dispatch(showFailedModal(error.message));
       console.log(error);
     }
   };

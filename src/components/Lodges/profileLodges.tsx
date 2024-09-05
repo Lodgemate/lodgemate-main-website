@@ -82,7 +82,6 @@ const ProductCard: React.FC<ProductCardProps> = React.memo(({
   if (isDeleted) {
     return;
   }
-  console.log(OpenEditLodges)
     return (
       <div className="flex w-full flex-col rounded overflow-hidden ">
     {OpenEditLodges && <EditLodgeModal product ={product} onClose={()=>setOpenEditLodges(false)}/>}

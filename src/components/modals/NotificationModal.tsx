@@ -55,7 +55,7 @@ const  NotificationModal: React.FC<props> = ({ notifications }) => {
                   {ent.body}
                 </p>
                 {ent.resource === 'chat' && 
-                <Link className="px-4 hover:underline text-xs text-lblue" href={'/chats'}>Show Message</Link>
+                <Link className="px-4 hover:underline text-xs text-lblue" href={'/chat'}>Show Message</Link>
               }
               </div>
               );

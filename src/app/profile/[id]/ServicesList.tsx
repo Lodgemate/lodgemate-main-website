@@ -1,5 +1,7 @@
+"use client"
+
 import { ServiceApiResponse } from "@/lib/Types";
-import React from "react";
+import React, { useState } from "react";
 
 // Sample data
 const services = [
@@ -69,11 +71,17 @@ const ServiceCard: React.FC<ServiceCardProps> = ({
   nearbyCategory,
   price,
 }) => {
+  const [isPopupVisible, setIsPopupVisible] = useState(false); // State to handle popup visibility
+
   const formattedPrice = new Intl.NumberFormat("en-NG", {
     style: "currency",
     currency: "NGN",
     minimumFractionDigits: 0,
   }).format(price);
+
+  const togglePopup = () => {
+    setIsPopupVisible(!isPopupVisible); // Toggle popup visibility
+  };
 
   return (
     <div className="max-w-sm rounded overflow-hidden">
@@ -86,13 +94,40 @@ const ServiceCard: React.FC<ServiceCardProps> = ({
         <img
           src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1716223406/utilities/LodgeMate_File/Vector_aflwdv.png"
           alt="lodgemate"
-          className="absolute top-2 left-2 text-xl"
+          className="absolute top-2 left-2 text-xl hidden"
         />
+        {/* Menu icon with popup */}
         <img
           src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1719611975/utilities/LodgeMate_File/menu_cx8xja.svg"
-          alt=""
-          className="absolute top-2 right-2 bg-white h-6 w-6 rounded-full text-xl"
+          alt="Menu"
+          className="absolute top-2 right-2 bg-white h-6 w-6 rounded-full text-xl cursor-pointer"
+          onClick={togglePopup}
         />
+
+        {/* Popup */}
+        {isPopupVisible && (
+          <div className="absolute top-10 right-2 bg-white text-[14px] w-[120px] text-gray-700 shadow-md border rounded p-2 z-20">
+            <button
+              onClick={() => setIsPopupVisible(false)}
+              className="text-sm flex justify-end w-full text-gray-500 hover:text-gray-700"
+            >
+              <img src="/icons/close.svg" alt="" />
+            </button>
+            <hr className="my-2" />
+
+            <div className="cursor-pointer hover:text-blue-500 flex items-center m gap-1">
+              {" "}
+              <img src="/icons/pen_gray.svg" alt="" />
+              Edit
+            </div>
+            <hr className="my-2" />
+
+            <div className="cursor-pointer text-red-500 flex items-center pb-2 gap-1">
+              <img src="/icons/delete.svg" alt="" />
+              Delete
+            </div>
+          </div>
+        )}
         {/* Additional icons or overlays can be added here */}
       </button>
       <div className="py-[15px]">
@@ -107,10 +142,10 @@ const ServiceCard: React.FC<ServiceCardProps> = ({
             alt=""
             className="mr-2"
           />
-          <p className="text-[13px]">{nearbyCategory}dsds</p>
+          <p className="text-[13px]">{nearbyCategory}</p>
         </div>
         <p className="text-dgray text-[15px] font-semibold mt-2">
-          {formattedPrice}/yr
+          {formattedPrice}
         </p>
       </div>
     </div>

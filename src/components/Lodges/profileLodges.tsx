@@ -148,21 +148,7 @@ const ProductCard: React.FC<ProductCardProps> = React.memo(
           />
 
           <div className="absolute bottom-4 flex justify-between items-center w-full px-5">
-            {/* <IoPencil
-              onClick={() => setOpenEditLodges(true)}
-              className="bg-slate-800 p-1 rounded-full text-slate-50 z-20 text-2xl font-bold hover:text-slate-100 cursor-pointer"
-            />
-            <RiDeleteBinLine
-              onClick={() =>
-                dispatch(
-                  showDeleteModal({
-                    deleteFunction: handleDelete,
-                    message: "Do you want to delete this Lodge?",
-                  })
-                )
-              }
-              className="bg-slate-800 p-1 rounded-full text-slate-50 z-20 text-2xl font-bold hover:text-slate-100 cursor-pointer"
-            /> */}
+            
           </div>
         </div>
 

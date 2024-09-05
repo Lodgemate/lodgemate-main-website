@@ -92,7 +92,7 @@ const ProductCard: React.FC<ProductCardProps> = React.memo(
           <img
             src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1716223406/utilities/LodgeMate_File/Vector_aflwdv.png"
             alt="lodgemate"
-            className="absolute top-2 left-2 text-xl"
+            className="absolute top-2 left-2 text-xl hidden"
           />
 
           {/* Menu icon with popup */}

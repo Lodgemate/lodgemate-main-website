@@ -76,7 +76,7 @@ const UserDetailas: React.FC<UserDetailasProps> = React.memo(({ data }) => {
             <img
               src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1719611975/utilities/LodgeMate_File/home_pin_nvfw3f.svg"
               alt="Rating"
-              className="w-4 h-4 mr-2"
+              className="w-4 h-4 mr-1"
             />
             <p className="text-gray-600 text-[12px]">
               {" "}
@@ -151,17 +151,13 @@ const UserDetailas: React.FC<UserDetailasProps> = React.memo(({ data }) => {
           <div className="flex justify-between mb-2">
             <p className="font-bol">Lodge ratings</p>
             <p className="font-bold">
-              {data?.data.user.ratings.lodgeRatings.totalRatings +
-                "/" +
-                data?.data.user.ratings.lodgeRatings.userCount}
+              {data?.data.user.ratings.lodgeRatings.userCount}
             </p>
           </div>
           <div className="flex justify-between mb-2">
             <p className="font-bol">Service ratings</p>
             <p className="font-bold">
-              {data?.data.user.ratings.serviceRatings.totalRatings +
-                "/" +
-                data?.data.user.ratings.serviceRatings.userCount}
+              {data?.data.user.ratings.serviceRatings.userCount}
             </p>
           </div>
         </div>

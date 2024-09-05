@@ -97,11 +97,11 @@ const ReviewComments: React.FC<ReviewCommentsProps> = React.memo(({data, show, o
                 onClick={(e)=>{
                   e.preventDefault()
                   handlePost(Review)}}
-                className='bg-lblue px-2 py-1 text-white rounded cursor-pointer'
+                className='bg-primary px-2 py-1 text-white rounded cursor-pointer'
               >
                 Reply
               </button>
-              <p className='text-end'>500/500 remaining</p>
+              <p className='text-end text-[12px]'>500/500 remaining</p>
             </div>
           </div>
         </>
@@ -153,13 +153,13 @@ const ReviewComments: React.FC<ReviewCommentsProps> = React.memo(({data, show, o
         data-aos="zoom-in-up"
       >
         <button
-          className="absolute top-2 right-2 text-gray-600 hover:text-gray-800"
+          className="absolute top-4 right-4 text-gray-600 hover:text-gray-800"
           onClick={onClose}
         >
-          ×
+          <img src="/icons/close.svg" alt="" />
         </button>
-        <MainComment/>
-        <ReplyFormUi/>
+        <MainComment />
+        <ReplyFormUi />
       </div>
     </div>
   );

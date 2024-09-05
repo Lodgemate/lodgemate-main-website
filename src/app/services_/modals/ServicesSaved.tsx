@@ -46,10 +46,10 @@ const LodgeSaved: React.FC<LodgeSavedProps> = ({
         data-aos="zoom-in-up"
       >
         <button
-          className="absolute top-2 right-2 text-gray-600 hover:text-gray-800"
+          className="absolute top-4 right-4 text-gray-600 hover:text-gray-800"
           onClick={onClose}
         >
-          ×
+          <img src="/icons/close.svg" alt="" />
         </button>
         <div className="mb-4">
           <div className="flex w-full justify-center">

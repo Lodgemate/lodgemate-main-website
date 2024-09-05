@@ -109,11 +109,11 @@ const EditRepliesModal: React.FC<EditRepliesModalProps> = React.memo(
                   e.preventDefault();
                   handleEditReview(Review);
                 }}
-                className='bg-lblue px-2 py-1 text-white rounded cursor-pointer'
+                className='bg-primary px-2 py-1 text-white rounded cursor-pointer'
               >
                 Reply
               </button>
-              <p className='text-end'>500/500 remaining</p>
+              <p className='text-end text-[12px]'>500/500 remaining</p>
             </div>
           </div>
         </>
@@ -158,19 +158,19 @@ const EditRepliesModal: React.FC<EditRepliesModalProps> = React.memo(
 
     return (
       <div
-        className='fixed inset-0 bg-black bg-opacity-50 flex items-start pt-[100px]  justify-center'
+        className="fixed inset-0 bg-black bg-opacity-50 flex items-start pt-[100px]  justify-center"
         onClick={onClose}
       >
         <div
-          className='bg-white p-6 rounded-[12px]  shadow-lg relative'
+          className="bg-white p-6 rounded-[12px]  shadow-lg relative"
           onClick={(e) => e.stopPropagation()}
-          data-aos='zoom-in-up'
+          data-aos="zoom-in-up"
         >
           <button
-            className='absolute top-2 right-2 text-gray-600 hover:text-gray-800'
+            className="absolute top-4 right-4 text-gray-600 hover:text-gray-800"
             onClick={onClose}
           >
-            ×
+            <img src="/icons/close.svg" alt="" />
           </button>
           {/* <MainComment /> */}
           <ReplyFormUi />

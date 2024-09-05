@@ -80,21 +80,21 @@ const WriteReview: React.FC<WriteReviewProps> = React.memo(({ show, onClose, han
         data-aos="zoom-in-up"
       >
         <button
-          className="absolute top-2 right-2 text-gray-600 hover:text-gray-800"
+          className="absolute top-4 right-4 text-gray-600 hover:text-gray-800"
           onClick={onClose}
         >
-          ×
+          <img src="/icons/close.svg" alt="" />
         </button>
         <div className="mb-4">
           <div className="flex gap-2">
             <img
               src={data.data.profilePicture}
               alt=""
-              className="w-10 h-10 rounded-full border border-lblue"
+              className="w-10 h-10 rounded-full border border-primary"
             />
             <div>
-              <h1 className="font-semibold">{data.data.firstName}</h1>
-              <p>{getCurrentDate()}</p> 
+              <h1 className="font-semibold text-black">{data.data.firstName}</h1>
+              <p className="text-[12px]">{getCurrentDate()}</p>
             </div>
           </div>
         </div>
@@ -114,19 +114,27 @@ const WriteReview: React.FC<WriteReviewProps> = React.memo(({ show, onClose, han
             name="review"
             placeholder="Write something here..."
             value={Review.comment}
-            onChange={(e)=>setReview({...Review, comment :e.target.value})}
+            onChange={(e) => setReview({ ...Review, comment: e.target.value })}
             className="border w-[350px] sm:w-[700px] resize-none mt-4 h-24 p-2 rounded-lg outline-none"
           ></textarea>
           <div className="w-full flex justify-between items-center">
-          <button onClick={()=>{
-            handlePost(Review)
-            setClicked(true)
-            }} className="bg-lblue px-2 py-1 text-white rounded cursor-pointer flex items-center gap-2">
-           {Clicked?<>Posting <div className="circularLoader"/></>:'Post'}
-          </button>
-          <p className="text-end">500/500 remaining</p>
+            <button
+              onClick={() => {
+                handlePost(Review);
+                setClicked(true);
+              }}
+              className="bg-primary px-2 py-1 text-white rounded cursor-pointer flex items-center gap-2"
+            >
+              {Clicked ? (
+                <>
+                  Posting <div className="circularLoader" />
+                </>
+              ) : (
+                "Post"
+              )}
+            </button>
+            <p className="text-end text-[12px]">500/500 remaining</p>
           </div>
-          
         </div>
       </div>
     </div>

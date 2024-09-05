@@ -88,7 +88,7 @@ const LodgeReviews: React.FC<LodgeReviewsProps> = React.memo(
                           onClick={() => togglePopup(index)}
                           className=" text-end flex justify-end text-[16px] w-full rounded "
                         >
-                          x{" "}
+                          <img src="/icons/close.svg" alt="" />
                         </button>
                         {currentUserData?.data.user._id ===
                           review.postedBy._id && (

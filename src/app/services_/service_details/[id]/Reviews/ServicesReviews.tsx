@@ -51,10 +51,10 @@ const ServicesReviews: React.FC<ServicesReviewsProps> = React.memo(
                     <p className='font-medium z-10'>
                       {review.postedBy.firstName}
                     </p>
-                    <p className=' text-gray-600 text-sm'>
+                    <p className=' text-gray-600 text-[12px]'>
                       {extractDate(review.dateCreated)}
                     </p>
-                    <div className='flex items-center gap-1 mt- text-sm '>
+                    <div className='flex items-center gap-1 mt- text-[12px] '>
                       <p>{review.rating}.0</p> •
                       {[...Array(review.rating)].map((_, starIndex) => (
                         <img

@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import { Service } from "@/lib/Types";
 import { Endpoints } from "@/services/Api/endpoints";
 import { FetchApi } from "@/utils/Fetchdata";

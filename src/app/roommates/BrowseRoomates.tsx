@@ -16,12 +16,15 @@ import { urlGenerator } from "@/utils/urlGenerator";
 import {
   selectAllLocationFilter,
   selectAllQueryFilter,
+  setSearchQuery,
 } from "@/lib/features/Filters/filterSlice";
 import { selectAllAuthenticated } from "@/lib/features/Login/signinSlice";
 import GallerySkeleton from "@/components/Skeletons/cardsSkeleton";
 import AOS from "aos";
-
-function BrowseRoommates() {
+interface BrowseLodgesProps {
+  isSearchTriggered: boolean;
+}
+const BrowseRoommates:React.FC<BrowseLodgesProps>=({isSearchTriggered})=> {
 
   const cache = new Map<string, any>();
 
@@ -35,13 +38,12 @@ function BrowseRoommates() {
   const storelocation = useAppSelector(selectAllLocationFilter);
   const isAuth = useAppSelector(selectAllAuthenticated);
   const param = {
-    query: storequery,
+    query: storequery !== 'Not Found' && storequery,
     location: storelocation,
   };
   const [selectedRoommate, setSelectedRoommate] = useState< null>(
     null
   );
-  const isSearchTriggered = "";
 
   const GetToken = async () => {
     const localStorageToken = localStorage.getItem("token");
@@ -59,9 +61,10 @@ function BrowseRoommates() {
    * useEffect hook that fetches data based on authentication status and token availability.
    * @returns None
    */
-  console.log(RoommatesData)
+
 
   React.useEffect(() => {
+
     AOS.init({
       duration: 1000,
     });
@@ -88,25 +91,30 @@ function BrowseRoommates() {
       if (cache.has(fetchUrl)) {
         // console.log('Using cached data');
         const cacheData = cache.get(fetchUrl);
+        console.log(cacheData)
         dispatch(setroommateData(cacheData.payload));
         setisLoading(false);
         return;
       }
       const abortController = new AbortController();
       try {
+    dispatch(setSearchQuery(null));
         const response = await dispatch(Fetchroommate(fetchUrl));
         cache.set(fetchUrl, response);
+        console.log(response)
+
       } catch (error: any) {
         if (error.name !== "AbortError") {
           console.error("Error fetching data:", error);
         }
       } finally {
         setisLoading(false);
+      console.log(fetchUrl);
         return () => abortController.abort();
       }
     };
     fetchData();
-  }, [dispatch, storequery, storelocation]);
+  }, [dispatch, storelocation]);
 
   /**
    * Function to handle the action of showing more content.
@@ -181,6 +189,7 @@ function BrowseRoommates() {
       />
     ))
   ), [RoommatesData, showMore, handleCardClick]);
+  console.log(RoommatesData)
   return (
     <div className="px-4 sm:px-[100px] mt-[50px] text-[14px] sm:text-[14px]">
       {selectedRoommate && (
@@ -194,8 +203,9 @@ function BrowseRoommates() {
       <div className="flex justify-between gap-8 text-[14px] items-center text-lgray mb-[24px]">
         <h1 className=" flex flex-wrap  text-lgray ">
           {isSearchTriggered
-            ? `Showing results for "${storequery}"`
+            ? storequery !== 'Not Found' && `Showing results for "${storequery}"`
             : "Showing available roommates around"}
+            {storequery == 'Not Found' && 'No result found'}
         </h1>
 
         <button

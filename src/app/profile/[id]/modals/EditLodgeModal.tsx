@@ -1,5 +1,8 @@
 // @ts-nocheck
 "use client";
+import GooglePlacesAutocomplete from "@/components/PlacesLocator";
+import { showFailedModal, showLoadingModal, showSuccessfulModal } from "@/lib/features/Modal/ModalSlice";
+import { useAppDispatch } from "@/lib/hooks";
 import { Lodge } from "@/lib/Types";
 import { Endpoints } from "@/services/Api/endpoints";
 import { FetchApi } from "@/utils/Fetchdata";
@@ -13,6 +16,7 @@ interface EditLodgeModalProps {
 }
 
 const EditLodgeModal: React.FC<EditLodgeModalProps> = ({product, onClose }) => {
+  const dispatch = useAppDispatch();
   const [images, setImages] = useState(product?.photos); // Replace with actual image paths
   const [currentIndex, setCurrentIndex] = useState(0);
   const [formData, setFormData] = useState({
@@ -22,7 +26,7 @@ const EditLodgeModal: React.FC<EditLodgeModalProps> = ({product, onClose }) => {
     price: product?.price,
     description: product?.lodgeDescription,
     negotiable: false,
-    accommodationType: 'others',
+    accommodationType: product?.type,
     roomNumber: product?.numberOfRooms,
     features: product?.lodgeFeatures,
     previousPhotosUrls:[]
@@ -75,8 +79,7 @@ const EditLodgeModal: React.FC<EditLodgeModalProps> = ({product, onClose }) => {
   
  
   };
-  console.log(formData)
-  console.log(product?.id)
+
 
   const handleSaveChanges = () => {
     const localStorageToken = localStorage.getItem("token");
@@ -95,25 +98,77 @@ const EditLodgeModal: React.FC<EditLodgeModalProps> = ({product, onClose }) => {
      formData.features.forEach((feature) => form.append("lodgeFeatures[]", feature));
     formData.newImages.forEach((image) => form.append("photos", image));
     formData.previousPhotosUrls && formData.previousPhotosUrls.forEach((image) => form.append("previousPhotosUrls[]", image));
-
+    formData.lodgeLocation && form.append("lodgeLocation", formData.lodgeLocation);
+    formData.lodgeDescription && form.append("lodgeDescription", formData.lodgeDescription);
+    formData.address_text && form.append("location[address_text]", formData.address_text);
+    formData.latitude && form.append("location[latitude]", formData.latitude);
+    formData.longitude && form.append("location[longitude]", formData.longitude);
+    formData.country && form.append("location[country]", formData.country);
+    formData.administrativeArea && form.append("location[administrativeArea]", formData.administrativeArea);
+    formData.subAdministrativeArea && form.append("location[subAdministrativeArea]", formData.subAdministrativeArea);
 
     const submitLidge=async()=>{
+      dispatch(showLoadingModal('Updating Lodge details'))
       const url = `${Endpoints.getPrivateLodgesbyId}${product?._id}`
       const option={
         method:"PATCH",
         headers: {
-          
           Authorization: `Bearer ${parseToken}`,
         },
         body: form
       }
 
       const res = await FetchApi(url,option)
-      console.log(res)
+      if (res.status === 'success') {
+      dispatch(showLoadingModal(null))
+      dispatch(showSuccessfulModal("Rerfresh page to view changes"))
+        
+      } else {
+        dispatch(showLoadingModal(null))
+        dispatch(showFailedModal(res.message))
+          
+      }
     }
     submitLidge()
   };
 
+
+  const locationOnchange = (data: Result) => {
+    //@ts-ignore
+    const locate = data.geometry.location;
+    //@ts-ignore
+    const long = locate.lng();
+    //@ts-ignore
+    const lat = locate.lat();
+  
+    const administrativeArea = data.address_components.find(
+      (each) => each.types[0] === "administrative_area_level_1"
+    )?.long_name;
+  
+    const subAdministrativeArea = data.address_components.find(
+      (each) => each.types[0] === "locality" || each.types[0] === "administrative_area_level_1"
+    )?.long_name;
+  
+    const country = data.address_components.find(
+      (each) => each.types[0] === "country"
+    )?.long_name;
+  
+    const address_text = data.formatted_address;
+  
+    // Now combine all updates into one object
+    setFormData({
+      ...formData,
+      administrativeArea: administrativeArea || formData.administrativeArea,
+      subAdministrativeArea: subAdministrativeArea || formData.subAdministrativeArea,
+      country: country || formData.country,
+      address_text: address_text || formData.address_text,
+      latitude: lat,
+      longitude: long,
+      lodgeLocation: address_text
+    });
+  };
+  
+console.log(product?.type)
   return (
     <div className="fixed inset-0 flex items-center justify-center z-50">
       <div className="bg-white rounded-lg shadow-lg w-full max-w-xl mx-auto relative">
@@ -256,9 +311,9 @@ const EditLodgeModal: React.FC<EditLodgeModalProps> = ({product, onClose }) => {
                 (type) => (
                   <button
                     key={type}
-                    onClick={() => setFormData({ ...formData, accommodationType: type })}
+                    onClick={() => setFormData({ ...formData, accommodationType: type.toLowerCase() })}
                     className={`px-4 py-2 rounded-md ${
-                      formData.accommodationType === type
+                      formData.accommodationType === type.toLowerCase()
                         ? "bg-blue-100 text-blue-700"
                         : "bg-gray-100 text-gray-700"
                     }`}
@@ -276,12 +331,12 @@ const EditLodgeModal: React.FC<EditLodgeModalProps> = ({product, onClose }) => {
               How many rooms are there?
             </label>
             <div className="mt-2 flex flex-wrap space-x-2">
-              {[1, 2, 3, 4, 5, 6, 7, 8, 9, "10+"].map((num) => (
+              {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((num) => (
                 <button
                   key={num}
-                  onClick={() => setFormData({ ...formData, roomNumber: `${num} rooms` })}
+                  onClick={() => setFormData({ ...formData, roomNumber: num })}
                   className={`px-4 py-2 rounded-md mb-2 ${
-                    formData.roomNumber === `${num} rooms`
+                    formData.roomNumber === num
                       ? "bg-blue-100 text-blue-700"
                       : "bg-gray-100 text-gray-700"
                   }`}
@@ -314,13 +369,13 @@ const EditLodgeModal: React.FC<EditLodgeModalProps> = ({product, onClose }) => {
                   onClick={() => {
                     setFormData((prevData) => ({
                       ...prevData,
-                      features: prevData?.features?.includes(feature)
-                        ? prevData.features.filter((f) => f !== feature)
-                        : [...prevData.features, feature],
+                      features: prevData?.features?.includes(feature.toLowerCase())
+                        ? prevData.features.filter((f) => f !== feature.toLowerCase())
+                        : [...prevData.features, feature.toLowerCase()],
                     }));
                   }}
                   className={`px-4 py-2 rounded-md mb-2 ${
-                    formData.features?.includes(feature)
+                    formData.features?.includes(feature.toLowerCase())
                       ? "bg-blue-100 text-blue-700"
                       : "bg-gray-100 text-gray-700"
                   }`}
@@ -328,6 +383,15 @@ const EditLodgeModal: React.FC<EditLodgeModalProps> = ({product, onClose }) => {
                   {feature}
                 </button>
               ))}
+            </div>
+          </div>
+          {/*location*/}
+          <div className="mt-4">
+            <label className="block text-sm font-medium text-gray-700">
+              Please input a new location.
+            </label>
+            <div className="m-3 w-full">
+            <GooglePlacesAutocomplete handleLocation={locationOnchange} />
             </div>
           </div>
         </div>

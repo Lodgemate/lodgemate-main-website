@@ -6,7 +6,7 @@
  */
 "use client"
 
-import React, { useState } from "react";
+import React, { Suspense, useState } from "react";
 import HeroSection from "./HeroSection";
 import SearchBar from "./SearchBar";
 import BrowseLodges from "./BrowseLodges";
@@ -31,7 +31,10 @@ function LodgesPage() {
       <div>
         <HeroSection />
         <div className="px-4 ">
-          <SearchBar onSearch={handleSearch} />
+        <Suspense fallback=''>
+        <SearchBar onSearch={handleSearch} />
+        </Suspense>
+
         </div>
       </div>
 

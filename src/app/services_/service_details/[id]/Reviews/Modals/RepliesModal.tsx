@@ -150,25 +150,26 @@ const Replies: React.FC<WriteRepliesProps> = React.memo(
 
     return (
       <div
-        className='fixed inset-0 bg-black bg-opacity-50 flex items-start pt-[100px] z-20 justify-center'
+        className="fixed inset-0 bg-black bg-opacity-50 flex items-start pt-[100px] z-20 justify-center"
         onClick={onClose}
       >
         <div
-          className='bg-white p-6 rounded-[12px]   shadow-lg relative'
+          className="bg-white p-6 rounded-[12px]   shadow-lg relative"
           onClick={(e) => e.stopPropagation()}
-          data-aos='zoom-in-up'
+          data-aos="zoom-in-up"
         >
           <button
-            className='absolute top-2 right-2 text-gray-600 hover:text-gray-800'
+            className="absolute top-4 right-4 text-gray-600 hover:text-gray-800"
             onClick={onClose}
           >
-            ×
+            <img src="/icons/close.svg" alt="" />
           </button>
           {/* replies are her */}
-          <div className='main_container min-w-[300px] max-h-[400px] overflow-y-scroll  h-full w-full  '>
+          <div className="main_container min-w-[300px] max-h-[400px] overflow-y-scroll  h-full w-full  ">
             <MainComment content={data} />
             {/* @ts-ignore */}
-            {replies && replies.data.replies.map((data: any, index) => {
+            {replies &&
+              replies.data.replies.map((data: any, index) => {
                 return (
                   <>
                     <RepliesUi content={data} key={index} />

@@ -57,11 +57,11 @@ const ProfileMenuModal: React.FC<ProfileMenuModalProps> = ({
         <img src="/icons/close.svg" alt="" />
       </button>
       <div className="py-1">
-        <button onClick={editProfile} className=" px-4 py-2 text-sm text-gray-700 hover:bg-gray-100- flex items-center gap-2 ">
+        <button onClick={editProfile} className=" px-4 py-2 text- text-gray-700 hover:bg-gray-100- flex items-center gap-2 ">
           <img src="/icons/pen_gray.svg" alt="" />
           Edit
         </button>
-        <button onClick={()=>handleCopy()} className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 -hover:bg-gray-100">
+        <button onClick={()=>handleCopy()} className="flex items-center gap-2 px-4 py-2 text- text-gray-700 -hover:bg-gray-100">
           <img src="/icons/copy_gray.svg" alt="" />
           {isClicked}
         </button>

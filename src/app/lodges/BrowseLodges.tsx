@@ -177,14 +177,14 @@ const BrowseLodges: React.FC<BrowseLodgesProps> = ({
     }
   };
   const MappedLodges=useMemo(()=>{
-    return(
+    return (
       <>
-      {LodgesData &&
-            LodgesData.data?.lodges
-              .slice(0, showMore ? LodgesData.data.lodges.length : LodgesData.data.lodges.length/2)
-              .map((product: any) => {
-                console.log(product)
-                return(
+        {LodgesData &&
+          LodgesData.data?.lodges
+            .slice(0, showMore ? LodgesData.data.lodges.length : 12)
+            .map((product: any) => {
+              console.log(product);
+              return (
                 ///@ts-ignore
                 <Card
                   {...product}
@@ -195,9 +195,10 @@ const BrowseLodges: React.FC<BrowseLodgesProps> = ({
                   nearbyUniversity={product.administrativeArea}
                   price={product.price || 0}
                 />
-              )})}
+              );
+            })}
       </>
-    )
+    );
   },[LodgesData,showMore])
   return (
     <div className='px-4 sm:px-[100px] mt-[50px] text-[12px] sm:text-[14px] -z-99 '>

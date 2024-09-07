@@ -111,11 +111,11 @@ const DesktopChat: React.FC = () => {
 console.log(activeChat)
   return (
     <>
-  <div ref={myRef} className='lg:flex hidden w-full max-w-[1200px] border  h-screen pt-[70px] text-[16px] text-lblack'>
+  <div ref={myRef} className='lg:flex hidden w-full max-w-[1200px] border  h-screen pt-[70px] text-[14px] text-lblack'>
        {  isVisible &&    
         <div className='w-1/4 border-r border-gray-300'>
           <div className='p-4 border-b border-gray-300'>
-            <h1 className='text-lg font-bold'>Your chats</h1>
+            <h1 className='text-[16px] font-bold'>Your chats</h1>
           </div>
           <div>
             <ActiveChats
@@ -158,7 +158,7 @@ console.log(activeChat)
                 }'s profile`}
                 className='w-24 h-24 rounded-full mb-4'
               />
-              <div className='text-lg font-semibold'>
+              <div className='text-[16px] font-semibold'>
                 {
                   reciversData(activeChat?.latestMessage.participants)
                     ?.firstName

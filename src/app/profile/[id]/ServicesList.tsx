@@ -33,6 +33,8 @@ const ServiceCard: React.FC<ServiceCardProps> = ({
   price,
   products
 }) => {
+  const [isPopupVisible, setIsPopupVisible] = useState(false); // State to handle popup visibility
+
   const formattedPrice = new Intl.NumberFormat("en-NG", {
     style: "currency",
     currency: "NGN",
@@ -87,6 +89,10 @@ const ServiceCard: React.FC<ServiceCardProps> = ({
   if (isDeleted) {
     return;
   }
+  const togglePopup = () => {
+    setIsPopupVisible(!isPopupVisible); // Toggle popup visibility
+  };
+
   return (
     <div className="max-w-sm rounded overflow-hidden">
     {OpenEditService && <EditServiceModal product={products}  onClose={()=>setOpenEditService(false)}/>}
@@ -100,12 +106,14 @@ const ServiceCard: React.FC<ServiceCardProps> = ({
         <img
           src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1716223406/utilities/LodgeMate_File/Vector_aflwdv.png"
           alt="lodgemate"
-          className="absolute top-2 left-2 text-xl"
+          className="absolute top-2 left-2 text-xl hidden"
         />
+        {/* Menu icon with popup */}
         <img
           src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1719611975/utilities/LodgeMate_File/menu_cx8xja.svg"
-          alt=""
-          className="absolute top-2 right-2 bg-white h-6 w-6 rounded-full text-xl"
+          alt="Menu"
+          className="absolute top-2 right-2 bg-white h-6 w-6 rounded-full text-xl cursor-pointer"
+          onClick={togglePopup}
         />
         <div className="absolute bottom-4 flex justify-between items-center w-full px-5 ">
             <IoPencil onClick={handleIpenlodgeedit} className=" bg-slate-800 p-1 rounded-full text-slate-50 z-20 text-2xl font-bold hover:text-slate-100 cursor-pointer" />
@@ -128,10 +136,10 @@ const ServiceCard: React.FC<ServiceCardProps> = ({
             alt=""
             className="mr-2"
           />
-          <p className="text-[13px]">{nearbyCategory}dsds</p>
+          <p className="text-[13px]">{nearbyCategory}</p>
         </div>
         <p className="text-dgray text-[15px] font-semibold mt-2">
-          {formattedPrice}/yr
+          {formattedPrice}
         </p>
       </div>
     </div>

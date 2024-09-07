@@ -21,24 +21,31 @@ const DeleteModal:React.FC= () => {
     <>
       {deleteData.deleteFunction && (
         <Blurbg>
-          <div className='w-screeen p-5 py-10 gap-y-5 rounded-lg flex flex-col items-center min-w-[300px] bg-white h-fit relative'>
-            <p className=' text-center text-xl font-medium text-slate-800'>
+          <div className="w-screeen p-5 py-10 gap-y-5 rounded-lg flex flex-col items-center min-w-[300px] bg-white h-fit relative">
+            <p className=" text-center text- font-medium text-slate-800">
               {deleteData.message}
             </p>
             <button
-              onClick={() =>{
-                 handleDelete()
-                 setClicked(true)}}
-                 disabled={Clicked}
-              className='bg-lblue px-4 py-2 text-white rounded hover:scale-95 hover:text-slate-300'
+              onClick={() => {
+                handleDelete();
+                setClicked(true);
+              }}
+              disabled={Clicked}
+              className="bg-primary px-4 py-2 text-white rounded hover:scale-95 hover:text-slate-300"
             >
-              {Clicked? <>Deleting... <div className="circularLoader"/></>:'Delete'}
+              {Clicked ? (
+                <>
+                  Deleting... <div className="circularLoader" />
+                </>
+              ) : (
+                "Delete"
+              )}
             </button>
             <p
               onClick={() => dispatch(showDeleteModal(reset))}
-              className=' cursor-pointer m-1 text-black absolute z-50 top-0 right-0 '
+              className=" cursor-pointer m-1 text-black absolute z-50 top-0 right-0 "
             >
-              Close
+              <img src="/icons/close.svg" alt="" />
             </p>
           </div>
         </Blurbg>

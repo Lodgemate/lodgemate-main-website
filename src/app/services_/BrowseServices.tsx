@@ -62,7 +62,6 @@ const BrowseServices:React.FC<BrowseLodgesProps>=({ isSearchTriggered})=> {
       } else if (!token) {
         fetchUrl = Endpoints.getPublicServices + urlGenerator(param);
       }
-      console.log(fetchUrl);
       if (!fetchUrl) {
         return;
       }

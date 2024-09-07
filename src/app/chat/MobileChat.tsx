@@ -23,21 +23,21 @@ interface ChatPreview {
   messages: ChatMessage[];
 }
 
- interface mobileProps {
-  activeChat:MainObject | null,
-  setActiveChat:(arg:any)=>void,
-  message: any,
-  setMessage:(arg:any)=>void,
- }
+interface mobileProps {
+  activeChat: MainObject | null;
+  setActiveChat: (arg: any) => void;
+  message: any;
+  setMessage: (arg: any) => void;
+}
 
 const MobileChat: React.FC<mobileProps> = ({
   activeChat,
   setActiveChat,
   message,
-  setMessage
+  setMessage,
 }) => {
- console.log(activeChat)
- 
+  console.log(activeChat);
+
   const [showProfile, setShowProfile] = useState<boolean>(false);
   const currentUser = useAppSelector(selectAllUsersdata);
 
@@ -47,12 +47,12 @@ const MobileChat: React.FC<mobileProps> = ({
     );
     return newArr[0];
   };
-  
+
   return (
-    <div  className=" lg:hidden w-full max-w-[1200px] border flex flex-col h-screen bg-white mt-[80px]">
+    <div className=" lg:hidden w-full max-w-[1200px] border flex flex-col h-screen bg-white mt-[80px]">
       {!activeChat ? (
         <div className="p-4">
-          <h1 className="text-xl font-bold mb-4">Your chats</h1>
+          <h1 className="text-[16px] font-bold mb-4">Chats</h1>
           {/* {chats.map((chat) => (
             <div
               key={chat.id}
@@ -76,10 +76,10 @@ const MobileChat: React.FC<mobileProps> = ({
             </div>
           ))} */}
           <ActiveChats
-              currentUser={currentUser}
-              activeChat={activeChat}
-              setActiveChat={setActiveChat}
-            />
+            currentUser={currentUser}
+            activeChat={activeChat}
+            setActiveChat={setActiveChat}
+          />
         </div>
       ) : (
         <div className="flex flex-col h-full">
@@ -100,15 +100,18 @@ const MobileChat: React.FC<mobileProps> = ({
                   ?.profilePicture
               }
               alt={`${
-                reciversData(activeChat?.latestMessage.participants)
-                  ?.firstName
+                reciversData(activeChat?.latestMessage.participants)?.firstName
               }'s profile`}
               className="w-10 h-10 rounded-full cursor-pointer"
               onClick={() => setShowProfile(true)}
             />
             <div className="ml-3">
-              <div className="font-semibold text-lg">{reciversData(activeChat?.latestMessage.participants)
-                  ?.firstName}</div>
+              <div className="font-semibold text-[16px]">
+                {
+                  reciversData(activeChat?.latestMessage.participants)
+                    ?.firstName
+                }
+              </div>
             </div>
           </div>
           <div className="flex-grow p-4 overflow-y-auto">
@@ -117,11 +120,11 @@ const MobileChat: React.FC<mobileProps> = ({
                 messages={messages}
                 roomId={activeChat.latestMessage.roomId}
               /> */}
-              <Activemessage
-                setMessages={setMessage}
-                messages={message}
-                roomId={activeChat.latestMessage.roomId}
-              />
+            <Activemessage
+              setMessages={setMessage}
+              messages={message}
+              roomId={activeChat.latestMessage.roomId}
+            />
           </div>
           {/* {activeChat && (
             <div className="flex items-center p-4 border-t border-gray-300">
@@ -170,7 +173,7 @@ const MobileChat: React.FC<mobileProps> = ({
               )}
             </div>
           )} */}
- <WebSocketComponent
+          <WebSocketComponent
             setMessages={setMessage}
             activeChat={activeChat}
           />
@@ -189,11 +192,11 @@ const MobileChat: React.FC<mobileProps> = ({
                   }'s profile`}
                   className="w-20 h-20 rounded-full mx-auto mb-4"
                 />
-                <div className="text-center font-semibold text-lg mb-4">
-                {
-                  reciversData(activeChat?.latestMessage.participants)
-                    ?.firstName
-                }
+                <div className="text-center font-semibold text-[16px] mb-4">
+                  {
+                    reciversData(activeChat?.latestMessage.participants)
+                      ?.firstName
+                  }
                 </div>
                 <div className="flex justify-around mb-4">
                   <div className="flex items-center space-x-2">
@@ -202,10 +205,10 @@ const MobileChat: React.FC<mobileProps> = ({
                       alt="gender"
                     />
                     <p>
-                    {
-                      reciversData(activeChat?.latestMessage.participants)
-                        ?.gender
-                    }
+                      {
+                        reciversData(activeChat?.latestMessage.participants)
+                          ?.gender
+                      }
                     </p>
                   </div>
                   <div className="flex items-center space-x-2">
@@ -214,10 +217,10 @@ const MobileChat: React.FC<mobileProps> = ({
                       alt="university"
                     />
                     <p>
-                    {
-                      reciversData(activeChat?.latestMessage.participants)
-                        ?.administrativeArea
-                    }
+                      {
+                        reciversData(activeChat?.latestMessage.participants)
+                          ?.administrativeArea
+                      }
                     </p>
                   </div>
                 </div>

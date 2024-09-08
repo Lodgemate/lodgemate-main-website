@@ -14,19 +14,20 @@ import { urlGenerator } from "@/utils/urlGenerator";
 import {
   selectAllLocationFilter,
   selectAllQueryFilter,
+  setSearchQuery,
 } from "@/lib/features/Filters/filterSlice";
 import { selectAllAuthenticated } from "@/lib/features/Login/signinSlice";
 import FilterOptions from "../lodges/FilterOptions";
-
-function BrowseServices() {
+import GallerySkeleton from "@/components/Skeletons/cardsSkeleton";
   interface BrowseLodgesProps {
-    query: string;
     isSearchTriggered: boolean;
   }
   const cache = new Map<string, any>();
 
+const BrowseServices:React.FC<BrowseLodgesProps>=({ isSearchTriggered})=> {
   const [showFiltersModal, setShowFiltersModal] = useState(false);
   //  (useless for now) const [filters, setFilters] = useState({});
+  const [isLoading, setisLoading] = useState(false);
   const [showMore, setShowMore] = useState(false);
   const ServicesData = useAppSelector(selectAllFetchservicesdata);
   const dispatch = useAppDispatch();
@@ -34,11 +35,9 @@ function BrowseServices() {
   const storelocation = useAppSelector(selectAllLocationFilter);
   const isAuth = useAppSelector(selectAllAuthenticated);
   const param = {
-    query: storequery,
+    query: storequery !== 'Not Found' && storequery,
     location: storelocation,
   };
-  const query = "";
-  const isSearchTriggered = "";
 
   const GetToken = async () => {
     const localStorageToken = localStorage.getItem("token");
@@ -51,6 +50,7 @@ function BrowseServices() {
 
   // fetching Services data
   useEffect(() => {
+    setisLoading(true);
     const fetchData = async () => {
       const token = await GetToken();
       let fetchUrl;
@@ -62,7 +62,6 @@ function BrowseServices() {
       } else if (!token) {
         fetchUrl = Endpoints.getPublicServices + urlGenerator(param);
       }
-      console.log(fetchUrl);
       if (!fetchUrl) {
         return;
       }
@@ -71,11 +70,13 @@ function BrowseServices() {
         // console.log('Using cached data');
         const cacheData = cache.get(fetchUrl);
         dispatch(setservicesData(cacheData.payload));
+        setisLoading(false);
         return;
       }
 
       const abortController = new AbortController();
       try {
+    dispatch(setSearchQuery(null));
         const response = await dispatch(Fetchservices(fetchUrl));
         cache.set(fetchUrl, response);
       } catch (error: any) {
@@ -83,11 +84,12 @@ function BrowseServices() {
           console.error("Error fetching data:", error);
         }
       } finally {
+        setisLoading(false);
         return () => abortController.abort();
       }
     };
     fetchData();
-  }, [dispatch, query, storelocation]);
+  }, [dispatch, storelocation]);
 
   const handleShowMore = () => {
     setShowMore(true);
@@ -138,14 +140,37 @@ function BrowseServices() {
     //   // setFilteredProducts(filtered);
     //   setShowFiltersModal(false); // Close modal after applying filters
   };
-  console.log(ServicesData);
+
+
+  const MappedServices=useMemo(()=>{
+    return(
+      <>
+      {ServicesData &&
+          ServicesData.data?.services
+            .slice(0, showMore ? ServicesData.data.services.length : 2)
+            .map((product, index) => (
+              <Card
+                key={index}
+                id={product._id}
+                imageUrl={product.coverphoto} // Using the first image
+                name={product.serviceName}
+                location={product.address_text}
+                nearbyUniversity={product.administrativeArea}
+                price={product.minPrice || "N/A"}
+              />
+            ))}
+      </>
+    )
+  },[ServicesData,showMore])
   return (
     <div className="px-4 sm:px-[100px] mt-[50px]">
       <div className="flex justify-between gap-8 items-center text-lgray mb-[24px]">
         <h1 className="text-[12px] flex flex-wrap sm:text-[14px] text-lgray ">
-          {isSearchTriggered
-            ? `Showing results for "${query}"`
-            : "Showing Services based on your location"}
+        {isSearchTriggered
+            ? storequery !== "Not Found" &&
+              `Showing results for "${storequery}"`
+            : "Showing available roommates around"}
+          {storequery == "Not Found" && "No result found"}
         </h1>
 
         <button
@@ -162,20 +187,8 @@ function BrowseServices() {
         </button>
       </div>
       <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        {ServicesData &&
-          ServicesData.data?.services
-            .slice(0, showMore ? ServicesData.data.services.length : 12)
-            .map((product, index) => (
-              <Card
-                key={index}
-                id={product._id}
-                imageUrl={product.coverphoto} // Using the first image
-                name={product.serviceName}
-                location={product.address_text}
-                nearbyUniversity={product.administrativeArea}
-                price={product.minPrice || "N/A"}
-              />
-            ))}
+      {isLoading ? <GallerySkeleton /> : MappedServices}
+
       </div>
       {!showMore && (
         <div className="mt-10 text-[12px]  flex flex-col justify-center items-center text-lgray font-medium pb-[200px]">

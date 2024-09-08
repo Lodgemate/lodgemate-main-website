@@ -168,8 +168,7 @@ const Replies: React.FC<WriteRepliesProps> = React.memo(
           <div className="main_container min-w-[300px] max-h-[400px] overflow-y-scroll no-scrollbar h-full w-full  ">
             <MainComment content={data} />
             {/* @ts-ignore */}
-            {replies &&
-              replies.data.replies.map((data: any, index) => {
+            {replies && replies.data.replies.map((data: any, index: any) => {
                 return (
                   <>
                     <RepliesUi content={data} key={index} />

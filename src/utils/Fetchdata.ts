@@ -25,7 +25,9 @@ export const debounceFetch = (url : string, options = {}, delay = 1000) => {
     debounceTimeoutId = setTimeout(() => {
       fetch(url, options)
         .then(response => {
+
           if (!response.ok) {
+            return response.json();
             throw new Error('Network response was not ok');
           }
           return response.json();

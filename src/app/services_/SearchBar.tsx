@@ -5,7 +5,11 @@ import React, { useState, useEffect, useCallback } from "react"; // Import React
 import Link from "next/link"; // Import Link from Next.js
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { setSearchQuery } from "@/lib/features/Filters/filterSlice";
-import { selectAllFetchservicesdata } from "@/lib/features/Services/servicesSlice";
+import { selectAllFetchservicesdata, setservicesData } from "@/lib/features/Services/servicesSlice";
+import { useRouter } from "next/navigation";
+import { useSearchParams } from "next/navigation";
+import { Endpoints } from "@/services/Api/endpoints";
+import { debounceFetch } from "@/utils/Fetchdata";
 
 interface SearchResult {
   // Define SearchResult interface
@@ -16,10 +20,17 @@ interface SearchResult {
  * Functional component for a search bar in a React application.
  * @returns JSX element for the search bar component.
  */
-const SearchBar: React.FC = () => {
+interface SearchBarProps {
+  // Define SearchBarProps interface
+  onSearch: () => void; // onSearch prop function signature
+}
+const SearchBar: React.FC<SearchBarProps> = ({ onSearch })=> {
   const dispatch = useAppDispatch();
   const data = useAppSelector(selectAllFetchservicesdata);
-
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const searchTerm = searchParams.get('q');
+  const [searching, setsearching] = useState(false)
   // Define SearchBar component
   const [query, setQuery] = useState<string>(""); // State for query string
   const [results, setResults] = useState<SearchResult>({
@@ -29,16 +40,61 @@ const SearchBar: React.FC = () => {
   });
 
   useEffect(() => {
-    // Effect hook for handling search
-    if (query) {
-      const filteredResults = filterResults(query); // Filter results based on query
-      setResults(filteredResults); // Update results state
-    } else {
-      setResults({ services: [], cities: [] }); // Reset results if query is empty
-    }
-  }, [query]); // Depend on query state for re-rendering
+    const fetchSuggestion = async () => {
+      setsearching(true);
+      if (query) {
+        const url = `${Endpoints.getPublicServices}query=${query}`;
+        console.log(url)
+        try {
+          
+       
+        const res = await debounceFetch(url);
+        console.log("res")
 
-  const filterResults =useCallback((query: string): SearchResult => {
+        const filteredResults = filterResults(query, res);
+        setResults(filteredResults);
+        setsearching(false); 
+      } catch (error: any) {
+          console.log(error.message)
+        }
+      } else {
+        setsearching(false);
+        setResults({ services: [],
+          cities: [],});
+      }
+    };
+
+
+    
+    const fetchDataFromQuery = async () => {
+      setsearching(true);
+      if (searchTerm) {
+        const url = `${Endpoints.getPublicServices}query=${searchTerm}`;
+        onSearch();
+        const res: any = await debounceFetch(url);
+        dispatch(setservicesData(res));
+        if (res.status === "success" && res.data.services.length === 0) {
+          dispatch(setSearchQuery("Not Found"));
+        }
+        setsearching(false);
+      } else {
+        setsearching(false);
+        setResults({ services: [],
+          cities: [], });
+      }
+    };
+
+    if (query) {
+      fetchSuggestion();
+    } else if (searchTerm) {
+      fetchDataFromQuery();
+    }
+  }, [query, searchTerm]);
+
+  const filterResults =(query: string, data: any): SearchResult => {
+  
+    console.log(data)
+
     // Function to filter results
     const lowercaseQuery = query.toLowerCase(); // Convert query to lowercase
     const services: { id: number | string; name: string }[] = [];
@@ -50,7 +106,7 @@ const SearchBar: React.FC = () => {
     data.data.services.forEach((product: any) => {
       // Iterate through products data
       if (
-        product.serviceName.toLowerCase().includes(lowercaseQuery) && // Filter by lodge name
+        product.serviceName.toLowerCase().includes(lowercaseQuery) && 
         services.length < 3
       ) {
         services.push({
@@ -69,15 +125,27 @@ const SearchBar: React.FC = () => {
       }
     });
 
+
     return { services, cities }; // Return filtered results
-  },[query]);
+  };
+
+
   const handleSearchClick = async () => {
     if (query) {
       dispatch(setSearchQuery(query));
+      const paramsquery = new URLSearchParams(searchParams.toString());
+      if (query) {
+        paramsquery.set("q", query); // Set the search query param
+      } else {
+        paramsquery.delete("q"); // If no search term, remove the param
+      }
+      router.push(`?q=${query.toString()}`);
       // Function to handle search button click
+      onSearch(); // Execute onSearch callback with query
       setQuery(""); // Clear query after search
     }
   };
+
 
   return (
     <div className='flex flex-col relative justify-center w-full items-center mt-[20px] z-[990]'>
@@ -99,7 +167,7 @@ const SearchBar: React.FC = () => {
             height={40}
             alt='Search'
           />
-          Search
+          {searching ? "Searching" : " Search"}
         </button>
       </div>
       <div className='flex mt-6 sm:gap-2 '>
@@ -127,7 +195,7 @@ const SearchBar: React.FC = () => {
               results.services.map((services) => (
                 <Link
                   key={services.id}
-                  href={`/services/lodge_details/${services.id}`}
+                  href={`/services/service_details/${services.id}`}
                   className='flex items-center gap-2 py-[7px]  px-4'
                 >
                   <img
@@ -138,7 +206,7 @@ const SearchBar: React.FC = () => {
                 </Link>
               ))
             ) : (
-              <p className='px-4'>No similar services found.</p>
+              <p className='px-4'>{searching ? "Searching" : "No"} similar services found.</p>
             )}
           </div>
 
@@ -148,9 +216,12 @@ const SearchBar: React.FC = () => {
             </h3>
             {results.cities.length > 0 ? ( // Render cities if found
               results.cities.map((city) => (
-                <Link
+                <p
                   key={city.id}
-                  href={`/services/lodge_details/${city.id}`}
+                  onClick={() => {
+                    setQuery(city.address);
+                    handleSearchClick();
+                  }}
                   className='flex items-center gap-2 py-[7px]  px-4'
                 >
                   <img
@@ -158,10 +229,10 @@ const SearchBar: React.FC = () => {
                     alt={city.address}
                   />
                   <p>{city.address}</p>
-                </Link>
+                </p>
               ))
             ) : (
-              <p className='px-4'>No similar cities found.</p>
+              <p className='px-4'>{searching ? "Searching" : "No"} similar cities found.</p>
             )}
           </div>
         </div>

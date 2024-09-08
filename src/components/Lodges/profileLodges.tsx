@@ -69,10 +69,10 @@ const ProductCard: React.FC<ProductCardProps> = React.memo(
       setIsPopupVisible(!isPopupVisible); // Toggle popup visibility
     };
 
-    if (isDeleted) {
-      return null;
-    }
 
+  if (isDeleted) {
+    return;
+  }
     return (
       <div className="relative flex w-full flex-col rounded overflow-hidden">
         {openEditLodges && (

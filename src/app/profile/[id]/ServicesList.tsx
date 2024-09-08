@@ -1,57 +1,17 @@
-"use client"
-
-import { ServiceApiResponse } from "@/lib/Types";
+import { Service, ServiceApiResponse } from "@/lib/Types";
 import React, { useState } from "react";
+import EditServiceModal from "./modals/EditServicesModal";
+import { IoPencil } from "react-icons/io5";
+import { RiDeleteBinLine } from "react-icons/ri";
+import { showDeleteModal, showFailedModal } from "@/lib/features/Modal/ModalSlice";
+import { useAppDispatch } from "@/lib/hooks";
+import { FetchApi } from "@/utils/Fetchdata";
+import { Endpoints } from "@/services/Api/endpoints";
 
 // Sample data
-const services = [
-  {
-    id: 1,
-    type: "service",
-    name: "Electrical rewiring service",
-    address: "123 Street",
-    category: "CIn Okigwe",
-    images: [
-      "https://example.com/path/to/image1.jpg",
-      "https://example.com/path/to/image1.jpg",
-    ],
-    price: 50000,
-    imageUrl:
-      "https://res.cloudinary.com/dcb4ilgmr/image/upload/v1716399836/utilities/LodgeMate_File/esdjvcdh_gsgyzy.png",
-    location: "Location 1",
-    nearbyCategory: "In Okigwe",
-  },
-  {
-    id: 2,
-    type: "service",
-    name: "Room refresh & painting",
-    address: "456 Avenue",
-    category: "Category B",
-    images: ["https://example.com/path/to/image2.jpg"],
-    price: 60000,
-    imageUrl:
-      "https://res.cloudinary.com/dcb4ilgmr/image/upload/v1716399836/utilities/LodgeMate_File/fsddvgsajh_zcl8xg.png",
-    location: "Location 2",
-    nearbyCategory: "In Okigwe",
-  },
-  {
-    id: 3,
-    type: "service",
-    name: "Chudi furniture making & repair",
-    address: "789 Boulevard",
-    category: "Category C",
-    images: ["https://example.com/path/to/image3.jpg"],
-    price: 70000,
-    imageUrl:
-      "https://res.cloudinary.com/dcb4ilgmr/image/upload/v1716399839/utilities/LodgeMate_File/sddc_yhmgjy.png",
-    location: "Location 3",
-    nearbyCategory: "In Okigwe",
-  },
-  // Add more services as needed
-];
 
 interface ServiceCardProps {
-  id?: number;
+  id?: any;
   type?: string;
   name?: string;
   address?: string;
@@ -61,6 +21,7 @@ interface ServiceCardProps {
   imageUrl?: string;
   location: string;
   nearbyCategory?: string;
+  products?:Service;
 }
 
 const ServiceCard: React.FC<ServiceCardProps> = ({
@@ -70,6 +31,7 @@ const ServiceCard: React.FC<ServiceCardProps> = ({
   location,
   nearbyCategory,
   price,
+  products
 }) => {
   const [isPopupVisible, setIsPopupVisible] = useState(false); // State to handle popup visibility
 
@@ -78,13 +40,63 @@ const ServiceCard: React.FC<ServiceCardProps> = ({
     currency: "NGN",
     minimumFractionDigits: 0,
   }).format(price);
+  const [isDeleted, setIsDeleted] = useState(false)
+  const [OpenEditService, setOpenEditService] = useState(false)
+ const dispatch = useAppDispatch();
 
+    const reset = {
+      deleteFunction: null,
+      message: "",
+    };
+
+    const handleDelete = async () => {
+      const localStorageToken = localStorage.getItem("token");
+      const parseToken = localStorageToken && JSON.parse(localStorageToken);
+      const body = {
+        method: "DELETE",
+        headers: {
+          "content-type": "Application-json",
+          Authorization: `Bearer ${parseToken}`,
+        },
+      };
+      try {
+        const res: any = await FetchApi(
+          Endpoints.getPrivateServicesbyId + id,
+          body
+        );
+
+        console.log(res);
+        if (res.status === "success") {
+          dispatch(showDeleteModal(reset));
+          setIsDeleted(true)
+        } else {
+          throw res;
+        }
+      } catch (error: any) {
+        dispatch(showFailedModal(error.message));
+      }
+    };
+
+ const handleIpenlodgeedit=()=>{
+  setOpenEditService(true)
+ }
+
+    const deleteProps ={
+      deleteFunction: handleDelete,
+      message: "Do you want to delete this Service"
+    }
+
+  if (isDeleted) {
+    return;
+  }
   const togglePopup = () => {
     setIsPopupVisible(!isPopupVisible); // Toggle popup visibility
   };
 
   return (
     <div className="max-w-sm rounded overflow-hidden">
+    {OpenEditService && <EditServiceModal product={products}  onClose={()=>setOpenEditService(false)}/>}
+
       <button className="relative ">
         <img
           className="sm:w-[500px] w-[240pc] h-[244px] sm:h-[200px]  rounded-[12px]"
@@ -103,31 +115,13 @@ const ServiceCard: React.FC<ServiceCardProps> = ({
           className="absolute top-2 right-2 bg-white h-6 w-6 rounded-full text-xl cursor-pointer"
           onClick={togglePopup}
         />
-
-        {/* Popup */}
-        {isPopupVisible && (
-          <div className="absolute top-10 right-2 bg-white text-[14px] w-[120px] text-gray-700 shadow-md border rounded p-2 z-20">
-            <button
-              onClick={() => setIsPopupVisible(false)}
-              className="text-sm flex justify-end w-full text-gray-500 hover:text-gray-700"
-            >
-              <img src="/icons/close.svg" alt="" />
-            </button>
-            <hr className="my-2" />
-
-            <div className="cursor-pointer hover:text-blue-500 flex items-center m gap-1">
-              {" "}
-              <img src="/icons/pen_gray.svg" alt="" />
-              Edit
-            </div>
-            <hr className="my-2" />
-
-            <div className="cursor-pointer text-red-500 flex items-center pb-2 gap-1">
-              <img src="/icons/delete.svg" alt="" />
-              Delete
-            </div>
+        <div className="absolute bottom-4 flex justify-between items-center w-full px-5 ">
+            <IoPencil onClick={handleIpenlodgeedit} className=" bg-slate-800 p-1 rounded-full text-slate-50 z-20 text-2xl font-bold hover:text-slate-100 cursor-pointer" />
+            <RiDeleteBinLine
+              onClick={() => dispatch(showDeleteModal(deleteProps))}
+              className="  bg-slate-800 p-1 rounded-full text-slate-50 z-20 text-2xl font-bold hover:text-slate-100 cursor-pointer"
+            />
           </div>
-        )}
         {/* Additional icons or overlays can be added here */}
       </button>
       <div className="py-[15px]">
@@ -159,12 +153,14 @@ const ServicesListed: React.FC<serviceListedProps> = ({ data }) => {
   console.log(data);
   return (
     <div className="container mx-auto p-4">
+
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
         {data?.status === "success" &&
           data?.data.services.slice(0, 9).map((service) => (
             <ServiceCard
+            products={service}
               key={String(service._id)}
-              id={Number(service._id)}
+              id={service._id}
               // type={service.t}
               name={service.serviceName}
               address={service.address_text}

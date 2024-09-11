@@ -2,13 +2,15 @@ import { Endpoints } from "@/services/Api/endpoints";
 import { FetchApi } from "@/utils/Fetchdata";
 import { useEffect, useState } from "react";
 
-function HeartIcon({type, id}:any) {
-  const [isRed, setIsRed] = useState(false);
+function HeartIcon({type, id, wishlisted}:any) {
+  const [isRed, setIsRed] = useState(wishlisted);
   const [clicked, setclicked] = useState(false);
 
   const handleClick = () => {
     setIsRed(!isRed);
     setclicked(true)
+  console.log(isRed)
+
   };
   useEffect(()=>{
     const localStorageToken = localStorage.getItem("token");
@@ -31,9 +33,11 @@ function HeartIcon({type, id}:any) {
 
       try{
       const res: any= await FetchApi(url, options)
+  console.log(res)
+
       if (res.status === 'success') {
       }else{
-        setIsRed(false)
+        setIsRed((prev: any)=>!prev)
 
         throw res
       }

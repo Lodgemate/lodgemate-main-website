@@ -19,7 +19,7 @@ export async function fetchData(endpoint: any) {
 export const debounceFetch = (url : string, options = {}, delay = 1000) => {
   // Clear the previous timeout if it exists
   clearTimeout(debounceTimeoutId);
-
+ console.log(options)
   // Return a new promise for the debounced fetch operation
   return new Promise((resolve, reject) => {
     debounceTimeoutId = setTimeout(() => {

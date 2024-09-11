@@ -15,9 +15,11 @@ interface ProductCardProps {
   imageUrl: string;
   location: string;
   nearbyUniversity: string;
+  wishlisted: boolean;
 }
 
 const ProductCard: React.FC<ProductCardProps> = ({
+  wishlisted,
   id,
   imageUrl,
   name,
@@ -36,7 +38,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
       duration: 1000,
     });
   });
-
+console.log(wishlisted)
   return (
     <div
       // href={`/lodges/lodge_details/${id}`}
@@ -58,7 +60,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
           alt="lodgemate"
           className="absolute top-2 left-2 text-xl hidden"
         />
-        <HeartIcon type={'lodge'} id={id} />
+        <HeartIcon type={'lodge'} id={id} wishlisted={wishlisted} />
         <img
           src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1716223205/utilities/LodgeMate_File/Indicators_psmeyv.svg"
           alt=""

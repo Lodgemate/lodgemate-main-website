@@ -58,14 +58,16 @@ console.log(images)
 
     }
   };
-
+  console.log(images?.length)
   const handleRemoveImage = () => {
   console.log("imgSrc")
+
 
     const imgSrc = document.getElementById('myImage')?.src;
   console.log(imgSrc)
   const newArr= images?.filter((ent)=>ent !== imgSrc)
  console.log(newArr)
+ console.log(newArr?.length)
    setImages(newArr)
     setFormData({...formData,previousPhotosUrls: [...formData.previousPhotosUrls, imgSrc]})
   
@@ -235,7 +237,7 @@ console.log(images)
         </div>
 
         <div className="p-4 border-t">
-          <button className="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600">
+          <button className="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600" onClick={handleSaveChanges}>
             Save changes
           </button>
         </div>

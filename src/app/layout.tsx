@@ -36,7 +36,7 @@ export default function RootLayout({
         <Navbar />
         <body className={`  relative  ${inter.className}`}>
           <Providers>
-            <div className=" min-h-screen">{children}</div>
+            <div className=" min-h-screen ">{children}</div>
             <LogoLoader />
             <Aproved />
             <Failed />

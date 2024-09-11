@@ -10,6 +10,7 @@ import { useRouter } from "next/navigation";
 import { useSearchParams } from "next/navigation";
 import { Endpoints } from "@/services/Api/endpoints";
 import { debounceFetch } from "@/utils/Fetchdata";
+import { showFailedModal } from "@/lib/features/Modal/ModalSlice";
 
 interface SearchResult {
   // Define SearchResult interface
@@ -42,20 +43,33 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch })=> {
   useEffect(() => {
     const fetchSuggestion = async () => {
       setsearching(true);
+
+      const localStorageToken = localStorage.getItem("token");
+      const parseToken = localStorageToken && JSON.parse(localStorageToken);
+  
+        const options = {
+          method: "GET",
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${parseToken}`,
+          },}
       if (query) {
         const url = `${Endpoints.getPublicServices}query=${query}`;
         console.log(url)
         try {
-          
-       
-        const res = await debounceFetch(url);
-        console.log("res")
-
-        const filteredResults = filterResults(query, res);
+        const res:any = await debounceFetch(url, options);
+        if (res.status === 'success') {
+          const filteredResults = filterResults(query, res);
         setResults(filteredResults);
-        setsearching(false); 
+          
+        }else if(res.status === 'fail'){
+          dispatch(showFailedModal(res.message))
+        }
       } catch (error: any) {
           console.log(error.message)
+        }finally{
+        setsearching(false); 
+
         }
       } else {
         setsearching(false);

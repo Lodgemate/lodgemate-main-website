@@ -36,6 +36,7 @@ const BrowseLodges: React.FC<BrowseLodgesProps> = ({
     query: storequery !== 'Not Found' && storequery,
     location: storelocation,
   };
+  
 
   //  useless for now
   // useEffect(() => {

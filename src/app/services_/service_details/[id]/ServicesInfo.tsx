@@ -94,10 +94,15 @@ function ServicesInfo() {
   const [isServicesavedOpen, setIsServicesavedOpen] = useState(false);
   const [isLoading, setisLoading] = useState(false);
   const [commentsOrReplies, setcommentsOrReplies] = useState(null);
-const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
-
   
+  const optimizeImageUrl = (url: string) => {
+    if (url.includes("/upload/")) {
+      return url.replace("/upload/", "/upload/w_300,f_auto/");
+    }
+    return url;
+  };
 
   const reFetchReviews = async () => {
     const localStorageToken = localStorage.getItem("token");
@@ -203,7 +208,7 @@ const [isOpen, setIsOpen] = useState(false);
   }
   if (!ServiceData) {
     return (
-      <div className='h-fit'>
+      <div className="h-fit">
         {/* <NotFoundPage/> */}
         Searching....
       </div>
@@ -224,7 +229,6 @@ const [isOpen, setIsOpen] = useState(false);
   const scroll = (scrollOffset: number) => {
     if (scrollContainerRef.current) {
       scrollContainerRef.current.scrollBy({
-
         left: scrollOffset,
         behavior: "smooth",
       });
@@ -260,13 +264,12 @@ const [isOpen, setIsOpen] = useState(false);
     setcommentsOrReplies(data);
   };
 
-   const formattedPrice = new Intl.NumberFormat("en-NG", {
-     style: "currency",
-     currency: "NGN",
-     minimumFractionDigits: 0,
-   }).format(ServiceData.price);
-  
-  
+  const formattedPrice = new Intl.NumberFormat("en-NG", {
+    style: "currency",
+    currency: "NGN",
+    minimumFractionDigits: 0,
+  }).format(ServiceData.price);
+
   const openModal = (index: number) => {
     setCurrentIndex(index);
     setIsOpen(true);
@@ -286,9 +289,6 @@ const [isOpen, setIsOpen] = useState(false);
         (prevIndex - 1 + ServiceData.photos.length) % ServiceData.photos.length
     );
   };
-
-  
-
 
   return (
     <div className="text-[14px] capitalize">
@@ -438,7 +438,7 @@ const [isOpen, setIsOpen] = useState(false);
             {ServiceData.photos.map((image, index) => (
               <div key={index} className="flex-none">
                 <img
-                  src={image}
+                  src={optimizeImageUrl(image)}
                   alt={`image ${index + 1}`}
                   className="sm:h-[300px] h-[260px] w-[300px]"
                   onClick={() => openModal(index)}
@@ -508,8 +508,8 @@ const [isOpen, setIsOpen] = useState(false);
 
               {/* the avrage review and the number of reviews is suppused to be displayed in this paragraph */}
               <p>
-                {ServiceData.ratings.avgRating} • {ServiceData.ratings.userCount}{" "}
-                reviews
+                {ServiceData.ratings.avgRating} •{" "}
+                {ServiceData.ratings.userCount} reviews
               </p>
             </div>
           </div>
@@ -654,7 +654,7 @@ const [isOpen, setIsOpen] = useState(false);
                     {/* use maping here too for the reviwes */}
                     {RevieweData && (
                       <ServicesReviews
-                      ServicesData={ServiceData}
+                        ServicesData={ServiceData}
                         currentUserData={currentUserData}
                         data={RevieweData}
                         showReplies={handleViewReplies}
@@ -767,7 +767,7 @@ const [isOpen, setIsOpen] = useState(false);
                     {/* use maping here too for the reviwes */}
                     {RevieweData && (
                       <ServicesReviews
-                      ServicesData={ServiceData}
+                        ServicesData={ServiceData}
                         currentUserData={currentUserData}
                         data={RevieweData}
                         showReplies={handleViewReplies}

@@ -70,10 +70,10 @@ function Wishlist() {
         </div>
       ),
     },
-    "Tour cart": {
-      message: "You saved 3 lodges for tour/visiting",
-      content: <div><TourCart /></div>,
-    },
+    // "Tour cart": {
+    //   message: "You saved 3 lodges for tour/visiting",
+    //   content: <div><TourCart /></div>,
+    // },
   };
 
   return (
@@ -87,7 +87,7 @@ function Wishlist() {
           {tabData[activeTab].message}
         </h1>
         <div className="flex  bg-[#F8F8F8] p-1 rounded overflow-x-auto  no-scrollbar">
-          <div className="flex items-center min-w-[400px]">
+          <div className="flex items-center -min-w-[400px]">
             {Object.keys(tabData).map((tab) => (
               <button
                 key={tab}

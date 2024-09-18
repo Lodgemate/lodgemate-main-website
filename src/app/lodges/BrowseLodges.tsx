@@ -37,6 +37,13 @@ const BrowseLodges: React.FC<BrowseLodgesProps> = ({
     location: storelocation,
   };
   
+  const optimizeImageUrl = (url: string) => {
+    if (url.includes("/upload/")) {
+      return url.replace("/upload/", "/upload/w_300,f_auto/");
+    }
+    return url;
+  };
+
 
   //  useless for now
   // useEffect(() => {
@@ -190,10 +197,11 @@ const BrowseLodges: React.FC<BrowseLodgesProps> = ({
                 <Card
                   {...product}
                   key={product._id}
-                  imageUrl={product.coverphoto} // Using the first image
+                  imageUrl={optimizeImageUrl(product.coverphoto)} // Optimizing the coverphoto URL
                   name={product.lodgeName}
                   location={product.address_text}
-                  nearbyUniversity={product.administrativeArea}
+                  nearbyUniversity={product.subAdministrativeArea}
+                  state={product.administrativeArea}
                   price={product.price || 0}
                 />
               );

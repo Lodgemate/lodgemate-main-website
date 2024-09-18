@@ -61,7 +61,12 @@ const BrowseRoommates:React.FC<BrowseLodgesProps>=({isSearchTriggered})=> {
    * useEffect hook that fetches data based on authentication status and token availability.
    * @returns None
    */
-
+ const optimizeImageUrl = (url: string) => {
+   if (url.includes("/upload/")) {
+     return url.replace("/upload/", "/upload/w_500,f_auto/");
+   }
+   return url;
+ };
 
   React.useEffect(() => {
 
@@ -180,7 +185,7 @@ const BrowseRoommates:React.FC<BrowseLodgesProps>=({isSearchTriggered})=> {
         {...roommate}
         key={index}
         id={roommate._id}
-        imageUrl={roommate.postedBy.profilePicture}
+        imageUrl={optimizeImageUrl(roommate.postedBy.profilePicture)}
         name={roommate.postedBy.firstName}
         location={roommate.address_text}
         nearbyUniversity={roommate.subAdministrativeArea}
@@ -190,6 +195,8 @@ const BrowseRoommates:React.FC<BrowseLodgesProps>=({isSearchTriggered})=> {
     ))
   ), [RoommatesData, showMore, handleCardClick]);
   console.log(RoommatesData)
+
+ 
   return (
     <div className="px-4 sm:px-[100px] mt-[50px] text-[14px] sm:text-[14px]">
       {selectedRoommate && (

@@ -39,6 +39,13 @@ const BrowseServices:React.FC<BrowseLodgesProps>=({ isSearchTriggered})=> {
     location: storelocation,
   };
 
+  const optimizeImageUrl = (url: string) => {
+    if (url.includes("/upload/")) {
+      return url.replace("/upload/", "/upload/w_300,f_auto/");
+    }
+    return url;
+  };
+
   const GetToken = async () => {
     const localStorageToken = localStorage.getItem("token");
     if (!localStorageToken) {
@@ -143,16 +150,16 @@ const BrowseServices:React.FC<BrowseLodgesProps>=({ isSearchTriggered})=> {
 
 
   const MappedServices=useMemo(()=>{
-    return(
+    return (
       <>
-      {ServicesData &&
+        {ServicesData &&
           ServicesData.data?.services
             .slice(0, showMore ? ServicesData.data.services.length : 2)
             .map((product, index) => (
               <Card
                 key={index}
                 id={product._id}
-                imageUrl={product.coverphoto} // Using the first image
+                imageUrl={optimizeImageUrl(product.coverphoto)} // Using the first image
                 name={product.serviceName}
                 location={product.address_text}
                 nearbyUniversity={product.administrativeArea}
@@ -160,7 +167,7 @@ const BrowseServices:React.FC<BrowseLodgesProps>=({ isSearchTriggered})=> {
               />
             ))}
       </>
-    )
+    );
   },[ServicesData,showMore])
   return (
     <div className="px-4 sm:px-[100px] mt-[50px]">

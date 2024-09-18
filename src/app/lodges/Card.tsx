@@ -13,6 +13,7 @@ interface ProductCardProps {
   images: string[];
   price: number; // Ensure this is always a number
   imageUrl: string;
+  state: string;
   location: string;
   nearbyUniversity: string;
   wishlisted: boolean;
@@ -26,6 +27,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
   location,
   nearbyUniversity,
   price,
+  state,
 }) => {
   const formattedPrice = new Intl.NumberFormat("en-NG", {
     style: "currency",
@@ -38,7 +40,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
       duration: 1000,
     });
   });
-console.log(wishlisted)
+  console.log(wishlisted);
   return (
     <div
       // href={`/lodges/lodge_details/${id}`}
@@ -60,7 +62,7 @@ console.log(wishlisted)
           alt="lodgemate"
           className="absolute top-2 left-2 text-xl hidden"
         />
-        <HeartIcon type={'lodge'} id={id} wishlisted={wishlisted} />
+        <HeartIcon type={"lodge"} id={id} wishlisted={wishlisted} />
         <img
           src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1716223205/utilities/LodgeMate_File/Indicators_psmeyv.svg"
           alt=""
@@ -85,7 +87,9 @@ console.log(wishlisted)
           />
           <p className="text-[12px] capitalize">
             {" "}
-            <span>{nearbyUniversity}</span>
+            <span>
+              {nearbyUniversity}, {state}
+            </span>
           </p>
         </div>
         <p className="text-dgray text-[14px] font-semibold mt-2">

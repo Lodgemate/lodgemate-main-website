@@ -184,7 +184,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch })=> {
           {searching ? "Searching" : " Search"}
         </button>
       </div>
-      <div className='flex mt-6 sm:gap-2 '>
+      <div className='flex- hidden mt-6 sm:gap-2 '>
         <p className='text-[12px]'>
           Your location is set to "Owerri".{" "}
           <span>

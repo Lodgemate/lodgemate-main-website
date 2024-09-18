@@ -97,9 +97,7 @@ function LodgeInfo() {
   const [commentsOrReplies, setcommentsOrReplies] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
-  console.log(currentUserData)
-
-  
+  console.log(currentUserData);
 
   const reFetchReviews = async () => {
     const localStorageToken = localStorage.getItem("token");
@@ -225,7 +223,6 @@ function LodgeInfo() {
   const scroll = (scrollOffset: number) => {
     if (scrollContainerRef.current) {
       scrollContainerRef.current.scrollBy({
-
         left: scrollOffset,
         behavior: "smooth",
       });
@@ -261,15 +258,22 @@ function LodgeInfo() {
     setcommentsOrReplies(data);
   };
 
-   const formattedPrice = new Intl.NumberFormat("en-NG", {
-     style: "currency",
-     currency: "NGN",
-     minimumFractionDigits: 0,
-   }).format(LodgeData.price);
-  
-    const photosWithCover = [LodgeData.coverphoto, ...LodgeData.photos];
+  const formattedPrice = new Intl.NumberFormat("en-NG", {
+    style: "currency",
+    currency: "NGN",
+    minimumFractionDigits: 0,
+  }).format(LodgeData.price);
 
-  
+  const photosWithCover = [LodgeData.coverphoto, ...LodgeData.photos];
+
+  const optimizeImageUrl = (url: string) => {
+    if (url.includes("/upload/")) {
+      return url.replace("/upload/", "/upload/w_400,f_auto/");
+    }
+    return url;
+  };
+
+
   const openModal = (index: number) => {
     setCurrentIndex(index);
     setIsOpen(true);
@@ -280,30 +284,25 @@ function LodgeInfo() {
   };
 
   const goToNext = () => {
-    setCurrentIndex(
-      (prevIndex) => (prevIndex + 1) % photosWithCover.length
-    );
+    setCurrentIndex((prevIndex) => (prevIndex + 1) % photosWithCover.length);
   };
 
   const goToPrevious = () => {
     setCurrentIndex(
       (prevIndex) =>
-        (prevIndex - 1 + photosWithCover.length) %
-        photosWithCover.length
+        (prevIndex - 1 + photosWithCover.length) % photosWithCover.length
     );
   };
- const chatDetails = {
-   firstName: LodgeData.postedBy.firstName,
-   lastName: LodgeData.postedBy.lastName,
-   gender: LodgeData.postedBy.gender,
-   sender: currentUserData?.data.user._id,
-   reciver: LodgeData.postedBy._id,
-   roomId: `${LodgeData.postedBy._id}-${currentUserData?.data.user._id}`,
-   profilePicture: LodgeData.postedBy.profilePicture,
-   area: LodgeData.postedBy.administrativeArea,
- };
-  
-
+  const chatDetails = {
+    firstName: LodgeData.postedBy.firstName,
+    lastName: LodgeData.postedBy.lastName,
+    gender: LodgeData.postedBy.gender,
+    sender: currentUserData?.data.user._id,
+    reciver: LodgeData.postedBy._id,
+    roomId: `${LodgeData.postedBy._id}-${currentUserData?.data.user._id}`,
+    profilePicture: LodgeData.postedBy.profilePicture,
+    area: LodgeData.postedBy.administrativeArea,
+  };
 
   return (
     <div className="text-[14px] capitalize">
@@ -452,7 +451,7 @@ function LodgeInfo() {
             {photosWithCover.map((image, index) => (
               <div key={index} className="flex-none w-[400px] overflow-hidden">
                 <img
-                  src={image}
+                  src={optimizeImageUrl(image)} // Apply the image optimization function here
                   alt={`image ${index + 1}`}
                   className="object-cover sm:min-h-[400px] min-h-[400px] cursor-pointer"
                   onClick={() => openModal(index)}

@@ -273,7 +273,6 @@ function LodgeInfo() {
     return url;
   };
 
-
   const openModal = (index: number) => {
     setCurrentIndex(index);
     setIsOpen(true);
@@ -449,7 +448,7 @@ function LodgeInfo() {
             style={{ scrollBehavior: "smooth" }}
           >
             {photosWithCover.map((image, index) => (
-              <div key={index} className="flex-none w-[400px] overflow-hidden">
+              <div key={index} className="flex-none w-[400px] bg-black overflow-hidden">
                 <img
                   src={optimizeImageUrl(image)} // Apply the image optimization function here
                   alt={`image ${index + 1}`}
@@ -702,25 +701,25 @@ function LodgeInfo() {
                   <ChatBtn details={chatDetails} />
                   <div className="flex items-center gap-4">
                     {" "}
-                    <Link href="/">
+                    <Link href="#">
                       <img
                         src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1716939370/utilities/LodgeMate_File/Facebook_ryntge.svg"
                         alt=""
                       />
                     </Link>{" "}
-                    <Link href="/">
+                    <Link href="#">
                       <img
                         src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1716939370/utilities/LodgeMate_File/Instagram_vwhjji.svg"
                         alt=""
                       />
-                    </Link>{" "}
-                    <Link href="/">
+                    </Link>
+                    <Link href="#">
                       <img
                         src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1716939370/utilities/LodgeMate_File/Twitter_ffgjak.svg"
                         alt=""
                       />
-                    </Link>{" "}
-                    <Link href="/">
+                    </Link>
+                    <Link href="">
                       <img
                         src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1716939370/utilities/LodgeMate_File/LinkedIn_a3gtp7.svg"
                         alt=""

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import AOS from "aos";
+import Link from "next/link";
 
 
 interface LodgeSavedProps {
@@ -61,9 +62,12 @@ const LodgeSaved: React.FC<LodgeSavedProps> = ({
             Thsi lodge has been saved for visit. Go to the “Tour Cart” tab in
             the Wishlist menu to view it.
           </p>
-          <button className=" mb-4 py-4 bg-primary  font-semibold w-full rounded-[12px] flex justify-center items-center gap-2 text-white ">
+          <Link
+            href="/wishlist"
+            className=" mb-4 py-4 bg-primary  font-semibold w-full rounded-[12px] flex justify-center items-center gap-2 text-white "
+          >
             View now{" "}
-          </button>
+          </Link>
         </div>
       </div>
     </div>

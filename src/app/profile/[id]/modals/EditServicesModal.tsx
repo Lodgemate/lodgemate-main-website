@@ -1,13 +1,29 @@
+// @ts-nocheck
+
+import { Service } from "@/lib/Types";
+import { Endpoints } from "@/services/Api/endpoints";
+import { FetchApi } from "@/utils/Fetchdata";
 import React, { useState } from "react";
+import { FaXmark } from "react-icons/fa6";
 
 interface EditServiceModalProps {
   onClose: () => void;
+  product?: Service
 }
 
-const EditServiceModal: React.FC<EditServiceModalProps> = ({ onClose }) => {
-  const [images, setImages] = useState(["/image1.jpg", "/image2.jpg"]); // Replace with actual image paths
+const EditServiceModal: React.FC<EditServiceModalProps> = ({product, onClose }) => {
+  const [images, setImages] = useState(product?.photos); // Replace with actual image paths
   const [currentIndex, setCurrentIndex] = useState(0);
-
+  const [formData, setFormData] = useState({
+    newImages:[],
+    serviceName: product?.serviceName,
+    // location: product?.serviceName,
+    price: product?.maxPrice,
+    description: product?.description,
+    negotiable: false,
+    previousPhotosUrls:[]
+  });
+console.log(images)
   const handlePrev = () => {
     setCurrentIndex((prevIndex) =>
       prevIndex === 0 ? images.length - 1 : prevIndex - 1
@@ -18,6 +34,81 @@ const EditServiceModal: React.FC<EditServiceModalProps> = ({ onClose }) => {
     setCurrentIndex((prevIndex) =>
       prevIndex === images.length - 1 ? 0 : prevIndex + 1
     );
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value, type, checked } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: type === "checkbox" ? checked : value,
+    }));
+  };
+
+  const handleNewImageUpload = (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    if (event.target.files && event.target.files[0]) {
+      console.log(event.target.files[0])
+      const newImage = URL.createObjectURL(event.target.files[0]);
+      //@ts-ignore
+      const newImages = [newImage, ...images];
+      setImages(newImages)
+      //@ts-ignore
+      setFormData({...formData, newImages: [...formData.newImages, event.target.files[0] ] });
+
+    }
+  };
+  console.log(images?.length)
+  const handleRemoveImage = () => {
+  console.log("imgSrc")
+
+
+    const imgSrc = document.getElementById('myImage')?.src;
+  console.log(imgSrc)
+  const newArr= images?.filter((ent)=>ent !== imgSrc)
+ console.log(newArr)
+ console.log(newArr?.length)
+   setImages(newArr)
+    setFormData({...formData,previousPhotosUrls: [...formData.previousPhotosUrls, imgSrc]})
+  
+ 
+  };
+  console.log(formData)
+  console.log(product?.id)
+
+  const handleSaveChanges = () => {
+    const localStorageToken = localStorage.getItem("token");
+    const parseToken = localStorageToken && JSON.parse(localStorageToken);
+    const form = new FormData();
+      //@ts-ignore
+    form.append("serviceName", formData.serviceName);
+    // form.append("location", formData.location);
+      //@ts-ignore
+    form.append("price", formData.price);
+      //@ts-ignore
+    form.append("serviceDescription", formData.description);
+    // form.append("negotiable", formData.negotiable.toString());
+    // form.append("accommodationType", formData.accommodationType);
+
+    formData.newImages.forEach((image) => form.append("photos", image));
+    formData.previousPhotosUrls && formData.previousPhotosUrls.forEach((image) => form.append("previousPhotosUrls[]", image));
+
+
+    const submitLidge=async()=>{
+      const url = `${Endpoints.getPrivateServicesbyId}${product?._id}`
+      const option={
+        method:"PATCH",
+        headers: {
+          
+          Authorization: `Bearer ${parseToken}`,
+        },
+        body: form
+      }
+
+      const res = await FetchApi(url,option)
+      console.log(res)
+    }
+    submitLidge()
   };
 
   return (
@@ -40,10 +131,15 @@ const EditServiceModal: React.FC<EditServiceModalProps> = ({ onClose }) => {
           {/* Image Carousel */}
           <div className="relative mb-4">
             <img
+            id="myImage"
               src={images[currentIndex]}
               alt="Service"
               className="w-full h-64 object-cover rounded-md"
+             
             />
+             <button onClick={handleRemoveImage} className=" absolute top-0 text-5xl right-0 font-sans text-red-500 border border-red-500 rounded-full">
+                <FaXmark/>
+              </button>
             <button
               onClick={handlePrev}
               className="absolute top-1/2 left-2 transform -translate-y-1/2 bg-white p-2 rounded-full shadow-md hover:bg-gray-100"
@@ -58,10 +154,18 @@ const EditServiceModal: React.FC<EditServiceModalProps> = ({ onClose }) => {
             </button>
           </div>
 
-          {/* Add more images */}
-          <button className="flex items-center justify-center w-full border-2 border-dashed border-gray-300 py-2 rounded-md hover:bg-gray-50">
+      
+            {/* Add more images */}
+            <label className="flex items-center justify-center w-full border-2 border-dashed border-gray-300 py-2 rounded-md hover:bg-gray-50">
             + Add more
-          </button>
+            <input
+                // id={`file-input-${index}`}
+                type="file"
+                accept="image/*"
+                onChange={handleNewImageUpload}
+                className="hidden"
+              />
+          </label>
 
           {/* Service Name */}
           <div className="mt-4">
@@ -133,7 +237,7 @@ const EditServiceModal: React.FC<EditServiceModalProps> = ({ onClose }) => {
         </div>
 
         <div className="p-4 border-t">
-          <button className="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600">
+          <button className="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600" onClick={handleSaveChanges}>
             Save changes
           </button>
         </div>

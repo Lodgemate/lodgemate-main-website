@@ -5,9 +5,13 @@ import React, { useState, useEffect, useCallback } from "react"; // Import React
 import Link from "next/link"; // Import Link from Next.js
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { setSearchQuery } from "@/lib/features/Filters/filterSlice";
-import { selectAllFetchroommatedata } from "@/lib/features/Roommates/RoommateSlice";
+import { selectAllFetchroommatedata, setroommateData } from "@/lib/features/Roommates/RoommateSlice";
 import ProfileDetails from "./roomate_details/ProfileDetails";
 import { Roommate } from "@/lib/Types";
+import { useRouter } from "next/navigation";
+import { useSearchParams } from "next/navigation";
+import { Endpoints } from "@/services/Api/endpoints";
+import { debounceFetch } from "@/utils/Fetchdata";
 
 interface SearchResult {
   // Define SearchResult interface
@@ -18,9 +22,17 @@ interface SearchResult {
  * Functional component for a search bar in a React application.
  * @returns JSX element for the search bar component.
  */
-const SearchBar: React.FC = () => {
+interface SearchBarProps {
+  // Define SearchBarProps interface
+  onSearch: () => void; // onSearch prop function signature
+}
+const SearchBar: React.FC<SearchBarProps> = ({onSearch}) => {
   const dispatch = useAppDispatch();
   const data = useAppSelector(selectAllFetchroommatedata);
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const searchTerm = searchParams.get('q');
+  const [searching, setsearching] = useState(false)
 
   // Define SearchBar component
   const [query, setQuery] = useState<string>(""); // State for query string
@@ -38,16 +50,58 @@ const SearchBar: React.FC = () => {
     setSelectedRoommate(res);
   };
   useEffect(() => {
-    // Effect hook for handling search
-    if (query) {
-      const filteredResults = filterResults(query); // Filter results based on query
-      setResults(filteredResults); // Update results state
-    } else {
-      setResults({ roommates: [], cities: [] }); // Reset results if query is empty
-    }
-  }, [query]); // Depend on query state for re-rendering
+    
+    const fetchSuggestion = async () => {
+      setsearching(true)
+      if (query) {
+        const url = `${Endpoints.getPublicRoommates}query=${query}`;
+        console.log(url);
+        const res = await debounceFetch(url);
+        console.log(res);
+        const filteredResults = filterResults(query, res);
+        console.log(filteredResults);
 
-  const filterResults =useCallback((query: string): SearchResult => {
+        setResults(filteredResults);
+    setsearching(false)
+      } else {
+    setsearching(false)
+        setResults({  roommates: [],
+          cities: [],});
+      }
+    };
+
+    const fetchDataFromQuery= async () => {
+      setsearching(true)
+      if (searchTerm) {
+
+        const url = `${Endpoints.getPublicRoommates}query=${searchTerm}`;
+        console.log(url);
+        onSearch()
+        const res:any = await debounceFetch(url);
+        dispatch(setroommateData(res))
+        console.log(res);
+        if (res.status === 'success' && res.data.roommates.length === 0) {
+          dispatch(setSearchQuery("Not Found"));
+
+        }
+    setsearching(false)
+        
+      } else {
+    setsearching(false)
+
+        setResults({  roommates: [],
+          cities: [],});
+      }
+    };
+
+    if (query) {
+      fetchSuggestion()
+    }else if (searchTerm) {
+      fetchDataFromQuery()
+    }
+  }, [query,searchTerm]);
+
+  const filterResults =useCallback((query: string, res: any): SearchResult => {
     // Function to filter results
     const lowercaseQuery = query.toLowerCase(); // Convert query to lowercase
     const roommates: { id: number | string; name: string }[] = [];
@@ -56,7 +110,7 @@ const SearchBar: React.FC = () => {
     if (!data) {
       return { roommates, cities };
     }
-    data.data.roommates.forEach((product: any) => {
+    res.data.roommates.forEach((product: any) => {
       // Iterate through products data
       if (
         product.postedBy.firstName.toLowerCase().includes(lowercaseQuery) && // Filter by lodge name
@@ -80,10 +134,19 @@ const SearchBar: React.FC = () => {
 
     return { roommates, cities }; // Return filtered results
   },[query]);
+
   const handleSearchClick = async () => {
     if (query) {
       dispatch(setSearchQuery(query));
+      const paramsquery = new URLSearchParams(searchParams.toString());
+      if (query) {
+        paramsquery.set('q', query); // Set the search query param
+      } else {
+        paramsquery.delete('q'); // If no search term, remove the param
+      }
+      router.push(`?q=${query.toString()}`);
       // Function to handle search button click
+      onSearch();
       setQuery(""); // Clear query after search
     }
   };
@@ -116,7 +179,7 @@ const SearchBar: React.FC = () => {
             height={40}
             alt='Search'
           />
-          Search
+          {searching? 'Searching':' Search'}
         </button>
       </div>
       <div className='flex mt-6 sm:gap-2 '>
@@ -164,9 +227,12 @@ const SearchBar: React.FC = () => {
             </h3>
             {results.cities.length > 0 ? ( // Render cities if found
               results.cities.map((city) => (
-                <Link
+                <p
+                 onClick={()=>{
+                    setQuery(city.address)
+                    handleSearchClick()
+                  }}     
                   key={city.id}
-                  href={`/roommates/lodge_details/${city.id}`}
                   className='flex items-center gap-2 py-[7px]  px-4'
                 >
                   <img
@@ -174,7 +240,7 @@ const SearchBar: React.FC = () => {
                     alt={city.address}
                   />
                   <p>{city.address}</p>
-                </Link>
+                </p>
               ))
             ) : (
               <p className='px-4'>No similar cities found.</p>

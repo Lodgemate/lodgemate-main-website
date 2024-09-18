@@ -65,8 +65,8 @@ const LodgeTabs = () => {
     console.log("res");
 
     try {
-      const res = FetchApi(Endpoints.getPrivateLodges, body);
-      const parsedRes: any = await res;
+      const res: any = await FetchApi(Endpoints.getPrivateLodges, body);
+      const parsedRes =  res;
       if (parsedRes.status === "success") {
         dispatch(showLoadingModal(null));
         dispatch(showSuccessfulModal(parsedRes.message));
@@ -76,9 +76,12 @@ const LodgeTabs = () => {
         }, 500);
        } else {
         dispatch(showLoadingModal(null));
-        dispatch(showFailedModal(parsedRes.message));
+        throw res
       }
-    } catch (error) {
+    } catch (error: any) {
+      dispatch(showLoadingModal(null));
+      dispatch(showFailedModal(error.message));
+
       console.log(await error);
     }
   };

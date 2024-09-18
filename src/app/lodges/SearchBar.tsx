@@ -5,12 +5,18 @@ import React, { useState, useEffect } from "react"; // Import React, useState, u
 import products from "../../data/data"; // Import the products data
 import Link from "next/link"; // Import Link from Next.js
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
-import { selectAllFetchLodgesdata } from "@/lib/features/Lodges/lodgesSlice";
+import {
+  selectAllFetchLodgesdata,
+  setLodgesData,
+} from "@/lib/features/Lodges/lodgesSlice";
 import { setSearchQuery } from "@/lib/features/Filters/filterSlice";
-
+import { debounceFetch } from "@/utils/Fetchdata";
+import { Endpoints } from "@/services/Api/endpoints";
+import { urlGenerator } from "@/utils/urlGenerator";
+import { useSearchParams, useRouter } from "next/navigation";
 interface SearchBarProps {
   // Define SearchBarProps interface
-  onSearch: (searchQuery: string) => void; // onSearch prop function signature
+  onSearch: () => void; // onSearch prop function signature
 }
 
 interface Product {
@@ -30,23 +36,13 @@ interface SearchResult {
 
 const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
   const dispatch = useAppDispatch();
+  const router = useRouter();
+  const searchParams = useSearchParams();
   const data = useAppSelector(selectAllFetchLodgesdata);
-  const [query, setQuery] = useState<string>(""); // State for query string
-  const [results, setResults] = useState<SearchResult>({
-    lodges: [],
-    cities: [],
-  });
-
-  useEffect(() => {
-    if (query) {
-      const filteredResults = filterResults(query);
-      setResults(filteredResults);
-    } else {
-      setResults({ lodges: [], cities: [] });
-    }
-  }, [query]);
-
-  const filterResults = (query: string): SearchResult => {
+  const searchTerm = searchParams.get("q");
+  const [query, setQuery] = useState<string>("");
+  const [searching, setsearching] = useState(false);
+  const filterResults = (query: string, data: any): SearchResult => {
     // Function to filter results
     const lowercaseQuery = query.toLowerCase(); // Convert query to lowercase
     const lodges: { id: number | string; name: string }[] = [];
@@ -79,12 +75,66 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
 
     return { lodges, cities }; // Return filtered results
   };
+  const [results, setResults] = useState<SearchResult>({
+    lodges: [],
+    cities: [],
+  });
+
+  useEffect(() => {
+    const fetchSuggestion = async () => {
+      setsearching(true);
+      if (query) {
+        const url = `${Endpoints.getPublicLodges}query=${query}`;
+        console.log(url)
+
+        const res = await debounceFetch(url);
+        const filteredResults = filterResults(query, res);
+        setResults(filteredResults);
+        setsearching(false);
+      } else {
+        setsearching(false);
+        setResults({ lodges: [], cities: [] });
+      }
+    };
+
+
+
+    const fetchDataFromQuery = async () => {
+      setsearching(true);
+      if (searchTerm) {
+        const url = `${Endpoints.getPublicLodges}query=${searchTerm}`;
+        onSearch();
+        const res: any = await debounceFetch(url);
+        dispatch(setLodgesData(res));
+        if (res.status === "success" && res.data.lodges.length === 0) {
+          dispatch(setSearchQuery("Not Found"));
+        }
+        setsearching(false);
+      } else {
+        setsearching(false);
+        setResults({ lodges: [], cities: [] });
+      }
+    };
+
+    if (query) {
+      fetchSuggestion();
+    } else if (searchTerm) {
+      fetchDataFromQuery();
+    }
+  }, [query, searchTerm]);
 
   const handleSearchClick = async () => {
     if (query) {
       dispatch(setSearchQuery(query));
+      const paramsquery = new URLSearchParams(searchParams.toString());
+      if (query) {
+        paramsquery.set("q", query); // Set the search query param
+      } else {
+        paramsquery.delete("q"); // If no search term, remove the param
+      }
+      router.push(`?q=${query.toString()}`);
       // Function to handle search button click
-      onSearch(query); // Execute onSearch callback with query
+      onSearch(); // Execute onSearch callback with query
       setQuery(""); // Clear query after search
     }
   };
@@ -109,12 +159,12 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
             height={40}
             alt='Search'
           />
-          Search
+          {searching ? "Searching" : " Search"}
         </button>
       </div>
       {query && ( // Render results if query is not empty
         <div className='absolute w-full text-[12px] z-20 top-20 sm:w-[510px] bg-white border border-stroke shadow-lg rounded-lg '>
-          <div className="">
+          <div className=''>
             <h3 className='bg-[#F5F5F5] py-[7px] px-4 text-dgray font-bold '>
               Lodges
             </h3>
@@ -133,7 +183,9 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
                 </Link>
               ))
             ) : (
-              <p className='px-4'>No similar lodges found.</p>
+              <p className='px-4'>
+                {searching ? "Searching" : "No"} similar lodges found.
+              </p>
             )}
           </div>
 
@@ -143,9 +195,12 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
             </h3>
             {results.cities.length > 0 ? (
               results.cities.map((city) => (
-                <Link
+                <p
                   key={city.id}
-                  href={`/lodges/lodge_details/${city.id}`}
+                  onClick={() => {
+                    setQuery(city.address);
+                    handleSearchClick();
+                  }}
                   className='flex items-center gap-2 py-[7px]  px-4'
                 >
                   <img
@@ -153,10 +208,12 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
                     alt={city.address}
                   />
                   <p>{city.address}</p>
-                </Link>
+                </p>
               ))
             ) : (
-              <p className='px-4'>No similar cities found.</p>
+              <p className='px-4'>
+                {searching ? "Searching" : "No"} similar cities found.
+              </p>
             )}
           </div>
         </div>

@@ -1,12 +1,17 @@
 "use client";
 
-import React from "react";
+import React, { Suspense, useState } from "react";
 import HeroSection from "./HeroSection";
 import SearchBar from "./SearchBar";
 import BrowseServices from "./BrowseServices";
 import AOS from "aos";
 
 function Services() {
+  const [isSearchTriggered, setIsSearchTriggered] = useState<boolean>(false);
+
+  const handleSearch = () => {
+    setIsSearchTriggered(true);
+  };
   React.useEffect(() => {
     AOS.init({
       duration: 1000,
@@ -17,11 +22,13 @@ function Services() {
       <div>
         <HeroSection />
         <div className="px-4">
-          <SearchBar />
+        <Suspense fallback=''>
+        <SearchBar onSearch={handleSearch} />
+        </Suspense>
         </div>
       </div>
 
-      <BrowseServices />
+      <BrowseServices isSearchTriggered={isSearchTriggered} />
     </div>
   );
 }

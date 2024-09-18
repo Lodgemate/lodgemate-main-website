@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { Suspense, useState } from "react";
 import HeroSection from "./HeroSection";
 import SearchBar from "./SearchBar";
 import BrowseRoomates from "./BrowseRoomates";
@@ -8,6 +8,12 @@ import AOS from "aos";
 
 
 function Roommates() {
+  const [isSearchTriggered, setIsSearchTriggered] = useState<boolean>(false);
+
+  const handleSearch = () => {
+    setIsSearchTriggered(true);
+  };
+
   React.useEffect(() => {
     AOS.init({
       duration: 1000,
@@ -18,11 +24,14 @@ function Roommates() {
       <div>
         <HeroSection />
         <div className="px-4">
-          <SearchBar />{" "}
+          <Suspense fallback=''>
+          <SearchBar onSearch={handleSearch}/>{" "}
+
+          </Suspense>
         </div>
       </div>
 
-      <BrowseRoomates />
+      <BrowseRoomates isSearchTriggered={isSearchTriggered}/>
     </div>
   );
 }

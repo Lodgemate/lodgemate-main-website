@@ -129,7 +129,7 @@ function FormTab2() {
             <input
               type='radio'
               className=''
-              value={"Self-contained"}
+              value={"Self-contain"}
               checked={AccomodationTypes === "Self-contained"}
               onChange={(e) => handlechangeAccomodationTypes(e.target.value)}
             />
@@ -200,14 +200,14 @@ function FormTab2() {
             <input
               type='radio'
               className=''
-              value={"seperate"}
-              checked={AccomodationPrefrence === "seperate"}
+              value={"separate"}
+              checked={AccomodationPrefrence === "separate"}
               onChange={(e) =>
                 handlechangeAccomodationPrefrence(e.target.value)
               }
             />
           </div>
-          <p>Seperate</p>{" "}
+          <p>Separate</p>{" "}
         </div>
         <div className='flex mt-[15px] gap-2 items-center'>
           <div className=' rounded border h-[18px] w-[18px] flex justify-center items-center'>

@@ -14,7 +14,6 @@ import { Providers } from "@/components/ProgressBarProvider";
 import GetApp from "./GetApp";
 import BackToTopButton from "./BackToTopButton";
 
-
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -26,10 +25,7 @@ export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
-  }) {
-  
-  
-  
+}) {
   return (
     <html lang="en">
       <StoreProvider>
@@ -44,7 +40,6 @@ export default function RootLayout({
           <GetApp />
         </body>
         <BackToTopButton />
-
         <Footer />
         <BottomNavbar />
         <EmailModal />

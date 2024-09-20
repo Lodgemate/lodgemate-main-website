@@ -28,6 +28,9 @@ const ProductCard: React.FC<ProductCardProps> = ({
     minimumFractionDigits: 0,
   }).format(price);
 
+   
+
+
   return (
     <div className="max-w-sm rounded overflow-hidden">
       <Link href={`/lodges/lodge_details/${id}`} passHref>
@@ -39,9 +42,9 @@ const ProductCard: React.FC<ProductCardProps> = ({
           />
 
           <img
-            src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1719973782/utilities/LodgeMate_File/Heart_Icon_ickosd.svg"
-            alt="heart"
-            className="absolute top-2 right-2 text-xl"
+            src="/icons/heart-red.svg"
+            alt=""
+            className="absolute top-2 right-2 text-xl cursor-pointer"
           />
           <img
             src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1716223205/utilities/LodgeMate_File/Indicators_psmeyv.svg"
@@ -75,14 +78,22 @@ const ProductCard: React.FC<ProductCardProps> = ({
 interface LodgesProps{
   lodges:any[]| []
 }
-const Lodges:React.FC<LodgesProps>=({ lodges} )=> {
+const Lodges: React.FC<LodgesProps> = ({ lodges }) => {
+  
+  const optimizeImageUrl = (url: string) => {
+    if (url.includes("/upload/")) {
+      return url.replace("/upload/", "/upload/w_300,f_auto/");
+    }
+    return url;
+  };
+  
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
       {lodges.map((lodge) => (
         <ProductCard
           key={lodge.lodge._id}
           id={lodge.lodge._id}
-          imageUrl={lodge.lodge.coverphoto}
+          imageUrl={optimizeImageUrl(lodge.lodge.coverphoto)}
           name={lodge.lodge.lodgeName}
           location={lodge.lodge.address_text}
           nearbyUniversity={lodge.lodge.administrativeArea}

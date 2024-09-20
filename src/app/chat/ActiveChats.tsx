@@ -1,4 +1,5 @@
 "use client"
+import UserImage from '@/components/Shared/userImage'
 import { Endpoints } from '@/services/Api/endpoints'
 import { FetchApi } from '@/utils/Fetchdata'
 import { extractDate } from '@/utils/utils'
@@ -54,11 +55,12 @@ const ActiveChats:React.FC<ActiveChatsProps> = ({currentUser, activeChat, setAct
         onClick={() => setActiveChat(chat)}
       >
         <div className="flex items-center ">
-          <img
-            src={ reciversData(chat.latestMessage.participants)?.profilePicture}
-            alt={`${reciversData(chat.latestMessage.participants)?.firstName}'s profile`}
-            className="w-[45px] h-[45px]  rounded-full"
-          />
+        <UserImage
+         src={reciversData(chat.latestMessage.participants)?.profilePicture}
+         alt={`${reciversData(chat.latestMessage.participants)?.firstName}'s profile`}
+            size={'w-[45px] h-[45px]'}
+            fallbackText={reciversData(chat.latestMessage.participants)?.firstName + " "  + reciversData(chat.latestMessage.participants)?.lastName}
+            />
           <div className="ml-4">
             <div className="font-semibold">{reciversData(chat.latestMessage.participants)?.firstName}</div>
             <div className="w-[150px] truncate text-[12px]">

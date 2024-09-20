@@ -131,9 +131,9 @@ const BrowseLodges: React.FC<BrowseLodgesProps> = ({
       let fetchUrl;
       if (isAuth && token) {
         // this will be uncommented when db is updated
-        //  fetchUrl= Endpoints.getPrivateLodges + urlGenerator(param);
+          // fetchUrl= Endpoints.getPrivateLodges + urlGenerator(param);
         // this will be deleted when db is updated
-        fetchUrl = Endpoints.getPublicLodges + urlGenerator(param);
+         fetchUrl = Endpoints.getPublicLodges + urlGenerator(param);
       } else if (!token) {
         fetchUrl = Endpoints.getPublicLodges + urlGenerator(param);
       }

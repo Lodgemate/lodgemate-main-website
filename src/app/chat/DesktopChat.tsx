@@ -9,6 +9,7 @@ import { useSearchParams } from "next/navigation";
 import { useAppSelector } from "@/lib/hooks";
 import { selectAllUsersdata } from "@/lib/features/Users/usersSlice";
 import MobileChat from "./MobileChat";
+import UserImage from "@/components/Shared/userImage";
 
 const DesktopChat: React.FC = () => {
   const searchParams = useSearchParams();
@@ -111,52 +112,61 @@ const DesktopChat: React.FC = () => {
 console.log(activeChat)
   return (
     <>
-  <div ref={myRef} className='lg:flex hidden w-full max-w-[1200px] border  h-screen pt-[70px] text-[14px] text-lblack'>
-       {  isVisible &&    
-        <div className='w-1/4 border-r border-gray-300'>
-          <div className='p-4 border-b border-gray-300'>
-            <h1 className='text-[16px] font-bold'>Your chats</h1>
+      <div
+        ref={myRef}
+        className='lg:flex hidden w-full max-w-[1200px] border  h-screen pt-[70px] text-[14px] text-lblack'
+      >
+        {isVisible && (
+          <div className='w-1/4 border-r border-gray-300'>
+            <div className='p-4 border-b border-gray-300'>
+              <h1 className='text-[16px] font-bold'>Your chats</h1>
+            </div>
+            <div>
+              <ActiveChats
+                currentUser={currentUser}
+                activeChat={activeChat}
+                setActiveChat={setActiveChat}
+              />
+            </div>
           </div>
-          <div>
-            <ActiveChats
-              currentUser={currentUser}
+        )}
+
+        {isVisible && (
+          <div className='w-3/5 flex flex-col justify-between p-4'>
+            <div className='flex-grow overflow-y-auto'>
+              {activeChat && (
+                <Activemessage
+                  setMessages={setMessages}
+                  messages={messages}
+                  roomId={activeChat.latestMessage.roomId}
+                />
+              )}
+            </div>
+            <WebSocketComponent
+              setMessages={setMessages}
               activeChat={activeChat}
-              setActiveChat={setActiveChat}
             />
           </div>
-        </div> }
+        )}
 
-        
-        {  isVisible &&  <div className='w-3/5 flex flex-col justify-between p-4'>
-          <div className='flex-grow overflow-y-auto'>
-            {activeChat && (
-              <Activemessage
-                setMessages={setMessages}
-                messages={messages}
-                roomId={activeChat.latestMessage.roomId}
-              />
-            )}
-          </div>
-          <WebSocketComponent
-            setMessages={setMessages}
-            activeChat={activeChat}
-          />
-        </div>}
-
-        
         {isVisible && activeChat && (
           <div className='w-1/4 border-l border-gray-300 p-4'>
             <div className='flex flex-col justify-center items-center w-full'>
-              <img
+              <UserImage
                 src={
-                  reciversData(activeChat?.latestMessage.participants)
+                  reciversData(activeChat.latestMessage.participants)
                     ?.profilePicture
                 }
                 alt={`${
-                  reciversData(activeChat?.latestMessage.participants)
-                    ?.firstName
+                  reciversData(activeChat.latestMessage.participants)?.firstName
                 }'s profile`}
-                className='w-24 h-24 rounded-full mb-4'
+                size={"w-[45px] h-[45px]"}
+                fallbackText={
+                  reciversData(activeChat.latestMessage.participants)
+                    ?.firstName +
+                  " " +
+                  reciversData(activeChat.latestMessage.participants)?.lastName
+                }
               />
               <div className='text-[16px] font-semibold'>
                 {
@@ -193,17 +203,18 @@ console.log(activeChat)
             </div>
           </div>
         )}
-       
       </div>
 
       <div className='w-full max-w-[1200px] border block lg:hidden '>
         {" "}
-       {!isVisible && <MobileChat
-          activeChat={activeChat}
-          setActiveChat={setActiveChat}
-          message={messages}
-          setMessage={setMessages}
-        />}
+        {!isVisible && (
+          <MobileChat
+            activeChat={activeChat}
+            setActiveChat={setActiveChat}
+            message={messages}
+            setMessage={setMessages}
+          />
+        )}
       </div>
     </>
   );

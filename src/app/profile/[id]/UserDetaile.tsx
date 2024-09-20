@@ -8,6 +8,8 @@ import UserSkeleton from "./UserSkeleton";
 import { calculateCombinedRating } from "@/utils/utils";
 import EditProfileModal from "./modals/ProfileEditModal";
 import { FaWhatsapp } from "react-icons/fa6";
+import Image from "next/image";
+import UserImage from "@/components/Shared/userImage";
 interface UserDetailasProps {
   data: ApiResponse | null;
 }
@@ -33,13 +35,12 @@ const UserDetailas: React.FC<UserDetailasProps> = React.memo(({ data }) => {
         <div className="w-full sm:max-w-430px sm:shadow sm:border pt-[100px]  sm:pt-[65px] text-[14px] rounded-[12px] sm:p-4 bg-white">
           {/* User image and menu button */}
           <div className="flex w-full justify-between items-center mb-4">
-            <div className="flex items-center">
-              <img
-                src={data?.data.user.profilePicture}
-                alt="User"
-                className="w-16 h-16 border border-lblue rounded-full"
-              />
-            </div>
+            <UserImage 
+            src={data?.data.user.profilePicture}
+            alt={data.data.user.firstName + " " + 'pic'}
+            size={'w-16 h-16'}
+            fallbackText={data.data.user.firstName + " "  + data.data.user.lastName}
+            />
             <div className=" relative">
               <button className="p- rounded-full" onClick={toggleDropdown}>
                 <img

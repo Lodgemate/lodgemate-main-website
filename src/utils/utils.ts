@@ -80,3 +80,18 @@ export const calculateCombinedRating = (
   // Return the final rating rounded to one decimal place
   return finalRating.toFixed(1);
 };
+
+
+export function getInitials(fullName: string) {
+  // Trim and split the full name by spaces
+  const nameParts = fullName.trim().split(/\s+/);
+
+  // Get the first name and last name (or last part of the name)
+  const firstName = nameParts[0] || '';
+  const lastName = nameParts[nameParts.length - 1] || '';
+
+  // Get the initials by taking the first letter of each name part
+  const initials = `${lastName[0] || ''}${firstName[0] || ''}`.toUpperCase();
+
+  return initials;
+}

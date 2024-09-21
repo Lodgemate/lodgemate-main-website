@@ -9,6 +9,7 @@ import { useSearchParams } from "next/navigation";
 import { useAppSelector } from "@/lib/hooks";
 import { selectAllUsersdata } from "@/lib/features/Users/usersSlice";
 import MobileChat from "./MobileChat";
+import UserImage from "@/components/Shared/userImage";
 
 const DesktopChat: React.FC = () => {
   const searchParams = useSearchParams();
@@ -120,12 +121,12 @@ const DesktopChat: React.FC = () => {
     <>
       <div
         ref={myRef}
-        className="lg:flex hidden w-full max-w-[1200px] border  h-screen pt-[70px] text-[14px] text-lblack"
+        className='lg:flex hidden w-full max-w-[1200px] border  h-screen pt-[70px] text-[14px] text-lblack'
       >
         {isVisible && (
-          <div className="w-1/4 border-r border-gray-300">
-            <div className="p-4 border-b border-gray-300">
-              <h1 className="text-[16px] font-bold">Your chats</h1>
+          <div className='w-1/4 border-r border-gray-300'>
+            <div className='p-4 border-b border-gray-300'>
+              <h1 className='text-[16px] font-bold'>Your chats</h1>
             </div>
             <div>
               <ActiveChats
@@ -138,8 +139,8 @@ const DesktopChat: React.FC = () => {
         )}
 
         {isVisible && (
-          <div className="w-3/5 flex flex-col justify-between p-4">
-            <div className="flex-grow overflow-y-auto">
+          <div className='w-3/5 flex flex-col justify-between p-4'>
+            <div className='flex-grow overflow-y-auto'>
               {activeChat && (
                 <Activemessage
                   setMessages={setMessages}
@@ -156,31 +157,25 @@ const DesktopChat: React.FC = () => {
         )}
 
         {isVisible && activeChat && (
-          <div className="w-1/4 border-l border-gray-300 p-4">
-            <div className="flex flex-col justify-center items-center w-full">
-              {!imageError &&
-              reciversData(activeChat?.latestMessage.participants)
-                ?.profilePicture ? (
-                <img
-                  src={
-                    reciversData(activeChat?.latestMessage.participants)
-                      ?.profilePicture
-                  }
-                  alt={`${
-                    reciversData(activeChat?.latestMessage.participants)
-                      ?.firstName
-                  }'s profile`}
-                  className="w-24 h-24 rounded-full mb-4"
-                  onError={() => setImageError(true)} // Set image error to true if it fails to load
-                />
-              ) : (
-                <div className="w-24 h-24 bg-gray-500 text-white flex items-center justify-center rounded-full mb-4">
-                  {reciversData(activeChat?.latestMessage.participants)
-                    ?.firstName?.slice(0, 2)
-                    .toUpperCase()}
-                </div>
-              )}
-              <div className="text-[16px] font-semibold">
+          <div className='w-1/4 border-l border-gray-300 p-4'>
+            <div className='flex flex-col justify-center items-center w-full'>
+              <UserImage
+                src={
+                  reciversData(activeChat.latestMessage.participants)
+                    ?.profilePicture
+                }
+                alt={`${
+                  reciversData(activeChat.latestMessage.participants)?.firstName
+                }'s profile`}
+                size={"w-[45px] h-[45px]"}
+                fallbackText={
+                  reciversData(activeChat.latestMessage.participants)
+                    ?.firstName +
+                  " " +
+                  reciversData(activeChat.latestMessage.participants)?.lastName
+                }
+              />
+              <div className='text-[16px] font-semibold'>
                 {
                   reciversData(activeChat?.latestMessage.participants)
                     ?.firstName

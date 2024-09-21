@@ -184,6 +184,8 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch })=> {
           {searching ? "Searching" : " Search"}
         </button>
       </div>
+      <div className='flex mt-6 sm:gap-2 '>
+        {/* <p className='text-[12px]'>
       <div className='flex- hidden mt-6 sm:gap-2 '>
         <p className='text-[12px]'>
           Your location is set to "Owerri".{" "}
@@ -197,7 +199,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch })=> {
               Change location
             </Link>
           </span>{" "}
-        </p>{" "}
+        </p>{" "} */}
       </div>
       {query && ( // Render results if query is not empty
         <div className='absolute w-full text-[14px] z-20 top-20 sm:w-[510px] bg-white border border-stroke shadow-lg rounded-lg'>

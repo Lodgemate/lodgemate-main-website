@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 function HeartIcon({type, id, wishlisted}:any) {
   const [isRed, setIsRed] = useState(wishlisted);
   const [clicked, setclicked] = useState(false);
-
+  console.log(wishlisted)
   const handleClick = () => {
     setIsRed(!isRed);
     setclicked(true)

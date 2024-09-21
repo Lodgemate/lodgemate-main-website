@@ -4,6 +4,7 @@ const nextConfig = {
   images: {
     domains: [
       "res.cloudinary.com",
+      "https://res.cloudinary.com",
       "upload.wikimedia.org",
       "flagcdn.com",
       "cdn.dummyjson.com",

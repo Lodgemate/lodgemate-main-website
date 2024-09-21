@@ -344,7 +344,7 @@ function LodgeInfo() {
             </h1>
             <div className="sm:flex justify-between w-full hidden">
               <div className="flex gap-[24px] items-center">
-                <div className="">
+                <div className="sm:mt-[14px]">
                   <div className="flex gap-2 items-center">
                     <div>
                       <img
@@ -373,9 +373,9 @@ function LodgeInfo() {
                   </div>
                 </div>
 
-                <div className="h-[76px] w-[1px] bg-lgray opacity-[20%]"></div>
+                <div className="h-[50px] w-[1px] bg-lgray opacity-[20%]"></div>
 
-                <div className="flex items-start gap-4">
+                <div className="flex items-start gap-2">
                   <div>
                     <img
                       src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1716818031/utilities/LodgeMate_File/entypo_price-tag_qrxul2.svg"
@@ -385,7 +385,7 @@ function LodgeInfo() {
 
                   {/* the p tag displays the price of each product  */}
                   <p className="text-[16px] text-dgray border-b pb-2 ">
-                    {formattedPrice} /yr
+                    {formattedPrice}.00 /yr
                   </p>
                   {LodgeData.negotiable && (
                     <div className="bg-lskyblue px-2 mt-2 font-bold text-lblue rounded-lg ">
@@ -399,7 +399,7 @@ function LodgeInfo() {
               <div>
                 <button
                   onClick={handleOpenLodgeSaved}
-                  className="border- border-opacity-[8%] border-2 flex rounded-lg py-[4px] gap-2 px-[8px]"
+                  className="border border-opacity-[8%]  flex rounded-lg py-[4px] gap-2 px-[8px]"
                 >
                   <img
                     src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1716817967/utilities/LodgeMate_File/ph_heart-fill_cidon6.svg"
@@ -412,7 +412,7 @@ function LodgeInfo() {
           </div>
         </div>
       </div>
-      <div className="sm:mt-[24px] relative">
+      <div className="sm:mt-[14px] relative">
         <div className="w-full absolute bottom-[50%]">
           <div className="flex justify-between sm:px-[20px]">
             {/* scroll forward and backward buttons */}
@@ -448,7 +448,10 @@ function LodgeInfo() {
             style={{ scrollBehavior: "smooth" }}
           >
             {photosWithCover.map((image, index) => (
-              <div key={index} className="flex-none w-[400px] bg-black overflow-hidden">
+              <div
+                key={index}
+                className="flex-none w-[400px] bg-black overflow-hidden"
+              >
                 <img
                   src={optimizeImageUrl(image)} // Apply the image optimization function here
                   alt={`image ${index + 1}`}
@@ -551,10 +554,10 @@ function LodgeInfo() {
       </div>
 
       <div className="flex justify-center w-full text-[14px] ">
-        <div className="max-w-[1200px] sm:mt-[70px] mt-[24px] px-4 ">
+        <div className="max-w-[1200px] sm:mt-[24px] mt-[24px] px-4 ">
           <div className=" justify-start grid grid-cols-1 sm:grid-cols-3 sm:gap-[100px]">
             <div className="col-span-2">
-              <div className="py-[18px]  mb-[18px]- border-lgray border-t-2 border-b-2 border-opacity-[10%]">
+              <div className="py-[14px]  mb-[14px]- border-lgray border-t-2 sm:border-t-0 border-b-2 border-opacity-[10%]">
                 <h2 className="pb-[28-px] text-[16px] mb-[2px] sm:mb-[12px] font-semibold">
                   Description
                 </h2>
@@ -563,7 +566,7 @@ function LodgeInfo() {
                 <p>{LodgeData.lodgeDescription}</p>
               </div>
 
-              <div className="py-[18px] mb-[18px]- border-lgray border-b-2 border-opacity-[10%]">
+              <div className="py-[14px] mb-[14px]- border-lgray border-b-2 border-opacity-[10%]">
                 <h2 className="pb-2 sm:pb-[12px]  text-[16px] text-dgray font-semibold">
                   Accommodation features
                 </h2>
@@ -590,7 +593,7 @@ function LodgeInfo() {
 
               <div className="pb-[1px] mb-[40px] border-lgray border-b-2 border-opacity-[10%]">
                 <div className="grid grid-cols-1 sm:grid-cols-2 pt-4 ">
-                  <div className="col-span-1 sm:border-r border-b sm:border-b-0 pb-6 mb-4 border-lgray border-opacity-[20%]">
+                  <div className="col-span-1 sm:border-r border-b sm:border-b-0 mb-4 border-lgray border-opacity-[20%]">
                     <div>
                       <h2 className="text-[16px] font-semibold text-dgray pb-2 sm:pb-[12px]">
                         Accommodation type
@@ -606,7 +609,7 @@ function LodgeInfo() {
                       </div>
                     </div>
                   </div>
-                  <div className="col-span-1 pb-6 ">
+                  <div className="col-span-1 pb- ">
                     <div>
                       <h2 className="text-[16px] font-semibold sm:text-end text-dgray pb-2 sm:pb-[12px]">
                         Number of rooms

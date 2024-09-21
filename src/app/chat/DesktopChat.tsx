@@ -18,13 +18,14 @@ const DesktopChat: React.FC = () => {
   const [messages, setMessages] = useState<any[]>([]);
 
   const myRef = useRef(null);
-  const [isVisible, setisVisible] = useState(false)
+  const [isVisible, setisVisible] = useState(false);
   useEffect(() => {
     const checkVisibility = () => {
       if (myRef.current) {
-        const isVisible = window.getComputedStyle(myRef.current).display !== 'none';
-        isVisible ? setisVisible(true) : setisVisible(false) 
-        console.log(isVisible ? 'Visible' : 'Hidden');
+        const isVisible =
+          window.getComputedStyle(myRef.current).display !== "none";
+        isVisible ? setisVisible(true) : setisVisible(false);
+        console.log(isVisible ? "Visible" : "Hidden");
       }
     };
 
@@ -32,13 +33,16 @@ const DesktopChat: React.FC = () => {
     checkVisibility();
 
     // Optionally, you can add a resize event listener to check visibility when the screen size changes
-    window.addEventListener('resize', checkVisibility);
+    window.addEventListener("resize", checkVisibility);
 
-    return () => window.removeEventListener('resize', checkVisibility);
+    return () => window.removeEventListener("resize", checkVisibility);
   }, []);
   useEffect(() => {
-    
-    if (searchParams.get("roomId"), searchParams.get("sender"),searchParams.get("profilePicture")) {
+    if (
+      (searchParams.get("roomId"),
+      searchParams.get("sender"),
+      searchParams.get("profilePicture"))
+    ) {
       const Data = {
         _id: searchParams.get("roomId"),
         latestMessage: {
@@ -70,7 +74,7 @@ const DesktopChat: React.FC = () => {
             },
             {
               _id: searchParams.get("reciver"),
-  
+
               firstName: searchParams.get("firstName"),
               lastName: searchParams.get("lastName"),
               verifiedUser: null,
@@ -101,6 +105,8 @@ const DesktopChat: React.FC = () => {
     }
   }, []);
 
+  const [imageError, setImageError] = useState(false); // Track image loading error
+
   const reciversData = (data: any[]) => {
     const newArr = data.filter(
       (ent: any) => ent?._id !== currentUser?.data.user._id
@@ -108,67 +114,83 @@ const DesktopChat: React.FC = () => {
     return newArr[0];
   };
 
-console.log(activeChat)
+  console.log(activeChat);
+
   return (
     <>
-  <div ref={myRef} className='lg:flex hidden w-full max-w-[1200px] border  h-screen pt-[70px] text-[14px] text-lblack'>
-       {  isVisible &&    
-        <div className='w-1/4 border-r border-gray-300'>
-          <div className='p-4 border-b border-gray-300'>
-            <h1 className='text-[16px] font-bold'>Your chats</h1>
+      <div
+        ref={myRef}
+        className="lg:flex hidden w-full max-w-[1200px] border  h-screen pt-[70px] text-[14px] text-lblack"
+      >
+        {isVisible && (
+          <div className="w-1/4 border-r border-gray-300">
+            <div className="p-4 border-b border-gray-300">
+              <h1 className="text-[16px] font-bold">Your chats</h1>
+            </div>
+            <div>
+              <ActiveChats
+                currentUser={currentUser}
+                activeChat={activeChat}
+                setActiveChat={setActiveChat}
+              />
+            </div>
           </div>
-          <div>
-            <ActiveChats
-              currentUser={currentUser}
+        )}
+
+        {isVisible && (
+          <div className="w-3/5 flex flex-col justify-between p-4">
+            <div className="flex-grow overflow-y-auto">
+              {activeChat && (
+                <Activemessage
+                  setMessages={setMessages}
+                  messages={messages}
+                  roomId={activeChat.latestMessage.roomId}
+                />
+              )}
+            </div>
+            <WebSocketComponent
+              setMessages={setMessages}
               activeChat={activeChat}
-              setActiveChat={setActiveChat}
             />
           </div>
-        </div> }
+        )}
 
-        
-        {  isVisible &&  <div className='w-3/5 flex flex-col justify-between p-4'>
-          <div className='flex-grow overflow-y-auto'>
-            {activeChat && (
-              <Activemessage
-                setMessages={setMessages}
-                messages={messages}
-                roomId={activeChat.latestMessage.roomId}
-              />
-            )}
-          </div>
-          <WebSocketComponent
-            setMessages={setMessages}
-            activeChat={activeChat}
-          />
-        </div>}
-
-        
         {isVisible && activeChat && (
-          <div className='w-1/4 border-l border-gray-300 p-4'>
-            <div className='flex flex-col justify-center items-center w-full'>
-              <img
-                src={
-                  reciversData(activeChat?.latestMessage.participants)
-                    ?.profilePicture
-                }
-                alt={`${
-                  reciversData(activeChat?.latestMessage.participants)
-                    ?.firstName
-                }'s profile`}
-                className='w-24 h-24 rounded-full mb-4'
-              />
-              <div className='text-[16px] font-semibold'>
+          <div className="w-1/4 border-l border-gray-300 p-4">
+            <div className="flex flex-col justify-center items-center w-full">
+              {!imageError &&
+              reciversData(activeChat?.latestMessage.participants)
+                ?.profilePicture ? (
+                <img
+                  src={
+                    reciversData(activeChat?.latestMessage.participants)
+                      ?.profilePicture
+                  }
+                  alt={`${
+                    reciversData(activeChat?.latestMessage.participants)
+                      ?.firstName
+                  }'s profile`}
+                  className="w-24 h-24 rounded-full mb-4"
+                  onError={() => setImageError(true)} // Set image error to true if it fails to load
+                />
+              ) : (
+                <div className="w-24 h-24 bg-gray-500 text-white flex items-center justify-center rounded-full mb-4">
+                  {reciversData(activeChat?.latestMessage.participants)
+                    ?.firstName?.slice(0, 2)
+                    .toUpperCase()}
+                </div>
+              )}
+              <div className="text-[16px] font-semibold">
                 {
                   reciversData(activeChat?.latestMessage.participants)
                     ?.firstName
                 }
               </div>
-              <div className='flex items-center gap-2'>
-                <div className='flex items-center border px-[20px] py-[8px] gap-2 rounded-[8px]'>
+              <div className="flex items-center gap-2">
+                <div className="flex items-center border px-[20px] py-[8px] gap-2 rounded-[8px]">
                   <img
-                    src='https://res.cloudinary.com/dcb4ilgmr/image/upload/v1719953600/utilities/LodgeMate_File/ion_male-outline_qtox5s.svg'
-                    alt='gender'
+                    src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1719953600/utilities/LodgeMate_File/ion_male-outline_qtox5s.svg"
+                    alt="gender"
                   />
                   <p>
                     {
@@ -177,10 +199,10 @@ console.log(activeChat)
                     }
                   </p>
                 </div>
-                <div className='flex items-center border px-[20px] py-[8px] gap-2 rounded-[8px]'>
+                <div className="flex items-center border px-[20px] py-[8px] gap-2 rounded-[8px]">
                   <img
-                    src='https://res.cloudinary.com/dcb4ilgmr/image/upload/v1718337645/utilities/LodgeMate_File/home_pin_1_jvqqfs.svg'
-                    alt='university'
+                    src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1718337645/utilities/LodgeMate_File/home_pin_1_jvqqfs.svg"
+                    alt="university"
                   />
                   <p>
                     {
@@ -193,17 +215,18 @@ console.log(activeChat)
             </div>
           </div>
         )}
-       
       </div>
 
-      <div className='w-full max-w-[1200px] border block lg:hidden '>
+      <div className="w-full max-w-[1200px] border block lg:hidden ">
         {" "}
-       {!isVisible && <MobileChat
-          activeChat={activeChat}
-          setActiveChat={setActiveChat}
-          message={messages}
-          setMessage={setMessages}
-        />}
+        {!isVisible && (
+          <MobileChat
+            activeChat={activeChat}
+            setActiveChat={setActiveChat}
+            message={messages}
+            setMessage={setMessages}
+          />
+        )}
       </div>
     </>
   );

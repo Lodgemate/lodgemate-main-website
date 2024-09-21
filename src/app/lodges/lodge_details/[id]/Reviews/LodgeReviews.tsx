@@ -54,7 +54,7 @@ const LodgeReviews: React.FC<LodgeReviewsProps> = React.memo(
                     />
                   </div>
                   <div>
-                    <p className="font-medium z-10">
+                    <p className="font-medium text-[12px] z-10">
                       {review.postedBy.firstName}
                     </p>
                     <p className=" text-gray-600 text-[12px]">
@@ -130,13 +130,13 @@ const LodgeReviews: React.FC<LodgeReviewsProps> = React.memo(
                 </div>
               </div>
               <div className=" flex justify-between">
-                <div className="text-[14px] ">
+                <div className="text-[12px] ">
                   <p>{review.comment}</p>
                 </div>
               </div>
               <p></p>
 
-              <div className="flex text-dgray font- items-center mt-[24px] gap-2">
+              <div className="flex text-dgray font- items-center mt-[14px] gap-2">
                 {/* <p className='text-[12px] underline'>Read more</p> */}
                 <p
                   className="text-[12px] underline cursor-pointer hover:text-lblue"

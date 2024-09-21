@@ -66,7 +66,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
         <img
           src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1716223205/utilities/LodgeMate_File/Indicators_psmeyv.svg"
           alt=""
-          className="absolute bottom-4 right-[40%]  text-xl"
+          className="absolute bottom-4 right-[40%] hidden  text-xl"
         />
       </div>
       <div className=" py-[15px]">

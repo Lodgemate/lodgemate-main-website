@@ -78,6 +78,8 @@ const ReportProfile: React.FC<ReportProfileProps> = ({
  }
   }
 
+  
+
   return (
     <div
       className="fixed  z-[999] inset-0 bg-black bg-opacity-50 flex pt-[100px] justify-center"

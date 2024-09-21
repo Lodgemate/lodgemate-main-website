@@ -54,27 +54,35 @@ console.log(roomId)
     
   return (
     <>
-   {messages && messages.slice().reverse().map((msg: any) => (
+      {messages &&
+        messages
+          .slice()
+          .reverse()
+          .map((msg: any) => (
             <div
-            ref={messagesEndRef} 
+              ref={messagesEndRef}
               key={msg._id}
               className={`flex mb-2 ${
-                currentUser?.data.user.id !== msg.sentBy ? "justify-start" : "justify-end"
+                currentUser?.data.user.id !== msg.sentBy
+                  ? "justify-start"
+                  : "justify-end"
               }`}
             >
               <div
                 className={`max-w-xs p-3  ${
-                    currentUser?.data.user.id !== msg.sentBy 
+                  currentUser?.data.user.id !== msg.sentBy
                     ? "bg-[#30a2ff28] text-[#093576] rounded-r-[12px] rounded-t-[12px]"
                     : "bg-primary text-white rounded-l-[12px] rounded-t-[12px]"
                 }`}
               >
                 {msg.message}
+                <div className="text-[8px] text-gray-500 ">
+                  {/* {extractDate(chat.latestMessage.dateCreated)} */}
+                </div>
               </div>
             </div>
           ))}
     </>
-
-)}
+  );}
 
 export default Activemessage

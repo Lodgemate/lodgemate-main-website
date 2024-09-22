@@ -10,6 +10,7 @@ import { useAppSelector } from "@/lib/hooks";
 import { selectAllUsersdata } from "@/lib/features/Users/usersSlice";
 import MobileChat from "./MobileChat";
 import UserImage from "@/components/Shared/userImage";
+import Link from "next/link";
 
 const DesktopChat: React.FC = () => {
   const searchParams = useSearchParams();
@@ -121,12 +122,12 @@ const DesktopChat: React.FC = () => {
     <>
       <div
         ref={myRef}
-        className='lg:flex hidden w-full max-w-[1200px] border  h-screen pt-[70px] text-[14px] text-lblack'
+        className="lg:flex hidden w-full max-w-[1200px] border  h-screen pt-[70px] text-[14px] text-lblack"
       >
         {isVisible && (
-          <div className='w-1/4 border-r border-gray-300'>
-            <div className='p-4 border-b border-gray-300'>
-              <h1 className='text-[16px] font-bold'>Your chats</h1>
+          <div className="w-1/4 border-r border-gray-300">
+            <div className="p-4 border-b border-gray-300">
+              <h1 className="text-[16px] font-bold">Your chats</h1>
             </div>
             <div>
               <ActiveChats
@@ -139,8 +140,8 @@ const DesktopChat: React.FC = () => {
         )}
 
         {isVisible && (
-          <div className='w-3/5 flex flex-col justify-between p-4'>
-            <div className='flex-grow  overflow-y-auto'>
+          <div className="w-3/5 flex flex-col justify-between p-4">
+            <div className="flex-grow  overflow-y-auto">
               {activeChat && (
                 <Activemessage
                   setMessages={setMessages}
@@ -157,28 +158,34 @@ const DesktopChat: React.FC = () => {
         )}
 
         {isVisible && activeChat && (
-          <div className='w-1/4 border-l overflow-y-clip relative border-gray-300 p-4'>
-            <div>
+          <div className="w-1/4 border-l overflow-y-clip relative border-gray-300 p-4">
+            <div></div>
+            <div className="flex flex-col  justify-center items-center w-full">
+              <Link
+                href={`/profile/${activeChat.latestMessage.participants[0]._id}`}
+                className="w-[65px] h-[65px]"
+              >
+                <UserImage
+                  src={
+                    reciversData(activeChat.latestMessage.participants)
+                      ?.profilePicture
+                  }
+                  alt={`${
+                    reciversData(activeChat.latestMessage.participants)
+                      ?.firstName
+                  }'s profile`}
+                  size={"w-[65px] h-[65px]"}
+                  fallbackText={
+                    reciversData(activeChat.latestMessage.participants)
+                      ?.firstName +
+                    " " +
+                    reciversData(activeChat.latestMessage.participants)
+                      ?.lastName
+                  }
+                />
+              </Link>
 
-            </div>
-            <div className='flex flex-col  justify-center items-center w-full'>
-              <UserImage
-                src={
-                  reciversData(activeChat.latestMessage.participants)
-                    ?.profilePicture
-                }
-                alt={`${
-                  reciversData(activeChat.latestMessage.participants)?.firstName
-                }'s profile`}
-                size={"w-[45px] h-[45px]"}
-                fallbackText={
-                  reciversData(activeChat.latestMessage.participants)
-                    ?.firstName +
-                  " " +
-                  reciversData(activeChat.latestMessage.participants)?.lastName
-                }
-              />
-              <div className='text-[16px] font-semibold'>
+              <div className="text-[16px] my-2 font-semibold">
                 {
                   reciversData(activeChat?.latestMessage.participants)
                     ?.firstName

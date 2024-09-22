@@ -140,7 +140,7 @@ const DesktopChat: React.FC = () => {
 
         {isVisible && (
           <div className='w-3/5 flex flex-col justify-between p-4'>
-            <div className='flex-grow overflow-y-auto'>
+            <div className='flex-grow  overflow-y-auto'>
               {activeChat && (
                 <Activemessage
                   setMessages={setMessages}
@@ -157,8 +157,11 @@ const DesktopChat: React.FC = () => {
         )}
 
         {isVisible && activeChat && (
-          <div className='w-1/4 border-l border-gray-300 p-4'>
-            <div className='flex flex-col justify-center items-center w-full'>
+          <div className='w-1/4 border-l overflow-y-clip relative border-gray-300 p-4'>
+            <div>
+
+            </div>
+            <div className='flex flex-col  justify-center items-center w-full'>
               <UserImage
                 src={
                   reciversData(activeChat.latestMessage.participants)

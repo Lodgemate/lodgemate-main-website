@@ -121,7 +121,7 @@ const MobileChat: React.FC<mobileProps> = ({
               </div>
             </div>
           </div>
-          <div className='flex-grow p-4 overflow-y-auto'>
+          <div className='flex-grow h-[] p-4 overflow-y-auto'>
             {/* <Activemessage
                 setMessages={setMessages}
                 messages={messages}

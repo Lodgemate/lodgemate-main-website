@@ -7,6 +7,7 @@ import { showDeleteModal, showFailedModal } from "@/lib/features/Modal/ModalSlic
 import { useAppDispatch } from "@/lib/hooks";
 import { FetchApi } from "@/utils/Fetchdata";
 import { Endpoints } from "@/services/Api/endpoints";
+import ShouldHide from "./ShouldHide";
 
 // Sample data
 
@@ -95,7 +96,12 @@ const ServiceCard: React.FC<ServiceCardProps> = ({
 
   return (
     <div className="max-w-sm rounded overflow-hidden">
-    {OpenEditService && <EditServiceModal product={products}  onClose={()=>setOpenEditService(false)}/>}
+      {OpenEditService && (
+        <EditServiceModal
+          product={products}
+          onClose={() => setOpenEditService(false)}
+        />
+      )}
 
       <button className="relative ">
         <img
@@ -109,19 +115,65 @@ const ServiceCard: React.FC<ServiceCardProps> = ({
           className="absolute top-2 left-2 text-xl hidden"
         />
         {/* Menu icon with popup */}
-        <img
-          src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1719611975/utilities/LodgeMate_File/menu_cx8xja.svg"
-          alt="Menu"
-          className="absolute top-2 right-2 bg-white h-6 w-6 rounded-full text-xl cursor-pointer"
-          onClick={togglePopup}
-        />
-        <div className="absolute bottom-4 flex justify-between items-center w-full px-5 ">
-            <IoPencil onClick={handleIpenlodgeedit} className=" bg-slate-800 p-1 rounded-full text-slate-50 z-20 text-2xl font-bold hover:text-slate-100 cursor-pointer" />
-            <RiDeleteBinLine
+        <ShouldHide>
+          <img
+            src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1719611975/utilities/LodgeMate_File/menu_cx8xja.svg"
+            alt="Menu"
+            className="absolute top-2 right-2 bg-white h-6 w-6 rounded-full text-xl cursor-pointer"
+            onClick={togglePopup}
+          />
+        </ShouldHide>
+
+        <ShouldHide>
+          <img
+            src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1719611975/utilities/LodgeMate_File/menu_cx8xja.svg"
+            alt="Menu"
+            className="absolute top-2 right-2 bg-white h-6 w-6 rounded-full text-xl cursor-pointer"
+            onClick={togglePopup}
+          />
+        </ShouldHide>
+
+        {/* Popup */}
+        {isPopupVisible && (
+          <div className="absolute top-10 right-2 bg-white text-[14px] w-[120px] text-gray-700 shadow-md border rounded p-2 z-20">
+            <button
+              onClick={() => setIsPopupVisible(false)}
+              className="text-sm flex justify-end w-full text-gray-500 hover:text-gray-700"
+            >
+              <img src="/icons/close.svg" alt="" />
+            </button>
+            <hr className="my-2" />
+
+            <div
+              onClick={handleIpenlodgeedit}
+              className="cursor-pointer hover:text-blue-500 flex items-center m gap-1"
+            >
+              {" "}
+              <img src="/icons/pen_gray.svg" alt="" />
+              Edit
+            </div>
+            <hr className="my-2" />
+
+            <div
               onClick={() => dispatch(showDeleteModal(deleteProps))}
-              className="  bg-slate-800 p-1 rounded-full text-slate-50 z-20 text-2xl font-bold hover:text-slate-100 cursor-pointer"
-            />
+              className="cursor-pointer text-red-500 flex items-center pb-2 gap-1"
+            >
+              <img src="/icons/delete.svg" alt="" />
+              Delete
+            </div>
           </div>
+        )}
+
+        {/* <div className="absolute bottom-4 flex justify-between items-center w-full px-5 ">
+          <IoPencil
+            onClick={handleIpenlodgeedit}
+            className=" bg-slate-800 p-1 rounded-full text-slate-50 z-20 text-2xl font-bold hover:text-slate-100 cursor-pointer"
+          />
+          <RiDeleteBinLine
+            onClick={() => dispatch(showDeleteModal(deleteProps))}
+            className="  bg-slate-800 p-1 rounded-full text-slate-50 z-20 text-2xl font-bold hover:text-slate-100 cursor-pointer"
+          />
+        </div> */}
         {/* Additional icons or overlays can be added here */}
       </button>
       <div className="py-[15px]">

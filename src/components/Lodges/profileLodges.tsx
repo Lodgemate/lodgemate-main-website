@@ -10,6 +10,7 @@ import { FetchApi } from "@/utils/Fetchdata";
 import { Endpoints } from "@/services/Api/endpoints";
 import EditLodgeModal from "@/app/profile/[id]/modals/EditLodgeModal";
 import { Lodge } from "@/lib/Types";
+import ShouldHide from "@/app/profile/[id]/ShouldHide";
 
 interface ProductCardProps {
   id: any;
@@ -96,12 +97,15 @@ const ProductCard: React.FC<ProductCardProps> = React.memo(
           />
 
           {/* Menu icon with popup */}
-          <img
-            src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1719611975/utilities/LodgeMate_File/menu_cx8xja.svg"
-            alt="Menu"
-            className="absolute top-2 right-2 bg-white h-6 w-6 rounded-full text-xl cursor-pointer"
-            onClick={togglePopup}
-          />
+
+          <ShouldHide>
+            <img
+              src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1719611975/utilities/LodgeMate_File/menu_cx8xja.svg"
+              alt="Menu"
+              className="absolute top-2 right-2 bg-white h-6 w-6 rounded-full text-xl cursor-pointer"
+              onClick={togglePopup}
+            />
+          </ShouldHide>
 
           {/* Popup */}
           {isPopupVisible && (
@@ -147,9 +151,7 @@ const ProductCard: React.FC<ProductCardProps> = React.memo(
             className="absolute bottom-4 right-[40%] text-xl"
           />
 
-          <div className="absolute bottom-4 flex justify-between items-center w-full px-5">
-            
-          </div>
+          <div className="absolute bottom-4 flex justify-between items-center w-full px-5"></div>
         </div>
 
         <div className="py-[15px] gap-y-2 flex flex-col justify-between">

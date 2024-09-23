@@ -86,7 +86,7 @@ const MyProfile = () => {
   }, [currentUserData, activeTab]);
   console.log(tabData.lodgesdata);
   return (
-    <div className=" min-h-[1000px] p-">
+    <div className=" min-h-[1000px] p- text-[14px]">
       <div className="w-full h-[270px] hidden sm:block border-b bg-[#F9F9F9]"></div>
       <div className="grid grid-cols-1 sm:grid-cols-4 sm:-mt-[55px]  sm:px-[80px]  gap-4 sm:gap-4">
         {/* User Detail Column */}
@@ -118,7 +118,7 @@ const MyProfile = () => {
                 )
               )}
             </div>
-            <div className="mt-4">
+            <div className="mt-4 text-[14px]">
               {activeTab === "Lodges listed" && (
                 <div>
                   {tabData.lodgesdata && (
@@ -143,7 +143,6 @@ const MyProfile = () => {
         </div>
       </div>
       <DeleteModal />
-
     </div>
   );
 };

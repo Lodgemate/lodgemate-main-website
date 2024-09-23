@@ -141,7 +141,7 @@ const DesktopChat: React.FC = () => {
 
         {isVisible && (
           <div className="w-3/5 flex flex-col justify-between p-4">
-            <div className="flex-grow  overflow-y-auto">
+            <div className="flex-grow  overflow-y-auto no-scrollbar">
               {activeChat && (
                 <Activemessage
                   setMessages={setMessages}

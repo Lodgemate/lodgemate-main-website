@@ -7,7 +7,7 @@ import React, { useEffect, useState, useMemo } from "react";
 interface ActiveChatsProps {
   currentUser: any;
   activeChat: any;
-  setActiveChat: React.Dispatch<React.SetStateAction<any>>; // Updated type for setActiveChat
+  setActiveChat: React.Dispatch<React.SetStateAction<any>>;
 }
 
 const cache = new Map<string, any>();
@@ -18,7 +18,6 @@ const ActiveChats: React.FC<ActiveChatsProps> = ({
   setActiveChat,
 }) => {
   const [data, setData] = useState<any[] | null>(null);
-  const [imageError, setImageError] = useState<{ [key: string]: boolean }>({}); // Track image errors by participant
 
   useEffect(() => {
     const localStorageToken = localStorage.getItem("token");
@@ -31,22 +30,26 @@ const ActiveChats: React.FC<ActiveChatsProps> = ({
       },
     };
 
-    if (cache.has(url)) {
-      const cachedItem = cache.get(url);
-      setData(cachedItem);
-    } else {
-      const fetchData = async () => {
-        try {
-          const res: any = await FetchApi(url, body);
-          setData(res.data.latestRoomsMessage);
-          cache.set(url, res.data.latestRoomsMessage);
-        } catch (error) {
-          console.error(error);
-        }
-      };
+    const fetchData = async () => {
+      try {
+        const res: any = await FetchApi(url, body);
+        setData(res.data.latestRoomsMessage);
+        cache.set(url, res.data.latestRoomsMessage);
+      } catch (error) {
+        console.error(error);
+      }
+    };
 
+    // Fetch data every 5 seconds
+    const intervalId = setInterval(() => {
       fetchData();
-    }
+    }, 1000);
+
+    // Fetch data initially when the component mounts
+    fetchData();
+
+    // Clear interval on component unmount
+    return () => clearInterval(intervalId);
   }, []);
 
   const reciversData = useMemo(
@@ -81,7 +84,6 @@ const ActiveChats: React.FC<ActiveChatsProps> = ({
     }
   };
 
-  // Sort the data based on dateCreated in descending order
   const sortedData = useMemo(() => {
     return data
       ? [...data].sort((a, b) => {
@@ -100,14 +102,10 @@ const ActiveChats: React.FC<ActiveChatsProps> = ({
           key={chat.latestMessage._id}
           className={`flex justify-between items-start p-2 border-b border-gray-300 cursor-pointer ${
             activeChat?.id === chat.latestMessage._id
-              ? "bg-primary bg-opacity-10" // Use `chat.latestMessage._id` to match the active chat
+              ? "bg-primary bg-opacity-10"
               : "bg-white"
           }`}
-          onClick={() => {
-            console.log("Clicked chat ID:", chat.latestMessage._id);
-            console.log("Active chat ID:", activeChat?.id);
-            setActiveChat(chat);
-          }}
+          onClick={() => setActiveChat(chat)}
         >
           <div className="flex items-center">
             <UserImage

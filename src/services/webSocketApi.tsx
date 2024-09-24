@@ -5,9 +5,7 @@ import { useAppSelector } from "@/lib/hooks";
 import { selectAllUsersdata } from "@/lib/features/Users/usersSlice";
 import { randomUUID } from "crypto";
 import { MainObject } from "@/app/chat/types";
-import EmojiPicker from 'emoji-picker-react'; // Newer emoji picker
-
-
+import EmojiPicker from "emoji-picker-react"; // Newer emoji picker
 
 interface WebSocketComponentProps {
   setMessages: any;
@@ -23,6 +21,11 @@ const WebSocketComponent: React.FC<WebSocketComponentProps> = ({
   const [status, setStatus] = useState<string | null>(null);
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const emojiPickerRef = useRef<HTMLDivElement>(null); // Ref to track emoji picker
+  const [isRecording, setIsRecording] = useState(false);
+  const [mediaRecorder, setMediaRecorder] = useState<MediaRecorder | null>(
+    null
+  );
+  const [audioChunks, setAudioChunks] = useState<Blob[]>([]);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -155,10 +158,87 @@ const WebSocketComponent: React.FC<WebSocketComponentProps> = ({
     };
   }, []);
 
+  const startRecording = async () => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      const recorder = new MediaRecorder(stream);
+      recorder.ondataavailable = (event) => {
+        setAudioChunks((prev) => [...prev, event.data]);
+      };
+      recorder.onstop = () => {
+        const audioBlob = new Blob(audioChunks, { type: "audio/mpeg" });
+        const audioUrl = URL.createObjectURL(audioBlob);
+        sendVoiceNote(audioBlob);
+        setAudioChunks([]); // Clear chunks for the next recording
+      };
+      recorder.start();
+      setMediaRecorder(recorder);
+      setIsRecording(true);
+    } catch (err) {
+      console.error("Error starting recording:", err);
+    }
+  };
+
+  const sendVoiceNote = (audioBlob: Blob) => {
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      const base64Audio = reader.result; // base64-encoded audio
+      const message = {
+        participants: [
+          activeChat?.latestMessage.participants[0]._id,
+          activeChat?.latestMessage.participants[1]._id,
+        ],
+        sentBy: currentUser?.data.user._id,
+        fullname:
+          currentUser?.data.user.firstName +
+          " " +
+          currentUser?.data.user.lastName,
+        profilePicture: currentUser?.data.user.profilePicture,
+        message: "",
+        type: "audio", // Add type to distinguish between text and audio
+        audio: base64Audio, // Sending base64-encoded audio
+      };
+
+      const uniqueId = crypto.getRandomValues(new Uint32Array(1))[0].toString();
+      const newMessage = { _id: uniqueId, ...message };
+      if (socket && socket.connected) {
+        socket.emit("room-message", message);
+        setMessages((prevMessages: any) => [newMessage, ...prevMessages]);
+      } else {
+        console.log("WebSocket not connected");
+      }
+      setMessages((prevMessages: any) => [newMessage, ...prevMessages]);
+    };
+    reader.readAsDataURL(audioBlob); // Convert blob to base64
+  };
+
+    
+   
+
+  const stopRecording = () => {
+    if (mediaRecorder && mediaRecorder.state !== "inactive") {
+      mediaRecorder.stop();
+      setIsRecording(false);
+    }
+  };
+
+  const handleCallButtonClick = () => {
+    if (activeChat && activeChat.latestMessage.participants[1]) {
+      const phoneNumber = activeChat.latestMessage.participants[1].phoneNumber;
+      if (phoneNumber) {
+        window.location.href = `tel:${phoneNumber}`;
+      } else {
+        console.log("Phone number not found.");
+      }
+    } else {
+      console.log("Participant not found.");
+    }
+  };
+
   return (
     <div>
       {activeChat && (
-        <div className="relative flex items-center p-4 border-t border-gray-300">
+        <div className="relative flex items-center p-4 border-t border-gray-300 sm:pb-0 pb-[80px]">
           {/* <p className="absolute -top-10 text-xl z-50	flex justify-center items-center gap-x-3">
             <p className="w-4 h-4 rounded-full bg-lblue"></p> {status}
           </p> */}
@@ -184,7 +264,7 @@ const WebSocketComponent: React.FC<WebSocketComponentProps> = ({
               <img
                 src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1719952823/utilities/LodgeMate_File/bi_emoji-smile_ph5jwq.svg"
                 alt="emoji picker"
-                className="w-12 h-12"
+                className="w-10 h-10"
               />
             </button>
             {showEmojiPicker && (
@@ -206,7 +286,11 @@ const WebSocketComponent: React.FC<WebSocketComponentProps> = ({
             </button>
           ) : (
             <>
-              <button className="ml-2 text-gray-500 h-[48px]" disabled>
+              <button
+                className="ml-2 text-gray-500 h-[48px]"
+                onClick={handleCallButtonClick}
+              >
+                {/* call button  */}
                 <img
                   src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1719952823/utilities/LodgeMate_File/ic_baseline-phone_sq7scg.svg"
                   alt=""
@@ -214,9 +298,11 @@ const WebSocketComponent: React.FC<WebSocketComponentProps> = ({
                 />
               </button>
               <button
-                className="ml-2 text-gray-500 cursor-not-allowed"
-                disabled
+                className="ml-2 hidden text-gray-500 cursor-not-allowed"
+                onClick={isRecording ? stopRecording : startRecording}
               >
+                {isRecording ? "Stop Recording" : "Record Voice Note"}
+
                 <img
                   src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1719952823/utilities/LodgeMate_File/mic_kgxbgm.svg"
                   alt=""

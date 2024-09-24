@@ -10,6 +10,11 @@ import EditProfileModal from "./modals/ProfileEditModal";
 import { FaWhatsapp } from "react-icons/fa6";
 import Image from "next/image";
 import UserImage from "@/components/Shared/userImage";
+import ShouldHide from "./ShouldHide"; // Import the reusable component
+
+
+
+
 interface UserDetailasProps {
   data: ApiResponse | null;
 }
@@ -35,29 +40,34 @@ const UserDetailas: React.FC<UserDetailasProps> = React.memo(({ data }) => {
         <div className="w-full sm:max-w-430px sm:shadow sm:border pt-[100px]  sm:pt-[65px] text-[14px] rounded-[12px] sm:p-4 bg-white">
           {/* User image and menu button */}
           <div className="flex w-full justify-between items-center mb-4">
-            <UserImage 
-            src={data?.data.user.profilePicture}
-            alt={data.data.user.firstName + " " + 'pic'}
-            size={'w-16 h-16'}
-            fallbackText={data.data.user.firstName + " "  + data.data.user.lastName}
+            <UserImage
+              src={data?.data.user.profilePicture}
+              alt={data.data.user.firstName + " " + "pic"}
+              size={"w-16 h-16"}
+              fallbackText={
+                data.data.user.firstName + " " + data.data.user.lastName
+              }
             />
-            <div className=" relative">
-              <button className="p- rounded-full" onClick={toggleDropdown}>
-                <img
-                  src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1719611975/utilities/LodgeMate_File/menu_cx8xja.svg"
-                  alt="Menu"
-                  className="w-6 h-6"
-                />
-              </button>
-              <div className=" absolute bottom-0 right-0">
-                <ProfileMenuModal
-                  editProfile={() => setEditProfileModal(true)}
-                  isOpen={isOpen}
-                  toggleDropdown={toggleDropdown}
-                  link={window.location.href}
-                />
+
+            <ShouldHide>
+              <div className=" relative">
+                <button className="p- rounded-full" onClick={toggleDropdown}>
+                  <img
+                    src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1719611975/utilities/LodgeMate_File/menu_cx8xja.svg"
+                    alt="Menu"
+                    className="w-6 h-6"
+                  />
+                </button>
+                <div className=" absolute bottom-0 right-0">
+                  <ProfileMenuModal
+                    editProfile={() => setEditProfileModal(true)}
+                    isOpen={isOpen}
+                    toggleDropdown={toggleDropdown}
+                    link={window.location.href}
+                  />
+                </div>
               </div>
-            </div>
+            </ShouldHide>
           </div>
 
           {/* User name and status */}
@@ -113,27 +123,31 @@ const UserDetailas: React.FC<UserDetailasProps> = React.memo(({ data }) => {
               />
             </Link> */}
 
-           {data.data.user.contact?.instagram && <Link href={data.data.user.contact?.instagram } target="blank_">
-              {" "}
-              <img
-                src='https://res.cloudinary.com/dcb4ilgmr/image/upload/v1716939370/utilities/LodgeMate_File/Instagram_vwhjji.svg'
-                alt='ig'
-                className='w-[24px] h-[24px] '
-              />
-            </Link>}
-{           
- data.data.user.contact?.whatsapp && <Link href={data.data.user.contact?.whatsapp } target="blank_">
-              <FaWhatsapp  className='w-[24px] h-[24px] text-gray-500'/>
-            </Link>}
-           { 
-           data.data.user.contact?.linkedin && <Link href={data.data.user.contact?.linkedin } target="blank_">
-              {" "}
-              <img
-                src='https://res.cloudinary.com/dcb4ilgmr/image/upload/v1716939370/utilities/LodgeMate_File/LinkedIn_a3gtp7.svg'
-                alt='linkedin'
-                className='w-[24px] h-[24px]'
-              />
-            </Link>}
+            {data.data.user.contact?.instagram && (
+              <Link href={data.data.user.contact?.instagram} target="blank_">
+                {" "}
+                <img
+                  src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1716939370/utilities/LodgeMate_File/Instagram_vwhjji.svg"
+                  alt="ig"
+                  className="w-[24px] h-[24px] "
+                />
+              </Link>
+            )}
+            {data.data.user.contact?.whatsapp && (
+              <Link href={data.data.user.contact?.whatsapp} target="blank_">
+                <FaWhatsapp className="w-[24px] h-[24px] text-gray-500" />
+              </Link>
+            )}
+            {data.data.user.contact?.linkedin && (
+              <Link href={data.data.user.contact?.linkedin} target="blank_">
+                {" "}
+                <img
+                  src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1716939370/utilities/LodgeMate_File/LinkedIn_a3gtp7.svg"
+                  alt="linkedin"
+                  className="w-[24px] h-[24px]"
+                />
+              </Link>
+            )}
           </div>
 
           {/* User stats */}

@@ -8,6 +8,7 @@ import Activemessage from "./Activemessage";
 import WebSocketComponent from "@/services/webSocketApi";
 import { MainObject } from "./types";
 import UserImage from "@/components/Shared/userImage";
+import Link from "next/link";
 
 interface ChatMessage {
   id: number;
@@ -50,10 +51,10 @@ const MobileChat: React.FC<mobileProps> = ({
   };
 
   return (
-    <div className=' lg:hidden w-full max-w-[1200px] border flex flex-col h-screen bg-white mt-[80px]'>
+    <div className=" lg:hidden w-full max-w-[1200px] border flex flex-col h-screen bg-white mt-[80px]">
       {!activeChat ? (
-        <div className='p-4'>
-          <h1 className='text-[16px] font-bold mb-4'>Chats</h1>
+        <div className="p-4">
+          <h1 className="text-[16px] font-bold mb-4">Chats</h1>
           {/* {chats.map((chat) => (
             <div
               key={chat.id}
@@ -83,19 +84,22 @@ const MobileChat: React.FC<mobileProps> = ({
           />
         </div>
       ) : (
-        <div className='flex flex-col h-full'>
-          <div className='flex items-center p-4 border-b border-gray-200'>
+        <div className="flex flex-col h-full">
+          <div className="flex items-center p-4 border-b border-gray-200">
             <button
               onClick={() => setActiveChat(null)}
-              className='mr-4 text-gray-500'
+              className="mr-4 text-gray-500"
             >
               <img
-                src='https://res.cloudinary.com/dcb4ilgmr/image/upload/v1719102154/utilities/LodgeMate_File/lucide_move-up_zjmfel.svg'
-                alt='Back'
-                className='w-6 h-6'
+                src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1719102154/utilities/LodgeMate_File/lucide_move-up_zjmfel.svg"
+                alt="Back"
+                className="w-6 h-6"
               />
             </button>
-            <UserImage
+            <Link
+              href={`/profile/${activeChat.latestMessage.participants[0]._id}`}
+              >
+                 <UserImage
               onclick={() => setShowProfile(true)}
               src={
                 reciversData(activeChat.latestMessage.participants)
@@ -111,9 +115,11 @@ const MobileChat: React.FC<mobileProps> = ({
                 reciversData(activeChat.latestMessage.participants)?.lastName
               }
             />
+            </Link>
            
-            <div className='ml-3'>
-              <div className='font-semibold text-[16px]'>
+
+            <div className="ml-3">
+              <div className="font-semibold text-[16px]">
                 {
                   reciversData(activeChat?.latestMessage.participants)
                     ?.firstName
@@ -121,7 +127,7 @@ const MobileChat: React.FC<mobileProps> = ({
               </div>
             </div>
           </div>
-          <div className='flex-grow p-4 overflow-y-auto'>
+          <div className="flex-grow h-[] p-4 overflow-y-auto">
             {/* <Activemessage
                 setMessages={setMessages}
                 messages={messages}
@@ -186,8 +192,8 @@ const MobileChat: React.FC<mobileProps> = ({
           />
           {/* Profile Popup */}
           {showProfile && (
-            <div className='absolute inset-0 bg-black bg-opacity-50 flex justify-center items-center'>
-              <div className='bg-white p-6 rounded-lg w-80'>
+            <div className="absolute inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+              <div className="bg-white p-6 rounded-lg w-80">
                 <img
                   src={
                     reciversData(activeChat?.latestMessage.participants)
@@ -197,19 +203,19 @@ const MobileChat: React.FC<mobileProps> = ({
                     reciversData(activeChat?.latestMessage.participants)
                       ?.firstName
                   }'s profile`}
-                  className='w-20 h-20 rounded-full mx-auto mb-4'
+                  className="w-20 h-20 rounded-full mx-auto mb-4"
                 />
-                <div className='text-center font-semibold text-[16px] mb-4'>
+                <div className="text-center font-semibold text-[16px] mb-4">
                   {
                     reciversData(activeChat?.latestMessage.participants)
                       ?.firstName
                   }
                 </div>
-                <div className='flex justify-around mb-4'>
-                  <div className='flex items-center space-x-2'>
+                <div className="flex justify-around mb-4">
+                  <div className="flex items-center space-x-2">
                     <img
-                      src='https://res.cloudinary.com/dcb4ilgmr/image/upload/v1719953600/utilities/LodgeMate_File/ion_male-outline_qtox5s.svg'
-                      alt='gender'
+                      src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1719953600/utilities/LodgeMate_File/ion_male-outline_qtox5s.svg"
+                      alt="gender"
                     />
                     <p>
                       {
@@ -218,10 +224,10 @@ const MobileChat: React.FC<mobileProps> = ({
                       }
                     </p>
                   </div>
-                  <div className='flex items-center space-x-2'>
+                  <div className="flex items-center space-x-2">
                     <img
-                      src='https://res.cloudinary.com/dcb4ilgmr/image/upload/v1718337645/utilities/LodgeMate_File/home_pin_1_jvqqfs.svg'
-                      alt='university'
+                      src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1718337645/utilities/LodgeMate_File/home_pin_1_jvqqfs.svg"
+                      alt="university"
                     />
                     <p>
                       {
@@ -232,7 +238,7 @@ const MobileChat: React.FC<mobileProps> = ({
                   </div>
                 </div>
                 <button
-                  className='w-full p-2 bg-blue-500 text-white rounded-lg'
+                  className="w-full p-2 bg-blue-500 text-white rounded-lg"
                   onClick={() => setShowProfile(false)}
                 >
                   Close

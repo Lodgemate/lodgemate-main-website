@@ -1,7 +1,17 @@
+"use client"
+
 import Link from "next/link";
 import React from "react";
+import { usePathname } from "next/navigation";
+
 
 function Footer() {
+    const pathname = usePathname();
+
+  
+   if (pathname === "/chat") {
+     return null; // Return null to hide the Footer component
+   }
   return (
     <div className="border text-[12px] border-t flex w-full  sm:pb-[20px]  pb-[100px]  py-[12px] sm:bg-white bg-[#F8F8F8] text-lgray">
       <div className="flex justify-between items-center flex-col sm:flex-row w-full px-2 sm:px-[100px]">

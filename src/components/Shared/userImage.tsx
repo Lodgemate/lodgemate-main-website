@@ -32,7 +32,7 @@ const UserImage: React.FC<userImageProps> = ({
         />
       ) : (
         <div
-          className={`bg-lblue rounded-full flex justify-center text-white text-2xl items-center ${size}`}
+          className={`bg-lblue rounded-full flex justify-center text-white text- items-center ${size}`}
         >
           {fallbackText && getInitials(fallbackText)}
         </div>

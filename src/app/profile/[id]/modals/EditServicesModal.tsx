@@ -58,7 +58,9 @@ console.log(images)
 
     }
   };
+  console.log(images)
   console.log(images?.length)
+
   const handleRemoveImage = () => {
   console.log("imgSrc")
 
@@ -69,6 +71,8 @@ console.log(images)
  console.log(newArr)
  console.log(newArr?.length)
    setImages(newArr)
+ console.log(newArr?.length)
+
     setFormData({...formData,previousPhotosUrls: [...formData.previousPhotosUrls, imgSrc]})
   
  
@@ -95,6 +99,7 @@ console.log(images)
 
 
     const submitLidge=async()=>{
+       console.log(Object.fromEntries(form))
       const url = `${Endpoints.getPrivateServicesbyId}${product?._id}`
       const option={
         method:"PATCH",

@@ -16,15 +16,123 @@ import {
 } from "@/lib/features/Filters/filterSlice";
 import { selectAllAuthenticated } from "@/lib/features/Login/signinSlice";
 import GallerySkeleton from "../../components/Skeletons/cardsSkeleton";
+
+
+const useGeolocation = () => {
+  const [location, setLocation] = useState<{
+    localGovernmentArea: string;
+    state: string;
+    country: string;
+    latitude: number;
+    longitude: number;
+  } | null>(null);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!navigator.geolocation) {
+      setError("Geolocation is not supported by this browser.");
+      return;
+    }
+
+    const watchId = navigator.geolocation.watchPosition(
+      async (position) => {
+        const { latitude, longitude } = position.coords;
+        try {
+          const apiKey = process.env.NEXT_PUBLIC_GOOGLE_API_KEY;
+          if (!apiKey) {
+            throw new Error("API key is missing");
+          }
+
+          // Fetch location details from Google Geocoding API
+          const response = await fetch(
+            `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${apiKey}`
+          );
+
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+
+          const data = await response.json();
+          console.log("Geocode API Response:", data); // Log response here
+
+          const addressComponents = data.results[0]?.address_components || [];
+          console.log("Address Components:", addressComponents); // Log all components
+
+          const localGovernmentArea =
+            addressComponents.find((component: any) =>
+              component.types.includes("administrative_area_level_3")
+            )?.long_name || "N/A";
+          const state =
+            addressComponents.find((component: any) =>
+              component.types.includes("administrative_area_level_1")
+            )?.long_name || "N/A";
+          const country =
+            addressComponents.find((component: any) =>
+              component.types.includes("country")
+            )?.long_name || "N/A";
+
+          setLocation({
+            localGovernmentArea,
+            state,
+            country,
+            latitude,
+            longitude,
+          });
+        } catch (error) {
+          console.error("Error fetching location data:", error);
+          setError("Failed to fetch location data.");
+        }
+      },
+      (err) => {
+        console.error("Geolocation error:", err);
+        setError(err.message);
+      },
+      {
+        enableHighAccuracy: true,
+        timeout: 10000, // Wait up to 10 seconds for a more accurate position
+        maximumAge: 0, // Ensure that the location is always fresh
+      }
+    );
+
+    // Cleanup function to clear the watch when the component unmounts
+    return () => {
+      navigator.geolocation.clearWatch(watchId);
+    };
+  }, []);
+
+  return { location, error };
+};
+
+const LocationDisplay: React.FC = () => {
+  const { location, error } = useGeolocation();
+
+  if (error) return <div>Error: {error}</div>;
+  if (!location) return <div>Loading...</div>;
+
+  return (
+    <div>
+      <p>Local Government Area: {location.localGovernmentArea}</p>
+      <p>State: {location.state}</p>
+      <p>Country: {location.country}</p>
+      <p>Latitude: {location.latitude}</p>
+      <p>Longitude: {location.longitude}</p>
+    </div>
+  );
+};
+
+
 interface BrowseLodgesProps {
   isSearchTriggered: boolean;
 }
 const cache = new Map<string, any>();
+
+
+
 const BrowseLodges: React.FC<BrowseLodgesProps> = ({
   isSearchTriggered,
 }) => {
   const [showFiltersModal, setShowFiltersModal] = useState(false);
-  const [isLoading, setisLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   //  (useless for now) const [filters, setFilters] = useState({});
   const [showMore, setShowMore] = useState(false);
   const LodgesData = useAppSelector(selectAllFetchLodgesdata);
@@ -44,6 +152,7 @@ const BrowseLodges: React.FC<BrowseLodgesProps> = ({
     return url;
   };
 
+  const { location } = useGeolocation();
 
   //  useless for now
   // useEffect(() => {
@@ -130,50 +239,72 @@ const BrowseLodges: React.FC<BrowseLodgesProps> = ({
   };
 
   // fetching lodges data
-  useEffect(() => {
-    setisLoading(true);
-    const fetchData = async () => {
-      const token = await GetToken();
+ useEffect(() => {
+   setIsLoading(true);
+   const fetchData = async () => {
+     const token = await GetToken();
+     let fetchUrl;
 
-      let fetchUrl;
-      if (isAuth && token) {
-        // this will be uncommented when db is updated
-          // fetchUrl= Endpoints.getPrivateLodges + urlGenerator(param);
-        // this will be deleted when db is updated
-         fetchUrl = Endpoints.getPublicLodges + urlGenerator(param);
-      } else if (!token) {
-        fetchUrl = Endpoints.getPublicLodges + urlGenerator(param);
-      }
-      console.log(fetchUrl);
-      // nullify fetch
-      if (!fetchUrl) {
-        return;
-      }
-      // Check if the data is in the cache
-      if (cache.has(fetchUrl)) {
-        // console.log('Using cached data');
-        const cacheData = cache.get(fetchUrl);
-        dispatch(setLodgesData(cacheData.payload));
-        setisLoading(false);
-        return;
-      }
+     if (isAuth && token) {
+       fetchUrl = Endpoints.getPublicLodges + urlGenerator(param);
+     } else if (!token) {
+       fetchUrl = Endpoints.getPublicLodges + urlGenerator(param);
+     }
 
-      const abortController = new AbortController();
-      try {
-    dispatch(setSearchQuery(null));
-        const response = await dispatch(FetchLodges(fetchUrl));
-        cache.set(fetchUrl, response);
-      } catch (error: any) {
-        if (error.name !== "AbortError") {
-          console.error("Error fetching data:", error);
-        }
-      } finally {
-        setisLoading(false);
-        return () => abortController.abort();
-      }
-    };
-    fetchData();
-  }, [dispatch, storelocation]);
+     if (!fetchUrl) return;
+
+     try {
+       dispatch(setSearchQuery(null));
+       await dispatch(FetchLodges(fetchUrl));
+     } catch (error: any) {
+       console.error("Error fetching data:", error);
+     } finally {
+       setIsLoading(false);
+     }
+   };
+   fetchData();
+ }, [dispatch, storelocation]);
+
+ // Lodges sorting function
+  const sortedLodges = useMemo(() => {
+      setIsLoading(true);
+
+    if (!LodgesData || !location) return [];
+           setIsLoading(false);
+
+
+ return [...LodgesData.data?.lodges].sort((a: any, b: any) => {
+   // Compare function to check if values are the same, returning a boolean score
+   const isSame = (x: string, y: string) => (x === y ? 1 : 0);
+
+   // Step 1: Sort by nearbyUniversity similarity with localGovernmentArea
+   const nearbyUniversityA = isSame(
+     a.nearbyUniversity,
+     location.localGovernmentArea
+   );
+   const nearbyUniversityB = isSame(
+     b.nearbyUniversity,
+     location.localGovernmentArea
+   );
+   if (nearbyUniversityA !== nearbyUniversityB) {
+     return nearbyUniversityB - nearbyUniversityA; // Sort lodges where nearbyUniversity matches first
+   }
+
+   // Step 2: Sort by state similarity
+   const stateA = isSame(a.state, location.state);
+   const stateB = isSame(b.state, location.state);
+   if (stateA !== stateB) {
+     return stateB - stateA; // Sort lodges where state matches next
+   }
+
+   // Step 3: Sort by country similarity
+   const countryA = isSame(a.country, location.country);
+   const countryB = isSame(b.country, location.country);
+   return countryB - countryA; // Finally, sort lodges where country matches
+ });
+
+
+ }, [LodgesData, location]);
 
   const handleShowMore = () => {
     setShowMore(true);
@@ -184,31 +315,26 @@ const BrowseLodges: React.FC<BrowseLodgesProps> = ({
       setShowFiltersModal(false);
     }
   };
-  const MappedLodges=useMemo(()=>{
+  const MappedLodges = useMemo(() => {
     return (
       <>
-        {LodgesData &&
-          LodgesData.data?.lodges
-            .slice(0, showMore ? LodgesData.data.lodges.length : 12)
-            .map((product: any) => {
-              console.log(product);
-              return (
-                ///@ts-ignore
-                <Card
-                  {...product}
-                  key={product._id}
-                  imageUrl={optimizeImageUrl(product.coverphoto)} // Optimizing the coverphoto URL
-                  name={product.lodgeName}
-                  location={product.address_text}
-                  nearbyUniversity={product.subAdministrativeArea}
-                  state={product.administrativeArea}
-                  price={product.price || 0}
-                />
-              );
-            })}
+        {sortedLodges
+          .slice(0, showMore ? sortedLodges.length : 12)
+          .map((product: any) => (
+            <Card
+              {...product}
+              key={product._id}
+              imageUrl={optimizeImageUrl(product.coverphoto)}
+              name={product.lodgeName}
+              location={product.address_text}
+              nearbyUniversity={product.subAdministrativeArea}
+              state={product.administrativeArea}
+              price={product.price || 0}
+            />
+          ))}
       </>
     );
-  },[LodgesData,showMore])
+  }, [sortedLodges, showMore]);
   return (
     <div className='px-4 sm:px-[100px] mt-[50px] text-[12px] sm:text-[14px] -z-99 '>
       {/* Filters Modal */}
@@ -249,6 +375,8 @@ const BrowseLodges: React.FC<BrowseLodgesProps> = ({
           </div>
         </div>
       )}
+
+      {/* <LocationDisplay /> */}
       <div className='flex justify-between gap-8 items-center text-lgray mb-[24px]'>
         <h1 className=' flex flex-wrap  text-lgray '>
           {isSearchTriggered

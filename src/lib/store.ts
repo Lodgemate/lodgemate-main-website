@@ -9,6 +9,7 @@ import servicesReducer from "./features/Services/servicesSlice"
 import roommateReducer from "./features/Roommates/RoommateSlice"
 import Listing_Reducer from "./features/Listing/ListingSlice"
 import ReviewReducers from "./features/Reviews/ReviewsSlice"
+import SavedReducers from "./features/saved/savedSlice"
 export const makeStore = () => {
   return configureStore({
     reducer: {
@@ -21,7 +22,8 @@ export const makeStore = () => {
       services: servicesReducer,
       roommate: roommateReducer,
       List_Logdes: Listing_Reducer,
-      Reviews: ReviewReducers
+      Reviews: ReviewReducers,
+      Saved: SavedReducers
     },
   })
 }

@@ -1,6 +1,5 @@
 
 export const urlGenerator =(param: any)=>{
- console.log(param)
 
     let params
     let lat= param.location?.latitude
@@ -10,7 +9,6 @@ export const urlGenerator =(param: any)=>{
     let location;
     let price
     let query
-    console.log(lat, Long)
     if (lat && Long) {
         location= "?lat=" + lat +"&lng="+Long
     }

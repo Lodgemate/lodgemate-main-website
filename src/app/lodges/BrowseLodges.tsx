@@ -144,7 +144,6 @@ const BrowseLodges: React.FC<BrowseLodgesProps> = ({
       } else if (!token) {
         fetchUrl = Endpoints.getPublicLodges + urlGenerator(param);
       }
-      console.log(fetchUrl);
       // nullify fetch
       if (!fetchUrl) {
         return;
@@ -160,7 +159,7 @@ const BrowseLodges: React.FC<BrowseLodgesProps> = ({
 
       const abortController = new AbortController();
       try {
-    dispatch(setSearchQuery(null));
+        dispatch(setSearchQuery(null));
         const response = await dispatch(FetchLodges(fetchUrl));
         cache.set(fetchUrl, response);
       } catch (error: any) {
@@ -191,7 +190,6 @@ const BrowseLodges: React.FC<BrowseLodgesProps> = ({
           LodgesData.data?.lodges
             .slice(0, showMore ? LodgesData.data.lodges.length : 12)
             .map((product: any) => {
-              console.log(product);
               return (
                 ///@ts-ignore
                 <Card

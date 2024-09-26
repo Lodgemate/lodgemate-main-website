@@ -22,7 +22,7 @@ function DataInitializer({ children }: { children: React.ReactNode }) {
   const data = useAppSelector(selectAllUsersdata);
   const status = useAppSelector(selectAllUsersStatus);
   const isAuthenticated = useAppSelector(selectAllAuthenticated);
- console.log(data)
+
   // Function to fetch user data
   const fetchData = useCallback(() => {
     const localStorageToken = localStorage.getItem("token");

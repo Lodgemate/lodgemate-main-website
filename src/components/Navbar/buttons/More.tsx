@@ -67,7 +67,6 @@ function More() {
         if (res.status === 'success') {
           setNotifications(res)
         }
-        console.log(res)
       } catch (error) {
         
       }
@@ -88,21 +87,14 @@ function More() {
   if (!isAuthenticated) {
     return null;
   }
-  console.log(typeof  notifications)
-  if (notifications) {
-  console.log( notifications.data.notifications )
-    
-  }
 
   const unreadMssgLength=(Arr: Notification[]| undefined)=>{
-    console.log(Arr)
     if (Arr && Arr?.length < 1 ) {
       return 0
     }
     const newArr= Arr?.filter((ent:Notification)=>ent.read === false)
     return newArr?.length
   }
-  console.log(unreadMssgLength(notifications?.data.notifications))
 
   return (
     <div className="">

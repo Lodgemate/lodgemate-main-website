@@ -28,7 +28,7 @@ const Activemessage: React.FC<ActivemessageProps> = ({
     }
   }, [messages]);
 
-  // Fetch messages for the active room
+  // Fetch messages for the active room periodically (every 5 seconds)
   useEffect(() => {
     const localStorageToken = localStorage.getItem("token");
     const parseToken = localStorageToken && JSON.parse(localStorageToken);
@@ -57,9 +57,18 @@ const Activemessage: React.FC<ActivemessageProps> = ({
     };
 
     if (roomId) {
+      // Fetch messages initially
       fetchData();
+
+      // Set up interval to fetch messages every 5 seconds
+      const intervalId = setInterval(() => {
+        fetchData();
+      }, 100);
+
+      // Clear interval on unmount
+      return () => clearInterval(intervalId);
     }
-  }, [roomId]);
+  }, [roomId, setMessages]);
 
   // Function to format the timestamp
   const formatDate = (dateString: string) => {
@@ -83,8 +92,6 @@ const Activemessage: React.FC<ActivemessageProps> = ({
       return messageDate.toLocaleDateString();
     }
   };
-
-  console.log(messages);
 
   return (
     <>

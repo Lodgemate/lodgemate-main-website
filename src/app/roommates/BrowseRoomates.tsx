@@ -21,29 +21,119 @@ import {
 import { selectAllAuthenticated } from "@/lib/features/Login/signinSlice";
 import GallerySkeleton from "@/components/Skeletons/cardsSkeleton";
 import AOS from "aos";
+
+const useGeolocation = () => {
+  const [location, setLocation] = useState<{
+    localGovernmentArea: string;
+    state: string;
+    country: string;
+    latitude: number;
+    longitude: number;
+  } | null>(null);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!navigator.geolocation) {
+      setError("Geolocation is not supported by this browser.");
+      return;
+    }
+
+    const watchId = navigator.geolocation.watchPosition(
+      async (position) => {
+        const { latitude, longitude } = position.coords;
+        try {
+          const apiKey = process.env.NEXT_PUBLIC_GOOGLE_API_KEY;
+          if (!apiKey) {
+            throw new Error("API key is missing");
+          }
+
+          // Fetch location details from Google Geocoding API
+          const response = await fetch(
+            `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${apiKey}`
+          );
+
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+
+          const data = await response.json();
+          console.log("Geocode API Response:", data); // Log response here
+
+          const addressComponents = data.results[0]?.address_components || [];
+          console.log("Address Components:", addressComponents); // Log all components
+
+          const localGovernmentArea =
+            addressComponents.find((component: any) =>
+              component.types.includes("administrative_area_level_3")
+            )?.long_name || "N/A";
+          const state =
+            addressComponents.find((component: any) =>
+              component.types.includes("administrative_area_level_1")
+            )?.long_name || "N/A";
+          const country =
+            addressComponents.find((component: any) =>
+              component.types.includes("country")
+            )?.long_name || "N/A";
+
+          setLocation({
+            localGovernmentArea,
+            state,
+            country,
+            latitude,
+            longitude,
+          });
+        } catch (error) {
+          console.error("Error fetching location data:", error);
+          setError("Failed to fetch location data.");
+        }
+      },
+      (err) => {
+        console.error("Geolocation error:", err);
+        setError(err.message);
+      },
+      {
+        enableHighAccuracy: true,
+        timeout: 10000, // Wait up to 10 seconds for a more accurate position
+        maximumAge: 0, // Ensure that the location is always fresh
+      }
+    );
+
+    // Cleanup function to clear the watch when the component unmounts
+    return () => {
+      navigator.geolocation.clearWatch(watchId);
+    };
+  }, []);
+
+  return { location, error };
+};
+
 interface BrowseLodgesProps {
   isSearchTriggered: boolean;
 }
-const BrowseRoommates:React.FC<BrowseLodgesProps>=({isSearchTriggered})=> {
 
+const BrowseRoommates: React.FC<BrowseLodgesProps> = ({
+  isSearchTriggered,
+}) => {
   const cache = new Map<string, any>();
 
   const [showFiltersModal, setShowFiltersModal] = useState(false);
   //  (useless for now) const [filters, setFilters] = useState({});
   const [showMore, setShowMore] = useState(false);
-  const [isLoading, setisLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const RoommatesData = useAppSelector(selectAllFetchroommatedata);
   const dispatch = useAppDispatch();
   const storequery = useAppSelector(selectAllQueryFilter);
   const storelocation = useAppSelector(selectAllLocationFilter);
   const isAuth = useAppSelector(selectAllAuthenticated);
+
   const param = {
-    query: storequery !== 'Not Found' && storequery,
+    query: storequery !== "Not Found" && storequery,
     location: storelocation,
   };
-  const [selectedRoommate, setSelectedRoommate] = useState< null>(
-    null
-  );
+
+  const [selectedRoommate, setSelectedRoommate] = useState<null>(null);
+
+  const { location } = useGeolocation();
 
   const GetToken = async () => {
     const localStorageToken = localStorage.getItem("token");
@@ -61,21 +151,20 @@ const BrowseRoommates:React.FC<BrowseLodgesProps>=({isSearchTriggered})=> {
    * useEffect hook that fetches data based on authentication status and token availability.
    * @returns None
    */
- const optimizeImageUrl = (url: string) => {
-   if (url.includes("/upload/")) {
-     return url.replace("/upload/", "/upload/w_500,f_auto/");
-   }
-   return url;
- };
+  const optimizeImageUrl = (url: string) => {
+    if (url.includes("/upload/")) {
+      return url.replace("/upload/", "/upload/w_500,f_auto/");
+    }
+    return url;
+  };
 
   React.useEffect(() => {
-
     AOS.init({
       duration: 1000,
     });
-  },[]); 
+  }, []);
+
   useEffect(() => {
-   
     const fetchData = async () => {
       const token = await GetToken();
       let fetchUrl;
@@ -96,30 +185,67 @@ const BrowseRoommates:React.FC<BrowseLodgesProps>=({isSearchTriggered})=> {
       if (cache.has(fetchUrl)) {
         // console.log('Using cached data');
         const cacheData = cache.get(fetchUrl);
-        console.log(cacheData)
+        console.log(cacheData);
         dispatch(setroommateData(cacheData.payload));
-        setisLoading(false);
+        setIsLoading(false);
         return;
       }
       const abortController = new AbortController();
       try {
-    dispatch(setSearchQuery(null));
+        dispatch(setSearchQuery(null));
         const response = await dispatch(Fetchroommate(fetchUrl));
         cache.set(fetchUrl, response);
-        console.log(response)
-
+        console.log(response);
       } catch (error: any) {
         if (error.name !== "AbortError") {
           console.error("Error fetching data:", error);
         }
       } finally {
-        setisLoading(false);
-      console.log(fetchUrl);
+        setIsLoading(false);
+        console.log(fetchUrl);
         return () => abortController.abort();
       }
     };
     fetchData();
   }, [dispatch, storelocation]);
+
+  // roommate sorting function
+  const sortedRoommates = useMemo(() => {
+    setIsLoading(true);
+
+    if (!RoommatesData || !location) return [];
+    setIsLoading(false);
+
+    return [...RoommatesData.data?.roommates].sort((a: any, b: any) => {
+      // Compare function to check if values are the same, returning a boolean score
+      const isSame = (x: string, y: string) => (x === y ? 1 : 0);
+
+      // Step 1: Sort by nearbyUniversity similarity with localGovernmentArea
+      const nearbyUniversityA = isSame(
+        a.nearbyUniversity,
+        location.localGovernmentArea
+      );
+      const nearbyUniversityB = isSame(
+        b.nearbyUniversity,
+        location.localGovernmentArea
+      );
+      if (nearbyUniversityA !== nearbyUniversityB) {
+        return nearbyUniversityB - nearbyUniversityA; // Sort lodges where nearbyUniversity matches first
+      }
+
+      // Step 2: Sort by state similarity
+      const stateA = isSame(a.state, location.state);
+      const stateB = isSame(b.state, location.state);
+      if (stateA !== stateB) {
+        return stateB - stateA; // Sort lodges where state matches next
+      }
+
+      // Step 3: Sort by country similarity
+      const countryA = isSame(a.country, location.country);
+      const countryB = isSame(b.country, location.country);
+      return countryB - countryA; // Finally, sort lodges where country matches
+    });
+  }, [RoommatesData, location]);
 
   /**
    * Function to handle the action of showing more content.
@@ -179,24 +305,30 @@ const BrowseRoommates:React.FC<BrowseLodgesProps>=({isSearchTriggered})=> {
     //   // setFilteredProducts(filtered);
     //   setShowFiltersModal(false); // Close modal after applying filters
   };
-  const MappedRoommates = useMemo(() => (
-    RoommatesData?.data?.roommates.slice(0, showMore ? RoommatesData.data.roommates.length : 12).map((roommate, index) => (
-      <Card
-        {...roommate}
-        key={index}
-        id={roommate._id}
-        imageUrl={optimizeImageUrl(roommate.postedBy.profilePicture)}
-        name={roommate.postedBy.firstName}
-        location={roommate.address_text}
-        nearbyUniversity={roommate.subAdministrativeArea}
-        onClick={() => handleCardClick(roommate)}
-        sex={roommate.postedBy.gender}
-      />
-    ))
-  ), [RoommatesData, showMore, handleCardClick]);
-  console.log(RoommatesData)
+  
+ const MappedRoommates = useMemo(() => {
+   return (
+     <>
+       {sortedRoommates
+         .slice(0, showMore ? sortedRoommates.length : 12)
+         .map((roommate: any) => (
+           <Card
+             {...roommate}
+             key={roommate._id} // Use roommate._id for consistency with MappedLodges
+             imageUrl={optimizeImageUrl(roommate.postedBy.profilePicture)}
+             name={roommate.postedBy.firstName} // Consistent property usage
+             location={roommate.address_text} // Keep the same as MappedLodges
+             nearbyUniversity={roommate.subAdministrativeArea}
+             sex={roommate.postedBy.gender} // Additional property specific to roommates
+             onClick={() => handleCardClick(roommate)} // Click handler for roommate
+           />
+         ))}
+     </>
+   );
+ }, [sortedRoommates, showMore, handleCardClick]);
 
- 
+  console.log(RoommatesData);
+
   return (
     <div className="px-4 sm:px-[100px] mt-[50px] text-[14px] sm:text-[14px]">
       {selectedRoommate && (
@@ -210,9 +342,10 @@ const BrowseRoommates:React.FC<BrowseLodgesProps>=({isSearchTriggered})=> {
       <div className="flex justify-between gap-8 text-[14px] items-center text-lgray mb-[24px]">
         <h1 className=" flex flex-wrap  text-lgray ">
           {isSearchTriggered
-            ? storequery !== 'Not Found' && `Showing results for "${storequery}"`
+            ? storequery !== "Not Found" &&
+              `Showing results for "${storequery}"`
             : "Showing available roommates around"}
-            {storequery == 'Not Found' && 'No result found'}
+          {storequery == "Not Found" && "No result found"}
         </h1>
 
         <button
@@ -282,5 +415,5 @@ const BrowseRoommates:React.FC<BrowseLodgesProps>=({isSearchTriggered})=> {
       )}
     </div>
   );
-}
+};
 export default BrowseRoommates;

@@ -239,49 +239,6 @@ const BrowseLodges: React.FC<BrowseLodgesProps> = ({
   };
 
   // fetching lodges data
-  useEffect(() => {
-    setisLoading(true);
-    const fetchData = async () => {
-      const token = await GetToken();
-
-      let fetchUrl;
-      if (isAuth && token) {
-        // this will be uncommented when db is updated
-          // fetchUrl= Endpoints.getPrivateLodges + urlGenerator(param);
-        // this will be deleted when db is updated
-         fetchUrl = Endpoints.getPublicLodges + urlGenerator(param);
-      } else if (!token) {
-        fetchUrl = Endpoints.getPublicLodges + urlGenerator(param);
-      }
-      // nullify fetch
-      if (!fetchUrl) {
-        return;
-      }
-      // Check if the data is in the cache
-      if (cache.has(fetchUrl)) {
-        // console.log('Using cached data');
-        const cacheData = cache.get(fetchUrl);
-        dispatch(setLodgesData(cacheData.payload));
-        setisLoading(false);
-        return;
-      }
-
-      const abortController = new AbortController();
-      try {
-        dispatch(setSearchQuery(null));
-        const response = await dispatch(FetchLodges(fetchUrl));
-        cache.set(fetchUrl, response);
-      } catch (error: any) {
-        if (error.name !== "AbortError") {
-          console.error("Error fetching data:", error);
-        }
-      } finally {
-        setisLoading(false);
-        return () => abortController.abort();
-      }
-    };
-    fetchData();
-  }, [dispatch, storelocation]);
  useEffect(() => {
    setIsLoading(true);
    const fetchData = async () => {
@@ -361,25 +318,20 @@ const BrowseLodges: React.FC<BrowseLodgesProps> = ({
   const MappedLodges = useMemo(() => {
     return (
       <>
-        {LodgesData &&
-          LodgesData.data?.lodges
-            .slice(0, showMore ? LodgesData.data.lodges.length : 12)
-            .map((product: any) => {
-              console.log(product);
-              return (
-                ///@ts-ignore
-                <Card
-                  {...product}
-                  key={product._id}
-                  imageUrl={optimizeImageUrl(product.coverphoto)} // Optimizing the coverphoto URL
-                  name={product.lodgeName}
-                  location={product.address_text}
-                  nearbyUniversity={product.subAdministrativeArea}
-                  state={product.administrativeArea}
-                  price={product.price || 0}
-                />
-              );
-            })}
+        {sortedLodges
+          .slice(0, showMore ? sortedLodges.length : 12)
+          .map((product: any) => (
+            <Card
+              {...product}
+              key={product._id}
+              imageUrl={optimizeImageUrl(product.coverphoto)}
+              name={product.lodgeName}
+              location={product.address_text}
+              nearbyUniversity={product.subAdministrativeArea}
+              state={product.administrativeArea}
+              price={product.price || 0}
+            />
+          ))}
       </>
     );
   }, [sortedLodges, showMore]);

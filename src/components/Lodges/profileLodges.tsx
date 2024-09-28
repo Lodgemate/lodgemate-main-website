@@ -27,7 +27,7 @@ interface ProductCardProps {
 }
 
 const ProductCard: React.FC<ProductCardProps> = React.memo(
-  ({ id, imageUrl, name, location, nearbyUniversity, price, product }) => {
+  ({ id, imageUrl, name, address, nearbyUniversity, price, product, }) => {
     const [isDeleted, setIsDeleted] = useState(false);
     const [openEditLodges, setOpenEditLodges] = useState(false);
     const [isPopupVisible, setIsPopupVisible] = useState(false); // State to handle popup visibility
@@ -156,7 +156,7 @@ const ProductCard: React.FC<ProductCardProps> = React.memo(
 
         <div className="py-[15px] gap-y-2 flex flex-col justify-between">
           <div className="font-bold flex items-start">{name}</div>
-          <p className="text-lgray text-[12px]">{location}</p>
+          <p className="text-lgray text-[12px]">{address}</p>
           <div className="flex items-center mt-[4px] text-gray-600">
             <img
               src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1716223199/utilities/LodgeMate_File/home_pin_mimpts.svg"

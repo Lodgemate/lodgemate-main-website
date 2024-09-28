@@ -63,7 +63,7 @@ const Activemessage: React.FC<ActivemessageProps> = ({
       // Set up interval to fetch messages every 5 seconds
       const intervalId = setInterval(() => {
         fetchData();
-      }, 100);
+      }, 1000);
 
       // Clear interval on unmount
       return () => clearInterval(intervalId);

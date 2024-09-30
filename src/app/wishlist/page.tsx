@@ -8,47 +8,34 @@ import TourCart from "./TourCart";
 import { Endpoints } from "@/services/Api/endpoints";
 import { FetchApi } from "@/utils/Fetchdata";
 import { Lodge, Roommate, Service } from "@/lib/Types";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 
 interface TabData {
   message: string;
   content: JSX.Element;
 }
-
+import {
+  getSavedData,
+  selectAllSavedLodges,
+  selectAllSavedRoommates,
+  selectAllSavedServices
+} from "@/lib/features/saved/savedSlice";
 
 function Wishlist() {
   const [activeTab, setActiveTab] = useState<string>("Lodges");
   const [wishList, setwishList] = useState<(Service|Lodge| Roommate)[]>([])
+  const dispatch = useAppDispatch()
+  const filteredLodges=useAppSelector(selectAllSavedLodges)
+  const filteredRoommates=useAppSelector(selectAllSavedRoommates)
+  const filteredServices=useAppSelector(selectAllSavedServices)
+  
   useEffect(()=>{
-    const localStorageToken = localStorage.getItem("token");
-    const parseToken = localStorageToken && JSON.parse(localStorageToken);
-    const AddToWhishlist = async () => {
-      const url = Endpoints.addToWishlist;
-
-      const options = {
-        headers: {
-          Authorization: `Bearer ${parseToken}`,
-        },
-      };
-      try {
-        const res: any= await FetchApi(url, options)
-        if (res.status === 'success') {
-          setwishList(res.data.wishlists)
-        }else{
-          throw res
-        }
-      } catch (error) {
-        
-      }
-      
-    };
-    AddToWhishlist()
-
-
+    dispatch(getSavedData())
   },[])
   // console.log(wishList);
-  const filteredLodges: any= wishList.filter(ent=> ent.type === 'lodge')
-  const filteredRoommates: any= wishList.filter(ent=> ent.type === 'roommate')
-  const filteredServices: any= wishList.filter(ent=> ent.type === 'service')
+  // const filteredLodges: any= wishList.filter(ent=> ent.type === 'lodge')
+  // const filteredRoommates: any= wishList.filter(ent=> ent.type === 'roommate')
+  // const filteredServices: any= wishList.filter(ent=> ent.type === 'service')
   const tabData: { [key: string]: TabData } = {
     Lodges: {
       message:`You have ${filteredLodges.length} lodges in your wishlist`,

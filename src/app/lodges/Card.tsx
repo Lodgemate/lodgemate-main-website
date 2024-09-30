@@ -40,7 +40,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
       duration: 1000,
     });
   });
-  console.log(wishlisted);
+
   return (
     <div
       // href={`/lodges/lodge_details/${id}`}

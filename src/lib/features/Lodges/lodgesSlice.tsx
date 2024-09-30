@@ -32,7 +32,6 @@ export const FetchLodges = createAsyncThunk(
 
       const parsedRes=await response.json()
       if (parsedRes.status === "fail") {
-      console.log(parsedRes.message);
           throw (parsedRes || "Failed to sign up");
       }else{
       console.log(parsedRes);

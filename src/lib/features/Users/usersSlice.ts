@@ -1,7 +1,11 @@
 import { RootState } from "@/lib/store";
 import { ApiResponse } from "@/lib/Types";
 import { Endpoints } from "@/services/Api/endpoints";
-import { createAsyncThunk, createSlice, createSelector } from "@reduxjs/toolkit";
+import {
+  createAsyncThunk,
+  createSlice,
+  createSelector,
+} from "@reduxjs/toolkit";
 
 const initialState = {
   data: null as ApiResponse | null,
@@ -13,8 +17,6 @@ export const getUsersData = createAsyncThunk("usersData", async () => {
   const tokenStorage = localStorage.getItem("token");
   try {
     if (tokenStorage) {
-console.log("data")
-
       const token = JSON.parse(tokenStorage);
       const response = await fetch(url, {
         method: "GET",
@@ -25,7 +27,6 @@ console.log("data")
         },
       });
       const parsedRes = await response.json();
-      console.log(parsedRes);
       if (parsedRes) {
         return parsedRes;
       }
@@ -39,9 +40,9 @@ const userSlice = createSlice({
   name: "Users",
   initialState,
   reducers: {
-    setUserData:(state,action)=>{
-      state.data = action.payload
-    }
+    setUserData: (state, action) => {
+      state.data = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -58,11 +59,20 @@ const userSlice = createSlice({
       });
   },
 });
-const selectSelf =(state:RootState) => state.User
+const selectSelf = (state: RootState) => state.User;
 
-export const selectAllUsersdata = createSelector([selectSelf],(state) => state.data);
-export const selectAllUsersStatus = createSelector([selectSelf],(state) => state.status);
-export const selectAllUsersError = createSelector([selectSelf],(state) => state.error);
+export const selectAllUsersdata = createSelector(
+  [selectSelf],
+  (state) => state.data
+);
+export const selectAllUsersStatus = createSelector(
+  [selectSelf],
+  (state) => state.status
+);
+export const selectAllUsersError = createSelector(
+  [selectSelf],
+  (state) => state.error
+);
 
- export const { setUserData } = userSlice.actions;
+export const { setUserData } = userSlice.actions;
 export default userSlice.reducer;

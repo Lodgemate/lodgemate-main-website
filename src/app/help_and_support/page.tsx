@@ -6,14 +6,8 @@ import { io, Socket } from "socket.io-client";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { randomUUID } from "crypto";
 import { showLoadingModal } from "@/lib/features/Modal/ModalSlice";
-import { MainObject } from "@/app/chat/types";
 import axios from "axios";
 import { selectAllUsersdata } from "@/lib/features/Users/usersSlice";
-
-interface WebSocketComponentProps {
-  setMessages: any;
-  activeChat: MainObject | null;
-}
 
 interface ChatMessage {
   _id: number;
@@ -40,7 +34,7 @@ const customerCareChat: ChatPreview = {
   ],
 };
 
-const Help: React.FC<WebSocketComponentProps> = () => {
+const Help = () => {
   const [activeChat, setActiveChat] = useState<ChatPreview>(customerCareChat);
   const [message, setMessage] = useState<string>("");
   const [image, setImage] = useState<string>("");

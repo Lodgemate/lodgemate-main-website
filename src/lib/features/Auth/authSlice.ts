@@ -15,7 +15,7 @@ const initialState: initialStateType = {
   error: null,
 };
 
-export const SignUp = createAsyncThunk(
+export const  SignUp = createAsyncThunk(
   "Auth/SignUp",
   async (formData) => {
     try {

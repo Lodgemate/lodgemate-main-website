@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import Image from "next/image";
 import Link from "next/link";
@@ -7,6 +7,8 @@ import { usePathname } from "next/navigation";
 
 function BottomNavbar() {
   const pathname = usePathname();
+
+  if (pathname == "/help_and_support") return;
 
   return (
     <div className="fixed lg:hidden flex w-full bottom-0 z-50">

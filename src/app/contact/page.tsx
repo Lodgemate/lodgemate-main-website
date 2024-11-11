@@ -6,33 +6,6 @@ function ContactUs() {
   return (
     <div className="sm:px-[100px] px-4 text-lblack text-[16px] mt-[100px]">
       <div className=" grid grid-cols-1 sm:grid-cols-2 sm:gap-[50px]">
-        <div className=" col-span-1">
-          <h1 className="text-[24px] mb-[16px]">About us</h1>
-          <p>
-            Lörem ipsum megafiering stereoform. Hypertropi detologi. Kvasinetik
-            bifaktisk, än realogi teotism. Emtris megafas mikrosiv panvalens,
-            astrometer. Agnostistik telelog desplastisk hyperplastisk. Filonomi
-            anacism. Semiform mikrosion. Lörem ipsum megafiering stereoform.
-            Hypertropi detologi. Kvasinetik bifaktisk, än realogi teotism.
-            Emtris megafas mikrosiv panvalens, astrometer. Agnostistik telelog
-            desplastisk hyperplastisk. Filonomi anacism. Semiform mikrosion.{" "}
-            <br />
-            <br />
-            Lörem ipsum megafiering stereoform. Hypertropi detologi. Kvasinetik
-            bifaktisk, än realogi teotism. Emtris megafas mikrosiv panvalens,
-            astrometer. Agnostistik telelog desplastisk hyperplastisk. Filonomi
-            anacism. Semiform mikrosion. <br />
-            <br /> Lörem ipsum megafiering stereoform. Hypertropi detologi.
-            Kvasinetik bifaktisk, än realogi teotism. Emtris megafas mikrosiv
-            panvalens, astrometer. Agnostistik telelog desplastisk
-            hyperplastisk. Filonomi anacism. Semiform mikrosion. <br />
-            <br />
-            Lörem ipsum megafiering stereoform. Hypertropi detologi. Kvasinetik
-            bifaktisk, än realogi teotism. Emtris megafas mikrosiv panvalens,
-            astrometer. Agnostistik telelog desplastisk hyperplastisk. Filonomi
-            anacism. Semiform mikrosion.
-          </p>
-        </div>
         {/* form side */}
         <div className=" col-span-1 mt-[54px] sm:mt-0 ">
           <ContactForm />

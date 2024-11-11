@@ -28,9 +28,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <StoreProvider>
-        <Navbar />
-        <body className={`  relative  ${inter.className}`}>
+      <body className={`  relative  ${inter.className}`}>
+        <StoreProvider>
+          <Navbar />
           <Providers>
             <div className=" min-h-screen ">{children}</div>
             <LogoLoader />
@@ -38,12 +38,12 @@ export default function RootLayout({
             <Failed />
           </Providers>
           <GetApp />
-        </body>
-        <BackToTopButton />
-        <Footer />
-        <BottomNavbar />
-        <EmailModal />
-      </StoreProvider>
+          <BackToTopButton />
+          <Footer />
+          <BottomNavbar />
+          <EmailModal />
+        </StoreProvider>
+      </body>
     </html>
   );
 }

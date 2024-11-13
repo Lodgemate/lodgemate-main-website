@@ -43,15 +43,10 @@ const Help = () => {
   const lastMessageRef = useRef<HTMLDivElement>(null);
 
   const currentUser = useAppSelector(selectAllUsersdata);
-  const token = useAppSelector(selectUserToken);
+  const parsedToken = useAppSelector(selectUserToken);
   const dispatch = useAppDispatch();
   const myId = currentUser?.data.user._id;
 
-  if (!token) {
-    return;
-  }
-
-  const parsedToken = JSON.parse(token);
   useEffect(() => {
     const socket = io("https://api.lodgemate.com.ng/help_and_support", {
       path: "/socket.io",

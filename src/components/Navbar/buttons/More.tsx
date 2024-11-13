@@ -59,6 +59,8 @@ function More() {
   const currentUser = useAppSelector(selectAllUsersdata);
   const dispatch = useAppDispatch();
 
+  if (!currentUser?.data) return "";
+
   return (
     <DropdownMenu>
       {/* desktop */}

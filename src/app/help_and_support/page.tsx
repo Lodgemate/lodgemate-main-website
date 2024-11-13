@@ -4,11 +4,11 @@ import React, { useState, useEffect, useRef, ChangeEvent } from "react";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { io, Socket } from "socket.io-client";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { randomUUID } from "crypto";
 import { showLoadingModal } from "@/lib/features/Modal/ModalSlice";
 import axios from "axios";
 import { selectAllUsersdata } from "@/lib/features/Users/usersSlice";
 import { selectUserToken } from "@/lib/features/Login/signinSlice";
+import { redirect } from "next/navigation";
 
 interface ChatMessage {
   _id: number;
@@ -47,6 +47,9 @@ const Help = () => {
   const dispatch = useAppDispatch();
   const myId = currentUser?.data.user._id;
 
+  console.log({ currentUser });
+  console.log({ parsedToken });
+
   useEffect(() => {
     const socket = io("https://api.lodgemate.com.ng/help_and_support", {
       path: "/socket.io",
@@ -63,7 +66,7 @@ const Help = () => {
         "join-room",
         {
           participants: [currentUser?.data.user._id],
-          roomId: "6726d12832fe3651c6304983",
+          roomId: currentUser?.data.user._id,
         },
         (response: any) => {
           console.log({ response });

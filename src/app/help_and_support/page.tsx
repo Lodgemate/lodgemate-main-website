@@ -8,6 +8,7 @@ import { randomUUID } from "crypto";
 import { showLoadingModal } from "@/lib/features/Modal/ModalSlice";
 import axios from "axios";
 import { selectAllUsersdata } from "@/lib/features/Users/usersSlice";
+import { selectUserToken } from "@/lib/features/Login/signinSlice";
 
 interface ChatMessage {
   _id: number;
@@ -42,11 +43,9 @@ const Help = () => {
   const lastMessageRef = useRef<HTMLDivElement>(null);
 
   const currentUser = useAppSelector(selectAllUsersdata);
+  const token = useAppSelector(selectUserToken);
   const dispatch = useAppDispatch();
   const myId = currentUser?.data.user._id;
-  console.log(currentUser);
-
-  const token = localStorage.getItem("token");
 
   if (!token) {
     return;

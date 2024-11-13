@@ -20,6 +20,7 @@ import {
 } from "@/lib/features/Modal/ModalSlice";
 import { GoogleAuth } from "@/services/GoogleAuth";
 import withAuth from "@/components/restrictedRoute/Authenticated";
+import { setToken } from "@/lib/features/Auth/tokenSlice";
 
 const LoginForm: React.FC = () => {
   const router = useRouter();
@@ -56,6 +57,8 @@ const LoginForm: React.FC = () => {
       dispatch(showLoadingModal("Authenticating"));
       // @ts-ignore
       const response = await dispatch(Signin(formData));
+      dispatch(setToken(response.payload.token));
+
       // router.push("/auth/signup/verify_your_email");
     }
   };

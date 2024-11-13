@@ -89,7 +89,7 @@ function More() {
 
         <DropdownMenuItem>
           <Link
-            href={`/profile/${currentUser?.data.user._id}`}
+            href={`/profile/${currentUser && currentUser?.data.user._id}`}
             className="text-gray-700"
           >
             View profile

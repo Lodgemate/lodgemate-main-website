@@ -3,11 +3,10 @@ import { ApiResponse } from "@/lib/Types";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 const url = `${process.env.NEXT_PUBLIC_BASE_URL}/v1/user/signup`;
-interface initialStateType{
-  data: ApiResponse | null ,
-  status: string,
-  error: string|null,
-
+interface initialStateType {
+  data: ApiResponse | null;
+  status: string;
+  error: string | null;
 }
 const initialState: initialStateType = {
   data: null,
@@ -15,37 +14,34 @@ const initialState: initialStateType = {
   error: null,
 };
 
-export const  SignUp = createAsyncThunk(
-  "Auth/SignUp",
-  async (formData) => {
-    try {
-      console.log(formData);
-      console.log(url);
-      const response = await fetch(url, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-         "Access-Control-Allow-Origin": "*",         
-        },
-        body: JSON.stringify(formData),
-      });
-      const parsedRes=await response.json()
-       console.log(parsedRes.status);
-       if (parsedRes.status === "fail") {
-       console.log(parsedRes.message);
+export const SignUp = createAsyncThunk("Auth/SignUp", async (formData) => {
+  try {
+    console.log(formData);
+    console.log(url);
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
+      },
+      body: JSON.stringify(formData),
+    });
+    const parsedRes = await response.json();
+    console.log(parsedRes.status);
+    if (parsedRes.status === "fail") {
+      console.log(parsedRes.message);
 
-           throw (parsedRes || "Failed to sign up");
-       }else{
-       console.log(parsedRes);
+      throw parsedRes || "Failed to sign up";
+    } else {
+      console.log(parsedRes);
 
-        return parsedRes;
-       }
-    } catch (error: any) {
-      console.log(error)
-      return error;
+      return parsedRes;
     }
+  } catch (error: any) {
+    console.log(error);
+    return error;
   }
-);
+});
 
 const authSlice = createSlice({
   name: "auth",
@@ -59,7 +55,6 @@ const authSlice = createSlice({
       .addCase(SignUp.fulfilled, (state, action) => {
         state.status = "succeeded";
         state.data = action.payload;
-
       })
       .addCase(SignUp.rejected, (state: any, action) => {
         state.status = "failed";

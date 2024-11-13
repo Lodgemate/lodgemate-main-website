@@ -10,7 +10,7 @@ const withAuth = (WrappedComponent: React.ComponentType) => {
     const router = useRouter();
     useEffect(() => {
       if (isAuthenticated) {
-        router.push("/");
+        // router.push("/");
       }
     }, [isAuthenticated, router]);
 

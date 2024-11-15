@@ -1,6 +1,6 @@
 import { RootState } from "@/lib/store";
 import { ApiResponse } from "@/lib/Types";
-import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Endpoints } from "@/services/Api/endpoints";
 const signInurl = Endpoints.signIn;
 interface initialStateType {
@@ -17,29 +17,6 @@ const initialState: initialStateType = {
   isAuthenticated: false,
   token: null,
 };
-
-export const Signin = createAsyncThunk("Auth/SignIn", async (credentials) => {
-  try {
-    const response = await fetch(signInurl, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      credentials: "omit",
-      body: JSON.stringify(credentials),
-    });
-    const parsedRes = await response.json();
-    if (parsedRes.status === "fail") {
-      console.log(parsedRes.message);
-      throw parsedRes || "Failed to sign up";
-    } else {
-      console.log(parsedRes);
-      return parsedRes;
-    }
-  } catch (error: any) {
-    return error.message;
-  }
-});
 
 const authSlice = createSlice({
   name: "login",
@@ -65,20 +42,6 @@ const authSlice = createSlice({
         (state.isAuthenticated = false),
         (state.token = null);
     },
-  },
-  extraReducers: (builder) => {
-    builder
-      .addCase(Signin.pending, (state) => {
-        state.status = "loading";
-      })
-      .addCase(Signin.fulfilled, (state, action) => {
-        state.status = "succeeded";
-        state.data = action.payload;
-      })
-      .addCase(Signin.rejected, (state: any, action) => {
-        state.status = "failed";
-        state.error = action.payload || action.error.message;
-      });
   },
 });
 

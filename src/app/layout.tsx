@@ -13,6 +13,7 @@ import EmailModal from "@/Ui/shared/EmailModal";
 import { Providers } from "@/components/ProgressBarProvider";
 import GetApp from "./GetApp";
 import BackToTopButton from "./BackToTopButton";
+import { Toaster } from "@/components/ui/toaster";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -43,6 +44,7 @@ export default function RootLayout({
           <BottomNavbar />
           <EmailModal />
         </StoreProvider>
+        <Toaster />
       </body>
     </html>
   );

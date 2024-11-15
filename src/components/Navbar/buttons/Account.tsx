@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { selectAllAuthenticated } from "@/lib/features/Login/signinSlice";
 import { useAppSelector } from "@/lib/hooks";
@@ -12,10 +12,7 @@ function Account() {
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
   };
-  const isAuthenticated =useAppSelector(selectAllAuthenticated)
-  if (isAuthenticated) {
-    return null;
-  }
+
   return (
     <div>
       {/* desktop */}
@@ -62,10 +59,18 @@ function Account() {
               </button>
             </div>
             <div className="flex flex-col gap-2 text-[14px] p-2">
-            <Link href="/auth/signup" onClick={()=>toggleDropdown()} className="text-gray-700 py-[5px] ">
+              <Link
+                href="/auth/signup"
+                onClick={() => toggleDropdown()}
+                className="text-gray-700 py-[5px] "
+              >
                 Create account
               </Link>
-              <Link href="/auth/login" onClick={()=>toggleDropdown()}  className="text-gray-700 py-[5px]">
+              <Link
+                href="/auth/login"
+                onClick={() => toggleDropdown()}
+                className="text-gray-700 py-[5px]"
+              >
                 Login
               </Link>
             </div>
@@ -116,10 +121,18 @@ function Account() {
               </button>
             </div>
             <div className="flex flex-col gap-2 text-[12px] px-2">
-              <Link href="/auth/signup" onClick={()=>toggleDropdown()} className="text-gray-700 pb-[px] ">
+              <Link
+                href="/auth/signup"
+                onClick={() => toggleDropdown()}
+                className="text-gray-700 pb-[px] "
+              >
                 Create account
               </Link>
-              <Link href="/auth/login" onClick={()=>toggleDropdown()}  className="text-gray-700 pb-[5px]">
+              <Link
+                href="/auth/login"
+                onClick={() => toggleDropdown()}
+                className="text-gray-700 pb-[5px]"
+              >
                 Login
               </Link>
             </div>

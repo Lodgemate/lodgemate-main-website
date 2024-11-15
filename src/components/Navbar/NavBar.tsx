@@ -20,7 +20,7 @@ function index() {
         <div className="hidden lg:flex">
           <TopBar />
         </div>
-        <Account />
+        {/* <Account /> */}
         {/* this is the more button that should only be visible when the user login*/}
         <More />
       </div>

@@ -1,7 +1,7 @@
 import { configureStore, combineReducers } from "@reduxjs/toolkit";
-import { persistStore, persistReducer } from "redux-persist";
-import storage from "redux-persist/lib/storage"; // defaults to localStorage for web
-
+import { setupListeners } from "@reduxjs/toolkit/query/react";
+import storage from "redux-persist/lib/storage";
+import { persistReducer } from "redux-persist";
 import authReducer from "./features/Auth/authSlice";
 import loginReducer from "./features/Login/signinSlice";
 import modalReducer from "./features/Modal/ModalSlice";
@@ -15,11 +15,12 @@ import ReviewReducers from "./features/Reviews/ReviewsSlice";
 import SavedReducers from "./features/saved/savedSlice";
 import tokenReducer from "./features/Auth/tokenSlice";
 
-// Configure persist settings
+// Persist configuration
 const persistConfig = {
-  key: "root", // Key for local storage
-  storage, // Storage engine to use
-  whitelist: ["auth", "User", "token", "login"],
+  key: "root",
+  version: 1,
+  storage,
+  whitelist: ["auth", "User", "token", "login"], // Reducers to persist
 };
 
 // Combine reducers
@@ -38,20 +39,22 @@ const rootReducer = combineReducers({
   token: tokenReducer,
 });
 
-// Apply persistReducer to the rootReducer
+// Persisted reducer
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
-// Configure store with the persisted reducer
-export const makeStore = () => {
-  return configureStore({
-    reducer: persistedReducer,
-  });
-};
+// Configure store
+export const store = configureStore({
+  reducer: persistedReducer,
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      immutableCheck: false,
+      serializableCheck: false,
+    }),
+});
 
-// Set up persistor
-export const persistor = persistStore(makeStore());
+// Export types
+export type RootState = ReturnType<typeof rootReducer>;
+export type AppDispatch = typeof store.dispatch;
 
-// Infer types
-export type AppStore = ReturnType<typeof makeStore>;
-export type RootState = ReturnType<AppStore["getState"]>;
-export type AppDispatch = AppStore["dispatch"];
+// Setup listeners for API cache invalidation
+setupListeners(store.dispatch);

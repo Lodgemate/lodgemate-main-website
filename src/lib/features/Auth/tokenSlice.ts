@@ -1,6 +1,7 @@
 // src/lib/features/Token/tokenSlice.ts
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { persistReducer } from "redux-persist";
+import { RootState } from "@/lib/store";
 import storage from "redux-persist/lib/storage";
 
 interface TokenState {
@@ -26,10 +27,6 @@ const tokenSlice = createSlice({
 
 export const { setToken, clearToken } = tokenSlice.actions;
 
-// Persist configuration for the token slice
-const persistConfig = {
-  key: "token",
-  storage,
-};
+export const selectToken = (state: RootState) => state.token.token;
 
-export default persistReducer(persistConfig, tokenSlice.reducer);
+export default tokenSlice.reducer;

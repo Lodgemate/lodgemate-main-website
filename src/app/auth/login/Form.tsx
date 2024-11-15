@@ -8,7 +8,6 @@ import {
   selectAllSignindata,
   selectAllSigninStatus,
   selectAllSigninError,
-  Signin,
   setAuthenticated,
   resetState,
 } from "@/lib/features/Login/signinSlice";
@@ -19,15 +18,21 @@ import {
   showSuccessfulModal,
 } from "@/lib/features/Modal/ModalSlice";
 import { GoogleAuth } from "@/services/GoogleAuth";
-import withAuth from "@/components/restrictedRoute/Authenticated";
 import { setToken } from "@/lib/features/Auth/tokenSlice";
+import axios from "axios";
+import { Endpoints } from "@/services/Api/endpoints";
+import { setUser } from "@/lib/features/Auth/authSlice";
+import { useToast } from "@/hooks/use-toast";
 
 const LoginForm: React.FC = () => {
   const router = useRouter();
   const dispatch = useAppDispatch();
+  const { toast } = useToast();
+
   const data = useAppSelector(selectAllSignindata);
   const Status = useAppSelector(selectAllSigninStatus);
   const Error = useAppSelector(selectAllSigninError);
+
   const [submitState, setSubmitState] = useState(false);
   const [locationState, setLocationState] = useState("Use location");
   const loadingRef = useRef(locationState);
@@ -35,6 +40,7 @@ const LoginForm: React.FC = () => {
     email: "",
     password: "",
   });
+
   // update form on change os the inputs
   const UpdateForm = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -49,17 +55,37 @@ const LoginForm: React.FC = () => {
   };
   // handle submit of dorm
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    dispatch(showLoadingModal("Validating Credentials"));
-    setSubmitState(true);
-    const validating = await ObjectValidation(formData);
-    if (validating) {
-      dispatch(showLoadingModal("Authenticating"));
-      // @ts-ignore
-      const response = await dispatch(Signin(formData));
-      dispatch(setToken(response.payload.token));
-
-      // router.push("/auth/signup/verify_your_email");
+    try {
+      e.preventDefault();
+      dispatch(showLoadingModal("Validating Credentials"));
+      setSubmitState(true);
+    
+        dispatch(showLoadingModal("Authenticating"));
+        const response = await axios.post(Endpoints.signIn, formData);
+        console.log({response});
+        if (response.data.status == "success") {
+          dispatch(setUser(response.data.user));
+          dispatch(setToken(response.data.token));
+          console.log('token data',response.data.token);
+          console.log('user data',response.data.user)
+          // router.push("/");
+        } else {
+          toast({
+            variant: "destructive",
+            title: "Uh oh! Something went wrong.",
+            description: "There was a problem with your request.",
+          });
+        }
+      
+    } catch (error: any) {
+      console.log({error});
+      toast({
+        variant: "destructive",
+        title: "Uh oh! Something went wrong.",
+        description: error?.response?.data.message,
+      });
+    } finally {
+      dispatch(showLoadingModal(null));
     }
   };
   ///handle google auth
@@ -86,39 +112,41 @@ const LoginForm: React.FC = () => {
       dispatch(resetState());
     }
   };
-  useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    console.log({ params });
-    const code = params.get("code");
-    console.log({ code });
-    if (code) {
-      const parsedCode = code.substring(3, code.length);
-      handleAuthwithGoogle("4%2F0" + parsedCode);
-    }
-    // check for err
-    if (Error) {
-      dispatch(showLoadingModal(null));
-      dispatch(showFailedModal(Error));
-      dispatch(resetState());
-    }
-    // check if data is true before proceeding
-    if (data === null) {
-      return;
-    }
 
-    if (data.status === "success") {
-      localStorage.setItem("token", JSON.stringify(data.token));
-      dispatch(setAuthenticated());
-      dispatch(showLoadingModal(null));
-      dispatch(showSuccessfulModal("login Successful"));
-      dispatch(showSuccessfulModal(null));
-      router.push("/");
-    } else if (!data.status) {
-      dispatch(showLoadingModal(null));
-      dispatch(showFailedModal(data));
-      dispatch(resetState());
-    }
-  }, [data, Status, Error]);
+  // useEffect(() => {
+  //   const params = new URLSearchParams(window.location.search);
+  //   console.log({ params });
+  //   const code = params.get("code");
+  //   console.log({ code });
+  //   if (code) {
+  //     const parsedCode = code.substring(3, code.length);
+  //     handleAuthwithGoogle("4%2F0" + parsedCode);
+  //   }
+  //   // check for err
+  //   if (Error) {
+  //     dispatch(showLoadingModal(null));
+  //     dispatch(showFailedModal(Error));
+  //     dispatch(resetState());
+  //   }
+  //   // check if data is true before proceeding
+  //   if (data === null) {
+  //     return;
+  //   }
+
+  //   if (data.status === "success") {
+  //     localStorage.setItem("token", JSON.stringify(data.token));
+  //     dispatch(setAuthenticated());
+  //     dispatch(showLoadingModal(null));
+  //     dispatch(showSuccessfulModal("login Successful"));
+  //     dispatch(showSuccessfulModal(null));
+  //     router.push("/");
+  //   } else if (!data.status) {
+  //     dispatch(showLoadingModal(null));
+  //     dispatch(showFailedModal(data));
+  //     dispatch(resetState());
+  //   }
+  // }, [data, Status, Error]);
+
   return (
     <div className="sm:w-[500px] w-full m-auto py-4 bg-white text-lgray text- rounded-2xl shadow-md border mt-[100px]">
       <div className="flex w-full items-center justify-center border-b">
@@ -167,7 +195,7 @@ const LoginForm: React.FC = () => {
       </form>
       <div>
         <p className=" text-center text-[12px] mt-[12px]">
-          Don’t have an account?{" "}
+          Don&apos;t have an account?{" "}
           <span>
             <Link
               href="/auth/signup"

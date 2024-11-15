@@ -8,7 +8,7 @@ interface props {
   notifications: NotificationResponse | undefined;
 }
 
-const  NotificationModal: React.FC<props> = ({ notifications }) => {
+const NotificationModal: React.FC<props> = ({ notifications }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const toggleDropdown = () => {
@@ -35,29 +35,25 @@ const  NotificationModal: React.FC<props> = ({ notifications }) => {
       notifications.data &&
       notifications.data.notifications.length >= 1
     ) {
-      notifications.data.notifications.forEach((ent) => markAsRead(ent._id));
+      // notifications.data.notifications.forEach((ent) => markAsRead(ent?._id));
     }
   }, [notifications]);
 
   return (
-    <div className='flex w-full'>
-      <div className='sm:w-[362px] p-4 mt-2 bg-white '>
+    <div className="flex w-full">
+      <div className="sm:w-[362px] p-4 mt-2 bg-white ">
         {notifications &&
         notifications.data &&
         notifications.data.notifications.length >= 1
           ? notifications.data.notifications.map((ent) => {
               return (
-                <div className='border-b pb-2 mb-2'>
-                <p className="px-3 py-1 font-bold">
-                {ent.title}
-                </p>
-                <p className=' px-4 line-clamp-1 '>
-                  {ent.body}
-                </p>
-                {ent.resource === 'chat' && 
+                <div className="border-b pb-2 mb-2">
+                  <p className="px-3 py-1 font-bold">{ent.title}</p>
+                  <p className=" px-4 line-clamp-1 ">{ent.body}</p>
+                  {/* {ent.resource === 'chat' && 
                 <Link className="px-4 hover:underline text-xs text-lblue" href={'/chat'}>Show Message</Link>
-              }
-              </div>
+              } */}
+                </div>
               );
             })
           : "No Notifications yet"}

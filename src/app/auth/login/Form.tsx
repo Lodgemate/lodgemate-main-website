@@ -59,26 +59,25 @@ const LoginForm: React.FC = () => {
       e.preventDefault();
       dispatch(showLoadingModal("Validating Credentials"));
       setSubmitState(true);
-    
-        dispatch(showLoadingModal("Authenticating"));
-        const response = await axios.post(Endpoints.signIn, formData);
-        console.log({response});
-        if (response.data.status == "success") {
-          dispatch(setUser(response.data.user));
-          dispatch(setToken(response.data.token));
-          console.log('token data',response.data.token);
-          console.log('user data',response.data.user)
-          // router.push("/");
-        } else {
-          toast({
-            variant: "destructive",
-            title: "Uh oh! Something went wrong.",
-            description: "There was a problem with your request.",
-          });
-        }
-      
+
+      dispatch(showLoadingModal("Authenticating"));
+      const response = await axios.post(Endpoints.signIn, formData);
+      console.log({ response });
+      if (response.data.status == "success") {
+        dispatch(setUser(response.data.user));
+        dispatch(setToken(response.data.token));
+        localStorage.setItem("token", response.data.token);
+
+        // router.push("/");
+      } else {
+        toast({
+          variant: "destructive",
+          title: "Uh oh! Something went wrong.",
+          description: "There was a problem with your request.",
+        });
+      }
     } catch (error: any) {
-      console.log({error});
+      console.log({ error });
       toast({
         variant: "destructive",
         title: "Uh oh! Something went wrong.",

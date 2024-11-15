@@ -5,12 +5,7 @@ import { ObjectValidation, onFocusValidation } from "@/utils/formValidation";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useRef, useState } from "react";
-import {
-  selectAlldata,
-  selectAllStatus,
-  selectAllError,
-  SignUp,
-} from "@/lib/features/Auth/authSlice";
+
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import {
   showEmailOtpModal,
@@ -23,7 +18,6 @@ import {
   resetState,
   selectAllSignindata,
   setAuthenticated,
-  Signin,
 } from "@/lib/features/Login/signinSlice";
 import { verifyEmail } from "@/services/verifyEmail";
 import { getAddress } from "@/lib/utils";
@@ -31,9 +25,6 @@ import { getAddress } from "@/lib/utils";
 const SignUpForm: React.FC = () => {
   const router = useRouter();
   const dispatch = useAppDispatch();
-  const data = useAppSelector(selectAlldata);
-  const Status = useAppSelector(selectAllStatus);
-  const Error = useAppSelector(selectAllError);
   const signedInData = useAppSelector(selectAllSignindata);
   const [submitState, setSubmitState] = useState(false);
   const [locationState, setLocationState] = useState("Use your location");
@@ -80,8 +71,8 @@ const SignUpForm: React.FC = () => {
     }
   };
   const handleLocation = async () => {
-    const location = await getAddress()
-    console.log({location})
+    const location = await getAddress();
+    console.log({ location });
 
     dispatch(showLoadingModal("Fetching Location"));
     setLocationState((prev) => {
@@ -172,7 +163,7 @@ const SignUpForm: React.FC = () => {
       }
     };
     worker();
-  }, [signedInData, Status, Error]);
+  }, [signedInData, Error]);
 
   return (
     <div className="sm:w-[500px] w-full m-auto py-4 bg-white text-lgray text-[ rounded-2xl shadow-md border mt-[100px]">

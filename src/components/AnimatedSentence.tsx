@@ -12,11 +12,7 @@ type Props = {
 };
 
 const TypewriterAnimation = ({
-  sentences = [
-    "Enter a location below. ",
-    "Enter a location below. ",
-    "Enter a location below. ",
-  ],
+  sentences = ["Where do you want to live?", "Enter a location below. "],
 }) => {
   const elementRef = useRef<HTMLSpanElement>(null);
   const cursorRef = useRef<HTMLSpanElement>(null);

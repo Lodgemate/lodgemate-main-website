@@ -23,7 +23,8 @@ import { LuMenu } from "react-icons/lu";
 import { FaAngleDown } from "react-icons/fa6";
 import { navLinks } from "@/constants";
 import { Button } from "@/components/ui/button";
-import { selectUser } from "@/lib/features/Auth/authSlice";
+import { logOut, selectUser } from "@/lib/features/Auth/authSlice";
+import { clearToken } from "@/lib/features/Auth/tokenSlice";
 
 export interface NotificationResponse {
   status: string;
@@ -123,6 +124,8 @@ function More() {
                     href="/"
                     onClick={() => {
                       dispatch(Logout());
+                      dispatch(clearToken())
+                      dispatch(logOut())
                     }}
                     className="text-gray-700"
                   >

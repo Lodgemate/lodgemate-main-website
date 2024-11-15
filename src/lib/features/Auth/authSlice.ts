@@ -1,5 +1,4 @@
 import { RootState } from "@/lib/store";
-import { ApiResponse } from "@/lib/Types";
 import { createSlice } from "@reduxjs/toolkit";
 
 interface initialStateType {
@@ -23,10 +22,13 @@ const authSlice = createSlice({
     setUser: (state, actions) => {
       state.data = actions.payload;
     },
+    logOut: (state) => {
+      state.data = null;
+    },
   },
 });
 
-export const { setUser } = authSlice.actions;
+export const { setUser, logOut } = authSlice.actions;
 
 export const selectUser = (state: RootState) => state.auth.data;
 export default authSlice.reducer;

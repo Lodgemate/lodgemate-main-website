@@ -22,6 +22,7 @@ import {
   setReviews,
 } from "@/lib/features/Reviews/ReviewsSlice";
 import ChatBtn from "@/components/Shared/chatBtn";
+import { selectToken } from "@/lib/features/Auth/tokenSlice";
 
 interface LodgeInfoProps {
   id: string;
@@ -97,11 +98,10 @@ function LodgeInfo() {
   const [commentsOrReplies, setcommentsOrReplies] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const parseToken = useAppSelector(selectToken);
   console.log(currentUserData);
 
   const reFetchReviews = async () => {
-    const localStorageToken = localStorage.getItem("token");
-    const parseToken = localStorageToken && JSON.parse(localStorageToken);
     try {
       // getting reviews
       const Url = `${Endpoints.getPrivateLodgesbyId + id}/reviews`;
@@ -126,8 +126,7 @@ function LodgeInfo() {
       setisLoading(true);
       const fetchUrl = `${Endpoints.getPublicLodgesbyId + id}`;
       const abortController = new AbortController();
-      const localStorageToken = localStorage.getItem("token");
-      const parseToken = localStorageToken && JSON.parse(localStorageToken);
+
       try {
         const res = await fetch(fetchUrl, {
           method: "GET",

@@ -17,6 +17,16 @@ import {
 import { selectAllAuthenticated } from "@/lib/features/Login/signinSlice";
 import GallerySkeleton from "../../components/Skeletons/cardsSkeleton";
 import { selectToken } from "@/lib/features/Auth//tokenSlice";
+import axios from "axios";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 const useGeolocation = () => {
   const [location, setLocation] = useState<{
@@ -136,10 +146,15 @@ const BrowseLodges: React.FC<BrowseLodgesProps> = ({ isSearchTriggered }) => {
   const storelocation = useAppSelector(selectAllLocationFilter);
   const isAuth = useAppSelector(selectAllAuthenticated);
   const parsedToken = useAppSelector(selectToken);
+  const [resentLodges, setResentLodges] = useState<any>();
+  const [displayRecent, setDisplayRecent] = useState(true);
+  const [fetchingResentLodges, setFetchingResentLodges] = useState(false);
   const param = {
     query: storequery !== "Not Found" && storequery,
     location: storelocation,
   };
+
+  console.log({ displayRecent });
 
   const optimizeImageUrl = (url: string) => {
     if (url.includes("/upload/")) {
@@ -236,7 +251,7 @@ const BrowseLodges: React.FC<BrowseLodgesProps> = ({ isSearchTriggered }) => {
       const token = await GetToken();
       let fetchUrl;
 
-      if (isAuth && token) {
+      if (token) {
         fetchUrl = Endpoints.getPublicLodges + urlGenerator(param);
       } else if (!token) {
         fetchUrl = Endpoints.getPublicLodges + urlGenerator(param);
@@ -306,23 +321,60 @@ const BrowseLodges: React.FC<BrowseLodgesProps> = ({ isSearchTriggered }) => {
   const MappedLodges = useMemo(() => {
     return (
       <>
-        {sortedLodges
-          .slice(0, showMore ? sortedLodges.length : 12)
-          .map((product: any) => (
-            <Card
-              {...product}
-              key={product._id}
-              imageUrl={optimizeImageUrl(product.coverphoto)}
-              name={product.lodgeName}
-              location={product.address_text}
-              nearbyUniversity={product.subAdministrativeArea}
-              state={product.administrativeArea}
-              price={product.price || 0}
-            />
-          ))}
+        {displayRecent ? (
+          <>
+            {resentLodges?.lodges?.map((product: any) => (
+              <Card
+                {...product}
+                key={product._id}
+                imageUrl={optimizeImageUrl(product.coverphoto)}
+                name={product.lodgeName}
+                location={product.address_text}
+                nearbyUniversity={product.subAdministrativeArea}
+                state={product.administrativeArea}
+                price={product.price || 0}
+              />
+            ))}
+          </>
+        ) : (
+          <>
+            {sortedLodges
+              .slice(0, showMore ? sortedLodges.length : 12)
+              .map((product: any) => (
+                <Card
+                  {...product}
+                  key={product._id}
+                  imageUrl={optimizeImageUrl(product.coverphoto)}
+                  name={product.lodgeName}
+                  location={product.address_text}
+                  nearbyUniversity={product.subAdministrativeArea}
+                  state={product.administrativeArea}
+                  price={product.price || 0}
+                />
+              ))}
+          </>
+        )}
       </>
     );
-  }, [sortedLodges, showMore]);
+  }, [sortedLodges, showMore, displayRecent]);
+
+  useEffect(() => {
+    const fetchLodges = async () => {
+      try {
+        setFetchingResentLodges(true);
+        const res = await axios.get(Endpoints.getCurrentPublicLodges);
+        setResentLodges(res.data.data);
+        console.log({ res });
+      } catch (error) {
+        console.log({ error });
+      } finally {
+        setFetchingResentLodges(false);
+      }
+    };
+
+    fetchLodges();
+  }, []);
+
   return (
     <div className="px-4 sm:px-[100px] mt-[50px] text-[12px] sm:text-[14px] -z-99 ">
       {/* Filters Modal */}
@@ -366,18 +418,43 @@ const BrowseLodges: React.FC<BrowseLodgesProps> = ({ isSearchTriggered }) => {
 
       {/* <LocationDisplay /> */}
       <div className="flex justify-between gap-8 items-center text-lgray mb-[24px]">
-        <h1 className=" flex flex-wrap  text-lgray ">
-          {isSearchTriggered
-            ? storequery !== "Not Found" &&
-              `Showing results for "${storequery}"`
-            : "Showing available roommates around"}
-          {storequery == "Not Found" && "No result found"}
-        </h1>
+        <div className="flex w-full justify-between">
+          <h1 className=" flex flex-wrap  text-lgray ">
+            {isSearchTriggered
+              ? storequery !== "Not Found" &&
+                `Showing results for "${storequery}"`
+              : "Showing available roommates around"}
+            {storequery == "Not Found" && "No result found"}
+          </h1>
 
-        <button
+          <Select
+            onValueChange={(value) => {
+              if (value === "recent") {
+                setDisplayRecent(true);
+              } else if (value === "location") {
+                setDisplayRecent(false);
+                console.log("selecting");
+              }
+            }}
+          >
+            <SelectTrigger className="min-w-[180px] w-fit border-none shadow-none">
+              <SelectValue placeholder="Recent lodges" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                <SelectLabel>Select Lodges</SelectLabel>
+                <SelectItem value="recent">Recent Lodges</SelectItem>
+                <SelectItem value="location">
+                  Lodges based on your location
+                </SelectItem>
+              </SelectGroup>
+            </SelectContent>
+          </Select>
+        </div>
+        {/* <button
           onClick={() => setShowFiltersModal(true)}
           className={`${
-            isSearchTriggered ? "flex" : "hidden"
+            isSearchTriggered ? "flex" : "flex"
           } border-2 border-black border-opacity-[40%] items-center gap-4 rounded-[8px] px-[16px] py-[10px]`}
         >
           <img
@@ -385,13 +462,17 @@ const BrowseLodges: React.FC<BrowseLodgesProps> = ({ isSearchTriggered }) => {
             alt="filter"
           />
           Filter
-        </button>
+        </button> */}
       </div>
 
       <div>
         {/* Move to another component and laxzy load it with suspense */}
         <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 ">
-          {isLoading ? <GallerySkeleton /> : MappedLodges}
+          {isLoading || fetchingResentLodges ? (
+            <GallerySkeleton />
+          ) : (
+            MappedLodges
+          )}
         </div>
 
         {!showMore && (

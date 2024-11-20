@@ -1,49 +1,47 @@
+import { selectToken } from "@/lib/features/Auth/tokenSlice";
+import { useAppSelector } from "@/lib/hooks";
 import { Endpoints } from "@/services/Api/endpoints";
 import { FetchApi } from "@/utils/Fetchdata";
 import { useEffect, useState } from "react";
 
-function HeartIcon({type, id}:any) {
+function HeartIcon({ type, id }: any) {
   const [isRed, setIsRed] = useState(false);
   const [clicked, setclicked] = useState(false);
+  const parseToken = useAppSelector(selectToken);
 
   const handleClick = () => {
     setIsRed(!isRed);
-    setclicked(true)
+    setclicked(true);
   };
-  useEffect(()=>{
-    const localStorageToken = localStorage.getItem("token");
-    const parseToken = localStorageToken && JSON.parse(localStorageToken);
-
+  useEffect(() => {
     const AddToWhishlist = async () => {
       const url = Endpoints.addToWishlist;
 
       const options = {
         method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
           Authorization: `Bearer ${parseToken}`,
         },
-        body:JSON.stringify ({
+        body: JSON.stringify({
           type: type,
           id: id,
         }),
       };
 
-      try{
-      const res: any= await FetchApi(url, options)
-      if (res.status === 'success') {
-      }else{
-        setIsRed(false)
+      try {
+        const res: any = await FetchApi(url, options);
+        if (res.status === "success") {
+        } else {
+          setIsRed(false);
 
-        throw res
+          throw res;
+        }
+      } catch (error: any) {
+        alert(error.message);
+      } finally {
+        setclicked(false);
       }
-    } catch (error:any) {
-      alert(error.message)
-      
-    }finally{
-      setclicked(false)
-    }
-      
     };
 
     const DelfromoWhishlist = async () => {
@@ -56,26 +54,24 @@ function HeartIcon({type, id}:any) {
         },
       };
 
-      try{
-        const res: any= await FetchApi(url, options)
-        if (res.status === 'success') {
-        }else{
-          setIsRed(true)
+      try {
+        const res: any = await FetchApi(url, options);
+        if (res.status === "success") {
+        } else {
+          setIsRed(true);
 
-          throw res
+          throw res;
         }
-      } catch (error:any) {
-        alert(error.message)
-      }finally{
-        setclicked(false)
+      } catch (error: any) {
+        alert(error.message);
+      } finally {
+        setclicked(false);
       }
     };
     if (clicked) {
-      isRed? AddToWhishlist():DelfromoWhishlist()
+      isRed ? AddToWhishlist() : DelfromoWhishlist();
     }
-
-
-  },[isRed])
+  }, [isRed]);
 
   return (
     <img

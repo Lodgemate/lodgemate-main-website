@@ -163,7 +163,7 @@ const BrowseRoommates: React.FC<BrowseLodgesProps> = ({
     const fetchData = async () => {
       const token = await GetToken();
       let fetchUrl;
-      if (isAuth && token) {
+      if (token) {
         // this will be uncommented when db is updated
         // fetchUrl= Endpoints.getPrivateServices + urlGenerator(param);
         // this will be deleted when db is updated
@@ -171,7 +171,7 @@ const BrowseRoommates: React.FC<BrowseLodgesProps> = ({
       } else if (!token) {
         fetchUrl = Endpoints.getPublicRoommates + urlGenerator(param);
       }
-      console.log(fetchUrl);
+      console.log({ fetchUrl });
       // nullify fetch
       if (!fetchUrl) {
         return;

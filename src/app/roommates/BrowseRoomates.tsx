@@ -1,10 +1,8 @@
 "use client";
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo, useTransition } from "react";
 import Card from "./Card";
 import FilterOptions from "./FilterOptions";
 import ProfileDetails from "./roomate_details/ProfileDetails";
-
-import Link from "next/link";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import {
   Fetchroommate,
@@ -21,6 +19,7 @@ import {
 import { selectAllAuthenticated } from "@/lib/features/Login/signinSlice";
 import GallerySkeleton from "@/components/Skeletons/cardsSkeleton";
 import AOS from "aos";
+import { selectToken } from "@/lib/features/Auth/tokenSlice";
 
 const useGeolocation = () => {
   const [location, setLocation] = useState<{
@@ -124,6 +123,7 @@ const BrowseRoommates: React.FC<BrowseLodgesProps> = ({
   const dispatch = useAppDispatch();
   const storequery = useAppSelector(selectAllQueryFilter);
   const storelocation = useAppSelector(selectAllLocationFilter);
+  const parsedToken = useAppSelector(selectToken);
   const isAuth = useAppSelector(selectAllAuthenticated);
 
   const param = {
@@ -136,11 +136,6 @@ const BrowseRoommates: React.FC<BrowseLodgesProps> = ({
   const { location } = useGeolocation();
 
   const GetToken = async () => {
-    const localStorageToken = localStorage.getItem("token");
-    if (!localStorageToken) {
-      return null;
-    }
-    const parsedToken = JSON.parse(localStorageToken);
     return parsedToken;
   };
   const handleCardClick = (roommate: any) => {
@@ -305,27 +300,27 @@ const BrowseRoommates: React.FC<BrowseLodgesProps> = ({
     //   // setFilteredProducts(filtered);
     //   setShowFiltersModal(false); // Close modal after applying filters
   };
-  
- const MappedRoommates = useMemo(() => {
-   return (
-     <>
-       {sortedRoommates
-         .slice(0, showMore ? sortedRoommates.length : 12)
-         .map((roommate: any) => (
-           <Card
-             {...roommate}
-             key={roommate._id} // Use roommate._id for consistency with MappedLodges
-             imageUrl={optimizeImageUrl(roommate.postedBy.profilePicture)}
-             name={roommate.postedBy.firstName} // Consistent property usage
-             location={roommate.address_text} // Keep the same as MappedLodges
-             nearbyUniversity={roommate.subAdministrativeArea}
-             sex={roommate.postedBy.gender} // Additional property specific to roommates
-             onClick={() => handleCardClick(roommate)} // Click handler for roommate
-           />
-         ))}
-     </>
-   );
- }, [sortedRoommates, showMore, handleCardClick]);
+
+  const MappedRoommates = useMemo(() => {
+    return (
+      <>
+        {sortedRoommates
+          .slice(0, showMore ? sortedRoommates.length : 12)
+          .map((roommate: any) => (
+            <Card
+              {...roommate}
+              key={roommate._id} // Use roommate._id for consistency with MappedLodges
+              imageUrl={optimizeImageUrl(roommate.postedBy.profilePicture)}
+              name={roommate.postedBy.firstName} // Consistent property usage
+              location={roommate.address_text} // Keep the same as MappedLodges
+              nearbyUniversity={roommate.subAdministrativeArea}
+              sex={roommate.postedBy.gender} // Additional property specific to roommates
+              onClick={() => handleCardClick(roommate)} // Click handler for roommate
+            />
+          ))}
+      </>
+    );
+  }, [sortedRoommates, showMore, handleCardClick]);
 
   console.log(RoommatesData);
 
@@ -352,7 +347,7 @@ const BrowseRoommates: React.FC<BrowseLodgesProps> = ({
           onClick={() => setShowFiltersModal(true)}
           className={`${
             isSearchTriggered ? "flex" : "hidden"
-          } border-2 border-black border-opacity-[40%] items-center gap-4 rounded-[8px] px-[16px] py-[10px]`}
+          } border-2 border-black border-opacity-[40%] items-center gap-4 rounded-full px-[16px] py-[10px]`}
         >
           <img
             src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1717408109/utilities/LodgeMate_File/page_info_y6jhz3.svg"

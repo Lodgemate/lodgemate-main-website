@@ -16,7 +16,7 @@ import {
 } from "@/lib/features/Filters/filterSlice";
 import { selectAllAuthenticated } from "@/lib/features/Login/signinSlice";
 import GallerySkeleton from "../../components/Skeletons/cardsSkeleton";
-
+import { selectToken } from "@/lib/features/Auth//tokenSlice";
 
 const useGeolocation = () => {
   const [location, setLocation] = useState<{
@@ -120,17 +120,12 @@ const LocationDisplay: React.FC = () => {
   );
 };
 
-
 interface BrowseLodgesProps {
   isSearchTriggered: boolean;
 }
 const cache = new Map<string, any>();
 
-
-
-const BrowseLodges: React.FC<BrowseLodgesProps> = ({
-  isSearchTriggered,
-}) => {
+const BrowseLodges: React.FC<BrowseLodgesProps> = ({ isSearchTriggered }) => {
   const [showFiltersModal, setShowFiltersModal] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   //  (useless for now) const [filters, setFilters] = useState({});
@@ -140,11 +135,12 @@ const BrowseLodges: React.FC<BrowseLodgesProps> = ({
   const storequery = useAppSelector(selectAllQueryFilter);
   const storelocation = useAppSelector(selectAllLocationFilter);
   const isAuth = useAppSelector(selectAllAuthenticated);
+  const parsedToken = useAppSelector(selectToken);
   const param = {
-    query: storequery !== 'Not Found' && storequery,
+    query: storequery !== "Not Found" && storequery,
     location: storelocation,
   };
-  
+
   const optimizeImageUrl = (url: string) => {
     if (url.includes("/upload/")) {
       return url.replace("/upload/", "/upload/w_300,f_auto/");
@@ -230,81 +226,73 @@ const BrowseLodges: React.FC<BrowseLodgesProps> = ({
   };
 
   const GetToken = async () => {
-    const localStorageToken = localStorage.getItem("token");
-    if (!localStorageToken) {
-      return null;
-    }
-    const parsedToken = JSON.parse(localStorageToken);
     return parsedToken;
   };
 
   // fetching lodges data
- useEffect(() => {
-   setIsLoading(true);
-   const fetchData = async () => {
-     const token = await GetToken();
-     let fetchUrl;
+  useEffect(() => {
+    setIsLoading(true);
+    const fetchData = async () => {
+      const token = await GetToken();
+      let fetchUrl;
 
-     if (isAuth && token) {
-       fetchUrl = Endpoints.getPublicLodges + urlGenerator(param);
-     } else if (!token) {
-       fetchUrl = Endpoints.getPublicLodges + urlGenerator(param);
-     }
+      if (isAuth && token) {
+        fetchUrl = Endpoints.getPublicLodges + urlGenerator(param);
+      } else if (!token) {
+        fetchUrl = Endpoints.getPublicLodges + urlGenerator(param);
+      }
 
-     if (!fetchUrl) return;
+      if (!fetchUrl) return;
 
-     try {
-       dispatch(setSearchQuery(null));
-       await dispatch(FetchLodges(fetchUrl));
-     } catch (error: any) {
-       console.error("Error fetching data:", error);
-     } finally {
-       setIsLoading(false);
-     }
-   };
-   fetchData();
- }, [dispatch, storelocation]);
+      try {
+        dispatch(setSearchQuery(null));
+        await dispatch(FetchLodges(fetchUrl));
+      } catch (error: any) {
+        console.error("Error fetching data:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchData();
+  }, [dispatch, storelocation]);
 
- // Lodges sorting function
+  // Lodges sorting function
   const sortedLodges = useMemo(() => {
-      setIsLoading(true);
+    setIsLoading(true);
 
     if (!LodgesData || !location) return [];
-           setIsLoading(false);
+    setIsLoading(false);
 
+    return [...LodgesData.data?.lodges].sort((a: any, b: any) => {
+      // Compare function to check if values are the same, returning a boolean score
+      const isSame = (x: string, y: string) => (x === y ? 1 : 0);
 
- return [...LodgesData.data?.lodges].sort((a: any, b: any) => {
-   // Compare function to check if values are the same, returning a boolean score
-   const isSame = (x: string, y: string) => (x === y ? 1 : 0);
+      // Step 1: Sort by nearbyUniversity similarity with localGovernmentArea
+      const nearbyUniversityA = isSame(
+        a.nearbyUniversity,
+        location.localGovernmentArea
+      );
+      const nearbyUniversityB = isSame(
+        b.nearbyUniversity,
+        location.localGovernmentArea
+      );
+      if (nearbyUniversityA !== nearbyUniversityB) {
+        return nearbyUniversityB - nearbyUniversityA; // Sort lodges where nearbyUniversity matches first
+      }
 
-   // Step 1: Sort by nearbyUniversity similarity with localGovernmentArea
-   const nearbyUniversityA = isSame(
-     a.nearbyUniversity,
-     location.localGovernmentArea
-   );
-   const nearbyUniversityB = isSame(
-     b.nearbyUniversity,
-     location.localGovernmentArea
-   );
-   if (nearbyUniversityA !== nearbyUniversityB) {
-     return nearbyUniversityB - nearbyUniversityA; // Sort lodges where nearbyUniversity matches first
-   }
+      // Step 2: Sort by state similarity
+      const stateA = isSame(a.state, location.state);
+      const stateB = isSame(b.state, location.state);
+      if (stateA !== stateB) {
+        return stateB - stateA; // Sort lodges where state matches next
+      }
 
-   // Step 2: Sort by state similarity
-   const stateA = isSame(a.state, location.state);
-   const stateB = isSame(b.state, location.state);
-   if (stateA !== stateB) {
-     return stateB - stateA; // Sort lodges where state matches next
-   }
-
-   // Step 3: Sort by country similarity
-   const countryA = isSame(a.country, location.country);
-   const countryB = isSame(b.country, location.country);
-   return countryB - countryA; // Finally, sort lodges where country matches
- });
-
-
- }, [LodgesData, location]);
+      // Step 3: Sort by country similarity
+      const countryA = isSame(a.country, location.country);
+      const countryB = isSame(b.country, location.country);
+      return countryB - countryA; // Finally, sort lodges where country matches
+    });
+  }, [LodgesData, location]);
 
   const handleShowMore = () => {
     setShowMore(true);
@@ -336,33 +324,33 @@ const BrowseLodges: React.FC<BrowseLodgesProps> = ({
     );
   }, [sortedLodges, showMore]);
   return (
-    <div className='px-4 sm:px-[100px] mt-[50px] text-[12px] sm:text-[14px] -z-99 '>
+    <div className="px-4 sm:px-[100px] mt-[50px] text-[12px] sm:text-[14px] -z-99 ">
       {/* Filters Modal */}
       {showFiltersModal && (
         <div
-          className='fixed text-[14px] inset-0  h-screen -top-[50px] bottom-0 px-1 items-center bg-black bg-opacity-25 flex justify-center z-[999]'
+          className="fixed text-[14px] inset-0  h-screen -top-[50px] bottom-0 px-1 items-center bg-black bg-opacity-25 flex justify-center z-[999]"
           onClick={handleModalClick}
         >
-          <div className='bg-white border shadow-lg  rounded-[20px]  w-[768px] mt-6 max-h-[80vh] no-scrollbar overflow-y-auto'>
+          <div className="bg-white border shadow-lg  rounded-[20px]  w-[768px] mt-6 max-h-[80vh] no-scrollbar overflow-y-auto">
             {/* Header */}
-            <div className='flex relative justify-center p-2 items-center mb- border-b bor'>
-              <h2 className='text-[16px] font-bold'>Filters</h2>
+            <div className="flex relative justify-center p-2 items-center mb- border-b bor">
+              <h2 className="text-[16px] font-bold">Filters</h2>
               <button
                 onClick={() => setShowFiltersModal(false)}
-                className='text-gray-500  absolute right-4 top-2 hover:text-gray-800'
+                className="text-gray-500  absolute right-4 top-2 hover:text-gray-800"
               >
                 <svg
-                  xmlns='http://www.w3.org/2000/svg'
-                  className='h-6 w-6'
-                  fill='none'
-                  viewBox='0 0 24 24'
-                  stroke='currentColor'
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-6 w-6"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
                 >
                   <path
-                    strokeLinecap='round'
-                    strokeLinejoin='round'
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
                     strokeWidth={2}
-                    d='M6 18L18 6M6 6l12 12'
+                    d="M6 18L18 6M6 6l12 12"
                   />
                 </svg>
               </button>
@@ -377,8 +365,8 @@ const BrowseLodges: React.FC<BrowseLodgesProps> = ({
       )}
 
       {/* <LocationDisplay /> */}
-      <div className='flex justify-between gap-8 items-center text-lgray mb-[24px]'>
-        <h1 className=' flex flex-wrap  text-lgray '>
+      <div className="flex justify-between gap-8 items-center text-lgray mb-[24px]">
+        <h1 className=" flex flex-wrap  text-lgray ">
           {isSearchTriggered
             ? storequery !== "Not Found" &&
               `Showing results for "${storequery}"`
@@ -393,8 +381,8 @@ const BrowseLodges: React.FC<BrowseLodgesProps> = ({
           } border-2 border-black border-opacity-[40%] items-center gap-4 rounded-[8px] px-[16px] py-[10px]`}
         >
           <img
-            src='https://res.cloudinary.com/dcb4ilgmr/image/upload/v1717408109/utilities/LodgeMate_File/page_info_y6jhz3.svg'
-            alt='filter'
+            src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1717408109/utilities/LodgeMate_File/page_info_y6jhz3.svg"
+            alt="filter"
           />
           Filter
         </button>
@@ -402,15 +390,15 @@ const BrowseLodges: React.FC<BrowseLodgesProps> = ({
 
       <div>
         {/* Move to another component and laxzy load it with suspense */}
-        <div className='grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 '>
+        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 ">
           {isLoading ? <GallerySkeleton /> : MappedLodges}
         </div>
 
         {!showMore && (
-          <div className='mt-10 text-[12px] flex flex-col justify-center items-center text-lgray font-medium pb-[200px]'>
-            <p className=' pb-[16px] '>Continue exploring lodges</p>
+          <div className="mt-10 text-[12px] flex flex-col justify-center items-center text-lgray font-medium pb-[200px]">
+            <p className=" pb-[16px] ">Continue exploring lodges</p>
             <button
-              className='border px-4 py-2 rounded-[12px]'
+              className="border px-4 py-2 rounded-[12px]"
               onClick={handleShowMore}
             >
               Show more

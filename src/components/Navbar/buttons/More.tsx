@@ -11,6 +11,7 @@ import {
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
+  DropdownMenuLabel,
 } from "@/components/ui/dropdown-menu";
 import {
   Sheet,
@@ -30,13 +31,38 @@ export interface NotificationResponse {
   status: string;
   data: NotificationData;
 }
-
 export interface NotificationData {
   notifications: Notification[];
 }
 
+const Notification = ({ setShowModel }: any) => (
+  <DropdownMenu>
+    <DropdownMenuTrigger className="text-gray-700 text-md text-left w-full ">
+      Notifications
+    </DropdownMenuTrigger>
+    <DropdownMenuContent side="left" className="max-w-xs">
+      <DropdownMenuLabel className="font-normal text-center">
+        Notifications
+      </DropdownMenuLabel>
+      <DropdownMenuSeparator />
+      <DropdownMenuItem
+        className="flex font-light text-sm text-gray-600 flex-wrap"
+        onSelect={() => setShowModel(false)}
+      >
+        Hi Jude, you have a new message in your inbox. View message
+      </DropdownMenuItem>
+      <DropdownMenuSeparator />
+      <DropdownMenuItem className="font-light text-sm text-gray-600">
+        You have not checked your wishlist since you last saved a lodge. H Jude,
+        you have a new message in your inbox. Check it out
+      </DropdownMenuItem>
+    </DropdownMenuContent>
+  </DropdownMenu>
+);
+
 function More() {
   const currentUser = useAppSelector(selectUser);
+  const [showModel, setShowModel] = useState<boolean | undefined>(undefined);
   const dispatch = useAppDispatch();
 
   return (
@@ -84,7 +110,7 @@ function More() {
           </div>
 
           <div className="max-md:hidden">
-            <DropdownMenu>
+            <DropdownMenu open={showModel}>
               {/* desktop */}
               <DropdownMenuTrigger className="flex items-end flex-col relative bottom-3">
                 <div className="rounded-full bg-red-600 h-5 w-5 grid relative top-2 z-10 -right-1 place-items-center text-xs text-white">
@@ -100,16 +126,26 @@ function More() {
               </DropdownMenuTrigger>
               {/* Dropdown modal */}
               <DropdownMenuContent className="w-full min-w-[16.5rem] right-5 relative">
-                {navLinks.map(({ title, url }, i) => (
-                  <div key={title}>
-                    {i % 3 == 0 && i > 1 && <DropdownMenuSeparator />}
-                    <DropdownMenuItem>
-                      <Link href={url} className="text-gray-700">
-                        {title}
-                      </Link>
-                    </DropdownMenuItem>
-                  </div>
-                ))}
+                {navLinks.map(({ title, url }, i) => {
+                  return (
+                    <>
+                      {title == "Notifications" ? (
+                        <DropdownMenuItem key={title}>
+                          <Notification setShowModel={setShowModel} />
+                        </DropdownMenuItem>
+                      ) : (
+                        <div key={title}>
+                          {i % 3 == 0 && i > 1 && <DropdownMenuSeparator />}
+                          <DropdownMenuItem>
+                            <Link href={url} className="text-gray-700">
+                              {title}
+                            </Link>
+                          </DropdownMenuItem>
+                        </div>
+                      )}
+                    </>
+                  );
+                })}
 
                 <DropdownMenuItem>
                   <Link
@@ -124,8 +160,8 @@ function More() {
                     href="/"
                     onClick={() => {
                       dispatch(Logout());
-                      dispatch(clearToken())
-                      dispatch(logOut())
+                      dispatch(clearToken());
+                      dispatch(logOut());
                     }}
                     className="text-gray-700"
                   >

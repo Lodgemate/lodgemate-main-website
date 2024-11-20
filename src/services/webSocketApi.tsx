@@ -2,6 +2,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { io, Socket } from "socket.io-client";
 import { useAppSelector } from "@/lib/hooks";
+import { selectToken } from "@/lib/features/Auth//tokenSlice";
 import { selectAllUsersdata } from "@/lib/features/Users/usersSlice";
 import { randomUUID } from "crypto";
 import { MainObject } from "@/app/chat/types";
@@ -26,6 +27,7 @@ const WebSocketComponent: React.FC<WebSocketComponentProps> = ({
     null
   );
   const [audioChunks, setAudioChunks] = useState<Blob[]>([]);
+  const parsedToken = useAppSelector(selectToken);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -34,7 +36,6 @@ const WebSocketComponent: React.FC<WebSocketComponentProps> = ({
       return;
     }
 
-    const parsedToken = JSON.parse(token);
     const newSocket = io("https://api.lodgemate.com.ng/chats", {
       path: "/socket.io",
       transports: ["websocket"],
@@ -211,9 +212,6 @@ const WebSocketComponent: React.FC<WebSocketComponentProps> = ({
     };
     reader.readAsDataURL(audioBlob); // Convert blob to base64
   };
-
-    
-   
 
   const stopRecording = () => {
     if (mediaRecorder && mediaRecorder.state !== "inactive") {

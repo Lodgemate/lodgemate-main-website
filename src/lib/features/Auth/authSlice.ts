@@ -5,6 +5,7 @@ interface initialStateType {
   data: {
     _id: string;
     firstName: string;
+    profilePicture?: string;
   } | null;
   status: string;
   error: string | null;

@@ -10,14 +10,15 @@ import { FetchApi } from "@/utils/Fetchdata";
 import { Endpoints } from "@/services/Api/endpoints";
 import { useParams } from "next/navigation";
 import EditLodgeModal from "./modals/EditLodgeModal";
+import { selectToken } from "@/lib/features/Auth//tokenSlice";
 import ReviewsListed from "./ReviewsListed";
-
 
 const cache = new Map<string, any>();
 
 const MyProfile = () => {
   // const data= useAppSelector(selectAllUsersdata)
   const [currentUserData, setcurrentUserData] = useState<any>(null);
+  const parsedToken = useAppSelector(selectToken);
   const params = useParams();
   const { id } = params || {};
   const [activeTab, setActiveTab] = useState("Lodges listed");
@@ -51,12 +52,10 @@ const MyProfile = () => {
   }, [id]);
 
   useEffect(() => {
-    const localStorageToken = localStorage.getItem("token");
-    const parseToken = localStorageToken && JSON.parse(localStorageToken);
     const body = {
       headers: {
         "content-type": "Application-json",
-        Authorization: `Bearer ${parseToken}`,
+        Authorization: `Bearer ${parsedToken}`,
       },
     };
 

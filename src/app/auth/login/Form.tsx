@@ -67,7 +67,10 @@ const LoginForm: React.FC = () => {
         dispatch(setUser(response.data.user));
         dispatch(setToken(response.data.token));
         localStorage.setItem("token", response.data.token);
-
+        toast({
+          variant: "default",
+          title: "Logged in successfully",
+        });
         router.push("/");
       } else {
         toast({

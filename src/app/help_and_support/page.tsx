@@ -9,6 +9,7 @@ import axios from "axios";
 import { redirect } from "next/navigation";
 import { selectToken } from "@/lib/features/Auth//tokenSlice";
 import { selectUser } from "@/lib/features/Auth/authSlice";
+import { TbSend2 } from "react-icons/tb";
 
 interface ChatMessage {
   _id: number;
@@ -159,14 +160,14 @@ const Help = () => {
 
       console.log("emmitting new message");
 
-      // socket.emit("room-message", {
-      //   participants: [currentUser?.data.user._id],
-      //   roomId: currentUser?.data.user._id,
-      //   sentBy: currentUser?.data.user._id,
-      //   fullname: currentUser?.data.user.firstName,
-      //   profilePicture: currentUser?.data.user.profilePicture,
-      //   message: message,
-      // });
+      socket.emit("room-message", {
+        participants: [myId],
+        roomId: myId,
+        sentBy: myId,
+        fullname: user?.firstName,
+        profilePicture: user?.profilePicture,
+        message: message,
+      });
 
       setActiveChat((prevChat) => ({
         ...prevChat,
@@ -195,7 +196,7 @@ const Help = () => {
         <div className=" border-b pb-[80px]"></div>
       </div>
 
-      <div className=" flex flex-col w-full max-w-3xl justify-between p-4">
+      <div className="flex flex-col w-full max-w-3xl justify-between p-4">
         <ScrollArea className="w-full">
           {activeChat?.messages.map((msg, index) => {
             const isLastMessage = index === activeChat.messages.length - 1;
@@ -228,7 +229,7 @@ const Help = () => {
           })}
         </ScrollArea>
 
-        <div className="flex items-center p-4 border-t border-gray-300">
+        <div className="flex items-center p-2 border-gray-300 relati bottom-0">
           <div className="flex items-center p-1 bg-[#30a2ff28] h-[48px] w-full rounded-full  pl-2 pr-4">
             <button className="mr-1 text-gray-500">
               <label htmlFor="imageInput">
@@ -258,16 +259,16 @@ const Help = () => {
               }}
               className="flex-grow px-4 py-2 bg-transparent rounded-lg focus:outline-none "
             />
-            <button className="ml-2 text-gray-500">
-              <img
-                src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1719952823/utilities/LodgeMate_File/bi_emoji-smile_ph5jwq.svg"
-                alt=""
-              />
+            <button
+              className="ml-2 text-gray-600 md:hidden"
+              onClick={() => handleSendMessage()}
+            >
+              <TbSend2 className="h-6 w-6" />
             </button>
           </div>
 
           <button
-            className="ml-2 text-blue-500 font-bold"
+            className="ml-2 text-blue-500 font-bold max-md:hidden"
             onClick={() => handleSendMessage()}
           >
             Send

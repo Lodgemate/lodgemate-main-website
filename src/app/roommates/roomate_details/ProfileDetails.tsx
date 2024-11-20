@@ -4,8 +4,8 @@ import { useAppSelector } from "@/lib/hooks";
 import { Roommate } from "@/lib/Types";
 import Link from "next/link";
 import React, { useState } from "react";
+import Image from "next/image";
 import ReportProfile from "../modals/ReportProfile";
-
 
 interface ProfileDetailsProps {
   roommate: Roommate;
@@ -50,14 +50,12 @@ const hobbyIcons: { [key: string]: string } = {
     "https://res.cloudinary.com/dcb4ilgmr/image/upload/v1718407628/utilities/LodgeMate_File/streamline_interface-edit-magic-wand-design-magic-star-supplies-tool-wand_shufta.svg",
 };
 
-
-
 const ProfileDetails: React.FC<ProfileDetailsProps> = ({
   roommate,
   onClose,
 }) => {
-  const [openreport, setopenreport] = useState(false)
-  const currentUserData = useAppSelector(selectAllUsersdata)
+  const [openreport, setopenreport] = useState(false);
+  const currentUserData = useAppSelector(selectAllUsersdata);
   const chatDetails = {
     firstName: roommate.postedBy.firstName,
     lastName: roommate.postedBy.lastName,
@@ -76,7 +74,6 @@ const ProfileDetails: React.FC<ProfileDetailsProps> = ({
     return url;
   };
 
-  
   return (
     <div className="">
       <ReportProfile
@@ -100,12 +97,14 @@ const ProfileDetails: React.FC<ProfileDetailsProps> = ({
             </button>{" "}
           </div>
 
-          <div className="flex justify-center items-center flex-col gap-4 px-4 ">
-            <div className="w-[150px] h-[150px]  border rounded-full overflow-hidden items-center mt-[24px] mb-[16px flex">
-              <img
+          <div className="flex justify-center items-center flex-col mt-4 gap-4 px-4 ">
+            <div className="w-[150px] h-[150px]  border rounded-full ">
+              <Image
                 src={optimizeImageUrl(roommate.postedBy.profilePicture)}
                 alt={roommate.postedBy.firstName}
-                className="rounded-full w-[150px]- bg-black h-[150px]-"
+                width={100}
+                height={100}
+                className="rounded-full w-full h-full object-cover"
               />
             </div>
             <p className="text-[20px] font-semibold">

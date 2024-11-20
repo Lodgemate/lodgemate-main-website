@@ -2,6 +2,8 @@
 import UserImage from "@/components/Shared/userImage";
 import { Endpoints } from "@/services/Api/endpoints";
 import { FetchApi } from "@/utils/Fetchdata";
+import { selectToken } from "@/lib/features/Auth//tokenSlice";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import React, { useEffect, useState, useMemo } from "react";
 
 interface ActiveChatsProps {
@@ -18,15 +20,14 @@ const ActiveChats: React.FC<ActiveChatsProps> = ({
   setActiveChat,
 }) => {
   const [data, setData] = useState<any[] | null>(null);
+  const parsedToken = useAppSelector(selectToken);
 
   useEffect(() => {
-    const localStorageToken = localStorage.getItem("token");
-    const parseToken = localStorageToken && JSON.parse(localStorageToken);
     const url = Endpoints.getAllMessages;
 
     const body = {
       headers: {
-        Authorization: `Bearer ${parseToken}`,
+        Authorization: `Bearer ${parsedToken}`,
       },
     };
 

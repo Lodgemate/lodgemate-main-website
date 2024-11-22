@@ -22,10 +22,13 @@ import {
 
 import { LuMenu } from "react-icons/lu";
 import { FaAngleDown } from "react-icons/fa6";
+import { GoPerson } from "react-icons/go";
+import { IoLogOutOutline } from "react-icons/io5";
 import { navLinks } from "@/constants";
 import { Button } from "@/components/ui/button";
 import { logOut, selectUser } from "@/lib/features/Auth/authSlice";
 import { clearToken } from "@/lib/features/Auth/tokenSlice";
+import { usePathname } from "next/navigation";
 
 export interface NotificationResponse {
   status: string;
@@ -64,6 +67,8 @@ function More() {
   const currentUser = useAppSelector(selectUser);
   const [showModel, setShowModel] = useState<boolean | undefined>(undefined);
   const dispatch = useAppDispatch();
+  const pathname = usePathname();
+  console.log(pathname);
 
   return (
     <>
@@ -75,13 +80,15 @@ function More() {
                 <LuMenu className="w-5 h-5" />
               </SheetTrigger>
               <SheetContent>
-                {navLinks.map(({ url, title }) => (
-                  <SheetClose asChild>
+                {navLinks.map(({ url, title, Icon }) => (
+                  <SheetClose asChild key={url} className="w-full">
                     <Link
                       href={url}
-                      key={url}
-                      className="flex w-full p-2 rounded-lg hover:bg-zinc-100"
+                      className={`flex items-center text-gray-800 w-full p-2 rounded-lg hover:bg-zinc-100 gap-2 ${
+                        url == pathname && "bg-primary text-white"
+                      }`}
                     >
+                      <Icon className="w-5 h-5" />
                       {title}
                     </Link>
                   </SheetClose>
@@ -89,8 +96,9 @@ function More() {
                 <SheetClose className="block text-left w-full">
                   <Link
                     href={`/profile/${currentUser && currentUser?._id}`}
-                    className="  w-full p-2 rounded-lg hover:bg-zinc-100 block"
+                    className="w-full flex items-center p-2 gap-2 text-gray-800 rounded-lg hover:bg-zinc-100"
                   >
+                    <GoPerson className="w-5 h-5" />
                     View profile
                   </Link>
                 </SheetClose>
@@ -99,9 +107,12 @@ function More() {
                     href="/"
                     onClick={() => {
                       dispatch(Logout());
+                      dispatch(clearToken());
+                      dispatch(logOut());
                     }}
-                    className=" w-full p-2 rounded-lg hover:bg-zinc-100 block"
+                    className=" w-full p-2 gap-2 text-gray-800 rounded-lg hover:bg-zinc-100 flex items-center"
                   >
+                    <IoLogOutOutline className="w-5 h-5" />
                     Logout
                   </Link>
                 </SheetClose>

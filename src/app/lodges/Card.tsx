@@ -3,6 +3,7 @@ import React from "react";
 import products, { Product } from "./data";
 import AOS from "aos";
 import HeartIcon from "./SaveIcon";
+import Image from "next/image";
 
 interface ProductCardProps {
   id: number;
@@ -50,10 +51,12 @@ const ProductCard: React.FC<ProductCardProps> = ({
     >
       <div className="relative ">
         <Link href={`/lodges/lodge_details/${id}`} passHref>
-          <img
+          <Image
             className="w-full h-[144px] sm:h-[200px] object-cover rounded-[12px]"
             src={imageUrl}
             alt={name}
+            width={100}
+            height={100}
           />
         </Link>
 

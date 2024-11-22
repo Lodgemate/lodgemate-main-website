@@ -27,6 +27,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { usePathname } from "next/navigation";
 
 const useGeolocation = () => {
   const [location, setLocation] = useState<{
@@ -149,12 +150,11 @@ const BrowseLodges: React.FC<BrowseLodgesProps> = ({ isSearchTriggered }) => {
   const [resentLodges, setResentLodges] = useState<any>();
   const [displayRecent, setDisplayRecent] = useState(true);
   const [fetchingResentLodges, setFetchingResentLodges] = useState(false);
+
   const param = {
     query: storequery !== "Not Found" && storequery,
     location: storelocation,
   };
-
-  console.log({ displayRecent });
 
   const optimizeImageUrl = (url: string) => {
     if (url.includes("/upload/")) {
@@ -419,7 +419,7 @@ const BrowseLodges: React.FC<BrowseLodgesProps> = ({ isSearchTriggered }) => {
       {/* <LocationDisplay /> */}
       <div className="flex justify-between gap-8 items-center text-lgray mb-[24px]">
         <div className="flex w-full justify-between">
-          <h1 className=" flex flex-wrap  text-lgray ">
+          <h1 className=" flex flex-wrap  text-lgray max-md:hidden">
             {isSearchTriggered
               ? storequery !== "Not Found" &&
                 `Showing results for "${storequery}"`
@@ -451,18 +451,6 @@ const BrowseLodges: React.FC<BrowseLodgesProps> = ({ isSearchTriggered }) => {
             </SelectContent>
           </Select>
         </div>
-        {/* <button
-          onClick={() => setShowFiltersModal(true)}
-          className={`${
-            isSearchTriggered ? "flex" : "flex"
-          } border-2 border-black border-opacity-[40%] items-center gap-4 rounded-[8px] px-[16px] py-[10px]`}
-        >
-          <img
-            src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1717408109/utilities/LodgeMate_File/page_info_y6jhz3.svg"
-            alt="filter"
-          />
-          Filter
-        </button> */}
       </div>
 
       <div>

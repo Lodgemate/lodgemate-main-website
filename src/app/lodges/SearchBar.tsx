@@ -1,8 +1,7 @@
 "use client"; // Use client
 
 import Image from "next/image"; // Import Image from Next.js
-import React, { useState, useEffect } from "react"; // Import React, useState, useEffect from React
-import products from "../../data/data"; // Import the products data
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import Link from "next/link"; // Import Link from Next.js
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import {
@@ -15,6 +14,25 @@ import { Endpoints } from "@/services/Api/endpoints";
 import { urlGenerator } from "@/utils/urlGenerator";
 import { useSearchParams, useRouter } from "next/navigation";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useLoadScript } from "@react-google-maps/api";
+import axios from "axios";
+
+interface PlaceDetails {
+  name: string;
+  address: string;
+  latitude: number;
+  longitude: number;
+}
+
+// Define the libraries we need
+const libraries: "places"[] = ["places"];
+
+interface PlaceDetails {
+  name: string;
+  address: string;
+  latitude: number;
+  longitude: number;
+}
 
 interface SearchBarProps {
   // Define SearchBarProps interface
@@ -44,6 +62,85 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
   const searchTerm = searchParams.get("q");
   const [query, setQuery] = useState<string>("");
   const [searching, setsearching] = useState(false);
+  const [placeDetails, setPlaceDetails] = useState<PlaceDetails | null>(null);
+  const autocompleteRef = useRef<google.maps.places.Autocomplete | null>(null);
+
+  const PlacesAutocomplete: React.FC = () => {
+    const handleKeyDown = async () => {
+      try {
+        const res = await axios.get(
+          `https://api.lodgemate.com.ng/v1/lodges?lng=${placeDetails?.longitude}&lat=${placeDetails?.latitude}`
+        );
+        console.log({ res });
+      } catch (error) {}
+    };
+
+    const { isLoaded, loadError } = useLoadScript({
+      googleMapsApiKey: "AIzaSyAT2e0pEJTw05c58G5VKux66rTOfd5EZLg",
+      libraries,
+    });
+
+    const handlePlaceSelect = useCallback(() => {
+      const autocomplete = autocompleteRef.current;
+
+      if (!autocomplete) return;
+
+      const place = autocomplete.getPlace();
+
+      if (!place.geometry || !place.geometry.location) {
+        console.error("No details available for input: " + place.name);
+        return;
+      }
+
+      // Safely extract latitude and longitude
+      const location = place.geometry.location;
+      console.log({ location });
+      const lat = location.lat();
+      const lng = location.lng();
+
+      setPlaceDetails({
+        name: place.name || "",
+        address: place.formatted_address || "",
+        latitude: lat,
+        longitude: lng,
+      });
+    }, []);
+
+    // Handle loading and error states
+    if (loadError) {
+      return <div>Error loading maps</div>;
+    }
+
+    if (!isLoaded) {
+      return <div>Loading...</div>;
+    }
+
+    return (
+      <div className="relative w-full">
+        <input
+          type="text"
+          id="autocomplete"
+          placeholder="Enter a location"
+          className="w-full p-2 h-full rounded-full outline-none"
+          onKeyDown={handleKeyDown}
+          ref={(ref) => {
+            if (ref) {
+              const autocomplete = new window.google.maps.places.Autocomplete(
+                ref,
+                {
+                  types: ["geocode"], // Limit to address types
+                  fields: ["name", "geometry", "formatted_address"],
+                }
+              );
+
+              autocomplete.addListener("place_changed", handlePlaceSelect);
+              autocompleteRef.current = autocomplete;
+            }
+          }}
+        />
+      </div>
+    );
+  };
 
   const filterResults = (query: string, data: any): SearchResult => {
     // Function to filter results
@@ -142,14 +239,8 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
 
   return (
     <div className="flex relative  justify-center w-full items-center mt-[20px] z-[999] ">
-      <div className="  border-2 pl-[24px] p-1 flex justify-between border-stroke rounded-full w-full sm:w-[510px] text-[14px] h-[53px] shadow-md">
-        <input
-          type="text"
-          placeholder="Enter name of lodge, city or school"
-          className="rounded-full sm:w-[300px] w-[250px]- w-full bg-white outline-none mr-2"
-          value={query}
-          onChange={(e) => setQuery(e.target.value)} // Handle input change
-        />
+      <div className="border-2 p-1 flex justify-between border-stroke rounded-full w-full sm:w-[510px] text-[14px] h-[53px] shadow-md">
+        <PlacesAutocomplete />
         <button
           onClick={handleSearchClick} // Handle search button click
           className="bg-primary rounded-full flex justify-center items-center text-white px-6"

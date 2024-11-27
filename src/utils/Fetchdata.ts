@@ -1,55 +1,51 @@
 export async function fetchData(endpoint: any) {
-    try {
-
-      const response = await fetch(endpoint);
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-      const data = await response.json();
-      return data;
-    } catch (error) {
-      console.error('Fetch error:', error);
-      return [];
+  try {
+    const response = await fetch(endpoint);
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
     }
+    const data = await response.json();
+    console.log({ data });
+    return data;
+  } catch (error) {
+    console.error("Fetch error:", error);
+    return [];
   }
+}
 
+let debounceTimeoutId: any;
 
-  let debounceTimeoutId :any;
-
-export const debounceFetch = (url : string, options = {}, delay = 1000) => {
+export const debounceFetch = (url: string, options = {}, delay = 1000) => {
   // Clear the previous timeout if it exists
   clearTimeout(debounceTimeoutId);
   // Return a new promise for the debounced fetch operation
   return new Promise((resolve, reject) => {
     debounceTimeoutId = setTimeout(() => {
       fetch(url, options)
-        .then(response => {
-
+        .then((response) => {
           if (!response.ok) {
             return response.json();
-            throw new Error('Network response was not ok');
+            throw new Error("Network response was not ok");
           }
           return response.json();
         })
-        .then(data => resolve(data))
-        .catch(error => reject(error));
+        .then((data) => resolve(data))
+        .catch((error) => reject(error));
     }, delay);
   });
 };
-export const FetchApi = (url : string, options = {}, ) => {
-
+export const FetchApi = (url: string, options = {}) => {
   return new Promise((resolve, reject) => {
-      fetch(url, options)
-        .then(response => {
-          if (!response.ok) {
+    fetch(url, options)
+      .then((response) => {
+        if (!response.ok) {
           return response.json();
 
-            throw new Error('Network response was not ok');
-          }
-          return response.json();
-
-        })
-        .then(data => resolve(data))
-        .catch(error => reject(error));
+          throw new Error("Network response was not ok");
+        }
+        return response.json();
+      })
+      .then((data) => resolve(data))
+      .catch((error) => reject(error));
   });
 };

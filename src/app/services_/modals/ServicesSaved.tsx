@@ -1,22 +1,17 @@
 import React, { useState, useEffect } from "react";
 import AOS from "aos";
 
-
 interface LodgeSavedProps {
   show: boolean;
   onClose: () => void;
 }
 
-const LodgeSaved: React.FC<LodgeSavedProps> = ({
-  show,
-  onClose,
-}) => {
-
-    useEffect(() => {
-      AOS.init({
-        duration: 1000,
-      });
-    }, []);
+const LodgeSaved: React.FC<LodgeSavedProps> = ({ show, onClose }) => {
+  useEffect(() => {
+    AOS.init({
+      duration: 1000,
+    });
+  }, []);
 
   useEffect(() => {
     if (show) {
@@ -34,7 +29,6 @@ const LodgeSaved: React.FC<LodgeSavedProps> = ({
     return null;
   }
 
-    
   return (
     <div
       className="fixed inset-0 bg-black bg-opacity-50 flex pt-[100px] items-start z-50 justify-center"
@@ -58,7 +52,7 @@ const LodgeSaved: React.FC<LodgeSavedProps> = ({
         </div>
         <div className="text-gray-700">
           <p className="w-[350px] text-center mb-[50px]">
-            Thsi lodge has been saved for visit. Go to the “Tour Cart” tab in
+            This lodge has been saved for visit. Go to the “Tour Cart” tab in
             the Wishlist menu to view it.
           </p>
           <button className=" mb-4 py-4 bg-primary  font-semibold w-full rounded-[12px] flex justify-center items-center gap-2 text-white ">

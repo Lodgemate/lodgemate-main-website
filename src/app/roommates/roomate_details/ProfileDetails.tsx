@@ -6,6 +6,9 @@ import Link from "next/link";
 import React, { useState } from "react";
 import Image from "next/image";
 import ReportProfile from "../modals/ReportProfile";
+import { MdLocationPin } from "react-icons/md";
+import { BsPersonFill } from "react-icons/bs";
+import { IoHome } from "react-icons/io5";
 
 interface ProfileDetailsProps {
   roommate: Roommate;
@@ -100,7 +103,7 @@ const ProfileDetails: React.FC<ProfileDetailsProps> = ({
           <div className="flex justify-center items-center flex-col mt-4 gap-4 px-4 ">
             <div className="w-[150px] h-[150px]  border rounded-full ">
               <Image
-                src={optimizeImageUrl(roommate.postedBy.profilePicture)}
+                src={roommate.postedBy.profilePicture}
                 alt={roommate.postedBy.firstName}
                 width={100}
                 height={100}
@@ -112,26 +115,18 @@ const ProfileDetails: React.FC<ProfileDetailsProps> = ({
             </p>
             <div className="flex items-center gap-5">
               <div className="flex flex-col gap-2 items-center">
-                <img
-                  src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1718337645/utilities/LodgeMate_File/home_pin_1_jvqqfs.svg                          "
-                  alt=""
-                />
+                <MdLocationPin className="h-5 w-5" />
                 <p>
                   Near <span>{roommate.subAdministrativeArea}</span>{" "}
                 </p>
               </div>
               <div className="flex flex-col gap-2 items-center">
-                <img
-                  src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1718337642/utilities/LodgeMate_File/iconamoon_profile-thin_hkgtcv.svg"
-                  alt=""
-                />
+                <BsPersonFill className="h-5 w-5" />
+
                 <p> {roommate.postedBy.gender}</p>
               </div>
               <div className="flex flex-col gap-2 items-center">
-                <img
-                  src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1718408373/utilities/LodgeMate_File/covid_quarantine-place-self-lockdown-2_s4rvvo.svg"
-                  alt=""
-                />
+                <IoHome className="h-5 w-5" />
                 {roommate.preferredAccomodationTypes.map((houseType: any) => {
                   return <p key={houseType}> {houseType}</p>;
                 })}

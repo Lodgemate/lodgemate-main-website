@@ -1,3 +1,4 @@
+import { selectToken } from "@/lib/features/Auth/tokenSlice";
 import { selectAllUsersdata } from "@/lib/features/Users/usersSlice";
 import { useAppSelector } from "@/lib/hooks";
 import { Endpoints } from "@/services/Api/endpoints";
@@ -19,6 +20,7 @@ const Activemessage: React.FC<ActivemessageProps> = ({
 }) => {
   const currentUser = useAppSelector(selectAllUsersdata);
   const messagesEndRef = useRef(null);
+  const parseToken = useAppSelector(selectToken);
 
   // Scroll to the latest message when messages are updated
   useEffect(() => {
@@ -30,8 +32,6 @@ const Activemessage: React.FC<ActivemessageProps> = ({
 
   // Fetch messages for the active room periodically (every 5 seconds)
   useEffect(() => {
-    const localStorageToken = localStorage.getItem("token");
-    const parseToken = localStorageToken && JSON.parse(localStorageToken);
     const url =
       Endpoints.getAllRecentMessages + roomId + "/most-recent-messages";
 

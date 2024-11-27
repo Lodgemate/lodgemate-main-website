@@ -55,8 +55,8 @@ const ProductCard: React.FC<ProductCardProps> = ({
             className="w-full h-[144px] sm:h-[200px] object-cover rounded-[12px]"
             src={imageUrl}
             alt={name}
-            width={100}
-            height={100}
+            width={500}
+            height={500}
           />
         </Link>
 

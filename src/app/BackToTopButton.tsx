@@ -27,7 +27,10 @@ const BackToTopButton: React.FC = () => {
   return (
     <>
       {showButton && (
-        <button onClick={handleBackToTop} className="fixed bg-white bottom-10 right-10 rounded-full border p-3 px-4 shadow-md">
+        <button
+          onClick={handleBackToTop}
+          className="fixed bg-white bottom-10 right-10 rounded-full border p-3 px-4 shadow-md"
+        >
           <svg
             width="11"
             height="18"
@@ -39,7 +42,6 @@ const BackToTopButton: React.FC = () => {
               d="M1.58105 4.2L5.58105 1M5.58105 1L9.58105 4.2M5.58105 1V17"
               stroke="#333333"
               stroke-width="1.5"
-              stroke-linecap="round"
               stroke-linejoin="round"
             />
           </svg>

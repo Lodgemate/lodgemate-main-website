@@ -18,16 +18,8 @@ import { selectAllAuthenticated } from "@/lib/features/Login/signinSlice";
 import GallerySkeleton from "../../components/Skeletons/cardsSkeleton";
 import { selectToken } from "@/lib/features/Auth//tokenSlice";
 import axios from "axios";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { usePathname } from "next/navigation";
+import { Label } from "@/components/ui/label";
+import { Switch } from "@/components/ui/switch";
 
 const useGeolocation = () => {
   const [location, setLocation] = useState<{
@@ -150,6 +142,7 @@ const BrowseLodges: React.FC<BrowseLodgesProps> = ({ isSearchTriggered }) => {
   const [resentLodges, setResentLodges] = useState<any>();
   const [displayRecent, setDisplayRecent] = useState(true);
   const [fetchingResentLodges, setFetchingResentLodges] = useState(false);
+  const [isSelected, setIsSelected] = useState(true);
 
   const param = {
     query: storequery !== "Not Found" && storequery,
@@ -318,6 +311,7 @@ const BrowseLodges: React.FC<BrowseLodgesProps> = ({ isSearchTriggered }) => {
       setShowFiltersModal(false);
     }
   };
+
   const MappedLodges = useMemo(() => {
     return (
       <>
@@ -426,30 +420,17 @@ const BrowseLodges: React.FC<BrowseLodgesProps> = ({ isSearchTriggered }) => {
               : "Showing available roommates around"}
             {storequery == "Not Found" && "No result found"}
           </h1>
+        </div>
 
-          <Select
-            onValueChange={(value) => {
-              if (value === "recent") {
-                setDisplayRecent(true);
-              } else if (value === "location") {
-                setDisplayRecent(false);
-                console.log("selecting");
-              }
-            }}
-          >
-            <SelectTrigger className="min-w-[180px] w-fit border-none shadow-none">
-              <SelectValue placeholder="Recent lodges" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectGroup>
-                <SelectLabel>Select Lodges</SelectLabel>
-                <SelectItem value="recent">Recent Lodges</SelectItem>
-                <SelectItem value="location">
-                  Lodges based on your location
-                </SelectItem>
-              </SelectGroup>
-            </SelectContent>
-          </Select>
+        <div className="flex items-center space-x-2">
+          <Label htmlFor="airplane-mode" className="truncate text-sm">
+            Current Location
+          </Label>
+          <Switch
+            id="airplane-mode"
+            defaultChecked
+            onCheckedChange={(mode) => setDisplayRecent(mode)}
+          />
         </div>
       </div>
 

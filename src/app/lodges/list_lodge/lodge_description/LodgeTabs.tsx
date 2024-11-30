@@ -9,17 +9,23 @@ import Tab4Content from "./Tab4";
 import Tab5Content from "./Tab5";
 import { FetchApi } from "@/utils/Fetchdata";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
-import { resetFormData, selectAllList_Listingdata } from "@/lib/features/Listing/ListingSlice";
+import {
+  resetFormData,
+  selectAllList_Listingdata,
+} from "@/lib/features/Listing/ListingSlice";
 import { Endpoints } from "@/services/Api/endpoints";
 import {
   showFailedModal,
   showLoadingModal,
   showSuccessfulModal,
 } from "@/lib/features/Modal/ModalSlice";
+import { selectToken } from "@/lib/features/Auth/tokenSlice";
+import { IoIosArrowRoundBack } from "react-icons/io";
 
 const LodgeTabs = () => {
   const router = useRouter();
   const dispatch = useAppDispatch();
+  const parseToken = useAppSelector(selectToken);
   const [activeTab, setActiveTab] = useState(0);
   const formData = useAppSelector(selectAllList_Listingdata);
   const tabs = [
@@ -48,9 +54,7 @@ const LodgeTabs = () => {
 
   const handleListLodges = async () => {
     dispatch(showLoadingModal("Posting Lodge"));
-    const localStorageToken = localStorage.getItem("token");
-    const parseToken = localStorageToken && JSON.parse(localStorageToken);
-     console.log(Object.fromEntries(formData));
+    console.log(Object.fromEntries(formData));
     if (!(formData instanceof FormData)) {
       console.error("FormData is not available or is not of type FormData");
       return;
@@ -66,7 +70,7 @@ const LodgeTabs = () => {
 
     try {
       const res: any = await FetchApi(Endpoints.getPrivateLodges, body);
-      const parsedRes =  res;
+      const parsedRes = res;
       if (parsedRes.status === "success") {
         dispatch(showLoadingModal(null));
         dispatch(showSuccessfulModal(parsedRes.message));
@@ -74,9 +78,9 @@ const LodgeTabs = () => {
           dispatch(showSuccessfulModal(null));
           router.push("/");
         }, 500);
-       } else {
+      } else {
         dispatch(showLoadingModal(null));
-        throw res
+        throw res;
       }
     } catch (error: any) {
       dispatch(showLoadingModal(null));
@@ -104,22 +108,16 @@ const LodgeTabs = () => {
         disabled={activeTab === 0}
         className="mt-[40px] mb-[20px] w-fit"
       >
-        <img
-          src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1719102154/utilities/LodgeMate_File/lucide_move-up_zjmfel.svg"
-          alt=""
-        />
+        <IoIosArrowRoundBack className="w-6 h-6 text-zinc-900" />
       </button>
       <div className="tab-content mb-[100px]">{tabs[activeTab].content}</div>
       <div className="flex sm:justify-center justify-between items-center">
         <button
           onClick={prevTab}
           disabled={activeTab === 0}
-          className="sm:hidden flex items-center gap-2 text-[14px]"
+          className="max-sm:hidden flex items-center gap-2 text-[14px]"
         >
-          <img
-            src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1719102154/utilities/LodgeMate_File/lucide_move-up_zjmfel.svg"
-            alt="back"
-          />
+          <IoIosArrowRoundBack className="w-6 h-6 text-zinc-900" />
           Back
         </button>
         <button
@@ -136,7 +134,7 @@ const LodgeTabs = () => {
 
 const Tab1 = () => (
   <div>
-    <h2 className=' text-[16px] text-lblack'>
+    <h2 className=" text-[16px] text-lblack">
       Which of this best describes the accommodation?
     </h2>
     <form>
@@ -147,7 +145,9 @@ const Tab1 = () => (
 
 const Tab2 = () => (
   <div>
-    <h2 className=' text-[16px] text-lblack'>How many room are has it?</h2>
+    <h2 className=" text-[16px] text-center text-lblack">
+      How many room are has it?
+    </h2>
     <form>
       <Tab2Content />
     </form>
@@ -156,7 +156,7 @@ const Tab2 = () => (
 
 const Tab3 = () => (
   <div>
-    <h2 className=' text-[16px] text-lblack'>
+    <h2 className=" text-[16px] text-lblack">
       Please select only the features your accommodation has.
     </h2>
     <form>
@@ -167,7 +167,7 @@ const Tab3 = () => (
 
 const Tab4 = () => (
   <div>
-    <h2 className=' text-[16px] text-lblack'>
+    <h2 className=" text-[16px] text-lblack">
       Let people see what your lodge looks like. <br /> Upload a minimum of (5)
       image
     </h2>
@@ -179,7 +179,7 @@ const Tab4 = () => (
 
 const Tab5 = () => (
   <div>
-    <h2 className=' text-[16px] text-lblack'>
+    <h2 className=" text-[16px] text-lblack">
       Almost done. Fill in these details.
     </h2>
     <form>

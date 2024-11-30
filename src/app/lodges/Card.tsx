@@ -42,21 +42,21 @@ const ProductCard: React.FC<ProductCardProps> = ({
     });
   });
 
+  function removeFromLink(link: string, substring: string) {
+    return link.replace(substring, "").replace(",,", ",");
+  }
+
   return (
-    <div
-      // href={`/lodges/lodge_details/${id}`}
-      // passHref
-      className="max-w-sm rounded overflow-hidden z-[9]"
-      data-aos="fade-up"
-    >
-      <div className="relative ">
+    <div className="max-w-sm rounded overflow-hidden z-[9]" data-aos="fade-up">
+      <div className="relative w-full h-[144px] sm:h-[200px]">
         <Link href={`/lodges/lodge_details/${id}`} passHref>
           <Image
-            className="w-full h-[144px] sm:h-[200px] object-cover rounded-[12px]"
-            src={imageUrl}
+            className="h-full w-full object-cover rounded-[12px]"
+            src={removeFromLink(imageUrl, "w_300,f_auto")}
             alt={name}
             width={500}
             height={500}
+            quality={100}
           />
         </Link>
 

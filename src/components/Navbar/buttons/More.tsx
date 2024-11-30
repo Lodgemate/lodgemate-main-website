@@ -139,13 +139,13 @@ function More() {
               <DropdownMenuContent className="w-full min-w-[16.5rem] right-5 relative">
                 {navLinks.map(({ title, url }, i) => {
                   return (
-                    <>
+                    <div key={title}>
                       {title == "Notifications" ? (
-                        <DropdownMenuItem key={title}>
+                        <DropdownMenuItem>
                           <Notification setShowModel={setShowModel} />
                         </DropdownMenuItem>
                       ) : (
-                        <div key={title}>
+                        <div>
                           {i % 3 == 0 && i > 1 && <DropdownMenuSeparator />}
                           <DropdownMenuItem>
                             <Link href={url} className="text-gray-700">
@@ -154,7 +154,7 @@ function More() {
                           </DropdownMenuItem>
                         </div>
                       )}
-                    </>
+                    </div>
                   );
                 })}
 

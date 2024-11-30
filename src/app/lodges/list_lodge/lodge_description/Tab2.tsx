@@ -1,7 +1,11 @@
 "user client";
 
-import { selectAllList_Listingdata, setStateItem } from "@/lib/features/Listing/ListingSlice";
+import {
+  selectAllList_Listingdata,
+  setStateItem,
+} from "@/lib/features/Listing/ListingSlice";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
+import { GoHome } from "react-icons/go";
 import React, { useState } from "react";
 
 interface Box {
@@ -11,11 +15,12 @@ interface Box {
 
 const Tab2Content: React.FC = () => {
   const dispatch = useAppDispatch();
-  const data =useAppSelector(selectAllList_Listingdata)
-  const hasKey = data.has('numberOfRooms');
-  console.log(hasKey); 
-  const extractedData = hasKey && data.get('numberOfRooms') || null
-  const [selectedBox, setSelectedBox] = useState<any>(extractedData && Number(extractedData) || null);
+  const data = useAppSelector(selectAllList_Listingdata);
+  const hasKey = data.has("numberOfRooms");
+  const extractedData = (hasKey && data.get("numberOfRooms")) || null;
+  const [selectedBox, setSelectedBox] = useState<any>(
+    (extractedData && Number(extractedData)) || null
+  );
 
   const boxes: Box[] = [
     {
@@ -58,17 +63,16 @@ const Tab2Content: React.FC = () => {
       id: 10,
       text: "10+ rooms",
     },
-    
   ];
 
   const handleBoxClick = (text: number) => {
     setSelectedBox(text);
-    dispatch(setStateItem({ key: 'numberOfRooms', value: text }))
+    dispatch(setStateItem({ key: "numberOfRooms", value: text }));
   };
 
   return (
     <div className="flex flex-col items-center text-[14px]">
-      <form className="flex flex-wrap justify-cente gap-5 mt-5">
+      <form className="flex flex-wrap justify-center gap-5 mt-5">
         {boxes.map((box) => (
           <div
             key={box.id}
@@ -77,14 +81,10 @@ const Tab2Content: React.FC = () => {
             }`}
             onClick={() => handleBoxClick(box.id)}
           >
-            <img
-              src={
-                selectedBox === box.id
-                  ? "/icons/house1_white.svg"
-                  : "/icons/house1.svg"
-              }
-              alt=""
-              className="w-[28px] h-[28px]"
+            <GoHome
+              className={`h-6 w-6 ${
+                selectedBox === box.id ? "text-white" : "text-zinc-700"
+              }`}
             />
             <p className="mt-2">{box.text}</p>
           </div>

@@ -1,9 +1,7 @@
 import React, { useState, useEffect, useMemo } from "react";
 import Card from "./Card";
-import FilterOptions from "./FilterOptions";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import {
-  FetchLodges,
   selectAllFetchLodgesdata,
   setLodgesData,
 } from "@/lib/features/Lodges/lodgesSlice";
@@ -14,12 +12,12 @@ import {
   selectAllQueryFilter,
   setSearchQuery,
 } from "@/lib/features/Filters/filterSlice";
-import { selectAllAuthenticated } from "@/lib/features/Login/signinSlice";
 import GallerySkeleton from "../../components/Skeletons/cardsSkeleton";
 import { selectToken } from "@/lib/features/Auth//tokenSlice";
 import axios from "axios";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
+import { optimizeImageUrl } from "@/utils/utils";
 
 const useGeolocation = () => {
   const [location, setLocation] = useState<{
@@ -106,155 +104,46 @@ const useGeolocation = () => {
   return { location, error };
 };
 
-const LocationDisplay: React.FC = () => {
-  const { location, error } = useGeolocation();
-
-  if (error) return <div>Error: {error}</div>;
-  if (!location) return <div>Loading...</div>;
-
-  return (
-    <div>
-      <p>Local Government Area: {location.localGovernmentArea}</p>
-      <p>State: {location.state}</p>
-      <p>Country: {location.country}</p>
-      <p>Latitude: {location.latitude}</p>
-      <p>Longitude: {location.longitude}</p>
-    </div>
-  );
-};
-
 interface BrowseLodgesProps {
   isSearchTriggered: boolean;
 }
-const cache = new Map<string, any>();
 
 const BrowseLodges: React.FC<BrowseLodgesProps> = ({ isSearchTriggered }) => {
-  const [showFiltersModal, setShowFiltersModal] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  //  (useless for now) const [filters, setFilters] = useState({});
   const [showMore, setShowMore] = useState(false);
   const LodgesData = useAppSelector(selectAllFetchLodgesdata);
   const dispatch = useAppDispatch();
   const storequery = useAppSelector(selectAllQueryFilter);
   const storelocation = useAppSelector(selectAllLocationFilter);
-  const isAuth = useAppSelector(selectAllAuthenticated);
   const parsedToken = useAppSelector(selectToken);
   const [resentLodges, setResentLodges] = useState<any>();
-  const [displayRecent, setDisplayRecent] = useState(true);
+  const [displayRecent, setDisplayRecent] = useState<boolean | null>(null);
   const [fetchingResentLodges, setFetchingResentLodges] = useState(false);
-  const [isSelected, setIsSelected] = useState(true);
 
   const param = {
     query: storequery !== "Not Found" && storequery,
     location: storelocation,
   };
 
-  const optimizeImageUrl = (url: string) => {
-    if (url.includes("/upload/")) {
-      return url.replace("/upload/", "/upload/w_300,f_auto/");
-    }
-    return url;
-  };
-
   const { location } = useGeolocation();
-
-  //  useless for now
-  // useEffect(() => {
-  //   if (isSearchTriggered) {
-  //     const lowercaseQuery = query.toLowerCase();
-  //     const newFilteredProducts = products.filter((product) => {
-  //       return (
-  //         product.type === "lodge" &&
-  //         (product.name.toLowerCase().includes(lowercaseQuery) ||
-  //           product.address.toLowerCase().includes(lowercaseQuery) ||
-  //           product.university.toLowerCase().includes(lowercaseQuery))
-  //       );
-  //     });
-  //     setFilteredProducts(newFilteredProducts);
-  //   } else {
-  //     setFilteredProducts(products);
-  //   }
-  // }, [query, isSearchTriggered]);
-
-  //  useless for now ( more optimised version of useeffect above)
-  // const filteredProducts = useMemo(() => {
-  //   if (isSearchTriggered) {
-  //     const lowercaseQuery = query.toLowerCase();
-  //     return products.filter((product) => {
-  //       return (
-  //         product.type === "lodge" &&
-  //         (product.name.toLowerCase().includes(lowercaseQuery) ||
-  //           product.address.toLowerCase().includes(lowercaseQuery) ||
-  //           product.university.toLowerCase().includes(lowercaseQuery))
-  //       );
-  //     });
-  //   }
-  //   return products;
-  // }, [query, isSearchTriggered]);
-
-  //  useless for now
-  const handleResetFilters = () => {
-    //   setFilters({});
-    //   setFilteredProducts(products); // Resetting to all products
-  };
-
-  //  useless for now
-  const handleApplyFilters = (appliedFilters: any) => {
-    //   setFilters(appliedFilters);
-    //   // Logic to filter the product list based on appliedFilters
-    //   const filtered = products.filter((product) => {
-    //     const matchesPrice =
-    //       (!appliedFilters.minPrice ||
-    //         product.price >= appliedFilters.minPrice) &&
-    //       (!appliedFilters.maxPrice || product.price <= appliedFilters.maxPrice);
-    //     const matchesType =
-    //       !appliedFilters.accommodationType.length ||
-    //       appliedFilters.accommodationType.includes(product.accommodationType);
-    //     const matchesRooms =
-    //       !appliedFilters.rooms.length ||
-    //       appliedFilters.rooms.includes(String(product.numberOfRooms));
-    //     const matchesOccupants =
-    //       !appliedFilters.occupants.length ||
-    //       appliedFilters.occupants.includes(String(product.numberOfRooms));
-    //     const matchesFeatures =
-    //       !appliedFilters.features.length ||
-    //       appliedFilters.features.every((feature: string) =>
-    //         product.features.map((f) => f.name).includes(feature)
-    //       );
-    //     return (
-    //       matchesPrice &&
-    //       matchesType &&
-    //       matchesRooms &&
-    //       matchesOccupants &&
-    //       matchesFeatures
-    //     );
-    //   });
-    //   // setFilteredProducts(filtered);
-    //   setShowFiltersModal(false); // Close modal after applying filters
-  };
-
-  const GetToken = async () => {
-    return parsedToken;
-  };
+  console.log({ location });
 
   // fetching lodges data
   useEffect(() => {
-    setIsLoading(true);
     const fetchData = async () => {
-      const token = await GetToken();
-      let fetchUrl;
-
-      if (token) {
-        fetchUrl = Endpoints.getPublicLodges + urlGenerator(param);
-      } else if (!token) {
-        fetchUrl = Endpoints.getPublicLodges + urlGenerator(param);
-      }
-
-      if (!fetchUrl) return;
-
       try {
-        dispatch(setSearchQuery(null));
-        await dispatch(FetchLodges(fetchUrl));
+        setIsLoading(true);
+        const token = parsedToken;
+        let fetchUrl;
+
+        if (token) {
+          fetchUrl = Endpoints.getPublicLodges;
+        }
+
+        if (!fetchUrl) return;
+        const lodges = await axios.get(fetchUrl);
+        dispatch(setLodgesData(lodges.data.data));
+        console.log({ lodges });
       } catch (error: any) {
         console.error("Error fetching data:", error);
       } finally {
@@ -265,53 +154,50 @@ const BrowseLodges: React.FC<BrowseLodgesProps> = ({ isSearchTriggered }) => {
   }, [dispatch, storelocation]);
 
   // Lodges sorting function
-  const sortedLodges = useMemo(() => {
-    setIsLoading(true);
+  // const sortedLodges = useMemo(() => {
+  //   setIsLoading(true);
 
-    if (!LodgesData || !location) return [];
-    setIsLoading(false);
+  //   if (!LodgesData || !location) return [];
+  //   setIsLoading(false);
 
-    return [...LodgesData.data?.lodges].sort((a: any, b: any) => {
-      // Compare function to check if values are the same, returning a boolean score
-      const isSame = (x: string, y: string) => (x === y ? 1 : 0);
+  //   return [...LodgesData?.data?.lodges].sort((a: any, b: any) => {
+  //     // Compare function to check if values are the same, returning a boolean score
+  //     const isSame = (x: string, y: string) => (x === y ? 1 : 0);
 
-      // Step 1: Sort by nearbyUniversity similarity with localGovernmentArea
-      const nearbyUniversityA = isSame(
-        a.nearbyUniversity,
-        location.localGovernmentArea
-      );
-      const nearbyUniversityB = isSame(
-        b.nearbyUniversity,
-        location.localGovernmentArea
-      );
-      if (nearbyUniversityA !== nearbyUniversityB) {
-        return nearbyUniversityB - nearbyUniversityA; // Sort lodges where nearbyUniversity matches first
-      }
+  //     // Step 1: Sort by nearbyUniversity similarity with localGovernmentArea
+  //     const nearbyUniversityA = isSame(
+  //       a.nearbyUniversity,
+  //       location.localGovernmentArea
+  //     );
+  //     const nearbyUniversityB = isSame(
+  //       b.nearbyUniversity,
+  //       location.localGovernmentArea
+  //     );
+  //     if (nearbyUniversityA !== nearbyUniversityB) {
+  //       return nearbyUniversityB - nearbyUniversityA; // Sort lodges where nearbyUniversity matches first
+  //     }
 
-      // Step 2: Sort by state similarity
-      const stateA = isSame(a.state, location.state);
-      const stateB = isSame(b.state, location.state);
-      if (stateA !== stateB) {
-        return stateB - stateA; // Sort lodges where state matches next
-      }
+  //     // Step 2: Sort by state similarity
+  //     const stateA = isSame(a.state, location.state);
+  //     const stateB = isSame(b.state, location.state);
+  //     if (stateA !== stateB) {
+  //       return stateB - stateA; // Sort lodges where state matches next
+  //     }
 
-      // Step 3: Sort by country similarity
-      const countryA = isSame(a.country, location.country);
-      const countryB = isSame(b.country, location.country);
-      return countryB - countryA; // Finally, sort lodges where country matches
-    });
-  }, [LodgesData, location]);
+  //     // Step 3: Sort by country similarity
+  //     const countryA = isSame(a.country, location.country);
+  //     const countryB = isSame(b.country, location.country);
+  //     return countryB - countryA; // Finally, sort lodges where country matches
+  //   });
+  // }, [LodgesData, location]);
+
+  console.log({ LodgesData });
 
   const handleShowMore = () => {
     setShowMore(true);
   };
 
-  const handleModalClick = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (e.target === e.currentTarget) {
-      setShowFiltersModal(false);
-    }
-  };
-
+  console.log({ displayRecent });
   const MappedLodges = useMemo(() => {
     return (
       <>
@@ -332,25 +218,27 @@ const BrowseLodges: React.FC<BrowseLodgesProps> = ({ isSearchTriggered }) => {
           </>
         ) : (
           <>
-            {sortedLodges
-              .slice(0, showMore ? sortedLodges.length : 12)
-              .map((product: any) => (
-                <Card
-                  {...product}
-                  key={product._id}
-                  imageUrl={optimizeImageUrl(product.coverphoto)}
-                  name={product.lodgeName}
-                  location={product.address_text}
-                  nearbyUniversity={product.subAdministrativeArea}
-                  state={product.administrativeArea}
-                  price={product.price || 0}
-                />
-              ))}
+            {LodgesData && (
+              <>
+                {LodgesData?.lodges.map((product: any) => (
+                  <Card
+                    {...product}
+                    key={product._id}
+                    imageUrl={optimizeImageUrl(product.coverphoto)}
+                    name={product.lodgeName}
+                    location={product.address_text}
+                    nearbyUniversity={product.subAdministrativeArea}
+                    state={product.administrativeArea}
+                    price={product.price || 0}
+                  />
+                ))}
+              </>
+            )}
           </>
         )}
       </>
     );
-  }, [sortedLodges, showMore, displayRecent]);
+  }, [showMore, displayRecent, LodgesData]);
 
   useEffect(() => {
     const fetchLodges = async () => {
@@ -370,47 +258,7 @@ const BrowseLodges: React.FC<BrowseLodgesProps> = ({ isSearchTriggered }) => {
   }, []);
 
   return (
-    <div className="px-4 sm:px-[100px] mt-[50px] text-[12px] sm:text-[14px] -z-99 ">
-      {/* Filters Modal */}
-      {showFiltersModal && (
-        <div
-          className="fixed text-[14px] inset-0  h-screen -top-[50px] bottom-0 px-1 items-center bg-black bg-opacity-25 flex justify-center z-[999]"
-          onClick={handleModalClick}
-        >
-          <div className="bg-white border shadow-lg  rounded-[20px]  w-[768px] mt-6 max-h-[80vh] no-scrollbar overflow-y-auto">
-            {/* Header */}
-            <div className="flex relative justify-center p-2 items-center mb- border-b bor">
-              <h2 className="text-[16px] font-bold">Filters</h2>
-              <button
-                onClick={() => setShowFiltersModal(false)}
-                className="text-gray-500  absolute right-4 top-2 hover:text-gray-800"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-6 w-6"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M6 18L18 6M6 6l12 12"
-                  />
-                </svg>
-              </button>
-            </div>
-            <FilterOptions
-              onResetFilters={handleResetFilters}
-              onApplyFilters={handleApplyFilters}
-              onClose={() => setShowFiltersModal(false)}
-            />
-          </div>
-        </div>
-      )}
-
-      {/* <LocationDisplay /> */}
+    <div className="px-4 sm:px-[100px] mt-[50px] te xt-[12px] sm:text-[14px] -z-99 ">
       <div className="flex justify-between gap-8 items-center text-lgray mb-[24px]">
         <div className="flex w-full justify-between">
           <h1 className=" flex flex-wrap  text-lgray max-md:hidden">
@@ -428,7 +276,6 @@ const BrowseLodges: React.FC<BrowseLodgesProps> = ({ isSearchTriggered }) => {
           </Label>
           <Switch
             id="airplane-mode"
-            defaultChecked
             onCheckedChange={(mode) => setDisplayRecent(mode)}
           />
         </div>
@@ -443,7 +290,7 @@ const BrowseLodges: React.FC<BrowseLodgesProps> = ({ isSearchTriggered }) => {
             MappedLodges
           )}
         </div>
-
+        {/* 
         {!showMore && (
           <div className="mt-10 text-[12px] flex flex-col justify-center items-center text-lgray font-medium pb-[200px]">
             <p className=" pb-[16px] ">Continue exploring lodges</p>
@@ -454,7 +301,7 @@ const BrowseLodges: React.FC<BrowseLodgesProps> = ({ isSearchTriggered }) => {
               Show more
             </button>
           </div>
-        )}
+        )} */}
       </div>
     </div>
   );

@@ -43,6 +43,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
   });
 
   function removeFromLink(link: string, substring: string) {
+    if (!link) return "";
     return link.replace(substring, "").replace(",,", ",");
   }
 

@@ -22,9 +22,9 @@ export const getCurrentDate = () => {
 };
 
 export function calculateCenterLatLng(viewport: any) {
-  console.log(viewport)
+  console.log(viewport);
   // Extract latitude bounds from the viewport
-  console.log(viewport.ci.lo )
+  console.log(viewport.ci.lo);
   const latLo = viewport.Yh.lo;
   const latHi = viewport.Yh.hi;
 
@@ -35,28 +35,31 @@ export function calculateCenterLatLng(viewport: any) {
   // Calculate the center latitude and longitude
   const latitude = (latLo + latHi) / 2;
   const longitude = (lngLo + lngHi) / 2;
-  console.log( {
+  console.log({
     lat: latitude,
-    lng: longitude
-  })
+    lng: longitude,
+  });
 
   // Return an object with the latitude and longitude
   return {
     lat: latitude,
-    lng: longitude
+    lng: longitude,
   };
 }
 
-export const handlyCopy=async(copyTxt: any)=>{
+export const handlyCopy = async (copyTxt: any) => {
   let res;
-  await navigator.clipboard.writeText(copyTxt).then(()=>{
-    res= 'Copied'
-  }).catch(()=>{
-    res= 'Could not copy'
-  })
-  console.log(res)
-  return res
-}
+  await navigator.clipboard
+    .writeText(copyTxt)
+    .then(() => {
+      res = "Copied";
+    })
+    .catch(() => {
+      res = "Could not copy";
+    });
+  console.log(res);
+  return res;
+};
 
 export const calculateCombinedRating = (
   category1: any,
@@ -81,17 +84,25 @@ export const calculateCombinedRating = (
   return finalRating.toFixed(1);
 };
 
-
 export function getInitials(fullName: string) {
   // Trim and split the full name by spaces
   const nameParts = fullName.trim().split(/\s+/);
 
   // Get the first name and last name (or last part of the name)
-  const firstName = nameParts[0] || '';
-  const lastName = nameParts[nameParts.length - 1] || '';
+  const firstName = nameParts[0] || "";
+  const lastName = nameParts[nameParts.length - 1] || "";
 
   // Get the initials by taking the first letter of each name part
-  const initials = `${lastName[0] || ''}${firstName[0] || ''}`.toUpperCase();
+  const initials = `${lastName[0] || ""}${firstName[0] || ""}`.toUpperCase();
 
   return initials;
 }
+
+export const optimizeImageUrl = (url: string) => {
+  if (!url) return;
+
+  if (url.includes("/upload/")) {
+    return url.replace("/upload/", "/upload/w_300,f_auto/");
+  }
+  return url;
+};

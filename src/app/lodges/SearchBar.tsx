@@ -1,17 +1,12 @@
-"use client"; // Use client
+"use client";
 
-import Image from "next/image"; // Import Image from Next.js
-import React, { useState, useEffect, useRef, useCallback } from "react";
-import Link from "next/link"; // Import Link from Next.js
+import Image from "next/image";
+import React, { useState, useEffect } from "react";
+import Link from "next/link";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
-import {
-  selectAllFetchLodgesdata,
-  setLodgesData,
-} from "@/lib/features/Lodges/lodgesSlice";
+import { setLodgesData } from "@/lib/features/Lodges/lodgesSlice";
 import { setSearchQuery } from "@/lib/features/Filters/filterSlice";
-import { debounceFetch } from "@/utils/Fetchdata";
 import { Endpoints } from "@/services/Api/endpoints";
-import { urlGenerator } from "@/utils/urlGenerator";
 import { useSearchParams, useRouter } from "next/navigation";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useLoadScript } from "@react-google-maps/api";
@@ -22,6 +17,8 @@ import usePlacesAutocomplete, {
 import axios from "axios";
 import { CiLocationOn } from "react-icons/ci";
 import { selectToken } from "@/lib/features/Auth/tokenSlice";
+import { setLoader } from "@/lib/features/Loading/loadingSlice";
+import Script from "next/script";
 
 interface PlaceDetails {
   name: string;
@@ -31,12 +28,10 @@ interface PlaceDetails {
 }
 
 interface SearchBarProps {
-  // Define SearchBarProps interface
-  onSearch: () => void; // onSearch prop function signature
+  onSearch: () => void;
 }
 
 interface SearchResult {
-  // Define SearchResult interface
   lodges: { id: number | string; lodgeName: string }[];
   cities: { id: number | string; address: string }[];
 }
@@ -53,6 +48,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
     lodges: [],
     cities: [],
   });
+
   const libraries: ["places"] = ["places"];
   const {
     ready,
@@ -61,27 +57,35 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
     suggestions: { status, data: googlePlaces },
     clearSuggestions,
   } = usePlacesAutocomplete({
-    debounce: 300,
+    debounce: 500,
     requestOptions: {
       types: ["geocode", "establishment"],
     },
+    cache: 24 * 60 * 60,
+    // initOnMount: true,
   });
-
-  console.log({ status, googlePlaces, value });
 
   const { isLoaded, loadError } = useLoadScript({
-    googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_API_KEY || "",
+    googleMapsApiKey: "AIzaSyAT2e0pEJTw05c58G5VKux66rTOfd5EZLg",
     libraries,
   });
+  console.log({ status, googlePlaces, value, ready, isLoaded });
 
   const handleSelect = async (description: string) => {
+    console.log({ description });
     try {
+      dispatch(
+        setLoader({
+          loading: true,
+          description: "fetching lodges from google places",
+        })
+      );
+
       setValue(description, false);
       clearSuggestions();
 
       const results = await getGeocode({ address: description });
       const { lat, lng } = await getLatLng(results[0]);
-      console.log({ lat, lng });
 
       setPlaceDetails({
         name: results[0].formatted_address,
@@ -89,6 +93,8 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
         latitude: lat,
         longitude: lng,
       });
+
+      dispatch(setSearchQuery(results[0].formatted_address));
 
       try {
         const res = await axios.get(
@@ -107,12 +113,15 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
       }
     } catch (error) {
       console.error("Error selecting place:", error);
+    } finally {
+      dispatch(
+        setLoader({
+          loading: false,
+          description: "",
+        })
+      );
     }
   };
-
-  if (loadError) {
-    return <div>Error loading maps</div>;
-  }
 
   const fetchDataFromQuery = async (searchTerm: string) => {
     try {
@@ -135,18 +144,23 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
       dispatch(setSearchQuery(query));
       const paramsquery = new URLSearchParams(searchParams.toString());
       if (query) {
-        paramsquery.set("q", query); // Set the search query param
+        paramsquery.set("q", query);
       } else {
-        paramsquery.delete("q"); // If no search term, remove the param
+        paramsquery.delete("q");
       }
       router.push(`?q=${query.toString()}`);
-      // Function to handle search button click
-      onSearch(); // Execute onSearch callback with query
-      setQuery(""); // Clear query after search
+
+      onSearch();
+      setQuery("");
     }
   };
 
-  console.log({ results });
+  useEffect(() => {
+    <Script
+      src={`https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_API_KEY}&libraries=places`}
+      onLoad={() => console.log("loaded")}
+    />;
+  }, []);
 
   return (
     <div className="flex relative  justify-center w-full items-center mt-[20px] z-[999] ">
@@ -158,14 +172,15 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
               setValue(e.target.value);
               await fetchDataFromQuery(e.target.value);
             }}
-            disabled={!isLoaded}
             className="w-full rounded-full h-full p-2 outline-none"
             placeholder={`${
-              isLoaded
+              !ready
+                ? "Autocomplete not ready..."
+                : !isLoaded
                 ? "Loading up google map in a bit"
                 : loadError
                 ? "Error loading maps"
-                : "Enter a location"
+                : "Enter Location..."
             }`}
           />
         </div>
@@ -193,9 +208,10 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
                   key={place_id}
                   onClick={() => {
                     handleSelect(description);
+                    clearSuggestions();
                     setQuery("");
                   }}
-                  className="flex items-center gap-2 py-[7px] px-4 hover:bg-gray-100"
+                  className="flex items-center gap-2 py-[7px] px-4 cursor-pointer hover:bg-gray-100"
                 >
                   <CiLocationOn className="h-5 w-5 text-gray-700" />
                   <span className="w-[450px] truncate">{description}</span>

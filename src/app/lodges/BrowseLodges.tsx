@@ -6,11 +6,9 @@ import {
   setLodgesData,
 } from "@/lib/features/Lodges/lodgesSlice";
 import { Endpoints } from "@/services/Api/endpoints";
-import { urlGenerator } from "@/utils/urlGenerator";
 import {
   selectAllLocationFilter,
   selectAllQueryFilter,
-  setSearchQuery,
 } from "@/lib/features/Filters/filterSlice";
 import GallerySkeleton from "../../components/Skeletons/cardsSkeleton";
 import { selectToken } from "@/lib/features/Auth//tokenSlice";
@@ -18,6 +16,8 @@ import axios from "axios";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { optimizeImageUrl } from "@/utils/utils";
+import { MdOutlineSearchOff } from "react-icons/md";
+import { selectLoading } from "@/lib/features/Loading/loadingSlice";
 
 const useGeolocation = () => {
   const [location, setLocation] = useState<{
@@ -116,19 +116,26 @@ const BrowseLodges: React.FC<BrowseLodgesProps> = ({ isSearchTriggered }) => {
   const storequery = useAppSelector(selectAllQueryFilter);
   const storelocation = useAppSelector(selectAllLocationFilter);
   const parsedToken = useAppSelector(selectToken);
+  const { loading, description } = useAppSelector(selectLoading);
   const [resentLodges, setResentLodges] = useState<any>();
-  const [displayRecent, setDisplayRecent] = useState<boolean | null>(null);
+  const [displayRecent, setDisplayRecent] = useState<boolean | undefined>(
+    undefined
+  );
   const [fetchingResentLodges, setFetchingResentLodges] = useState(false);
+
+  useEffect(() => {
+    if (loading) {
+      setDisplayRecent(false);
+    }
+  }, [loading]);
 
   const param = {
     query: storequery !== "Not Found" && storequery,
     location: storelocation,
   };
 
-  const { location } = useGeolocation();
-  console.log({ location });
+  // const { location } = useGeolocation();
 
-  // fetching lodges data
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -153,60 +160,15 @@ const BrowseLodges: React.FC<BrowseLodgesProps> = ({ isSearchTriggered }) => {
     fetchData();
   }, [dispatch, storelocation]);
 
-  // Lodges sorting function
-  // const sortedLodges = useMemo(() => {
-  //   setIsLoading(true);
-
-  //   if (!LodgesData || !location) return [];
-  //   setIsLoading(false);
-
-  //   return [...LodgesData?.data?.lodges].sort((a: any, b: any) => {
-  //     // Compare function to check if values are the same, returning a boolean score
-  //     const isSame = (x: string, y: string) => (x === y ? 1 : 0);
-
-  //     // Step 1: Sort by nearbyUniversity similarity with localGovernmentArea
-  //     const nearbyUniversityA = isSame(
-  //       a.nearbyUniversity,
-  //       location.localGovernmentArea
-  //     );
-  //     const nearbyUniversityB = isSame(
-  //       b.nearbyUniversity,
-  //       location.localGovernmentArea
-  //     );
-  //     if (nearbyUniversityA !== nearbyUniversityB) {
-  //       return nearbyUniversityB - nearbyUniversityA; // Sort lodges where nearbyUniversity matches first
-  //     }
-
-  //     // Step 2: Sort by state similarity
-  //     const stateA = isSame(a.state, location.state);
-  //     const stateB = isSame(b.state, location.state);
-  //     if (stateA !== stateB) {
-  //       return stateB - stateA; // Sort lodges where state matches next
-  //     }
-
-  //     // Step 3: Sort by country similarity
-  //     const countryA = isSame(a.country, location.country);
-  //     const countryB = isSame(b.country, location.country);
-  //     return countryB - countryA; // Finally, sort lodges where country matches
-  //   });
-  // }, [LodgesData, location]);
-
-  console.log({ LodgesData });
-
-  const handleShowMore = () => {
-    setShowMore(true);
-  };
-
-  console.log({ displayRecent });
   const MappedLodges = useMemo(() => {
     return (
       <>
         {displayRecent ? (
           <>
-            {resentLodges?.lodges?.map((product: any) => (
+            {resentLodges?.lodges?.map((product: any, i: number) => (
               <Card
                 {...product}
-                key={product._id}
+                key={`${product.lodgeName}${i}`}
                 imageUrl={optimizeImageUrl(product.coverphoto)}
                 name={product.lodgeName}
                 location={product.address_text}
@@ -218,12 +180,12 @@ const BrowseLodges: React.FC<BrowseLodgesProps> = ({ isSearchTriggered }) => {
           </>
         ) : (
           <>
-            {LodgesData && (
+            {LodgesData.lodges.length >= 1 ? (
               <>
-                {LodgesData?.lodges.map((product: any) => (
+                {LodgesData?.lodges.map((product: any, i: number) => (
                   <Card
                     {...product}
-                    key={product._id}
+                    key={`${product.lodgeName}${i}`}
                     imageUrl={optimizeImageUrl(product.coverphoto)}
                     name={product.lodgeName}
                     location={product.address_text}
@@ -233,12 +195,19 @@ const BrowseLodges: React.FC<BrowseLodgesProps> = ({ isSearchTriggered }) => {
                   />
                 ))}
               </>
+            ) : (
+              <div className="flex flex-col col-span-2 mt-10 items-center w-full self-center text-gray-500">
+                <MdOutlineSearchOff size={50} />
+                <p className="mt-4 text-lgray">
+                  Oops! no result found at this location
+                </p>
+              </div>
             )}
           </>
         )}
       </>
     );
-  }, [showMore, displayRecent, LodgesData]);
+  }, [showMore, displayRecent, LodgesData, loading]);
 
   useEffect(() => {
     const fetchLodges = async () => {
@@ -276,15 +245,18 @@ const BrowseLodges: React.FC<BrowseLodgesProps> = ({ isSearchTriggered }) => {
           </Label>
           <Switch
             id="airplane-mode"
+            defaultChecked
             onCheckedChange={(mode) => setDisplayRecent(mode)}
+            checked={displayRecent}
           />
         </div>
       </div>
 
       <div>
-        {/* Move to another component and laxzy load it with suspense */}
-        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 ">
-          {isLoading || fetchingResentLodges ? (
+        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          {isLoading ||
+          fetchingResentLodges ||
+          (loading && description == "fetching lodges from google places") ? (
             <GallerySkeleton />
           ) : (
             MappedLodges

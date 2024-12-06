@@ -14,6 +14,7 @@ import Listing_Reducer from "./features/Listing/ListingSlice";
 import ReviewReducers from "./features/Reviews/ReviewsSlice";
 import SavedReducers from "./features/saved/savedSlice";
 import tokenReducer from "./features/Auth/tokenSlice";
+import loaderReducer from "./features/Loading/loadingSlice";
 
 // Persist configuration
 const persistConfig = {
@@ -37,6 +38,7 @@ const rootReducer = combineReducers({
   Reviews: ReviewReducers,
   Saved: SavedReducers,
   token: tokenReducer,
+  loader: loaderReducer,
 });
 
 // Persisted reducer

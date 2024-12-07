@@ -2,12 +2,12 @@ import { RootState } from "@/lib/store";
 import { createSlice } from "@reduxjs/toolkit";
 
 interface SearchResult {
-  lodges: { id: number | string; lodgeName: string }[];
+  lodges: { id: number | string; lodgeName: string; coverphoto: string }[];
   cities: { id: number | string; address: string }[];
 }
 
 const data: SearchResult = {
-  lodges: [{ id: 1, lodgeName: "" }],
+  lodges: [{ id: 1, lodgeName: "", coverphoto: "" }],
   cities: [{ id: 1, address: "" }],
 };
 

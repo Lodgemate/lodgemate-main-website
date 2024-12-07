@@ -9,7 +9,7 @@ export const Endpoints = {
   getUsers: `${process.env.NEXT_PUBLIC_BASE_URL}/v1/user/me`,
   getUserById: `${process.env.NEXT_PUBLIC_BASE_URL}/v1/user/p/`,
   getPublicLodges: `${process.env.NEXT_PUBLIC_BASE_URL}/v1/lodges/p?`,
-  getCurrentPublicLodges: `${process.env.NEXT_PUBLIC_BASE_URL}/v1/lodges/p?query=Eziobodo`,
+  getCurrentPublicLodges: `${process.env.NEXT_PUBLIC_BASE_URL}/v1/lodges/p?`,
   getPublicLodgesbyId: `${process.env.NEXT_PUBLIC_BASE_URL}/v1/lodges/p/`,
   getPrivateLodges: `${process.env.NEXT_PUBLIC_BASE_URL}/v1/lodges?`,
   getPrivateLodgesbyId: `${process.env.NEXT_PUBLIC_BASE_URL}/v1/lodges/`,

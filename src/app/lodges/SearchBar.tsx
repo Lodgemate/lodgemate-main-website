@@ -9,7 +9,7 @@ import { setSearchQuery } from "@/lib/features/Filters/filterSlice";
 import { Endpoints } from "@/services/Api/endpoints";
 import { useSearchParams, useRouter } from "next/navigation";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useLoadScript } from "@react-google-maps/api";
+import { StandaloneSearchBox, useLoadScript } from "@react-google-maps/api";
 import usePlacesAutocomplete, {
   getGeocode,
   getLatLng,
@@ -157,9 +157,10 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
 
   useEffect(() => {
     <Script
-      src={`https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_API_KEY}&libraries=places`}
+      defer
       onLoad={() => console.log("loaded")}
-    />;
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAT2e0pEJTw05c58G5VKux66rTOfd5EZLg&libraries=places&callback=YOUR_CALLBACK_NAME"
+    ></Script>;
   }, []);
 
   return (

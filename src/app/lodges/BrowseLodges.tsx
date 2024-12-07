@@ -18,12 +18,11 @@ import { Switch } from "@/components/ui/switch";
 import { optimizeImageUrl } from "@/utils/utils";
 import { MdOutlineSearchOff } from "react-icons/md";
 import { selectLoading } from "@/lib/features/Loading/loadingSlice";
+import { CiLocationOff } from "react-icons/ci";
+import { useToast } from "@/hooks/use-toast";
 
 const useGeolocation = () => {
   const [location, setLocation] = useState<{
-    localGovernmentArea: string;
-    state: string;
-    country: string;
     latitude: number;
     longitude: number;
   } | null>(null);
@@ -35,50 +34,11 @@ const useGeolocation = () => {
       return;
     }
 
-    const watchId = navigator.geolocation.watchPosition(
+    navigator.geolocation.getCurrentPosition(
       async (position) => {
         const { latitude, longitude } = position.coords;
         try {
-          const apiKey = process.env.NEXT_PUBLIC_GOOGLE_API_KEY;
-          if (!apiKey) {
-            throw new Error("API key is missing");
-          }
-
-          // Fetch location details from Google Geocoding API
-          const response = await fetch(
-            `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${apiKey}`
-          );
-
-          if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-          }
-
-          const data = await response.json();
-          console.log("Geocode API Response:", data); // Log response here
-
-          const addressComponents = data.results[0]?.address_components || [];
-          console.log("Address Components:", addressComponents); // Log all components
-
-          const localGovernmentArea =
-            addressComponents.find((component: any) =>
-              component.types.includes("administrative_area_level_3")
-            )?.long_name || "N/A";
-          const state =
-            addressComponents.find((component: any) =>
-              component.types.includes("administrative_area_level_1")
-            )?.long_name || "N/A";
-          const country =
-            addressComponents.find((component: any) =>
-              component.types.includes("country")
-            )?.long_name || "N/A";
-
-          setLocation({
-            localGovernmentArea,
-            state,
-            country,
-            latitude,
-            longitude,
-          });
+          setLocation({ latitude, longitude });
         } catch (error) {
           console.error("Error fetching location data:", error);
           setError("Failed to fetch location data.");
@@ -86,19 +46,16 @@ const useGeolocation = () => {
       },
       (err) => {
         console.error("Geolocation error:", err);
+        if (err.message == "User denied Geolocation") {
+        }
         setError(err.message);
       },
       {
         enableHighAccuracy: true,
-        timeout: 10000, // Wait up to 10 seconds for a more accurate position
-        maximumAge: 0, // Ensure that the location is always fresh
+        timeout: 10000,
+        maximumAge: 0,
       }
     );
-
-    // Cleanup function to clear the watch when the component unmounts
-    return () => {
-      navigator.geolocation.clearWatch(watchId);
-    };
   }, []);
 
   return { location, error };
@@ -117,86 +74,116 @@ const BrowseLodges: React.FC<BrowseLodgesProps> = ({ isSearchTriggered }) => {
   const storelocation = useAppSelector(selectAllLocationFilter);
   const parsedToken = useAppSelector(selectToken);
   const { loading, description } = useAppSelector(selectLoading);
-  const [resentLodges, setResentLodges] = useState<any>();
-  const [displayRecent, setDisplayRecent] = useState<boolean | undefined>(
-    undefined
-  );
+  const [useLocation, setUseLocation] = useState<boolean | undefined>(true);
   const [fetchingResentLodges, setFetchingResentLodges] = useState(false);
+  const [lodgesBasedOnCurrentLocation, setLodgesBasedOnCurrentLocation] =
+    useState<[] | null>(null);
+  const { location, error } = useGeolocation();
+  const { toast } = useToast();
 
   useEffect(() => {
     if (loading) {
-      setDisplayRecent(false);
+      setUseLocation(false);
     }
   }, [loading]);
 
-  const param = {
-    query: storequery !== "Not Found" && storequery,
-    location: storelocation,
+  const fetchLodgesBasedOnCurrentLocation = async () => {
+    try {
+      if (!location?.latitude) {
+        return;
+      }
+
+      setIsLoading(true);
+      const token = parsedToken;
+
+      const res = await axios.get(
+        `https://api.lodgemate.com.ng/v1/lodges?lng=${location.longitude}&lat=${location.latitude}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      setLodgesBasedOnCurrentLocation(res.data.data.lodges);
+    } catch (error: any) {
+      console.error("Error fetching data:", error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
-  // const { location } = useGeolocation();
-
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        setIsLoading(true);
-        const token = parsedToken;
-        let fetchUrl;
-
-        if (token) {
-          fetchUrl = Endpoints.getPublicLodges;
-        }
-
-        if (!fetchUrl) return;
-        const lodges = await axios.get(fetchUrl);
-        dispatch(setLodgesData(lodges.data.data));
-        console.log({ lodges });
-      } catch (error: any) {
-        console.error("Error fetching data:", error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    fetchData();
-  }, [dispatch, storelocation]);
+    fetchLodgesBasedOnCurrentLocation();
+  }, [dispatch, storelocation, location]);
 
   const MappedLodges = useMemo(() => {
     return (
       <>
-        {displayRecent ? (
+        {useLocation ? (
           <>
-            {resentLodges?.lodges?.map((product: any, i: number) => (
-              <Card
-                {...product}
-                key={`${product.lodgeName}${i}`}
-                imageUrl={optimizeImageUrl(product.coverphoto)}
-                name={product.lodgeName}
-                location={product.address_text}
-                nearbyUniversity={product.subAdministrativeArea}
-                state={product.administrativeArea}
-                price={product.price || 0}
-              />
-            ))}
+            {error ? (
+              <div className="flex flex-col col-span-2 md:col-span-4 mt-10 items-center w-full self-center">
+                <CiLocationOff className="h-10 w-10 text-red-500" />
+                <>
+                  <p className="text-stone-800 text-lg font-semibold">
+                    Location denied
+                  </p>
+                  <p className="text-stone-600">
+                    Please turn on your location and reload the page
+                  </p>
+                </>
+              </div>
+            ) : lodgesBasedOnCurrentLocation ? (
+              <>
+                {lodgesBasedOnCurrentLocation?.map(
+                  (product: any, i: number) => (
+                    <Card
+                      {...product}
+                      key={`${product.lodgeName}${i}`}
+                      imageUrl={optimizeImageUrl(product.coverphoto)}
+                      name={product.lodgeName}
+                      location={product.address_text}
+                      nearbyUniversity={product.subAdministrativeArea}
+                      state={product.administrativeArea}
+                      price={product.price || 0}
+                    />
+                  )
+                )}
+              </>
+            ) : (
+              <div className="flex flex-col col-span-2 md:col-span-4 mt-10 items-center w-full self-center text-gray-500">
+                <MdOutlineSearchOff size={50} />
+                <p className="mt-4 text-lgray">
+                  Oops! no result found at this location
+                </p>
+              </div>
+            )}
           </>
         ) : (
           <>
-            {LodgesData.lodges.length >= 1 ? (
+            {LodgesData?.lodges ? (
               <>
-                {LodgesData?.lodges.map((product: any, i: number) => (
-                  <Card
-                    {...product}
-                    key={`${product.lodgeName}${i}`}
-                    imageUrl={optimizeImageUrl(product.coverphoto)}
-                    name={product.lodgeName}
-                    location={product.address_text}
-                    nearbyUniversity={product.subAdministrativeArea}
-                    state={product.administrativeArea}
-                    price={product.price || 0}
-                  />
-                ))}
+                {LodgesData?.lodges.map((product: any, i: number) => {
+                  if (!product.coverphoto) return;
+
+                  return (
+                    <Card
+                      {...product}
+                      key={`${product.lodgeName}${i}`}
+                      imageUrl={optimizeImageUrl(product.coverphoto)}
+                      name={product.lodgeName}
+                      location={product.address_text}
+                      nearbyUniversity={product.subAdministrativeArea}
+                      state={product.administrativeArea}
+                      price={product.price || 0}
+                    />
+                  );
+                })}
               </>
             ) : (
-              <div className="flex flex-col col-span-2 mt-10 items-center w-full self-center text-gray-500">
+              <div className="flex flex-col col-span-2 md:col-span-4 mt-10 items-center w-full self-center text-gray-500">
                 <MdOutlineSearchOff size={50} />
                 <p className="mt-4 text-lgray">
                   Oops! no result found at this location
@@ -207,15 +194,20 @@ const BrowseLodges: React.FC<BrowseLodgesProps> = ({ isSearchTriggered }) => {
         )}
       </>
     );
-  }, [showMore, displayRecent, LodgesData, loading]);
+  }, [
+    showMore,
+    useLocation,
+    LodgesData,
+    loading,
+    lodgesBasedOnCurrentLocation,
+  ]);
 
   useEffect(() => {
     const fetchLodges = async () => {
       try {
         setFetchingResentLodges(true);
         const res = await axios.get(Endpoints.getCurrentPublicLodges);
-        setResentLodges(res.data.data);
-        console.log({ res });
+        dispatch(setLodgesData(res.data.data));
       } catch (error) {
         console.log({ error });
       } finally {
@@ -246,8 +238,8 @@ const BrowseLodges: React.FC<BrowseLodgesProps> = ({ isSearchTriggered }) => {
           <Switch
             id="airplane-mode"
             defaultChecked
-            onCheckedChange={(mode) => setDisplayRecent(mode)}
-            checked={displayRecent}
+            onCheckedChange={(mode) => setUseLocation(mode)}
+            checked={useLocation}
           />
         </div>
       </div>

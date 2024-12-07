@@ -102,45 +102,31 @@ function FormTab2() {
     );
   };
   return (
-    <div className='mb-[100px]'>
-      {/* <div className="pb-[16px] border-b">
+    <div className="mb-[100px]">
+      <div className="pb-[16px] border-b">
         <label htmlFor="describeyou" className="font-bold mt-[32px]">
-          Which best describes you?
-        </label>
-        <div className="flex mt-[15px] gap-2 items-center">
-          <div className=" rounded-full border h-[18px] w-[18px]"></div>{" "}
-          <p>I want someone to come live with me</p>{" "}
-        </div>
-        <div className="flex mt-[15px] gap-2 items-center">
-          <div className=" rounded-full border h-[18px] w-[18px] flex justify-center items-center">
-            <div className="bg-black h-[6px] w-[6px] rounded-full"></div>
-          </div>{" "}
-          <p>I want someone to come live with me</p>{" "}
-        </div>
-      </div> */}
-      {/* What type of apartment are you looking to live in? */}
-      <div className='pb-[16px] border-b'>
-        <label htmlFor='describeyou' className='font-bold mt-[32px]'>
           What type of apartment are you looking to live in?{" "}
         </label>
 
-        <div className='flex mt-[15px] gap-2 items-center'>
-          <div className=' rounded border h-[18px] w-[18px] flex justify-center items-center'>
+        <div className="flex mt-[15px] gap-2 items-center">
+          <div className=" rounded border h-[18px] w-[18px] flex justify-center items-center">
             <input
-              type='radio'
-              className=''
+              name="apartment"
+              type="radio"
+              className=""
               value={"Self-contain"}
-              checked={AccomodationTypes === "Self-contained"}
+              checked={AccomodationTypes === "Self-contain"}
               onChange={(e) => handlechangeAccomodationTypes(e.target.value)}
             />
           </div>
-          <p>Self-contained</p>{" "}
+          <p>Self-contained</p>
         </div>
-        <div className='flex mt-[15px] gap-2 items-center'>
-          <div className=' rounded border h-[18px] w-[18px] flex justify-center items-center'>
+        <div className="flex mt-[15px] gap-2 items-center">
+          <div className=" rounded border h-[18px] w-[18px] flex justify-center items-center">
             <input
-              type='radio'
-              className=''
+              name="apartment"
+              type="radio"
+              className=""
               value={"flat"}
               checked={AccomodationTypes === "flat"}
               onChange={(e) => handlechangeAccomodationTypes(e.target.value)}
@@ -148,11 +134,12 @@ function FormTab2() {
           </div>
           <p>Flat</p>{" "}
         </div>
-        <div className='flex mt-[15px] gap-2 items-center'>
-          <div className=' rounded border h-[18px] w-[18px] flex justify-center items-center'>
+        <div className="flex mt-[15px] gap-2 items-center">
+          <div className=" rounded border h-[18px] w-[18px] flex justify-center items-center">
             <input
-              type='radio'
-              className=''
+              name="apartment"
+              type="radio"
+              className=""
               value={"Single room"}
               checked={AccomodationTypes === "Single room"}
               onChange={(e) => handlechangeAccomodationTypes(e.target.value)}
@@ -160,11 +147,12 @@ function FormTab2() {
           </div>
           <p>Single room</p>{" "}
         </div>
-        <div className='flex mt-[15px] gap-2 items-center'>
-          <div className=' rounded border h-[18px] w-[18px] flex justify-center items-center'>
+        <div className="flex mt-[15px] gap-2 items-center">
+          <div className=" rounded border h-[18px] w-[18px] flex justify-center items-center">
             <input
-              type='radio'
-              className=''
+              name="apartment"
+              type="radio"
+              className=""
               value={"duplex"}
               checked={AccomodationTypes === "duplex"}
               onChange={(e) => handlechangeAccomodationTypes(e.target.value)}
@@ -177,11 +165,12 @@ function FormTab2() {
           <input type="radio" className='' checked={false} /></div>
           <p>Self-contained</p>{" "}
         </div> */}
-        <div className='flex mt-[15px] gap-2 items-center'>
-          <div className=' rounded border h-[18px] w-[18px] flex justify-center items-center'>
+        <div className="flex mt-[15px] gap-2 items-center">
+          <div className=" rounded border h-[18px] w-[18px] flex justify-center items-center">
             <input
-              type='radio'
-              className=''
+              name="apartment"
+              type="radio"
+              className=""
               value={"Anyone avilable"}
               checked={AccomodationTypes === "Anyone avilable"}
               onChange={(e) => handlechangeAccomodationTypes(e.target.value)}
@@ -191,15 +180,15 @@ function FormTab2() {
         </div>
       </div>
       {/* How do you want to live? */}
-      <div className='pb-[16px] '>
-        <label htmlFor='describeyou' className='font-bold mt-[32px]'>
+      <div className="pb-[16px] ">
+        <label htmlFor="describeyou" className="font-bold mt-[32px]">
           How do you want to live?{" "}
         </label>
-        <div className='flex mt-[15px] gap-2 items-center'>
-          <div className=' rounded border h-[18px] w-[18px] flex justify-center items-center'>
+        <div className="flex mt-[15px] gap-2 items-center">
+          <div className=" rounded border h-[18px] w-[18px] flex justify-center items-center">
             <input
-              type='radio'
-              className=''
+              type="radio"
+              className=""
               value={"separate"}
               checked={AccomodationPrefrence === "separate"}
               onChange={(e) =>
@@ -209,11 +198,11 @@ function FormTab2() {
           </div>
           <p>Separate</p>{" "}
         </div>
-        <div className='flex mt-[15px] gap-2 items-center'>
-          <div className=' rounded border h-[18px] w-[18px] flex justify-center items-center'>
+        <div className="flex mt-[15px] gap-2 items-center">
+          <div className=" rounded border h-[18px] w-[18px] flex justify-center items-center">
             <input
-              type='radio'
-              className=''
+              type="radio"
+              className=""
               value={"together"}
               checked={AccomodationPrefrence === "together"}
               onChange={(e) =>
@@ -225,7 +214,7 @@ function FormTab2() {
         </div>
       </div>
       {/* Location*/}
-      <div className=' '>
+      <div className=" ">
         {/* <div className='relative'>
           <input
             type='text'
@@ -243,8 +232,8 @@ function FormTab2() {
             />
           )}
         </div> */}
-        <div className='pb-[16px] border-b'>
-          <label htmlFor='describeyou' className='font-bold mt-[32px]'>
+        <div className="pb-[16px] border-b">
+          <label htmlFor="describeyou" className="font-bold mt-[32px]">
             Location
           </label>
         </div>

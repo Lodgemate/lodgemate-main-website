@@ -1,22 +1,27 @@
-import { selectAlldeleteModalModalMssg, showDeleteModal } from '@/lib/features/Modal/ModalSlice';
-import { useAppDispatch, useAppSelector } from '@/lib/hooks';
-import Blurbg from '@/Ui/shared/Blurbg'
-import React, { useEffect, useState } from 'react'
+import {
+  selectAlldeleteModalModalMssg,
+  showDeleteModal,
+} from "@/lib/features/Modal/ModalSlice";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
+import Blurbg from "@/Ui/shared/Blurbg";
+import React, { useEffect, useState } from "react";
 
-const DeleteModal:React.FC= () => {
-    const dispatch = useAppDispatch();
-    const deleteData = useAppSelector(selectAlldeleteModalModalMssg);
-    const [Clicked, setClicked] = useState(false)
-    const handleDelete=deleteData.deleteFunction? deleteData.deleteFunction :()=>{} 
-    const reset={
-      deleteFunction: null,
-      message:""
+const DeleteModal: React.FC = () => {
+  const dispatch = useAppDispatch();
+  const deleteData = useAppSelector(selectAlldeleteModalModalMssg);
+  const [Clicked, setClicked] = useState(false);
+  const handleDelete = deleteData.deleteFunction
+    ? deleteData.deleteFunction
+    : () => {};
+  const reset = {
+    deleteFunction: null,
+    message: "",
+  };
+  useEffect(() => {
+    if (Clicked) {
+      setClicked(false);
     }
-    useEffect(() => {
-      if (Clicked) {
-        setClicked(false);
-      }
-    }, [deleteData]);
+  }, [deleteData]);
   return (
     <>
       {deleteData.deleteFunction && (
@@ -34,9 +39,9 @@ const DeleteModal:React.FC= () => {
               className="bg-primary px-4 py-2 text-white rounded hover:scale-95 hover:text-slate-300"
             >
               {Clicked ? (
-                <>
+                <div className="flex items-center gap-2">
                   Deleting... <div className="circularLoader" />
-                </>
+                </div>
               ) : (
                 "Delete"
               )}
@@ -52,6 +57,6 @@ const DeleteModal:React.FC= () => {
       )}
     </>
   );
-}
+};
 
-export default DeleteModal
+export default DeleteModal;

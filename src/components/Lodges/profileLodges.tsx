@@ -1,7 +1,5 @@
 import React, { useState } from "react";
-import { RiDeleteBinLine } from "react-icons/ri";
-import { IoPencil } from "react-icons/io5";
-import { useAppDispatch } from "@/lib/hooks";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import {
   showDeleteModal,
   showFailedModal,
@@ -11,6 +9,7 @@ import { Endpoints } from "@/services/Api/endpoints";
 import EditLodgeModal from "@/app/profile/[id]/modals/EditLodgeModal";
 import { Lodge } from "@/lib/Types";
 import ShouldHide from "@/app/profile/[id]/ShouldHide";
+import { selectToken } from "@/lib/features/Auth/tokenSlice";
 
 interface ProductCardProps {
   id: any;
@@ -27,10 +26,11 @@ interface ProductCardProps {
 }
 
 const ProductCard: React.FC<ProductCardProps> = React.memo(
-  ({ id, imageUrl, name, address, nearbyUniversity, price, product, }) => {
+  ({ id, imageUrl, name, address, nearbyUniversity, price, product }) => {
     const [isDeleted, setIsDeleted] = useState(false);
     const [openEditLodges, setOpenEditLodges] = useState(false);
-    const [isPopupVisible, setIsPopupVisible] = useState(false); // State to handle popup visibility
+    const [isPopupVisible, setIsPopupVisible] = useState(false);
+    const parseToken = useAppSelector(selectToken);
 
     const formattedPrice = new Intl.NumberFormat("en-NG", {
       style: "currency",
@@ -41,8 +41,6 @@ const ProductCard: React.FC<ProductCardProps> = React.memo(
     const dispatch = useAppDispatch();
 
     const handleDelete = async () => {
-      const localStorageToken = localStorage.getItem("token");
-      const parseToken = localStorageToken && JSON.parse(localStorageToken);
       const body = {
         method: "DELETE",
         headers: {
@@ -70,10 +68,9 @@ const ProductCard: React.FC<ProductCardProps> = React.memo(
       setIsPopupVisible(!isPopupVisible); // Toggle popup visibility
     };
 
-
-  if (isDeleted) {
-    return;
-  }
+    if (isDeleted) {
+      return;
+    }
     return (
       <div className="relative flex w-full flex-col rounded overflow-hidden">
         {openEditLodges && (

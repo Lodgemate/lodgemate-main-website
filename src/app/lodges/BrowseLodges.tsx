@@ -123,7 +123,7 @@ const BrowseLodges: React.FC<BrowseLodgesProps> = ({ isSearchTriggered }) => {
       <>
         {useLocation ? (
           <>
-            {error ? (
+            {error == "User denied Geolocation" ? (
               <div className="flex flex-col col-span-2 md:col-span-4 mt-10 items-center w-full self-center">
                 <CiLocationOff className="h-10 w-10 text-red-500" />
                 <>

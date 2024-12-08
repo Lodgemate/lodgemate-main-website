@@ -99,9 +99,10 @@ export function getInitials(fullName: string) {
 }
 
 export const optimizeImageUrl = (url: string) => {
-  if (!url) return;
+  if (!url) return "";
 
   if (url.includes("/upload/")) {
+    console.log(url.replace("/upload/", "/upload/w_300,f_auto/"));
     return url.replace("/upload/", "/upload/w_300,f_auto/");
   }
   return url;

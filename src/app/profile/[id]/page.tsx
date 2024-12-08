@@ -5,18 +5,13 @@ import LodgeListed from "./LodgesListed";
 import ServicesListed from "./ServicesList";
 import DeleteModal from "@/components/modals/DeleteModal";
 import { useAppSelector } from "@/lib/hooks";
-import { selectAllUsersdata } from "@/lib/features/Users/usersSlice";
 import { FetchApi } from "@/utils/Fetchdata";
 import { Endpoints } from "@/services/Api/endpoints";
 import { useParams } from "next/navigation";
-import EditLodgeModal from "./modals/EditLodgeModal";
 import { selectToken } from "@/lib/features/Auth//tokenSlice";
 import ReviewsListed from "./ReviewsListed";
 
-const cache = new Map<string, any>();
-
 const MyProfile = () => {
-  // const data= useAppSelector(selectAllUsersdata)
   const [currentUserData, setcurrentUserData] = useState<any>(null);
   const parsedToken = useAppSelector(selectToken);
   const params = useParams();
@@ -27,7 +22,6 @@ const MyProfile = () => {
     lodgesdata: "" as any,
     Servicesdata: "" as any,
   });
-  //  console.log(currentUserData?.data.user._id)
 
   useEffect(() => {
     const url = `${Endpoints.getUserById}${id}`;

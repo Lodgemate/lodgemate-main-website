@@ -23,6 +23,8 @@ import {
 } from "@/lib/features/Reviews/ReviewsSlice";
 import ChatBtn from "@/components/Shared/chatBtn";
 import { selectToken } from "@/lib/features/Auth/tokenSlice";
+import Image from "next/image";
+import { optimizeImageUrl } from "@/utils/utils";
 
 interface LodgeInfoProps {
   id: string;
@@ -99,7 +101,8 @@ function LodgeInfo() {
   const [isOpen, setIsOpen] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
   const parseToken = useAppSelector(selectToken);
-  console.log(currentUserData);
+
+  console.log({ LodgeData });
 
   const reFetchReviews = async () => {
     try {
@@ -264,13 +267,6 @@ function LodgeInfo() {
   }).format(LodgeData.price);
 
   const photosWithCover = [LodgeData.coverphoto, ...LodgeData.photos];
-
-  const optimizeImageUrl = (url: string) => {
-    if (url.includes("/upload/")) {
-      return url.replace("/upload/", "/upload/w_400,f_auto/");
-    }
-    return url;
-  };
 
   const openModal = (index: number) => {
     setCurrentIndex(index);
@@ -447,13 +443,13 @@ function LodgeInfo() {
             style={{ scrollBehavior: "smooth" }}
           >
             {photosWithCover.map((image, index) => (
-              <div
-                key={index}
-                className="flex-none w-[400px] bg-black overflow-hidden"
-              >
-                <img
-                  src={optimizeImageUrl(image)} // Apply the image optimization function here
+              <div key={index} className="flex-none w-[400px] overflow-hidden">
+                <Image
+                  src={optimizeImageUrl(image)}
+                  width={1000}
+                  height={1000}
                   alt={`image ${index + 1}`}
+                  quality={1}
                   className="object-cover sm:min-h-[400px] min-h-[400px] cursor-pointer"
                   onClick={() => openModal(index)}
                 />

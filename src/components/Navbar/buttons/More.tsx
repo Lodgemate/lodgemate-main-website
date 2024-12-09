@@ -100,20 +100,20 @@ function More() {
                                   <p className="text-xs font-semibold ">
                                     {navDemacators[i]}
                                   </p>{" "}
-                                  <div className="w-5 h-[2px] bg-stone-500" />
+                                  {/* <div className="w-5 h-[2px] bg-stone-500" /> */}
                                 </div>
                               )}
-                              <SheetClose asChild className="w-full">
+                              <SheetClose asChild className="w-full my-1">
                                 <Link
                                   href={url}
                                   className="text-stone-800 font-normal flex items-center justify-between w-full"
                                 >
                                   <div className="flex items-center gap-1">
                                     <Icon className="w-4 h-4" />
-                                    <p className="text-[13px]">{title}</p>
+                                    <p className="">{title}</p>
                                   </div>
                                   {title == "Notifications" && (
-                                    <p className="h-5 w-5 text-xs grid place-items-center rounded-full bg-red-100 text-red-500">
+                                    <p className="h-6 w-6 grid place-items-center rounded-full bg-red-100 text-red-500">
                                       5
                                     </p>
                                   )}
@@ -128,7 +128,7 @@ function More() {
                     <SheetClose asChild>
                       <Link
                         href={`/profile/${currentUser?._id}`}
-                        className="text-stone-800 text-[13px] font-normal flex gap-1 items-center w-full"
+                        className="text-stone-800 font-normal flex gap-1 my-1 items-center w-full"
                       >
                         <GoPerson className="h-4 w-4" />
                         View profile
@@ -142,7 +142,7 @@ function More() {
                           dispatch(clearToken());
                           dispatch(logOut());
                         }}
-                        className="text-stone-800 text-[13px] font-normal flex items-center gap-1 w-full"
+                        className="text-stone-800 font-normal flex items-center gap-1 w-full"
                       >
                         <IoIosLogOut className="w-4 h-4" />
                         Logout

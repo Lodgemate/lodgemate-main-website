@@ -6,6 +6,8 @@ interface initialStateType {
     _id: string;
     firstName: string;
     profilePicture?: string;
+    email: string;
+    lastName: string;
   } | null;
   status: string;
   error: string | null;

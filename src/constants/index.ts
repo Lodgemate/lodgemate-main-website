@@ -56,3 +56,5 @@ export const navLinks = [
     Icon: BsGear,
   },
 ];
+
+export const navDemacators = ["Manage", "User Actions", "Settings"];

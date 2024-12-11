@@ -24,7 +24,7 @@ import {
 import ChatBtn from "@/components/Shared/chatBtn";
 import { selectToken } from "@/lib/features/Auth/tokenSlice";
 import Image from "next/image";
-import { optimizeImageUrl } from "@/utils/utils";
+import { optimizeImageUrl, removeFromLink } from "@/utils/utils";
 
 interface LodgeInfoProps {
   id: string;
@@ -445,11 +445,11 @@ function LodgeInfo() {
             {photosWithCover.map((image, index) => (
               <div key={index} className="flex-none w-[400px] overflow-hidden">
                 <Image
-                  src={optimizeImageUrl(image)}
-                  width={1000}
-                  height={1000}
+                  src={removeFromLink(optimizeImageUrl(image), "w_300,f_auto")}
+                  width={600}
+                  height={600}
+                  quality={100}
                   alt={`image ${index + 1}`}
-                  quality={1}
                   className="object-cover sm:min-h-[400px] min-h-[400px] cursor-pointer"
                   onClick={() => openModal(index)}
                 />

@@ -107,3 +107,8 @@ export const optimizeImageUrl = (url: string) => {
   }
   return url;
 };
+
+export function removeFromLink(link: string, substring: string) {
+  if (!link) return "";
+  return link.replace(substring, "").replace(",,", ",");
+}

@@ -20,7 +20,6 @@ import {
   showSuccessfulModal,
 } from "@/lib/features/Modal/ModalSlice";
 import { selectToken } from "@/lib/features/Auth/tokenSlice";
-import { IoIosArrowRoundBack } from "react-icons/io";
 
 const LodgeTabs = () => {
   const router = useRouter();
@@ -89,7 +88,7 @@ const LodgeTabs = () => {
       console.log(await error);
     }
   };
-  // make an unorderd list for err
+
   return (
     <div className="flex w-full flex-col">
       <div className=" mt-[100px] justify-center flex items-center w-full">
@@ -103,27 +102,21 @@ const LodgeTabs = () => {
           ></button>
         ))}
       </div>
-      <button
-        onClick={prevTab}
-        disabled={activeTab === 0}
-        className="mt-[40px] mb-[20px] w-fit"
-      >
-        <IoIosArrowRoundBack className="w-6 h-6 text-zinc-900" />
-      </button>
-      <div className="tab-content mb-[100px]">{tabs[activeTab].content}</div>
-      <div className="flex sm:justify-center justify-between items-center">
+      <div className="tab-content mb-[100px] mt-5">
+        {tabs[activeTab].content}
+      </div>
+      <div className="flex items-center justify-end md:justify-center gap-5">
         <button
           onClick={prevTab}
           disabled={activeTab === 0}
-          className="max-sm:hidden flex items-center gap-2 text-[14px]"
+          className=" text-center rounded-lg w-40 h-[48px] border-[2px] border-stone-500 cursor-pointer text-stone-500 text-[14px]"
         >
-          <IoIosArrowRoundBack className="w-6 h-6 text-zinc-900" />
           Back
         </button>
         <button
           onClick={activeTab === 4 ? handleListLodges : nextTab}
           // disabled={activeTab ===  1 || activeTab > 4}
-          className="bg-primary text-white text-[14px] w-1/2 sm:w-[300px] h-[48px] rounded-[8px]"
+          className="bg-primary text-white text-[14px] w-[300px] h-[48px] rounded-[8px]"
         >
           {activeTab === 4 ? "List your lodge" : "Next"}
         </button>
@@ -134,7 +127,7 @@ const LodgeTabs = () => {
 
 const Tab1 = () => (
   <div>
-    <h2 className=" text-[16px] text-lblack">
+    <h2 className=" text-[16px] my-3 text-lblack text-center">
       Which of this best describes the accommodation?
     </h2>
     <form>
@@ -145,7 +138,7 @@ const Tab1 = () => (
 
 const Tab2 = () => (
   <div>
-    <h2 className=" text-[16px] text-center text-lblack">
+    <h2 className=" text-[16px] my-3 text-center text-lblack">
       How many room are has it?
     </h2>
     <form>
@@ -156,7 +149,7 @@ const Tab2 = () => (
 
 const Tab3 = () => (
   <div>
-    <h2 className=" text-[16px] text-lblack">
+    <h2 className=" text-[16px] text-center my-3 text-lblack">
       Please select only the features your accommodation has.
     </h2>
     <form>
@@ -167,7 +160,7 @@ const Tab3 = () => (
 
 const Tab4 = () => (
   <div>
-    <h2 className=" text-[16px] text-lblack">
+    <h2 className=" text-[16px] my-3 text-lblack text-center">
       Let people see what your lodge looks like. <br /> Upload a minimum of (5)
       image
     </h2>
@@ -179,7 +172,7 @@ const Tab4 = () => (
 
 const Tab5 = () => (
   <div>
-    <h2 className=" text-[16px] text-lblack">
+    <h2 className=" text-[16px] my-3 text-center text-lblack">
       Almost done. Fill in these details.
     </h2>
     <form>

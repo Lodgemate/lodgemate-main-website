@@ -32,11 +32,11 @@ const Tab4Content: React.FC = () => {
   );
 
   const locationOnchange = (data: Result) => {
- //@ts-ignore
-const locate=data.geometry.location
- //@ts-ignore
-    const long =locate.lng();
- //@ts-ignore
+    //@ts-ignore
+    const locate = data.geometry.location;
+    //@ts-ignore
+    const long = locate.lng();
+    //@ts-ignore
     const lat = locate.lat();
     dispatch(
       setStateItem({
@@ -84,36 +84,23 @@ const locate=data.geometry.location
     );
   };
 
-  //  console.log(Object.fromEntries(data))
-
   return (
-    <div className='flex flex-col items-center text-dgray text-[14px]'>
-      <form className='w-full max-w-lg flex flex-col gap-4 mt-5'>
+    <div className="flex flex-col items-center text-dgray text-[14px]">
+      <form className="w-full max-w-lg flex flex-col gap-4 mt-5">
         <input
-          type='text'
-          placeholder='Enter name of lodge'
-          className='w-full p-2 border border-gray-300 rounded'
+          type="text"
+          placeholder="Enter name of lodge"
+          className="w-full p-2 border border-gray-300 rounded"
           value={Lodgename}
           onChange={(e) => {
             setLodgename(e.target.value);
             dispatch(setStateItem({ key: "lodgeName", value: e.target.value }));
           }}
         />
-        {/* <div className="relative">
-          <input
-          type="text"
-          placeholder="Enter location of lodge"
-          className="w-full p-2 border border-gray-300 rounded"
-          onChange={(e)=>setloacation(e.target.value)}
-          onFocus={()=>setonFocus(true)}
-          onBlur={() => setonFocus(false)}
-        />
-          {onFocus && <LocationSuggestion handleLocation={locationOnchange} input={loacation} setInput={setloacation}/>}
-        </div> */}
         <input
-          type='number'
-          placeholder='Price'
-          className='w-full p-2 border border-gray-300 rounded'
+          type="number"
+          placeholder="Price"
+          className="w-full p-2 border border-gray-300 rounded"
           value={Price}
           onChange={(e) => {
             setPrice(e.target.value);
@@ -121,8 +108,8 @@ const locate=data.geometry.location
           }}
         />
         <textarea
-          placeholder='Write a short description about your lodge'
-          className='w-full p-2 border border-gray-300 rounded'
+          placeholder="Write a short description about your lodge"
+          className="w-full p-2 border border-gray-300 rounded"
           value={lodgeDescription}
           rows={4}
           onChange={(e) => {

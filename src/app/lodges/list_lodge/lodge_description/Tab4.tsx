@@ -1,37 +1,43 @@
 "use client";
 
-import { imagesSetStateItem, selectAllList_imagesUrl, selectAllList_Listingdata, setImagesUrl } from "@/lib/features/Listing/ListingSlice";
+import {
+  imagesSetStateItem,
+  selectAllList_imagesUrl,
+  setImagesUrl,
+} from "@/lib/features/Listing/ListingSlice";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
+import { CiImageOn } from "react-icons/ci";
 import React, { useEffect, useState } from "react";
 
 const Tab4Content: React.FC = () => {
   const dispatch = useAppDispatch();
-  const data =useAppSelector(selectAllList_imagesUrl)
-  const images =data;
+  const data = useAppSelector(selectAllList_imagesUrl);
+  const images = data || [];
   const [placeholders, setPlaceholders] = useState<number[]>([1, 2, 3, 4, 5]);
-  console.log(images)
-  console.log(typeof images[0])
+
   const handleImageUpload = (
     event: React.ChangeEvent<HTMLInputElement>,
     index: number
   ) => {
-    if (event.target.files && event.target.files[0]) {
-      console.log(event.target.files[0])
-      const newImage = URL.createObjectURL(event.target.files[0]);
+    if (event.target.files) {
+      const filesArray = Array.from(event.target.files); // Convert FileList to an array
       const newImages = [...images];
-      newImages[index] = newImage;
-      dispatch(setImagesUrl(newImages))
-      dispatch(imagesSetStateItem({key: 'photos', value:event.target.files[0], index: index}))
+
+      filesArray.forEach((file, idx) => {
+        const imageUrl = URL.createObjectURL(file);
+        newImages[index + idx] = imageUrl; // Add images at the respective indices
+        dispatch(
+          imagesSetStateItem({ key: "photos", value: file, index: index + idx })
+        );
+      });
+
+      dispatch(setImagesUrl(newImages));
     }
   };
 
   const addPlaceholder = () => {
     setPlaceholders([...placeholders, placeholders.length + 1]);
   };
-
-  useEffect(()=>{
-
-  },[])
 
   return (
     <div className="flex flex-col items-center mt-[20px] text-[14px]">
@@ -53,6 +59,7 @@ const Tab4Content: React.FC = () => {
                 id={`file-input-${index}`}
                 type="file"
                 accept="image/*"
+                multiple
                 onChange={(e) => handleImageUpload(e, index)}
                 className="hidden"
               />
@@ -63,11 +70,10 @@ const Tab4Content: React.FC = () => {
                   className="object-cover w-full h-full"
                 />
               ) : (
-                <img
-                  src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1719883622/utilities/LodgeMate_File/Upload_imagesdfghj_vlbzk7.svg"
-                  alt=""
-                  className="w-full"
-                />
+                <div className="border-dotted border-[1.9px] flex flex-col items-center justify-center gap-2 text-stone-800 h-full w-full rounded-lg border-stone-400">
+                  <CiImageOn className="h-8 w-8" />
+                  <p>Click to upload</p>
+                </div>
               )}
             </label>
           </div>
@@ -76,7 +82,7 @@ const Tab4Content: React.FC = () => {
       <button
         type="button"
         onClick={addPlaceholder}
-        className="mt-3 p-2 bg-white text-black border rounded-[8px] justify-center flex items-end"
+        className="mt-3 p-2 bg-white  border rounded-[8px] justify-center flex items-end"
       >
         + Add More
       </button>

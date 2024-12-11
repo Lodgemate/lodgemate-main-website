@@ -74,81 +74,15 @@ function More() {
               </SheetFooter>
             </SheetContent>
           </Sheet>
-          <div className="md:hidden">
-            <Sheet>
-              <SheetTrigger>
-                <LuMenu className="w-5 h-5" />
-              </SheetTrigger>
-              <SheetContent className="p-3 pt-4">
-                <div className="flex flex-col justify-between h-full">
-                  <div className="h-fit">
-                    {navLinks.map(({ title, url, Icon }, i) => {
-                      return (
-                        <div key={title}>
-                          {
-                            <div>
-                              {i % 3 == 0 && i > 1 && (
-                                <div className="w-full flex items-center my-3 justify-between">
-                                  <p className="text-xs font-semibold ">
-                                    {navDemacators[i / 3]}
-                                  </p>{" "}
-                                  <div className="w-5 h-[2px] bg-stone-500" />
-                                </div>
-                              )}
-                              {i == 0 && (
-                                <div className="w-full flex items-center my-3 justify-between">
-                                  <p className="text-xs font-semibold ">
-                                    {navDemacators[i]}
-                                  </p>{" "}
-                                  {/* <div className="w-5 h-[2px] bg-stone-500" /> */}
-                                </div>
-                              )}
-                              <SheetClose asChild className="w-full my-1">
-                                <Link
-                                  href={url}
-                                  className="text-stone-800 font-normal flex items-center justify-between w-full"
-                                >
-                                  <div className="flex items-center gap-1">
-                                    <Icon className="w-4 h-4" />
-                                    <p className="">{title}</p>
-                                  </div>
-                                  {title == "Notifications" && (
-                                    <p className="h-6 w-6 grid place-items-center rounded-full bg-red-100 text-red-500">
-                                      5
-                                    </p>
-                                  )}
-                                </Link>
-                              </SheetClose>
-                            </div>
-                          }
-                        </div>
-                      );
-                    })}
 
-                    <SheetClose asChild>
-                      <Link
-                        href={`/profile/${currentUser?._id}`}
-                        className="text-stone-800 font-normal flex gap-1 my-1 items-center w-full"
-                      >
-                        <GoPerson className="h-4 w-4" />
-                        View profile
-                      </Link>
-                    </SheetClose>
-                    <SheetClose asChild className="block">
-                      <Link
-                        href="/"
-                        onClick={() => {
-                          dispatch(Logout());
-                          dispatch(clearToken());
-                          dispatch(logOut());
-                        }}
-                        className="text-stone-800 font-normal flex items-center gap-1 w-full"
-                      >
-                        <IoIosLogOut className="w-4 h-4" />
-                        Logout
-                      </Link>
-                    </SheetClose>
-                  </div>
+          <div className="">
+            <DropdownMenu open={showModel}>
+              <DropdownMenuTrigger className="flex items-center flex-col relative bottom-3">
+                <div className="md:hidden mt-3 mr-1">
+                  <LuMenu className="w-6 h-6" />
+                </div>
+                <div className="max-md:hidden">
+                  <div className="rounded-full bg-red-600 h-3 w-3 grid relative top-2 z-10 -right-1 place-items-center text-xs"></div>
                   <div className="px-[13px] py-2 relative rounded-[8px] shadow-sm mb-2">
                     <div className="flex relative text-[14px] font-medium items-center gap-2">
                       <Avatar className="h-8 w-8 rounded-lg">
@@ -170,39 +104,8 @@ function More() {
                           {currentUser.email}
                         </span>
                       </div>
+                      <ChevronsUpDown className="ml-auto size-4" />
                     </div>
-                  </div>
-                </div>
-              </SheetContent>
-            </Sheet>
-          </div>
-
-          <div className="max-md:hidden">
-            <DropdownMenu open={showModel}>
-              <DropdownMenuTrigger className="flex items-end flex-col relative bottom-3">
-                <div className="rounded-full bg-red-600 h-3 w-3 grid relative top-2 z-10 -right-1 place-items-center text-xs"></div>
-                <div className="px-[13px] py-2 relative rounded-[8px] shadow-sm mb-2">
-                  <div className="flex relative text-[14px] font-medium items-center gap-2">
-                    <Avatar className="h-8 w-8 rounded-lg">
-                      {/* <AvatarImage
-                        src={
-                        }
-                        alt={currentUser.firstName}
-                      /> */}
-                      <AvatarFallback className="rounded-lg">
-                        {currentUser.firstName.charAt(0).toUpperCase()}
-                        {currentUser.lastName.charAt(0).toUpperCase()}
-                      </AvatarFallback>
-                    </Avatar>
-                    <div className="grid flex-1 text-left text-sm leading-tight">
-                      <span className="truncate font-semibold">
-                        {currentUser.firstName}
-                      </span>
-                      <span className="truncate text-xs">
-                        {currentUser.email}
-                      </span>
-                    </div>
-                    <ChevronsUpDown className="ml-auto size-4" />
                   </div>
                 </div>
               </DropdownMenuTrigger>

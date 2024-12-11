@@ -1,7 +1,12 @@
 "user client";
 
-import { appendStateItem, selectAllList_Listingdata, setStateItem } from "@/lib/features/Listing/ListingSlice";
+import {
+  appendStateItem,
+  selectAllList_Listingdata,
+  setStateItem,
+} from "@/lib/features/Listing/ListingSlice";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
+import Image from "next/image";
 import React, { useState } from "react";
 
 interface Box {
@@ -13,13 +18,15 @@ interface Box {
 
 const Tab3Content: React.FC = () => {
   const dispatch = useAppDispatch();
-  const data =useAppSelector(selectAllList_Listingdata)
-  const hasKey = data.has('lodgeFeatures[]');
-  console.log(hasKey); 
-  const extractedData: any = hasKey && data.getAll('lodgeFeatures[]') || null
-    console.log(extractedData)
-  const [selectedBox, setSelectedBox] = useState<any>(extractedData && extractedData ||[]);
-  console.log(selectedBox)
+  const data = useAppSelector(selectAllList_Listingdata);
+  const hasKey = data.has("lodgeFeatures[]");
+  console.log(hasKey);
+  const extractedData: any = (hasKey && data.getAll("lodgeFeatures[]")) || null;
+  console.log(extractedData);
+  const [selectedBox, setSelectedBox] = useState<any>(
+    (extractedData && extractedData) || []
+  );
+  console.log(selectedBox);
   const boxes: Box[] = [
     {
       id: 1,
@@ -78,42 +85,23 @@ const Tab3Content: React.FC = () => {
   ];
 
   const handleBoxClick = (text: string) => {
-    // if (selectedBox.includes(text)) {
-    //   let updatedArr = selectedBox.filter((ent: string) => ent != text);
-    //   console.log(updatedArr)
-    //   setSelectedBox(updatedArr);
-    //   dispatch(setStateItem({ key: "lodgeFeatures", value: JSON.stringify(updatedArr) }));
-    // } else {
-    //   let updatedArr = [...selectedBox, text];
-    //   console.log(updatedArr)
-
-    //   setSelectedBox(updatedArr);
-    //   dispatch(setStateItem({ key: "lodgeFeatures", value: JSON.stringify(updatedArr) }));
-    // }
     if (selectedBox.includes(text)) {
-      
       let updatedArr = selectedBox.filter((ent: string) => ent != text);
       setSelectedBox(updatedArr);
-      data.delete("lodgeFeatures[]")
+      data.delete("lodgeFeatures[]");
       updatedArr.forEach((element: string) => {
-      dispatch(appendStateItem({ key: "lodgeFeatures[]", value: element }));
-        
+        dispatch(appendStateItem({ key: "lodgeFeatures[]", value: element }));
       });
-    }else{
-       let updatedArr = [...selectedBox, text];
-       setSelectedBox(updatedArr);
+    } else {
+      let updatedArr = [...selectedBox, text];
+      setSelectedBox(updatedArr);
       dispatch(appendStateItem({ key: "lodgeFeatures[]", value: text }));
-    }}
-
-  // make an array
-  // in the function create a shallow arr"
-  // use the shallow arrar to dispatch to store 
-  // correct reducer logic
-  // from there use store to revalidate component
+    }
+  };
 
   return (
     <div className="flex flex-col items-center text-[14px]">
-      <form className="flex flex-wrap  gap-5 mt-5">
+      <form className="flex flex-wrap justify-center items-center gap-5 mt-5">
         {boxes.map((box) => (
           <div
             key={box.id}
@@ -124,16 +112,26 @@ const Tab3Content: React.FC = () => {
             }`}
             onClick={() => handleBoxClick(box.text.toLowerCase())}
           >
-            <img
+            <Image
               src={
                 selectedBox.includes(box.text.toLowerCase())
                   ? box.imgSrc2
                   : box.imgSrc
               }
               alt={box.text}
-              className="w-[18px] h-[18px]"
+              width={100}
+              height={100}
+              className="w-6 h-6"
             />
-            <p className="mt-2">{box.text}</p>
+            <p
+              className={`${
+                selectedBox.includes(box.text.toLowerCase())
+                  ? "text-white"
+                  : "text-stone-800"
+              }`}
+            >
+              {box.text}
+            </p>
           </div>
         ))}
       </form>

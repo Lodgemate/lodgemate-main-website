@@ -4,6 +4,7 @@ import products, { Product } from "./data";
 import AOS from "aos";
 import HeartIcon from "./SaveIcon";
 import Image from "next/image";
+import { removeFromLink } from "@/utils/utils";
 
 interface ProductCardProps {
   id: number;
@@ -42,10 +43,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
     });
   });
 
-  function removeFromLink(link: string, substring: string) {
-    if (!link) return "";
-    return link.replace(substring, "").replace(",,", ",");
-  }
+
 
   return (
     <div className="max-w-sm rounded overflow-hidden z-[9]" data-aos="fade-up">

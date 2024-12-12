@@ -12,7 +12,6 @@ import { selectToken } from "@/lib/features/Auth/tokenSlice";
 import { LiaCommentSlashSolid } from "react-icons/lia";
 import { format } from "date-fns";
 import { Skeleton } from "@/components/ui/skeleton";
-import Image from "next/image";
 
 interface ReviewCardProps {
   comment: string;
@@ -52,12 +51,10 @@ const ReviewCard: React.FC<ReviewCardProps> = ({
       />
 
       <div className="flex items-center mb-2">
-        <Image
+        <img
           className="w-12 h-12 rounded-full"
           src={profilePicture}
           alt={firstName}
-          width={200}
-          height={200}
         />
         <div className="ml-4">
           <div className="font-bold">{firstName}</div>

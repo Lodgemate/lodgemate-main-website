@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
@@ -9,23 +9,28 @@ import Link from "next/link";
 import { Endpoints } from "@/services/Api/endpoints";
 import { FetchApi } from "@/utils/Fetchdata";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
-import { resetFormData, selectAllList_Listingdata } from "@/lib/features/Listing/ListingSlice";
+import {
+  resetFormData,
+  selectAllList_Listingdata,
+} from "@/lib/features/Listing/ListingSlice";
 import {
   showFailedModal,
   showLoadingModal,
   showSuccessfulModal,
 } from "@/lib/features/Modal/ModalSlice";
+import { selectToken } from "@/lib/features/Auth/tokenSlice";
 
 function FindRoommate() {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const [currentTab, setCurrentTab] = useState(1);
-  const formData =useAppSelector(selectAllList_Listingdata)
+  const formData = useAppSelector(selectAllList_Listingdata);
+  const parseToken = useAppSelector(selectToken);
 
   useEffect(() => {
     dispatch(resetFormData());
   }, []);
-  
+
   const handleNext = () => {
     if (currentTab < 3) setCurrentTab(currentTab + 1);
   };
@@ -40,38 +45,30 @@ function FindRoommate() {
     "You’re done!",
   ];
 
-
   const handleListRoommates = async () => {
     dispatch(showLoadingModal("Posting Roommates"));
-    const localStorageToken = localStorage.getItem("token");
-    const parseToken = localStorageToken && JSON.parse(localStorageToken);
-     console.log(Object.fromEntries(formData));
-  
+    console.log(Object.fromEntries(formData));
+
     // Ensure formData is of the correct type
     if (!(formData instanceof FormData)) {
       console.error("formData is not available or is not of type FormData");
       return;
     }
-  
+
     const url = Endpoints.getPrivateRoommates;
-  console.log(url)
-    // When sending FormData, do not manually set the 'Content-Type' header
+
     const options = {
       method: "POST",
       headers: {
         Authorization: `Bearer ${parseToken}`,
-        // Do not set Content-Type when using FormData
-        // "Content-Type": "multipart/form-data" will be automatically set
       },
-      body: formData, // Directly pass the formData as the body
+      body: formData,
     };
-  
-    console.log(url);
-  
+
     try {
-      const res: any  = await FetchApi(url, options);
+      const res: any = await FetchApi(url, options);
       console.log(res);
-      
+
       if (res.status === "success") {
         dispatch(showLoadingModal(null));
         dispatch(showSuccessfulModal(res.message));
@@ -79,7 +76,7 @@ function FindRoommate() {
           dispatch(showSuccessfulModal(null));
           router.push("/");
         }, 500);
-       } else {
+      } else {
         dispatch(showLoadingModal(null));
         throw res;
       }
@@ -89,7 +86,6 @@ function FindRoommate() {
       console.log(error);
     }
   };
-  
 
   return (
     <div className="mt-[50px] text-[14px]">
@@ -157,10 +153,9 @@ function FindRoommate() {
               </div>
 
               <div className="px-4 flex gap-2 text-white">
-
                 <button
                   className="bg-primary w-full py-[12px] mb-[24px] rounded-[8px]"
-                  onClick={currentTab === 2 ? handleListRoommates :handleNext}
+                  onClick={currentTab === 2 ? handleListRoommates : handleNext}
                 >
                   Continue
                 </button>

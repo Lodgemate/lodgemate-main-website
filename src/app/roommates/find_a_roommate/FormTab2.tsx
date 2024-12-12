@@ -160,11 +160,7 @@ function FormTab2() {
           </div>
           <p>Duplex</p>{" "}
         </div>
-        {/* <div className="flex mt-[15px] gap-2 items-center">
-          <div className=" rounded border h-[18px] w-[18px] flex justify-center items-center">
-          <input type="radio" className='' checked={false} /></div>
-          <p>Self-contained</p>{" "}
-        </div> */}
+
         <div className="flex mt-[15px] gap-2 items-center">
           <div className=" rounded border h-[18px] w-[18px] flex justify-center items-center">
             <input

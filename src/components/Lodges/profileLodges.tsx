@@ -93,16 +93,14 @@ const ProductCard: React.FC<ProductCardProps> = React.memo(
             className="absolute top-2 left-2 text-xl hidden"
           />
 
-          {/* Menu icon with popup */}
-
-          <ShouldHide>
+          <div>
             <img
               src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1719611975/utilities/LodgeMate_File/menu_cx8xja.svg"
               alt="Menu"
               className="absolute top-2 right-2 bg-white h-6 w-6 rounded-full text-xl cursor-pointer"
               onClick={togglePopup}
             />
-          </ShouldHide>
+          </div>
 
           {/* Popup */}
           {isPopupVisible && (

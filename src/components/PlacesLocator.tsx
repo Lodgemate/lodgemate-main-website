@@ -1,28 +1,33 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { GoogleMap, useJsApiLoader, Autocomplete } from '@react-google-maps/api';
+import React, { useState, useEffect, useCallback } from "react";
+import {
+  GoogleMap,
+  useJsApiLoader,
+  Autocomplete,
+} from "@react-google-maps/api";
 
-const libraries = ['places'] as any;
+const libraries = ["places"] as any;
 
-interface props{
-  handleLocation: any
+interface props {
+  handleLocation: any;
 }
-const GooglePlacesAutocomplete: React.FC<props> = ( {handleLocation} ) => {
-  const [inputValue, setInputValue] = useState<string | any>('');
-  const [autocomplete, setAutocomplete] = useState<google.maps.places.Autocomplete | null>(null);
-  const [place, setPlace] = useState<google.maps.places.PlaceResult | null>(null);
+const GooglePlacesAutocomplete: React.FC<props> = ({ handleLocation }) => {
+  const [inputValue, setInputValue] = useState<string | any>("");
+  const [autocomplete, setAutocomplete] =
+    useState<google.maps.places.Autocomplete | null>(null);
+  const [place, setPlace] = useState<google.maps.places.PlaceResult | null>(
+    null
+  );
   const [debouncedValue, setDebouncedValue] = useState<string>(inputValue);
 
-  // Load the Google Maps API with the required libraries
   const { isLoaded } = useJsApiLoader({
-    googleMapsApiKey: process.env.NEXT_PUBLIC_GEOCODING_KEY || '',
+    googleMapsApiKey: process.env.NEXT_PUBLIC_GEOCODING_KEY || "",
     libraries,
   });
 
-  // Debounce the input value
   useEffect(() => {
     const handler = setTimeout(() => {
       setDebouncedValue(inputValue);
-    }, 500); // 500ms delay
+    }, 500);
 
     return () => {
       clearTimeout(handler);
@@ -36,21 +41,22 @@ const GooglePlacesAutocomplete: React.FC<props> = ( {handleLocation} ) => {
 
   // Handle place selection
   const onPlaceChanged = () => {
-    
     if (autocomplete) {
       const place = autocomplete.getPlace();
-      handleLocation(place)
-      console.log(place)
+      handleLocation(place);
+      console.log(place);
       setInputValue(place.formatted_address);
-      
-      console.log('Selected Place:', place);
+
+      console.log("Selected Place:", place);
     }
   };
 
-  const onLoad = useCallback((autocompleteInstance: google.maps.places.Autocomplete) => {
-    
-    setAutocomplete(autocompleteInstance);
-  }, []);
+  const onLoad = useCallback(
+    (autocompleteInstance: google.maps.places.Autocomplete) => {
+      setAutocomplete(autocompleteInstance);
+    },
+    []
+  );
 
   const onUnmount = useCallback(() => {
     setAutocomplete(null);
@@ -75,14 +81,14 @@ const GooglePlacesAutocomplete: React.FC<props> = ( {handleLocation} ) => {
           placeholder="Enter location "
           className="w-full p-2 border border-gray-300 rounded"
           style={{
-            width: '100%',
-            height: '40px',
-            padding: '10px',
-            fontSize: '16px',
+            width: "100%",
+            height: "40px",
+            padding: "10px",
+            fontSize: "16px",
           }}
         />
       </Autocomplete>
-{/* 
+      {/* 
       {place && (
         <div>
           <h3>Selected Place Details:</h3>

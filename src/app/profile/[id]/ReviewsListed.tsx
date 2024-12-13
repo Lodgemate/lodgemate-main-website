@@ -12,6 +12,7 @@ import { selectToken } from "@/lib/features/Auth/tokenSlice";
 import { LiaCommentSlashSolid } from "react-icons/lia";
 import { format } from "date-fns";
 import { Skeleton } from "@/components/ui/skeleton";
+import Link from "next/link";
 
 interface ReviewCardProps {
   comment: string;
@@ -20,12 +21,13 @@ interface ReviewCardProps {
   postedBy: {
     profilePicture: string;
     firstName: string;
+    _id: string;
   };
   repliesCount: number;
 }
 
 const ReviewCard: React.FC<ReviewCardProps> = ({
-  postedBy: { profilePicture, firstName },
+  postedBy: { profilePicture, firstName, _id },
   comment,
   rating,
   dateCreated,
@@ -51,13 +53,17 @@ const ReviewCard: React.FC<ReviewCardProps> = ({
       />
 
       <div className="flex items-center mb-2">
-        <img
-          className="w-12 h-12 rounded-full"
-          src={profilePicture}
-          alt={firstName}
-        />
+        <Link href={`/profile/${_id}`}>
+          <img
+            className="w-12 h-12 rounded-full"
+            src={profilePicture}
+            alt={firstName}
+          />
+        </Link>
         <div className="ml-4">
-          <div className="font-bold">{firstName}</div>
+          <Link href={`/profile/${_id}`}>
+            <div className="font-bold">{firstName}</div>
+          </Link>
           <div className="text-gray-500 text-sm">
             {format(dateCreated, "MM/dd/yyyy")}
           </div>

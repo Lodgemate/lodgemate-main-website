@@ -6,6 +6,7 @@ import WriteReview from "../../../modals/WriteReview";
 import { Endpoints } from "@/services/Api/endpoints";
 import { extractDate } from "@/utils/utils";
 import UserImage from "@/components/Shared/userImage";
+import Link from "next/link";
 interface Review {
   id: number;
   profilePicture: string;
@@ -49,21 +50,26 @@ const LodgeReviews: React.FC<LodgeReviewsProps> = React.memo(
               <div className="flex justify-between items-start">
                 <div className="flex items-start gap-4 mb-[15px]">
                   <div>
-                    <UserImage
-                      src={review.postedBy.profilePicture}
-                      alt={review.postedBy.firstName}
-                      size={"w-14 h-14"}
-                      fallbackText={
-                        review.postedBy.firstName +
-                        " " +
-                        review.postedBy.lastName
-                      }
-                    />
+                    <Link href={`/profile/${review.postedBy._id}`}>
+                      <UserImage
+                        src={review.postedBy.profilePicture}
+                        alt={review.postedBy.firstName}
+                        size={"w-14 h-14"}
+                        fallbackText={
+                          review.postedBy.firstName +
+                          " " +
+                          review.postedBy.lastName
+                        }
+                      />
+                    </Link>
                   </div>
                   <div>
-                    <p className="font-medium z-10">
-                      {review.postedBy.firstName}
-                    </p>
+                    <Link href={`/profile/${review.postedBy._id}`}>
+                      {" "}
+                      <p className="font-medium z-10">
+                        {review.postedBy.firstName}
+                      </p>
+                    </Link>
                     <p className=" text-gray-600 text-[12px]">
                       {extractDate(review.dateCreated)}
                     </p>

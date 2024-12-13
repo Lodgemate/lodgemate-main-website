@@ -298,6 +298,8 @@ function LodgeInfo() {
     area: LodgeData.postedBy.administrativeArea,
   };
 
+  console.log({ RevieweData });
+
   return (
     <div className="text-[14px] capitalize">
       <div className="flex justify-center w-full ">
@@ -661,7 +663,7 @@ function LodgeInfo() {
                 <div>
                   {/* /v1/lodges/reviews/:id */}
                   <div className=" gap-10 text-[15px]">
-                    {/* use maping here too for the reviwes */}
+                    use maping here too for the reviwes
                     {RevieweData && (
                       <LodgeReviews
                         LodgeData={LodgeData}
@@ -772,7 +774,6 @@ function LodgeInfo() {
 
                 <div>
                   <div className="gap-10  text-[15px]">
-                    {/* use maping here too for the reviwes */}
                     {RevieweData && (
                       <LodgeReviews
                         LodgeData={LodgeData}

@@ -82,7 +82,6 @@ const MyProfile = () => {
     <div className=" min-h-[1000px] p- text-[14px]">
       <div className="w-full h-[270px] hidden sm:block border-b bg-[#F9F9F9]"></div>
       <div className="grid grid-cols-1 sm:grid-cols-4 sm:-mt-[55px]  sm:px-[80px]  gap-4 sm:gap-4">
-        {/* User Detail Column */}
         <div className="col-span-1">
           <div className="sm:relative p-4 bg- rounded border- bg-[CCCCCC]">
             <p className="hidden sm:flex">user</p>
@@ -91,7 +90,6 @@ const MyProfile = () => {
             </div>
           </div>
         </div>
-        {/* Tab Header and Content Column */}
         <div className="sm:col-span-3">
           <div className="py-4 bg- rounded">
             <div className="flex sm:space-x-4 space-x-2 sm:border-b-0 overflow-x-auto no-scrollbar whitespace-nowrap">

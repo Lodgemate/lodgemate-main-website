@@ -6,7 +6,6 @@ import { FetchApi } from "@/utils/Fetchdata";
 import { Endpoints } from "@/services/Api/endpoints";
 import { useParams } from "next/navigation";
 
-
 interface ShouldHideProps {
   children: React.ReactNode;
 }
@@ -43,7 +42,7 @@ const ShouldHide: React.FC<ShouldHideProps> = ({ children }) => {
   const shouldHide = mainUser !== otherUser;
 
   // Conditionally hide content based on comparison
-  return <div className={shouldHide ? "hidden" : ""}>{children}</div>;
+  return <div className={shouldHide ? "hidden" : "bg-white"}>{children}</div>;
 };
 
 export default ShouldHide;

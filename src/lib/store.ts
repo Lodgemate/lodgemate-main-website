@@ -21,7 +21,7 @@ const persistConfig = {
   key: "root",
   version: 1,
   storage,
-  whitelist: ["auth", "User", "token", "login"], // Reducers to persist
+  whitelist: ["auth", "User", "token", "login", "lodges"], // Reducers to persist
 };
 
 // Combine reducers

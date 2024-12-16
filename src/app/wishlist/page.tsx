@@ -48,7 +48,7 @@ function Wishlist() {
       message: `You have ${wishlist?.lodges.length} lodges in your wishlist`,
       content: (
         <div>
-          <Lodges lodges={wishlist?.lodges} />
+          {/* <Lodges lodges={wishlist?.lodges} /> */}
         </div>
       ),
     },
@@ -56,7 +56,7 @@ function Wishlist() {
       message: `You have ${wishlist?.roommate.length} roomies in your wishlist`,
       content: (
         <div>
-          <Roommates roommates={wishlist?.roommate} />
+          {/* <Roommates roommates={wishlist?.roommate} /> */}
         </div>
       ),
     },
@@ -64,7 +64,7 @@ function Wishlist() {
       message: `You have ${wishlist?.service.length} services in your wishlist`,
       content: (
         <div>
-          <Services services={wishlist?.service} />
+          {/* <Services services={wishlist?.service} /> */}
         </div>
       ),
     },

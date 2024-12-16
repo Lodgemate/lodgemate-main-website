@@ -36,7 +36,7 @@ const rootReducer = combineReducers({
   roommate: roommateReducer,
   List_Logdes: Listing_Reducer,
   Reviews: ReviewReducers,
-  Saved: SavedReducers,
+  wishlist: SavedReducers,
   token: tokenReducer,
   loader: loaderReducer,
 });

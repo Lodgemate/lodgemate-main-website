@@ -81,7 +81,7 @@ function More() {
                 <div className="md:hidden mt-3 mr-1">
                   <LuMenu className="w-6 h-6" />
                 </div>
-                <div className="max-md:hidden">
+                <div className="max-md:hidden flex flex-col items-end">
                   <div className="rounded-full bg-red-600 h-3 w-3 grid relative top-2 z-10 -right-1 place-items-center text-xs"></div>
                   <div className="px-[13px] py-2 relative rounded-[8px] shadow-sm mb-2">
                     <div className="flex relative text-[14px] font-medium items-center gap-2">

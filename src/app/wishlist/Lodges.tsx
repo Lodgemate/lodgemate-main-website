@@ -1,5 +1,7 @@
 import React from "react";
 import Link from "next/link";
+import { Lodge } from "@/lib/Types";
+import { stringify } from "querystring";
 
 interface ProductCardProps {
   id: number;
@@ -27,9 +29,6 @@ const ProductCard: React.FC<ProductCardProps> = ({
     currency: "NGN",
     minimumFractionDigits: 0,
   }).format(price);
-
-   
-
 
   return (
     <div className="max-w-sm rounded overflow-hidden">
@@ -75,33 +74,29 @@ const ProductCard: React.FC<ProductCardProps> = ({
   );
 };
 
-interface LodgesProps{
-  lodges:any[]| []
-}
-const Lodges: React.FC<LodgesProps> = ({ lodges }) => {
-  
+const Lodges: React.FC<Lodge[]> = (lodges) => {
   const optimizeImageUrl = (url: string) => {
     if (url.includes("/upload/")) {
       return url.replace("/upload/", "/upload/w_300,f_auto/");
     }
     return url;
   };
-  
+
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-      {lodges.map((lodge) => (
+      {/* {lodges.map((lodge: Lodge) => (
         <ProductCard
-          key={lodge.lodge._id}
-          id={lodge.lodge._id}
-          imageUrl={optimizeImageUrl(lodge.lodge.coverphoto)}
-          name={lodge.lodge.lodgeName}
-          location={lodge.lodge.address_text}
-          nearbyUniversity={lodge.lodge.administrativeArea}
-          price={lodge.lodge.price}
+          key={lodge._id}
+          id={Number(lodge._id)}
+          imageUrl={optimizeImageUrl(lodge.coverphoto)}
+          name={lodge.lodgeName}
+          location={lodge.address_text}
+          nearbyUniversity={lodge.administrativeArea}
+          price={lodge.price}
         />
-      ))}
+      ))} */}
     </div>
   );
-}
+};
 
 export default Lodges;

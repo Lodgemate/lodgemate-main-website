@@ -43,8 +43,6 @@ const ProductCard: React.FC<ProductCardProps> = ({
     });
   });
 
-
-
   return (
     <div className="max-w-sm rounded overflow-hidden z-[9]" data-aos="fade-up">
       <div className="relative w-full h-[144px] sm:h-[200px]">
@@ -64,7 +62,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
           alt="lodgemate"
           className="absolute top-2 left-2 text-xl hidden"
         />
-        <HeartIcon type={"lodge"} id={id} wishlisted={wishlisted} />
+        <HeartIcon type={"lodge"} id={id} wishlisted={wishlisted} name={name} />
         <img
           src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1716223205/utilities/LodgeMate_File/Indicators_psmeyv.svg"
           alt=""

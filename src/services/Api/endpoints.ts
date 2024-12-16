@@ -24,6 +24,7 @@ export const Endpoints = {
   getPrivateRoommatesbyId: `${process.env.NEXT_PUBLIC_BASE_URL}/v1/roommate-requests/`,
   getAllMessages: `${process.env.NEXT_PUBLIC_BASE_URL}/v1/rooms/messages`,
   getAllRecentMessages: `${process.env.NEXT_PUBLIC_BASE_URL}/v1/rooms/`,
+  getWishlist: `${process.env.NEXT_PUBLIC_BASE_URL}/v1/wishlists`,
   addToWishlist: `${process.env.NEXT_PUBLIC_BASE_URL}/v1/wishlists/`,
   getNotification: `${process.env.NEXT_PUBLIC_BASE_URL}/v1/notifications`,
   report: `${process.env.NEXT_PUBLIC_BASE_URL}/v1/reports`,

@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import React, { useEffect, useState } from "react";
 import Lodges from "./Lodges";
@@ -9,51 +9,62 @@ import { Endpoints } from "@/services/Api/endpoints";
 import { FetchApi } from "@/utils/Fetchdata";
 import { Lodge, Roommate, Service } from "@/lib/Types";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
+import { selectToken } from "@/lib/features/Auth/tokenSlice";
+import axios from "axios";
 
 interface TabData {
   message: string;
   content: JSX.Element;
 }
-import {
-  getSavedData,
-  selectAllSavedLodges,
-  selectAllSavedRoommates,
-  selectAllSavedServices
-} from "@/lib/features/saved/savedSlice";
+
+interface Wishlist {
+  service: Service[];
+  lodges: Lodge[];
+  roommate: Roommate[];
+}
 
 function Wishlist() {
   const [activeTab, setActiveTab] = useState<string>("Lodges");
-  const [wishList, setwishList] = useState<(Service|Lodge| Roommate)[]>([])
-  const dispatch = useAppDispatch()
-  const filteredLodges=useAppSelector(selectAllSavedLodges)
-  const filteredRoommates=useAppSelector(selectAllSavedRoommates)
-  const filteredServices=useAppSelector(selectAllSavedServices)
-  
-  useEffect(()=>{
-    dispatch(getSavedData())
-  },[])
-  // console.log(wishList);
-  // const filteredLodges: any= wishList.filter(ent=> ent.type === 'lodge')
-  // const filteredRoommates: any= wishList.filter(ent=> ent.type === 'roommate')
-  // const filteredServices: any= wishList.filter(ent=> ent.type === 'service')
+  const [wishlist, setWishlist] = useState<Wishlist | null>(null);
+  const token = useAppSelector(selectToken);
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    const fetchWishlist = async () => {
+      const res = await axios.get(Endpoints.getWishlist, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+      console.log({ res });
+    };
+
+    fetchWishlist();
+  }, []);
+
   const tabData: { [key: string]: TabData } = {
     Lodges: {
-      message:`You have ${filteredLodges.length} lodges in your wishlist`,
+      message: `You have ${wishlist?.lodges.length} lodges in your wishlist`,
       content: (
         <div>
-          <Lodges lodges={filteredLodges}/>
+          <Lodges lodges={wishlist?.lodges} />
         </div>
       ),
     },
     Roommates: {
-      message:`You have ${filteredRoommates.length} roomies in your wishlist`,
-      content: <div><Roommates roommates={filteredRoommates}/></div>,
-    },
-    Serivices: {
-      message:`You have ${filteredServices.length} services in your wishlist`,
+      message: `You have ${wishlist?.roommate.length} roomies in your wishlist`,
       content: (
         <div>
-          <Services services={filteredServices}/>
+          <Roommates roommates={wishlist?.roommate} />
+        </div>
+      ),
+    },
+    Serivices: {
+      message: `You have ${wishlist?.service.length} services in your wishlist`,
+      content: (
+        <div>
+          <Services services={wishlist?.service} />
         </div>
       ),
     },

@@ -148,6 +148,7 @@ const BrowseLodges: React.FC<BrowseLodgesProps> = ({ isSearchTriggered }) => {
                       nearbyUniversity={product.subAdministrativeArea}
                       state={product.administrativeArea}
                       price={product.price || 0}
+                      wishlisted={product.wishlisted}
                     />
                   )
                 )}
@@ -178,6 +179,7 @@ const BrowseLodges: React.FC<BrowseLodgesProps> = ({ isSearchTriggered }) => {
                       nearbyUniversity={product.subAdministrativeArea}
                       state={product.administrativeArea}
                       price={product.price || 0}
+                      wishlisted={product.wishlisted}
                     />
                   );
                 })}

@@ -280,7 +280,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
                 <Skeleton className="w-full h-[18px] rounded-full bg-gray-200" />
               </div>
             ) : results.lodges.length > 0 ? (
-              results.lodges.map((lodge) => (
+              results.lodges.slice(0, 5).map((lodge) => (
                 <Link
                   key={lodge.id}
                   href={`/lodges/lodge_details/${lodge.id}`}

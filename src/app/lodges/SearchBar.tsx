@@ -72,7 +72,13 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
       if (placesService) {
         const { predictions } = await placesService.getPlacePredictions({
           input: searchTerm,
-          types: ["geocode"],
+          types: ["establishment", "geocode"],
+          // Optional: You can bias results towards Nigeria or any specific region
+          // but still allow worldwide results
+          locationBias: {
+            radius: 50000000, // 50,000 km radius
+            center: { lat: 9.082, lng: 8.6753 }, // Center of Nigeria
+          },
         });
         setPredictions(predictions || []);
       }

@@ -19,54 +19,62 @@ interface TabData {
 
 interface Wishlist {
   service: Service[];
-  lodges: Lodge[];
+  wishlist: { lodge: Lodge }[];
   roommate: Roommate[];
 }
 
 function Wishlist() {
   const [activeTab, setActiveTab] = useState<string>("Lodges");
-  const [wishlist, setWishlist] = useState<Wishlist | null>(null);
+  const [wishlist, setWishlist] = useState<Wishlist>();
+  const [fectchingWishes, setFetchingWishes] = useState(false);
   const token = useAppSelector(selectToken);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
     const fetchWishlist = async () => {
-      const res = await axios.get(Endpoints.getWishlist, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-      });
-      console.log({ res });
-    };
+      try {
+        setFetchingWishes(true);
+        const res = await axios.get(Endpoints.getWishlist, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        });
 
+        console.log({ res });
+        const wishlists: { lodge: Lodge }[] = res?.data?.data?.wishlists ?? [];
+        const services: Service[] = res?.data?.data?.services ?? [];
+        const roommates: Roommate[] = res?.data?.data?.roommates ?? [];
+        setWishlist({
+          ...wishlist,
+          wishlist: wishlists,
+          service: services,
+          roommate: roommates,
+        });
+      } catch (error) {
+      } finally {
+        setFetchingWishes(false);
+      }
+    };
     fetchWishlist();
   }, []);
 
   const tabData: { [key: string]: TabData } = {
     Lodges: {
-      message: `You have ${wishlist?.lodges.length} lodges in your wishlist`,
+      message: `You have ${wishlist?.wishlist.length} lodges in your wishlist`,
       content: (
         <div>
-          {/* <Lodges lodges={wishlist?.lodges} /> */}
+          <Lodges wishlist={wishlist?.wishlist} loading={fectchingWishes} />
         </div>
       ),
     },
     Roommates: {
       message: `You have ${wishlist?.roommate.length} roomies in your wishlist`,
-      content: (
-        <div>
-          {/* <Roommates roommates={wishlist?.roommate} /> */}
-        </div>
-      ),
+      content: <div>{/* <Roommates roommates={wishlist?.roommate} /> */}</div>,
     },
     Serivices: {
       message: `You have ${wishlist?.service.length} services in your wishlist`,
-      content: (
-        <div>
-          {/* <Services services={wishlist?.service} /> */}
-        </div>
-      ),
+      content: <div>{/* <Services services={wishlist?.service} /> */}</div>,
     },
     // "Tour cart": {
     //   message: "You saved 3 lodges for tour/visiting",

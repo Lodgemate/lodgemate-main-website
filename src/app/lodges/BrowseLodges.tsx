@@ -203,12 +203,19 @@ const BrowseLodges: React.FC<BrowseLodgesProps> = ({ isSearchTriggered }) => {
     loading,
     lodgesBasedOnCurrentLocation,
   ]);
+  const token = useAppSelector(selectToken);
 
   useEffect(() => {
     const fetchLodges = async () => {
       try {
         setFetchingResentLodges(true);
-        const res = await axios.get(Endpoints.getCurrentPublicLodges);
+        console.log("fetching");
+        const res = await axios.get(Endpoints.getCurrentPublicLodges, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        });
         dispatch(setLodgesData(res.data.data));
       } catch (error) {
         console.log({ error });

@@ -86,6 +86,8 @@ function HeartIcon({ type, id, wishlisted, name }: any) {
     }
   };
 
+  console.log({ wishlisted, isRed });
+
   return (
     <>
       {
@@ -119,13 +121,17 @@ function HeartIcon({ type, id, wishlisted, name }: any) {
         </Dialog>
       }
       {isRed ? (
-        <GoHeartFill
-          className="absolute top-2 right-2 h-7 w-7 text-[#c21807] cursor-pointer"
+        <img
+          src="/icons/heart-red.svg"
+          alt=""
+          className="absolute top-2 right-2 text-xl cursor-pointer"
           onClick={handleClick}
         />
       ) : (
-        <GoHeart
-          className="absolute top-2 right-2 h-7 w-7 text-white cursor-pointer"
+        <img
+          src="/icons/heart-gray.svg"
+          alt=""
+          className="absolute top-2 right-2 text-xl cursor-pointer"
           onClick={handleClick}
         />
       )}

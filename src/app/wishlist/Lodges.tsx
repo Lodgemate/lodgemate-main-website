@@ -1,10 +1,10 @@
 import React from "react";
 import Link from "next/link";
 import { Lodge } from "@/lib/Types";
-import { stringify } from "querystring";
+import GallerySkeleton from "@/components/Skeletons/cardsSkeleton";
 
 interface ProductCardProps {
-  id: number;
+  id: string;
   type?: string;
   name: string;
   address?: string;
@@ -14,6 +14,11 @@ interface ProductCardProps {
   imageUrl: string;
   location: string;
   nearbyUniversity: string;
+}
+
+interface LodgesProp {
+  wishlist: { lodge: Lodge }[] | undefined;
+  loading?: boolean;
 }
 
 const ProductCard: React.FC<ProductCardProps> = ({
@@ -74,27 +79,29 @@ const ProductCard: React.FC<ProductCardProps> = ({
   );
 };
 
-const Lodges: React.FC<Lodge[]> = (lodges) => {
-  const optimizeImageUrl = (url: string) => {
-    if (url.includes("/upload/")) {
-      return url.replace("/upload/", "/upload/w_300,f_auto/");
-    }
-    return url;
-  };
-
+const Lodges: React.FC<LodgesProp> = ({ wishlist, loading }) => {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-      {/* {lodges.map((lodge: Lodge) => (
-        <ProductCard
-          key={lodge._id}
-          id={Number(lodge._id)}
-          imageUrl={optimizeImageUrl(lodge.coverphoto)}
-          name={lodge.lodgeName}
-          location={lodge.address_text}
-          nearbyUniversity={lodge.administrativeArea}
-          price={lodge.price}
-        />
-      ))} */}
+      {loading ? (
+        <GallerySkeleton animate={false} />
+      ) : (
+        wishlist &&
+        wishlist.map(({ lodge }) => {
+          if (!lodge) return;
+
+          return (
+            <ProductCard
+              key={lodge._id}
+              id={lodge._id}
+              imageUrl={lodge.coverphoto}
+              name={lodge.lodgeName}
+              location={lodge.address_text}
+              nearbyUniversity={lodge.administrativeArea}
+              price={lodge.price}
+            />
+          );
+        })
+      )}
     </div>
   );
 };

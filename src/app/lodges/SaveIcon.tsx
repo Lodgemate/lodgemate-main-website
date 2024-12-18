@@ -86,8 +86,6 @@ function HeartIcon({ type, id, wishlisted, name }: any) {
     }
   };
 
-  console.log({ wishlisted, isRed });
-
   return (
     <>
       {

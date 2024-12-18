@@ -20,6 +20,7 @@ import { MdOutlineSearchOff } from "react-icons/md";
 import { selectLoading } from "@/lib/features/Loading/loadingSlice";
 import { CiLocationOff } from "react-icons/ci";
 import { useToast } from "@/hooks/use-toast";
+import Lodges from "./page";
 
 const useGeolocation = () => {
   const [location, setLocation] = useState<{
@@ -79,7 +80,7 @@ const BrowseLodges: React.FC<BrowseLodgesProps> = ({ isSearchTriggered }) => {
   const [lodgesBasedOnCurrentLocation, setLodgesBasedOnCurrentLocation] =
     useState<[] | null>(null);
   const { location, error } = useGeolocation();
-  const { toast } = useToast();
+  console.log({ storequery });
 
   useEffect(() => {
     if (loading) {
@@ -117,6 +118,8 @@ const BrowseLodges: React.FC<BrowseLodgesProps> = ({ isSearchTriggered }) => {
   useEffect(() => {
     fetchLodgesBasedOnCurrentLocation();
   }, [dispatch, storelocation, location]);
+
+  console.log({ LodgesData });
 
   const MappedLodges = useMemo(() => {
     return (
@@ -164,7 +167,7 @@ const BrowseLodges: React.FC<BrowseLodgesProps> = ({ isSearchTriggered }) => {
           </>
         ) : (
           <>
-            {LodgesData?.lodges ? (
+            {LodgesData?.lodges.length > 0 ? (
               <>
                 {LodgesData?.lodges.map((product: any, i: number) => {
                   if (!product.coverphoto) return;
@@ -235,7 +238,7 @@ const BrowseLodges: React.FC<BrowseLodgesProps> = ({ isSearchTriggered }) => {
             {isSearchTriggered
               ? storequery !== "Not Found" &&
                 `Showing results for "${storequery}"`
-              : "Showing available roommates around"}
+              : "Showing available lodges around"}
             {storequery == "Not Found" && "No result found"}
           </h1>
         </div>
@@ -258,23 +261,11 @@ const BrowseLodges: React.FC<BrowseLodgesProps> = ({ isSearchTriggered }) => {
           {isLoading ||
           fetchingResentLodges ||
           (loading && description == "fetching lodges from google places") ? (
-            <GallerySkeleton />
+            <GallerySkeleton animate={false} />
           ) : (
             MappedLodges
           )}
         </div>
-        {/* 
-        {!showMore && (
-          <div className="mt-10 text-[12px] flex flex-col justify-center items-center text-lgray font-medium pb-[200px]">
-            <p className=" pb-[16px] ">Continue exploring lodges</p>
-            <button
-              className="border px-4 py-2 rounded-[12px]"
-              onClick={handleShowMore}
-            >
-              Show more
-            </button>
-          </div>
-        )} */}
       </div>
     </div>
   );

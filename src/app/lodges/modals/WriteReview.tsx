@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useCallback } from "react";
 import AOS from "aos";
-import { getCurrentDate } from "@/utils/utils";
 import { useAppSelector } from "@/lib/hooks";
-import { selectAllUsersdata } from "@/lib/features/Users/usersSlice";
+import { selectUser } from "@/lib/features/Auth/authSlice";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { format } from "date-fns";
 
 interface WriteReviewProps {
   show: boolean;
@@ -17,7 +18,9 @@ const WriteReview: React.FC<WriteReviewProps> = ({
   handlePost,
   data,
 }) => {
-  const currentUserData = useAppSelector(selectAllUsersdata);
+  const currentUserData = useAppSelector(selectUser);
+  console.log({ currentUserData });
+  console.log("writing review");
 
   const [starSources, setStarSources] = useState<string[]>([
     "/icons/star_black.svg",
@@ -28,16 +31,16 @@ const WriteReview: React.FC<WriteReviewProps> = ({
   ]);
 
   const [clicked, setClicked] = useState(false);
+  const [review, setReview] = useState({
+    comment: data?.comment || "", // Use default value if data is undefined
+    rating: data?.rating || 0, // Use default value if data is undefined
+  });
+  const [remainingChars, setRemainingChars] = useState(500);
 
   const getStars = useCallback(() => {
     const newArr = starSources.filter((ent) => ent === "/icons/star_gold.svg");
     return newArr;
   }, [starSources]);
-
-  const [review, setReview] = useState({
-    comment: data?.comment || "", // Use default value if data is undefined
-    rating: data?.rating || 0, // Use default value if data is undefined
-  });
 
   useEffect(() => {
     if (clicked) {
@@ -64,7 +67,6 @@ const WriteReview: React.FC<WriteReviewProps> = ({
     } else {
       document.body.style.overflow = "unset";
     }
-
     return () => {
       document.body.style.overflow = "unset";
     };
@@ -77,17 +79,23 @@ const WriteReview: React.FC<WriteReviewProps> = ({
     setStarSources(newStarSources);
   };
 
+  const handleCommentChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const comment = e.target.value;
+    setReview({ ...review, comment });
+    setRemainingChars(500 - comment.length);
+  };
+
   if (!show) {
     return null;
   }
 
   return (
     <div
-      className="fixed inset-0 bg-black bg-opacity-50 flex items-start pt-[100px] justify-center"
+      className="fixed inset-0 bg-black z-[999] bg-opacity-50 flex items-start pt-[100px] justify-center"
       onClick={onClose}
     >
       <div
-        className="bg-white p-6 rounded-[12px] shadow-lg relative"
+        className="bg-white p-6 z-[999] rounded-[12px] shadow-lg relative"
         onClick={(e) => e.stopPropagation()}
         data-aos="zoom-in-up"
       >
@@ -98,17 +106,22 @@ const WriteReview: React.FC<WriteReviewProps> = ({
           <img src="/icons/close.svg" alt="" />
         </button>
         <div className="mb-4">
-          <div className="flex gap-2">
-            <img
-              src={currentUserData?.data.user.profilePicture}
-              alt=""
-              className="w-10 h-10 rounded-full border border-lblue"
-            />
+          <div className="flex items-center gap-2">
+            <Avatar className="h-10 w-10 rounded-lg">
+              <AvatarImage
+                src={currentUserData?.profilePicture}
+                alt={currentUserData?.firstName}
+              />
+              <AvatarFallback className="rounded-lg">
+                {currentUserData?.firstName.charAt(0).toUpperCase()}
+                {currentUserData?.lastName.charAt(0).toUpperCase()}
+              </AvatarFallback>
+            </Avatar>
             <div>
-              <h1 className="font-semibold">
-                {currentUserData?.data.user.firstName}
-              </h1>
-              <p>{getCurrentDate()}</p>
+              <h1 className="font-semibold">{currentUserData?.firstName}</h1>
+              <p className="text-sm text-stone-500">
+                {format(new Date(), "PPP")}
+              </p>
             </div>
           </div>
         </div>
@@ -128,16 +141,20 @@ const WriteReview: React.FC<WriteReviewProps> = ({
             name="review"
             placeholder="Write something here..."
             value={review.comment}
-            onChange={(e) => setReview({ ...review, comment: e.target.value })}
+            onChange={handleCommentChange}
+            maxLength={500}
             className="border w-[350px] sm:w-[700px] resize-none mt-4 h-24 p-2 rounded-lg outline-none"
           ></textarea>
-          <div className="w-full flex justify-between items-center">
+          <div className="w-full flex pt-2 justify-between items-center">
+            <p className="text-end text-stone-500">
+              {remainingChars}/500 remaining
+            </p>
             <button
               onClick={() => {
                 handlePost(review);
                 setClicked(true);
               }}
-              className="bg-lblue px-2 py-1 text-white rounded cursor-pointer flex items-center gap-2"
+              className="bg-lblue px-6 py-2 text-white rounded cursor-pointer flex items-center gap-2"
             >
               {clicked ? (
                 <>
@@ -147,7 +164,6 @@ const WriteReview: React.FC<WriteReviewProps> = ({
                 "Post"
               )}
             </button>
-            <p className="text-end">500/500 remaining</p>
           </div>
         </div>
       </div>

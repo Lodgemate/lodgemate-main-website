@@ -232,8 +232,6 @@ function LodgeInfo() {
   };
 
   const handleReview = async (param: any) => {
-    const localStorageToken = localStorage.getItem("token");
-    const parseToken = localStorageToken && JSON.parse(localStorageToken);
     const Url = `${Endpoints.getPrivateLodgesbyId}${id}/reviews`;
     const resReviews = await fetch(Url, {
       method: "PUT",

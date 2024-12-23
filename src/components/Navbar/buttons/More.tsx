@@ -86,11 +86,10 @@ function More() {
                   <div className="px-[13px] py-2 relative rounded-[8px] shadow-sm mb-2">
                     <div className="flex relative text-[14px] font-medium items-center gap-2">
                       <Avatar className="h-8 w-8 rounded-lg">
-                        {/* <AvatarImage
-                        src={
-                        }
-                        alt={currentUser.firstName}
-                      /> */}
+                        <AvatarImage
+                          src={currentUser.profilePicture}
+                          alt={currentUser.firstName}
+                        />
                         <AvatarFallback className="rounded-lg">
                           {currentUser.firstName.charAt(0).toUpperCase()}
                           {currentUser.lastName.charAt(0).toUpperCase()}

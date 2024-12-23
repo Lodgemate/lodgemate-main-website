@@ -90,64 +90,6 @@ const LoginForm: React.FC = () => {
       dispatch(showLoadingModal(null));
     }
   };
-  ///handle google auth
-  const handleAuthwithGoogle = async (code: string) => {
-    dispatch(showLoadingModal("Fetching data"));
-    const res = await GoogleAuth({ code: code });
-    if (res.status === "success") {
-      localStorage.setItem("token", JSON.stringify(res.token));
-      dispatch(setAuthenticated());
-      dispatch(showLoadingModal(null));
-      dispatch(showSuccessfulModal("login Successful"));
-      setTimeout(() => {
-        dispatch(showSuccessfulModal(null));
-        router.push("/");
-      }, 10000);
-    } else if (res.status === "fail") {
-      dispatch(showLoadingModal(null));
-      dispatch(showFailedModal(res.message));
-      dispatch(resetState());
-      router.push("/auth/login");
-    } else {
-      dispatch(showLoadingModal(null));
-      dispatch(showFailedModal("something went wrong"));
-      dispatch(resetState());
-    }
-  };
-
-  // useEffect(() => {
-  //   const params = new URLSearchParams(window.location.search);
-  //   console.log({ params });
-  //   const code = params.get("code");
-  //   console.log({ code });
-  //   if (code) {
-  //     const parsedCode = code.substring(3, code.length);
-  //     handleAuthwithGoogle("4%2F0" + parsedCode);
-  //   }
-  //   // check for err
-  //   if (Error) {
-  //     dispatch(showLoadingModal(null));
-  //     dispatch(showFailedModal(Error));
-  //     dispatch(resetState());
-  //   }
-  //   // check if data is true before proceeding
-  //   if (data === null) {
-  //     return;
-  //   }
-
-  //   if (data.status === "success") {
-  //     localStorage.setItem("token", JSON.stringify(data.token));
-  //     dispatch(setAuthenticated());
-  //     dispatch(showLoadingModal(null));
-  //     dispatch(showSuccessfulModal("login Successful"));
-  //     dispatch(showSuccessfulModal(null));
-  //     router.push("/");
-  //   } else if (!data.status) {
-  //     dispatch(showLoadingModal(null));
-  //     dispatch(showFailedModal(data));
-  //     dispatch(resetState());
-  //   }
-  // }, [data, Status, Error]);
 
   return (
     <div className="sm:w-[500px] w-full m-auto py-4 bg-white text-lgray text- rounded-2xl shadow-md border mt-[100px]">
@@ -225,7 +167,7 @@ const LoginForm: React.FC = () => {
               src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1719371440/utilities/LodgeMate_File/flat-color-icons_google_sqyie0.svg"
               alt="google_auth"
             />
-            Continue with Google{" "}
+            Continue with Google
           </a>
         </button>
       </div>

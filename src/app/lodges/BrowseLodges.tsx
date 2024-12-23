@@ -119,8 +119,6 @@ const BrowseLodges: React.FC<BrowseLodgesProps> = ({ isSearchTriggered }) => {
     fetchLodgesBasedOnCurrentLocation();
   }, [dispatch, storelocation, location]);
 
-  console.log({ LodgesData });
-
   const MappedLodges = useMemo(() => {
     return (
       <>
@@ -156,13 +154,15 @@ const BrowseLodges: React.FC<BrowseLodgesProps> = ({ isSearchTriggered }) => {
                   )
                 )}
               </>
-            ) : (
+            ) : !isLoading && !fetchingResentLodges && !loading ? (
               <div className="flex flex-col col-span-2 md:col-span-4 mt-10 items-center w-full self-center text-gray-500">
                 <MdOutlineSearchOff size={50} />
                 <p className="mt-4 text-lgray">
                   Oops! no result found at this location
                 </p>
               </div>
+            ) : (
+              <></>
             )}
           </>
         ) : (
@@ -187,13 +187,15 @@ const BrowseLodges: React.FC<BrowseLodgesProps> = ({ isSearchTriggered }) => {
                   );
                 })}
               </>
-            ) : (
+            ) : !isLoading && !fetchingResentLodges && !loading ? (
               <div className="flex flex-col col-span-2 md:col-span-4 mt-10 items-center w-full self-center text-gray-500">
                 <MdOutlineSearchOff size={50} />
                 <p className="mt-4 text-lgray">
                   Oops! no result found at this location
                 </p>
               </div>
+            ) : (
+              <></>
             )}
           </>
         )}

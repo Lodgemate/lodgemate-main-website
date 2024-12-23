@@ -91,6 +91,40 @@ const LoginForm: React.FC = () => {
     }
   };
 
+  const handleAuthWithGoogle = async (code: string) => {
+    dispatch(showLoadingModal("Fetching data"));
+    try {
+      const res = await GoogleAuth({ code });
+      console.log({ res });
+      if (res.status === "success") {
+        dispatch(setUser(res.data.user));
+        dispatch(setToken(res.data.token));
+        router.push("/");
+      } else {
+        throw new Error(res.message || "Google authentication failed");
+      }
+    } catch (error: any) {
+      console.error(error);
+      dispatch(showFailedModal(error.message || "Something went wrong"));
+    } finally {
+      dispatch(showLoadingModal(null));
+    }
+  };
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const code = params.get("code");
+    console.log({ code });
+
+    if (code) {
+      handleAuthWithGoogle(code);
+    }
+
+    return () => {
+      dispatch(resetState());
+    };
+  }, [dispatch, router]);
+
   return (
     <div className="sm:w-[500px] w-full m-auto py-4 bg-white text-lgray text- rounded-2xl shadow-md border mt-[100px]">
       <div className="flex w-full items-center justify-center border-b">

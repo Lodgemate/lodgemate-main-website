@@ -101,7 +101,7 @@ const LoginForm: React.FC = () => {
         dispatch(setToken(res.data.token));
         router.push("/");
       } else {
-        throw new Error(res.message || "Google authentication failed");
+        throw "Google authentication failed";
       }
     } catch (error: any) {
       console.error(error);

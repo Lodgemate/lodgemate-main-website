@@ -22,7 +22,7 @@ const Replies: React.FC<WriteRepliesProps> = React.memo(
     const currentlodgeId = currentLodge._id;
     const currentReviewId = data?._id;
     const parseToken = useAppSelector(selectToken);
-    const [replies, setReplies] = useState(null);
+    const [replies, setReplies] = useState<any>(null);
     console.log(data);
 
     useEffect(() => {

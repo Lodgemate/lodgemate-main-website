@@ -21,6 +21,7 @@ import { selectToken } from "@/lib/features/Auth/tokenSlice";
 import axios from "axios";
 import { Endpoints } from "@/services/Api/endpoints";
 import { Skeleton } from "@/components/ui/skeleton";
+import Link from "next/link";
 
 interface Notification {
   _id: string;
@@ -43,6 +44,40 @@ const SideNotification = ({
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [loading, setLoading] = useState(false);
   const token = useAppSelector(selectToken);
+  console.log(notifications);
+
+  const directTo = (key: string, resource: any) => {
+    switch (key) {
+      case "lodges/comment":
+      case "lodges/review":
+        return `http://localhost:3000/lodges/lodge_details/${
+          JSON.parse(resource).lodgeId
+        }`;
+
+      case "chat":
+        return "http://localhost:3000/chat";
+      default:
+        return "#";
+    }
+  };
+
+  const markAsRead = async (id: string) => {
+    try {
+      const data = await axios.post(
+        `${Endpoints.getNotification}/${"6769b7804f509f8a7aa1a20a"}`,
+
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      console.log(data);
+    } catch (error) {
+      console.log("Error marking as read", error);
+    }
+  };
 
   useEffect(() => {
     const fetchNotifications = async () => {
@@ -152,43 +187,51 @@ const SideNotification = ({
                 </div>
               ) : (
                 notifications.map((notif: Notification, i) => (
-                  <div
+                  <Link
+                    href={directTo(notif.resource, notif.resourceId)}
+                    className=""
                     key={notif.dateCreated}
-                    className={`${
-                      !notif.read && "bg-blue-50/45"
-                    } border-b-[1px] w-full flex gap-1 items-start p-5 border-gray-200`}
+                    onClick={() => markAsRead(notif._id)}
                   >
-                    <div className=" ">
-                      {!notif.read && (
-                        <div className="h-2 w-2 relative top-[0.28rem] right-1 z-10 rounded-full bg-blue-600" />
-                      )}
-                      <Avatar className="h-8 w-8 rounded-lg">
-                        <AvatarImage src={""} alt={""} />
-                        <AvatarFallback className="rounded-lg">
-                          AB
-                        </AvatarFallback>
-                      </Avatar>
-                    </div>
-                    <div>
-                      <div>
-                        <p className="text-xs text-gray-800 font-semibold">
-                          {notif.title}
-                        </p>
-                        <p className="text-gray-500 text-xs">
-                          {formatDistance(
-                            subDays(new Date(notif.dateCreated), 0),
-                            new Date(),
-                            { addSuffix: true }
+                    <SheetClose asChild>
+                      <div
+                        className={`${
+                          !notif.read && "bg-blue-50/45 hover:bg-blue-100"
+                        } border-b-[1px] w-full flex gap-1 items-start p-5 border-gray-200`}
+                      >
+                        <div className=" ">
+                          {!notif.read && (
+                            <div className="h-2 w-2 relative top-[0.28rem] right-1 z-10 rounded-full bg-blue-600" />
                           )}
-                        </p>
+                          <Avatar className="h-8 w-8 rounded-lg">
+                            <AvatarImage src={""} alt={""} />
+                            <AvatarFallback className="rounded-lg">
+                              AB
+                            </AvatarFallback>
+                          </Avatar>
+                        </div>
+                        <div>
+                          <div>
+                            <p className="text-xs text-gray-800 font-semibold">
+                              {notif.title}
+                            </p>
+                            <p className="text-gray-500 text-xs">
+                              {formatDistance(
+                                subDays(new Date(notif.dateCreated), 0),
+                                new Date(),
+                                { addSuffix: true }
+                              )}
+                            </p>
+                          </div>
+                          <div>
+                            <p className="text-sm max-sm:text-xs text-gray-700 mt-2 w-80 truncate">
+                              {notif.body}
+                            </p>
+                          </div>
+                        </div>
                       </div>
-                      <div>
-                        <p className="text-sm text-gray-700 mt-2 w-80 truncate">
-                          {notif.body}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
+                    </SheetClose>
+                  </Link>
                 ))
               )}
             </>

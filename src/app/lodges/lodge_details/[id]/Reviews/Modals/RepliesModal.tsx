@@ -7,6 +7,7 @@ import { selectAllUsersdata } from "@/lib/features/Users/usersSlice";
 import { useAppSelector } from "@/lib/hooks";
 import EditReplyBtn from "../RepliesAction/EditReplyBtn";
 import { extractDate } from "@/utils/utils";
+import { selectToken } from "@/lib/features/Auth/tokenSlice";
 
 interface WriteRepliesProps {
   show: boolean;
@@ -17,9 +18,10 @@ interface WriteRepliesProps {
 
 const Replies: React.FC<WriteRepliesProps> = React.memo(
   ({ show, onClose, currentLodge, data }) => {
-  const currentUserData= useAppSelector(selectAllUsersdata)
+    const currentUserData = useAppSelector(selectAllUsersdata);
     const currentlodgeId = currentLodge._id;
     const currentReviewId = data?._id;
+    const parseToken = useAppSelector(selectToken);
     const [replies, setReplies] = useState(null);
     console.log(data);
 
@@ -27,11 +29,9 @@ const Replies: React.FC<WriteRepliesProps> = React.memo(
       if (currentlodgeId && currentReviewId) {
         handlePost();
       }
-    }, [currentlodgeId, currentReviewId,show]);
+    }, [currentlodgeId, currentReviewId, show]);
 
     const handlePost = useCallback(async () => {
-      const localStorageToken = localStorage.getItem("token");
-      const parseToken = localStorageToken && JSON.parse(localStorageToken);
       const Url = `${Endpoints.getPrivateLodgesbyId}${currentlodgeId}/reviews/${currentReviewId}/replies`;
       const body = {
         method: "GET",
@@ -67,83 +67,90 @@ const Replies: React.FC<WriteRepliesProps> = React.memo(
     console.log(replies);
     const MainComment = ({ content }: any) => {
       return (
-        <div className=''>
+        <div className="">
           {/* comment are her */}
-          <div className='flex justify-between items-start'>
+          <div className="flex justify-between items-start">
             <div
               // key={index}
-              className='flex  w-full gap-x-4 items-start gap-4 mb-[10px]'
+              className="flex  w-full gap-x-4 items-start gap-4 mb-[10px]"
             >
               <div>
                 <img
                   src={content.postedBy.profilePicture}
                   alt={content.postedBy.firstName}
-                  className='w-10 h-10 rounded-full border border-lblue'
+                  className="w-10 h-10 rounded-full border border-lblue"
                 />
               </div>
               <div>
-                <p className='font-medium text-sm '>{content.postedBy.firstName}</p>
-                <p className=' text-gray-600 text-sm'>{extractDate(content.dateCreated)}</p>
-                <div className='flex items-center gap-1 mt-'>
+                <p className="font-medium text-sm ">
+                  {content.postedBy.firstName}
+                </p>
+                <p className=" text-gray-600 text-sm">
+                  {extractDate(content.dateCreated)}
+                </p>
+                <div className="flex items-center gap-1 mt-">
                   <p className="text-sm">{content.rating}.0</p> •
                   {[...Array(content.rating)].map((_, starIndex) => (
                     <img
                       key={starIndex}
-                      src='https://res.cloudinary.com/dcb4ilgmr/image/upload/v1717204625/utilities/LodgeMate_File/Star_1_mygzqr.svg'
-                      alt='rating'
+                      src="https://res.cloudinary.com/dcb4ilgmr/image/upload/v1717204625/utilities/LodgeMate_File/Star_1_mygzqr.svg"
+                      alt="rating"
                     />
                   ))}
                 </div>
               </div>
             </div>
           </div>
-          <p className="text-sm font-medium max-w-60 ml-auto pr-2">{content.comment}</p>
+          <p className="text-sm font-medium max-w-60 ml-auto pr-2">
+            {content.comment}
+          </p>
         </div>
       );
     };
     const RepliesUi = ({ content }: any) => {
       return (
-        <div className='pl-5 py-2 my-4 border-t border-t-lblue text-sm'>
+        <div className="pl-5 py-2 my-4 border-t border-t-lblue text-sm">
           {/* replies are her */}
-          <div className='flex justify-between items-start'>
+          <div className="flex justify-between items-start">
             <div
               // key={index}
-              className='flex items-start gap-4 mb-[15px]'
+              className="flex items-start gap-4 mb-[15px]"
             >
               <div>
                 <img
                   src={content.postedBy.profilePicture}
                   alt={content.postedBy.firstName}
-                  className='w-10 h-10 rounded-full border border-primary'
+                  className="w-10 h-10 rounded-full border border-primary"
                 />
               </div>
-              <div className='text-sm'>
-                <p className='font-medium '>{content.postedBy.firstName}</p>
-                <p className=' text-gray-600 text-sm'>{extractDate(content.dateCreated)}</p>
+              <div className="text-sm">
+                <p className="font-medium ">{content.postedBy.firstName}</p>
+                <p className=" text-gray-600 text-sm">
+                  {extractDate(content.dateCreated)}
+                </p>
               </div>
             </div>
           </div>
-          <p className='text-sm font-medium ml-auto max-w-60'>{content.comment}</p>
+          <p className="text-sm font-medium ml-auto max-w-60">
+            {content.comment}
+          </p>
           <div className=" flex justify-end items-center gap-4 px-2 ">
-               {currentUserData?.data.user._id === content.postedBy._id &&
-            <DeleteReplyBtn
-          LodgeDataId={currentLodge._id}
-          ReviewDataId={currentReviewId}
-          ReplyDataId={content._id}
-          onClose={onClose}
-          />
-          }
-            {currentUserData?.data.user._id === content.postedBy._id &&
-            <EditReplyBtn
-            LodgeDataId={currentLodge._id}
-            ReviewData={data}
-            ReplyDataId={content._id}
-          />
-          }
+            {currentUserData?.data.user._id === content.postedBy._id && (
+              <DeleteReplyBtn
+                LodgeDataId={currentLodge._id}
+                ReviewDataId={currentReviewId}
+                ReplyDataId={content._id}
+                onClose={onClose}
+              />
+            )}
+            {currentUserData?.data.user._id === content.postedBy._id && (
+              <EditReplyBtn
+                LodgeDataId={currentLodge._id}
+                ReviewData={data}
+                ReplyDataId={content._id}
+              />
+            )}
           </div>
-       
-        
-        
         </div>
       );
     };
@@ -168,7 +175,8 @@ const Replies: React.FC<WriteRepliesProps> = React.memo(
           <div className="main_container min-w-[300px] max-h-[400px] overflow-y-scroll no-scrollbar h-full w-full  ">
             <MainComment content={data} />
             {/* @ts-ignore */}
-            {replies && replies.data.replies.map((data: any, index: any) => {
+            {replies &&
+              replies.data.replies.map((data: any, index: any) => {
                 return (
                   <>
                     <RepliesUi content={data} key={index} />

@@ -1,21 +1,44 @@
-"use client"
-import React, { Suspense } from "react";
-import DesktopChat from "./DesktopChat";
-import MobileChat from "./MobileChat";
+import {
+  Chat,
+  Channel,
+  ChannelList,
+  Window,
+  ChannelHeader,
+  MessageList,
+  MessageInput,
+  Thread,
+  useCreateChatClient,
+} from "stream-chat-react";
+import "stream-chat-react/dist/css/v2/index.css";
 
+const apiKey = "your-api-key";
+const userId = "user-id";
+const token = "authentication-token";
 
-const Chat=()=> {
+const filters = { members: { $in: [userId] }, type: "messaging" };
+const options = { presence: true, state: true };
+const sort = { last_message_at: -1 };
+
+const App = () => {
+  const client = useCreateChatClient({
+    apiKey,
+    tokenOrProvider: token,
+    userData: { id: userId },
+  });
+
+  if (!client) return <div>Loading...</div>;
+
   return (
-    <div className=" flex justify-center  text-[14px]">
-      <Suspense fallback={<>Loading.....</>}>
-       <DesktopChat />
-      </Suspense>
-      {/* <div className="lg:hidden w-full max-w-[1200px] border block">
-        {" "}
-        <MobileChat />
-      </div> */}
-    </div>
+    <Chat client={client}>
+      <ChannelList filters={filters} options={options} />
+      <Channel>
+        <Window>
+          <ChannelHeader />
+          <MessageList />
+          <MessageInput />
+        </Window>
+        <Thread />
+      </Channel>
+    </Chat>
   );
-}
-
-export default Chat;
+};

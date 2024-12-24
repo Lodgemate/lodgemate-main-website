@@ -117,7 +117,7 @@ const LoginForm: React.FC = () => {
     console.log({ code });
 
     if (code) {
-      handleAuthWithGoogle(code);
+      // handleAuthWithGoogle(code);
     }
 
     return () => {

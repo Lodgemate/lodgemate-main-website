@@ -100,7 +100,9 @@ const LoginForm: React.FC = () => {
 
       dispatch(setUser(res.data.data.user));
       dispatch(setToken(res.data.token));
-      router.push("/");
+      setTimeout(() => {
+        router.push("/");
+      }, 0);
     } catch (error: any) {
       console.error(error);
       dispatch(showFailedModal(error.message || "Something went wrong"));

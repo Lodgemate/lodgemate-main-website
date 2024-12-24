@@ -19,7 +19,7 @@ const filters = { members: { $in: [userId] }, type: "messaging" };
 const options = { presence: true, state: true };
 const sort = { last_message_at: -1 };
 
-const App = () => {
+export default function App() {
   const client = useCreateChatClient({
     apiKey,
     tokenOrProvider: token,
@@ -41,4 +41,4 @@ const App = () => {
       </Channel>
     </Chat>
   );
-};
+}

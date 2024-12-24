@@ -36,8 +36,6 @@ const LoginForm: React.FC = () => {
   const Error = useAppSelector(selectAllSigninError);
 
   const [submitState, setSubmitState] = useState(false);
-  const [locationState, setLocationState] = useState("Use location");
-  const loadingRef = useRef(locationState);
   const [formData, setformData] = useState({
     email: "",
     password: "",
@@ -48,13 +46,13 @@ const LoginForm: React.FC = () => {
   ) => {
     setformData({ ...formData, [e.target.name]: e.target.value });
   };
-  //  form waning mssg
+
   const FormWarning = ({ prop }: any) => {
     if (prop !== null) {
       return <div className="text-red-500 text-">{prop}</div>;
     }
   };
-  // handle submit of dorm
+
   const handleSubmit = async (e: React.FormEvent) => {
     try {
       e.preventDefault();
@@ -118,11 +116,7 @@ const LoginForm: React.FC = () => {
     if (code) {
       handleAuthWithGoogle(code);
     }
-
-    return () => {
-      dispatch(resetState());
-    };
-  }, [dispatch, router]);
+  }, []);
 
   return (
     <div className="sm:w-[500px] w-full m-auto py-4 bg-white text-lgray text- rounded-2xl shadow-md border mt-[100px]">

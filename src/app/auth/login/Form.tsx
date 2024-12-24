@@ -92,32 +92,31 @@ const LoginForm: React.FC = () => {
     }
   };
 
-  // const handleAuthWithGoogle = async (code: string) => {
-  //   dispatch(showLoadingModal("Fetching data"));
-  //   try {
-  //     const res = await GoogleAuth({ code });
-  //     console.log({ res });
-  //     if (res.status === "success") {
-  //       dispatch(setUser(res.data.user));
-  //       dispatch(setToken(res.data.token));
-  //       router.push("/");
-  //     } else {
-  //       throw "Google authentication failed";
-  //     }
-  //   } catch (error: any) {
-  //     console.error(error);
-  //     dispatch(showFailedModal(error.message || "Something went wrong"));
-  //   } finally {
-  //     dispatch(showLoadingModal(null));
-  //   }
-  // };
+  const handleAuthWithGoogle = async (code: string) => {
+    dispatch(showLoadingModal("Fetching data"));
+    try {
+      const res = await axios.post(Endpoints.googleAuth, {
+        code,
+      });
+      console.log({ res });
+
+      dispatch(setUser(res.data.data.user));
+      dispatch(setToken(res.data.token));
+      router.push("/");
+    } catch (error: any) {
+      console.error(error);
+      dispatch(showFailedModal(error.message || "Something went wrong"));
+    } finally {
+      dispatch(showLoadingModal(null));
+    }
+  };
 
   useEffect(() => {
     const code = searchParams.get("code");
     console.log({ code });
 
     if (code) {
-      // handleAuthWithGoogle(code);
+      handleAuthWithGoogle(code);
     }
 
     return () => {

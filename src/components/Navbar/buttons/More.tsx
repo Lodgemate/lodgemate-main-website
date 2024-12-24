@@ -13,16 +13,6 @@ import {
   DropdownMenuTrigger,
   DropdownMenuLabel,
 } from "@/components/ui/dropdown-menu";
-import {
-  Sheet,
-  SheetClose,
-  SheetContent,
-  SheetTrigger,
-  SheetHeader,
-  SheetTitle,
-  SheetFooter,
-  SheetDescription,
-} from "@/components/ui/sheet";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
@@ -37,6 +27,7 @@ import { Button } from "@/components/ui/button";
 import { logOut, selectUser } from "@/lib/features/Auth/authSlice";
 import { clearToken } from "@/lib/features/Auth/tokenSlice";
 import { usePathname } from "next/navigation";
+import SideNotification from "@/components/SideNotification";
 
 export interface NotificationResponse {
   status: string;
@@ -58,23 +49,10 @@ function More() {
     <>
       {currentUser ? (
         <>
-          <Sheet onOpenChange={setShowNotifications} open={showNotifications}>
-            <SheetContent side="left">
-              <SheetHeader>
-                <SheetTitle>Notifications</SheetTitle>
-                <SheetDescription>
-                  Your notifications shows here
-                </SheetDescription>
-              </SheetHeader>
-              <div className="grid gap-4 py-4"></div>
-              <SheetFooter>
-                <SheetClose asChild>
-                  <p>Comming Soon</p>
-                </SheetClose>
-              </SheetFooter>
-            </SheetContent>
-          </Sheet>
-
+          <SideNotification
+            setShowNotifications={setShowNotifications}
+            showNotifications={showNotifications}
+          />
           <div className="">
             <DropdownMenu open={showModel}>
               <DropdownMenuTrigger className="flex items-center flex-col relative bottom-3">

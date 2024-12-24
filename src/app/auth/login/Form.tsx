@@ -23,11 +23,13 @@ import axios from "axios";
 import { Endpoints } from "@/services/Api/endpoints";
 import { setUser } from "@/lib/features/Auth/authSlice";
 import { useToast } from "@/hooks/use-toast";
+import { useSearchParams } from "next/navigation";
 
 const LoginForm: React.FC = () => {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const { toast } = useToast();
+  const searchParams = useSearchParams();
 
   const data = useAppSelector(selectAllSignindata);
   const Status = useAppSelector(selectAllSigninStatus);
@@ -41,7 +43,6 @@ const LoginForm: React.FC = () => {
     password: "",
   });
 
-  // update form on change os the inputs
   const UpdateForm = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
@@ -112,8 +113,7 @@ const LoginForm: React.FC = () => {
   };
 
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const code = params.get("code");
+    const code = searchParams.get("code");
     console.log({ code });
 
     if (code) {

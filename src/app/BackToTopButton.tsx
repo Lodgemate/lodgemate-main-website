@@ -41,7 +41,7 @@ const BackToTopButton: React.FC = () => {
             <path
               d="M1.58105 4.2L5.58105 1M5.58105 1L9.58105 4.2M5.58105 1V17"
               stroke="#333333"
-              stroke-width="1.5"
+              strokeWidth="1.5"
               stroke-linejoin="round"
             />
           </svg>
